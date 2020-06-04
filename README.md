@@ -1,9 +1,13 @@
-# Fabric Example Mod
+# Common Expansion - A Minecraft mod for Fabric 1.16
 
-## Setup
+WIP
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
+# Links:
+WIP
 
-## License
+# Credits:
+**Concept and textures**
+* [Plantkillable](https://twitter.com/Plantkillable)
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+**Code**
+* [Hugman](https://twitter.com/Hugman_76)
