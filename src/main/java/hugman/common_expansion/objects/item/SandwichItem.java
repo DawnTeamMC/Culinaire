@@ -1,6 +1,7 @@
 package hugman.common_expansion.objects.item;
 
 import com.sun.istack.internal.Nullable;
+import hugman.common_expansion.init.CEItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
@@ -10,8 +11,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -32,14 +33,98 @@ public class SandwichItem extends Item
 		super(settings);
 	}
 
+	public void addIngredient(ItemStack sandwich, Item item)
+	{
+		CompoundTag compoundTag = sandwich.getOrCreateTag();
+		for (int index = 1; index < 3; index++)
+		{
+			Item ingredient = getIngredient(sandwich, index);
+			if (ingredient == null)
+			{
+				compoundTag.putString("Ingredient" + index, Registry.ITEM.getId(item).toString());
+			}
+		}
+	}
+
+	@Nullable
+	public Item getIngredient(ItemStack sandwich, int index)
+	{
+		CompoundTag compoundTag = sandwich.getTag();
+		if (compoundTag != null && compoundTag.contains("Ingredient" + index))
+		{
+			return Registry.ITEM.get(new Identifier(compoundTag.getString("Ingredient" + index)));
+		}
+		return null;
+	}
+
+	public List<Pair<Item, Integer>> getIngredients(ItemStack sandwich)
+	{
+		List<Pair<Item, Integer>> ingredientList = new ArrayList<>();
+		for (int i = 1; i < 3; i++)
+		{
+			Item ingredient = getIngredient(sandwich, i);
+			if (ingredient != null)
+			{
+				ingredientList.add(Pair.of(ingredient, i));
+			}
+		}
+		return ingredientList;
+	}
+
+	public List<Pair<Integer, Integer>> getComplements(ItemStack sandwich)
+	{
+		List<Pair<Integer, Integer>> complements = new ArrayList<>();
+		List<Pair<Item, Integer>> ingredientList = getIngredients(sandwich);
+		for (Pair pair : getComplementaryIngredients())
+		{
+			if (ingredientList.size() == 2)
+			{
+				if (pair.equals(Pair.of(ingredientList.get(0), ingredientList.get(1))) || pair.equals(Pair.of(ingredientList.get(1), ingredientList.get(0))))
+				{
+					complements.add(Pair.of(1, 2));
+				}
+			}
+			if (ingredientList.size() == 3)
+			{
+				if (pair.equals(Pair.of(ingredientList.get(0), ingredientList.get(2))) || pair.equals(Pair.of(ingredientList.get(2), ingredientList.get(0))))
+				{
+					complements.add(Pair.of(1, 3));
+				}
+				if (pair.equals(Pair.of(ingredientList.get(1), ingredientList.get(2))) || pair.equals(Pair.of(ingredientList.get(2), ingredientList.get(1))))
+				{
+					complements.add(Pair.of(2, 3));
+				}
+			}
+		}
+		return complements;
+	}
+
+	public static List<Pair<Item, Item>> getComplementaryIngredients()
+	{
+		List<Pair<Item, Item>> list = new ArrayList<>();
+		list.add(Pair.of(Items.APPLE, CEItems.CHOCOLATE));
+		list.add(Pair.of(Items.CHICKEN, Items.HONEY_BOTTLE));
+		list.add(Pair.of(Items.COOKED_BEEF, CEItems.CHEESE));
+		list.add(Pair.of(Items.ENCHANTED_GOLDEN_APPLE, Items.BEETROOT));
+		list.add(Pair.of(Items.GOLDEN_APPLE, Items.DRIED_KELP));
+		list.add(Pair.of(CEItems.MARSHMALLOW, CEItems.CHOCOLATE));
+		list.add(Pair.of(CEItems.MARSHMALLOW, Items.HONEY_BOTTLE));
+		list.add(Pair.of(Items.RABBIT, Items.BEETROOT));
+		list.add(Pair.of(Items.SPIDER_EYE, CEItems.CHOCOLATE));
+		list.add(Pair.of(CEItems.TOMATO, CEItems.CHEESE));
+		list.add(Pair.of(CEItems.TOMATO, CEItems.LETTUCE));
+		return list;
+	}
+
 	@Override
 	public ItemStack finishUsing(ItemStack sandwich, World world, LivingEntity user)
 	{
-		List<Item> ingredientList = getIngredients(sandwich);
-		if (ingredientList != null && user instanceof PlayerEntity)
+		List<Pair<Item, Integer>> ingredientList = getIngredients(sandwich);
+		if (!ingredientList.isEmpty() && user instanceof PlayerEntity)
 		{
-			for (Item ingredient : ingredientList)
+			for (Pair<Item, Integer> ingredientEntry : ingredientList)
 			{
+				Item ingredient = ingredientEntry.getLeft();
 				if (ingredient.isFood())
 				{
 					PlayerEntity player = (PlayerEntity) user;
@@ -67,11 +152,12 @@ public class SandwichItem extends Item
 	@Environment(EnvType.CLIENT)
 	public void appendTooltip(ItemStack sandwich, @Nullable World world, List<Text> tooltip, TooltipContext context)
 	{
-		List<Item> ingredientList = getIngredients(sandwich);
+		List<Pair<Item, Integer>> ingredientList = getIngredients(sandwich);
 		if (ingredientList != null)
 		{
-			for (Item ingredient : ingredientList)
+			for (Pair<Item, Integer> ingredientEntry : ingredientList)
 			{
+				Item ingredient = ingredientEntry.getLeft();
 				tooltip.add((new LiteralText("- ")).append(new TranslatableText(ingredient.getTranslationKey())).formatted(Formatting.GRAY));
 			}
 		}
@@ -80,11 +166,12 @@ public class SandwichItem extends Item
 	@Override
 	public boolean hasEnchantmentGlint(ItemStack sandwich)
 	{
-		List<Item> ingredientList = getIngredients(sandwich);
+		List<Pair<Item, Integer>> ingredientList = getIngredients(sandwich);
 		if (ingredientList != null)
 		{
-			for (Item ingredient : ingredientList)
+			for (Pair<Item, Integer> ingredientEntry : ingredientList)
 			{
+				Item ingredient = ingredientEntry.getLeft();
 				if (ingredient.hasEnchantmentGlint(sandwich))
 				{
 					return true;
@@ -92,34 +179,5 @@ public class SandwichItem extends Item
 			}
 		}
 		return false;
-	}
-
-	public static void addIngredient(ItemStack sandwich, Item item)
-	{
-		CompoundTag compoundTag = sandwich.getOrCreateTag();
-		ListTag listTag = compoundTag.getList("Ingredients", 9);
-		CompoundTag compoundTag2 = new CompoundTag();
-		compoundTag2.putString("Item", Registry.ITEM.getId(item).toString());
-		listTag.add(compoundTag2);
-		compoundTag.put("Ingredients", listTag);
-	}
-
-	@Nullable
-	public List<Item> getIngredients(ItemStack sandwich)
-	{
-		CompoundTag compoundTag = sandwich.getTag();
-		if (compoundTag != null && compoundTag.contains("Ingredients", 9))
-		{
-			ListTag listTag = compoundTag.getList("Ingredients", 10);
-			List<Item> ingredientList = new ArrayList<>();
-			for (int i = 0; i < listTag.size(); ++i)
-			{
-				CompoundTag compoundTag2 = listTag.getCompound(i);
-				Item ingredientItem = Registry.ITEM.get(new Identifier(compoundTag2.getString("Item")));
-				ingredientList.add(ingredientItem);
-			}
-			return ingredientList;
-		}
-		return null;
 	}
 }
