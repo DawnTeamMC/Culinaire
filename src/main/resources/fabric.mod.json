@@ -1,33 +1,30 @@
 {
-  "schemaVersion": 1,
-  "id": "common_expansion",
-  "version": "${version}",
-
-  "name": "Common Expansion",
-  "description": "WIP",
-  "authors": [
-    "Plantkillable",
-    "Hugman"
-  ],
-  "contact": {
-    "sources": "https://github.com/Hugman76/CommonExpansion",
-    "issues": "https://github.com/Hugman76/CommonExpansion/issues"
-  },
-
-  "license": "MIT",
-  "icon": "assets/common_expansion/icon.png",
-
-  "environment": "*",
-  "entrypoints": {
-    "main": [
-      "hugman.common_expansion.CommonExpansion"
-    ]
-  },
-  "mixins": [
-    "common_expansion.mixins.json"
-  ],
-  "depends": {
-    "fabricloader": ">=0.8.2",
-    "fabric": "*"
-  }
+	"schemaVersion": 1,
+	"id": "common_expansion",
+	"version": "${version}",
+	"name": "Common Expansion",
+	"description": "WIP",
+	"authors": [
+		"Plantkillable",
+		"Hugman"
+	],
+	"contact": {
+		"sources": "https://github.com/Hugman76/CommonExpansion",
+		"issues": "https://github.com/Hugman76/CommonExpansion/issues"
+	},
+	"license": "MIT",
+	"icon": "assets/common_expansion/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"hugman.common_expansion.CommonExpansion"
+		]
+	},
+	"mixins": [
+		"common_expansion.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.8.2",
+		"fabric": "*"
+	}
 }

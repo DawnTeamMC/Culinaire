@@ -1,7 +1,6 @@
 {
 	"replace": false,
-	"values":
-	[
+	"values": [
 		"minecraft:cooked_beef",
 		"common_expansion:cheese"
 	]

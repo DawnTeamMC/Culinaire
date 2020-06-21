@@ -1,7 +1,6 @@
 {
 	"replace": false,
-	"values":
-	[
+	"values": [
 		"minecraft:spider_eye",
 		"common_expansion:chocolate"
 	]

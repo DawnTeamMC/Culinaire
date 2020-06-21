@@ -1,7 +1,6 @@
 {
 	"replace": false,
-	"values":
-	[
+	"values": [
 		"common_expansion:tomato",
 		"common_expansion:cheese"
 	]
