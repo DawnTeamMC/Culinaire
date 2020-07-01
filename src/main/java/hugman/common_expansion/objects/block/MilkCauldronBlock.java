@@ -5,6 +5,7 @@ import hugman.common_expansion.init.data.CEProperties;
 import hugman.common_expansion.objects.block.block_entity.MilkCauldronBlockEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -49,12 +50,13 @@ public class MilkCauldronBlock extends BlockWithEntity {
 		ItemStack itemStack = player.getStackInHand(hand);
 		if(isReady) {
 			if(!world.isClient) {
-				if(itemStack.isEmpty()) {
-					player.setStackInHand(hand, new ItemStack(CEItems.CHEESE));
-				}
-				else if(!player.inventory.insertStack(new ItemStack(CEItems.CHEESE)) && !player.abilities.creativeMode) {
-					player.dropItem(new ItemStack(CEItems.CHEESE), false);
-				}
+				float f = 0.7F;
+				double d = (world.random.nextFloat() * f) + 0.15D;
+				double e = (world.random.nextFloat() * f) + 0.66D;
+				double g = (world.random.nextFloat() * f) + 0.15D;
+				ItemEntity itemEntity = new ItemEntity(world, (double)pos.getX() + d, (double)pos.getY() + e, (double)pos.getZ() + g, new ItemStack(CEItems.CHEESE));
+				itemEntity.setToDefaultPickupDelay();
+				world.spawnEntity(itemEntity);
 				player.incrementStat(Stats.USE_CAULDRON);
 				world.setBlockState(pos, Blocks.CAULDRON.getDefaultState(), 2);
 			}
