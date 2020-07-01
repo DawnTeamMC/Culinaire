@@ -152,12 +152,12 @@ public class SandwichItem extends Item {
 	}
 
 	@Override
-	public boolean hasEnchantmentGlint(ItemStack sandwich) {
+	public boolean hasGlint(ItemStack sandwich) {
 		List<Pair<Item, Integer>> ingredientList = getIngredients(sandwich);
 		if(ingredientList != null) {
 			for(Pair<Item, Integer> ingredientEntry : ingredientList) {
 				Item ingredient = ingredientEntry.getFirst();
-				if(ingredient.hasEnchantmentGlint(sandwich)) {
+				if(ingredient.hasGlint(sandwich)) {
 					return true;
 				}
 			}
