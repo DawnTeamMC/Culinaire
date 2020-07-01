@@ -1,7 +1,6 @@
 package hugman.common_expansion.objects.item;
 
 import com.mojang.datafixers.util.Pair;
-import com.sun.istack.internal.Nullable;
 import hugman.common_expansion.init.CEItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -21,6 +20,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

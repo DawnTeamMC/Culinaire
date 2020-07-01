@@ -6,6 +6,7 @@
 		"CauldronMixin"
 	],
 	"client": [
+		"PlayerRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
