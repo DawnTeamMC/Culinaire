@@ -7,37 +7,45 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 
+import java.util.Random;
+
 public class MilkCauldronBlockEntity extends BlockEntity implements Tickable {
 	private int coagulationTime;
+	private int maxCoagulationTime;
 
 	public MilkCauldronBlockEntity() {
 		super(CEBlockEntityTypes.MILK_CAULDRON);
+		Random random = new Random();
+		this.maxCoagulationTime = random.nextInt(16000) + 32000;
 	}
 
 	@Override
 	public void tick() {
 		BlockState blockState = this.getCachedState();
-		boolean isReady = blockState.get(MilkCauldronBlock.READY);
-		if(!isReady) {
+		if(coagulationTime >= maxCoagulationTime) {
+			this.setCoagulatedProperty(blockState, true);
+		}
+		else {
 			coagulationTime++;
 		}
-		if(coagulationTime >= 48000) {
-			this.setReadyProperty(blockState, true);
-		}
-	}
-	private void setReadyProperty(BlockState state, boolean ready) {
-		this.world.setBlockState(this.getPos(), state.with(MilkCauldronBlock.READY, Boolean.valueOf(ready)), 3);
 	}
 
+	private void setCoagulatedProperty(BlockState state, boolean coagulated) {
+		this.world.setBlockState(this.getPos(), state.with(MilkCauldronBlock.COAGULATED, Boolean.valueOf(coagulated)), 3);
+	}
 
+	@Override
 	public void fromTag(BlockState state, CompoundTag tag) {
 		super.fromTag(state, tag);
 		this.coagulationTime = tag.getInt("CoagulationTime");
+		this.maxCoagulationTime = tag.getInt("MaxCoagulationTime");
 	}
 
+	@Override
 	public CompoundTag toTag(CompoundTag tag) {
 		super.toTag(tag);
 		tag.putInt("CoagulationTime", this.coagulationTime);
+		tag.putInt("MaxCoagulationTime", this.maxCoagulationTime);
 		return tag;
 	}
 }

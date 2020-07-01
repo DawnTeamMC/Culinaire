@@ -1,6 +1,14 @@
 {
+	"block.common_expansion.milk_cauldron": "Milk Cauldron",
+
 	"item.common_expansion.cheese": "Cheese",
-	"item.common_expansion.tomato": "Tomato",
 	"item.common_expansion.lettuce": "Lettuce",
+	"item.common_expansion.tomato": "Tomato",
+	"item.common_expansion.chocolate": "Chocolate",
+	"item.common_expansion.marshmallow": "Marshmallow",
+	"item.common_expansion.apple_pie": "Apple Pie",
+	"item.common_expansion.sweet_berry_pie": "Sweet Berry Pie",
+	"item.common_expansion.salad": "Salad",
+	"item.common_expansion.mashed_potatoes": "Mashed Potatoes",
 	"item.common_expansion.sandwich": "Sandwich"
 }

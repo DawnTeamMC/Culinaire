@@ -3,6 +3,7 @@
 	"package": "hugman.common_expansion.mixin",
 	"compatibilityLevel": "JAVA_8",
 	"mixins": [
+		"CauldronMixin"
 	],
 	"client": [
 	],
