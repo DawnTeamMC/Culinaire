@@ -12,6 +12,7 @@ import net.minecraft.util.registry.Registry;
 public class CEItems {
 	public static final Item CHEESE = register("cheese", new Item(new Item.Settings().group(ItemGroup.FOOD).food(CEFoods.CHEESE)));
 	public static final Item LETTUCE = register("lettuce", new Item(new Item.Settings().group(ItemGroup.FOOD).food(CEFoods.LETTUCE)));
+	public static final Item LETTUCE_SEEDS = register("lettuce_seeds", new Item(new Item.Settings().group(ItemGroup.FOOD)));
 	public static final Item TOMATO = register("tomato", new Item(new Item.Settings().group(ItemGroup.FOOD).food(CEFoods.TOMATO)));
 	public static final Item CHOCOLATE = register("chocolate", new Item(new Item.Settings().group(ItemGroup.FOOD).food(CEFoods.CHOCOLATE)));
 	public static final Item MARSHMALLOW = register("marshmallow", new Item(new Item.Settings().group(ItemGroup.FOOD).food(CEFoods.UNCOOKED_MARSHMALLOW)));
