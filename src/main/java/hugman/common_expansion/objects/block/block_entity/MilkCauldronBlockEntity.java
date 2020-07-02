@@ -22,8 +22,7 @@ public class MilkCauldronBlockEntity extends BlockEntity implements Tickable {
 	@Override
 	public void tick() {
 		BlockState blockState = this.getCachedState();
-		if(!this.world.isClient)
-		{
+		if(!this.world.isClient) {
 			if(coagulationTime >= maxCoagulationTime) {
 				this.setCoagulatedProperty(blockState, true);
 			}

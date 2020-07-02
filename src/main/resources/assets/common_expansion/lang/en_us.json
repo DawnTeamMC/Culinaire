@@ -10,5 +10,9 @@
 	"item.common_expansion.sweet_berry_pie": "Sweet Berry Pie",
 	"item.common_expansion.salad": "Salad",
 	"item.common_expansion.mashed_potatoes": "Mashed Potatoes",
-	"item.common_expansion.sandwich": "Sandwich"
+	"item.common_expansion.sandwich": "Sandwich",
+	"item.common_expansion.uncooked_marshmallow_on_a_stick": "Uncooked Marshmallow on a Stick",
+	"item.common_expansion.toasty_marshmallow_on_a_stick": "Toasty Marshmallow on a Stick",
+	"item.common_expansion.golden_marshmallow_on_a_stick": "Golden Marshmallow on a Stick",
+	"item.common_expansion.burnt_marshmallow_on_a_stick": "Burnt Marshmallow on a Stick"
 }

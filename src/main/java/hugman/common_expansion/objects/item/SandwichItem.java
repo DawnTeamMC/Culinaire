@@ -30,18 +30,23 @@ public class SandwichItem extends Item {
 		super(settings);
 	}
 
-	public void addIngredient(ItemStack sandwich, Item item) {
+	public static void addIngredient(ItemStack sandwich, Item item) {
 		CompoundTag compoundTag = sandwich.getOrCreateTag();
-		for(int index = 1; index < 3; index++) {
+		for(int index = 1; index <= 3; index++) {
 			Item ingredient = getIngredient(sandwich, index);
 			if(ingredient == null) {
 				compoundTag.putString("Ingredient" + index, Registry.ITEM.getId(item).toString());
+				return;
 			}
 		}
 	}
 
+	public static void addIngredient(ItemStack sandwich, ItemStack itemStack) {
+		addIngredient(sandwich, itemStack.getItem());
+	}
+
 	@Nullable
-	public Item getIngredient(ItemStack sandwich, int index) {
+	private static Item getIngredient(ItemStack sandwich, int index) {
 		CompoundTag compoundTag = sandwich.getTag();
 		if(compoundTag != null && compoundTag.contains("Ingredient" + index)) {
 			Item ingredient = Registry.ITEM.get(new Identifier(compoundTag.getString("Ingredient" + index)));
@@ -52,7 +57,7 @@ public class SandwichItem extends Item {
 		return null;
 	}
 
-	public List<Pair<Item, Integer>> getIngredients(ItemStack sandwich) {
+	private static List<Pair<Item, Integer>> getIngredients(ItemStack sandwich) {
 		List<Pair<Item, Integer>> ingredientList = new ArrayList<>();
 		for(int i = 1; i <= 3; i++) {
 			Item ingredient = getIngredient(sandwich, i);
@@ -63,7 +68,7 @@ public class SandwichItem extends Item {
 		return ingredientList;
 	}
 
-	public List<Pair<Integer, Integer>> getComplements(ItemStack sandwich) {
+	private static List<Pair<Integer, Integer>> getComplements(ItemStack sandwich) {
 		List<Pair<Integer, Integer>> complements = new ArrayList<>();
 		List<Pair<Item, Integer>> ingredientList = getIngredients(sandwich);
 		for(Pair pair : getComplementsList()) {
@@ -84,7 +89,7 @@ public class SandwichItem extends Item {
 		return complements;
 	}
 
-	public List<Integer> getNormalIngredients(ItemStack sandwich) {
+	private static List<Integer> getNormalIngredients(ItemStack sandwich) {
 		List<Integer> normalIngredients = new ArrayList<>();
 		for(Pair<Item, Integer> ingredientEntry : getIngredients(sandwich)) {
 			normalIngredients.add(ingredientEntry.getSecond());
@@ -96,8 +101,8 @@ public class SandwichItem extends Item {
 		return normalIngredients;
 	}
 
-	public int getProvidedHunger(ItemStack sandwich) {
-		int hunger = this.getFoodComponent().getHunger();
+	private static int getProvidedHunger(ItemStack sandwich) {
+		int hunger = sandwich.getItem().getFoodComponent().getHunger();
 		for(Pair<Integer, Integer> indexes : getComplements(sandwich)) {
 			hunger = hunger + (int) ((Math.ceil(getIngredient(sandwich, indexes.getFirst()).getFoodComponent().getHunger() / 3) + Math.ceil(getIngredient(sandwich, indexes.getSecond()).getFoodComponent().getHunger() / 3)) * 2);
 		}
@@ -107,8 +112,8 @@ public class SandwichItem extends Item {
 		return hunger;
 	}
 
-	public float getProvidedSaturation(ItemStack sandwich) {
-		float saturation = this.getFoodComponent().getSaturationModifier();
+	private static float getProvidedSaturation(ItemStack sandwich) {
+		float saturation = sandwich.getItem().getFoodComponent().getSaturationModifier();
 		for(Pair<Integer, Integer> indexes : getComplements(sandwich)) {
 			saturation = +(float) ((Math.ceil(getIngredient(sandwich, indexes.getFirst()).getFoodComponent().getSaturationModifier() / 3) + Math.ceil(getIngredient(sandwich, indexes.getSecond()).getFoodComponent().getSaturationModifier() / 3)) * 2);
 		}
@@ -165,7 +170,7 @@ public class SandwichItem extends Item {
 		return false;
 	}
 
-	public static List<Pair<Item, Item>> getComplementsList() {
+	private static List<Pair<Item, Item>> getComplementsList() {
 		List<Pair<Item, Item>> list = new ArrayList<>();
 		list.add(Pair.of(Items.APPLE, CEItems.CHOCOLATE));
 		list.add(Pair.of(Items.CHICKEN, Items.HONEY_BOTTLE));
