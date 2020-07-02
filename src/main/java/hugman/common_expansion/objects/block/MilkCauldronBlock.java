@@ -30,8 +30,6 @@ import javax.annotation.Nullable;
 
 public class MilkCauldronBlock extends BlockWithEntity {
 	public static final BooleanProperty COAGULATED = CEProperties.COAGULATED;
-	private static final VoxelShape RAY_TRACE_SHAPE = createCuboidShape(2.0D, 4.0D, 2.0D, 14.0D, 16.0D, 14.0D);
-	protected static final VoxelShape OUTLINE_SHAPE = VoxelShapes.combineAndSimplify(VoxelShapes.fullCube(), VoxelShapes.union(createCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 3.0D, 12.0D), createCuboidShape(4.0D, 0.0D, 0.0D, 12.0D, 3.0D, 16.0D), createCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D), RAY_TRACE_SHAPE), BooleanBiFunction.ONLY_FIRST);
 
 	public MilkCauldronBlock(Settings settings) {
 		super(settings);
@@ -103,13 +101,20 @@ public class MilkCauldronBlock extends BlockWithEntity {
 	}
 
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		return OUTLINE_SHAPE;
+	public VoxelShape getRayTraceShape(BlockState state, BlockView world, BlockPos pos) {
+		return createCuboidShape(2.0D, state.get(COAGULATED) ? 15.0D : 4.0D, 2.0D, 14.0D, 16.0D, 14.0D);
 	}
 
 	@Override
-	public VoxelShape getRayTraceShape(BlockState state, BlockView world, BlockPos pos) {
-		return RAY_TRACE_SHAPE;
+	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+		return VoxelShapes.combineAndSimplify(
+				VoxelShapes.fullCube(),
+				VoxelShapes.union(
+						createCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 3.0D, 12.0D),
+						createCuboidShape(4.0D, 0.0D, 0.0D, 12.0D, 3.0D, 16.0D),
+						createCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D),
+						getRayTraceShape(state, world, pos)),
+				BooleanBiFunction.ONLY_FIRST);
 	}
 
 	@Override
