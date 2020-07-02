@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 
 public class SandwichRecipe extends SpecialCraftingRecipe {
 	private static final Ingredient BREAD = Ingredient.fromTag(CETags.Items.SANDWICH_BREAD);
+	private static final Ingredient BLACKLIST = Ingredient.fromTag(CETags.Items.SANDWICH_BLACKLIST);
 
 	public SandwichRecipe(Identifier identifier) {
 		super(identifier);
@@ -44,7 +45,7 @@ public class SandwichRecipe extends SpecialCraftingRecipe {
 		for(int i = 3; i < 6; ++i) {
 			ItemStack itemStack = craftingInventory.getStack(i);
 			if(!itemStack.isEmpty()) {
-				if(itemStack.isFood() && !BREAD.test(itemStack)) {
+				if(itemStack.isFood() && !BLACKLIST.test(itemStack)) {
 					hasAnIngredient = true;
 				}
 				else {

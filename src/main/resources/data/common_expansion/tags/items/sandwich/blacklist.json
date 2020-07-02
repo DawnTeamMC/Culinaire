@@ -1,0 +1,13 @@
+{
+	"replace": false,
+	"values": [
+		"#common_expansion:sandwich/bread",
+		"common_expansion:sandwich",
+		"minecraft:mushroom_stew",
+		"minecraft:rabbit_stew",
+		"minecraft:beetroot_soup",
+		"common_expansion:apple_pie",
+		"common_expansion:sweet_berry_pie",
+		"common_expansion:salad"
+	]
+}
