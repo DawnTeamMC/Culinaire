@@ -2,16 +2,16 @@
 	"parent": "minecraft:recipes/root",
 	"rewards": {
 		"recipes": [
-			"common_expansion:crafting/marshmallow"
+			"common_expansion:crafting/uncooked_marshmallow_on_a_stick"
 		]
 	},
 	"criteria": {
-		"has_sugar": {
+		"has_marshmallow": {
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
 					{
-						"item": "minecraft:sugar"
+						"item": "common_expansion:marshmallow"
 					}
 				]
 			}
@@ -19,13 +19,13 @@
 		"has_the_recipe": {
 			"trigger": "minecraft:recipe_unlocked",
 			"conditions": {
-				"recipe": "common_expansion:crafting/marshmallow"
+				"recipe": "common_expansion:crafting/uncooked_marshmallow_on_a_stick"
 			}
 		}
 	},
 	"requirements": [
 		[
-			"has_sugar",
+			"has_marshmallow",
 			"has_the_recipe"
 		]
 	]
