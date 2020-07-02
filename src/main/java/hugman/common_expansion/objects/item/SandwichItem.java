@@ -48,10 +48,13 @@ public class SandwichItem extends Item {
 	@Nullable
 	private static Item getIngredient(ItemStack sandwich, int index) {
 		CompoundTag compoundTag = sandwich.getTag();
-		if(compoundTag != null && compoundTag.contains("Ingredient" + index)) {
-			Item ingredient = Registry.ITEM.get(new Identifier(compoundTag.getString("Ingredient" + index)));
-			if(ingredient.isFood()) {
-				return Registry.ITEM.get(new Identifier(compoundTag.getString("Ingredient" + index)));
+		if(compoundTag != null) {
+			if(compoundTag.contains("Ingredient" + index))
+			{
+				Item ingredient = Registry.ITEM.get(new Identifier(compoundTag.getString("Ingredient" + index)));
+				if(ingredient.isFood()) {
+					return Registry.ITEM.get(new Identifier(compoundTag.getString("Ingredient" + index)));
+				}
 			}
 		}
 		return null;
@@ -162,7 +165,7 @@ public class SandwichItem extends Item {
 		if(ingredientList != null) {
 			for(Pair<Item, Integer> ingredientEntry : ingredientList) {
 				Item ingredient = ingredientEntry.getFirst();
-				if(ingredient.hasGlint(sandwich)) {
+				if(ingredient.hasGlint(new ItemStack(ingredient))) {
 					return true;
 				}
 			}
