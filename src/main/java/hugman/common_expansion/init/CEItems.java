@@ -27,6 +27,6 @@ public class CEItems {
 	public static final Item BURNT_MARSHMALLOW_ON_A_STICK = register("burnt_marshmallow_on_a_stick", new MarshmallowOnAStickItem(new Item.Settings().group(ItemGroup.FOOD).food(CEFoods.BURNT_MARSHMALLOW).maxCount(1)));
 
 	private static Item register(String name, Item item) {
-		return Registry.register(Registry.ITEM, new Identifier(CommonExpansion.MOD_ID, name), item);
+		return Registry.register(Registry.ITEM, CommonExpansion.id(name), item);
 	}
 }

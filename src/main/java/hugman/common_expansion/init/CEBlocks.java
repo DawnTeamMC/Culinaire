@@ -13,6 +13,6 @@ public class CEBlocks {
 	public static final Block MILK_CAULDRON = register("milk_cauldron", new MilkCauldronBlock(FabricBlockSettings.of(Material.METAL, MaterialColor.STONE).requiresTool().strength(2.0F).nonOpaque()));
 
 	private static Block register(String name, Block block) {
-		return Registry.register(Registry.BLOCK, new Identifier(CommonExpansion.MOD_ID, name), block);
+		return Registry.register(Registry.BLOCK, CommonExpansion.id(name), block);
 	}
 }
