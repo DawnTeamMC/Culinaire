@@ -1,19 +1,18 @@
 {
-	"schemaVersion": 1,
+	"name": "Common Expansion",
 	"id": "common_expansion",
 	"version": "${version}",
-	"name": "Common Expansion",
+	"icon": "assets/common_expansion/icon.png",
 	"description": "WIP",
 	"authors": [
-		"Plantkillable",
-		"Hugman"
+		"Hugman",
+		"Plantkillable"
 	],
 	"contact": {
+		"homepage": "https://www.curseforge.com/minecraft/mc-mods/common-expansion",
 		"sources": "https://github.com/Hugman76/CommonExpansion",
 		"issues": "https://github.com/Hugman76/CommonExpansion/issues"
 	},
-	"license": "MIT",
-	"icon": "assets/common_expansion/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
@@ -24,7 +23,14 @@
 		"common_expansion.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.8.9",
 		"fabric": "*"
-	}
+	},
+	"custom": {
+		"modupdater": {
+			"strategy": "curseforge",
+			"projectID": 390675
+		}
+	},
+	"license": "MIT",
+	"schemaVersion": 1
 }

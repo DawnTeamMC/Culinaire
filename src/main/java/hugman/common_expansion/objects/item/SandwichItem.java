@@ -49,8 +49,7 @@ public class SandwichItem extends Item {
 	private static Item getIngredient(ItemStack sandwich, int index) {
 		CompoundTag compoundTag = sandwich.getTag();
 		if(compoundTag != null) {
-			if(compoundTag.contains("Ingredient" + index))
-			{
+			if(compoundTag.contains("Ingredient" + index)) {
 				Item ingredient = Registry.ITEM.get(new Identifier(compoundTag.getString("Ingredient" + index)));
 				if(ingredient.isFood()) {
 					return Registry.ITEM.get(new Identifier(compoundTag.getString("Ingredient" + index)));
