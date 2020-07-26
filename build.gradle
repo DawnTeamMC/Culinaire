@@ -3,6 +3,8 @@ plugins {
 	id 'maven-publish'
 }
 
+apply plugin: "maven"
+
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
@@ -24,6 +26,10 @@ dependencies {
 	//modCompile "io.github.prospector:modmenu:${modmenu_version}"
 
 	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
+}
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 
 processResources {
