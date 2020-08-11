@@ -1,6 +1,6 @@
 {
 	"parent": "minecraft:block/crop",
 	"textures": {
-		"crop": "common_expansion:block/lettuce/age/0"
+		"crop": "common_expansion:block/lettuce/age_2"
 	}
 }
