@@ -14,6 +14,24 @@
 					"condition": "minecraft:survives_explosion"
 				}
 			]
+		},
+		{
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "minecraft:item",
+					"name": "common_expansion:cheese"
+				}
+			],
+			"conditions": [
+				{
+					"condition": "minecraft:block_state_property",
+					"block": "common_expansion:milk_cauldron",
+					"properties": {
+						"coagulated": true
+					}
+				}
+			]
 		}
 	]
 }
