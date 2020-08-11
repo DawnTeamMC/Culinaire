@@ -1,0 +1,6 @@
+{
+	"parent": "minecraft:block/crop",
+	"textures": {
+		"crop": "ce_foodstuffs:block/lettuce/age_1"
+	}
+}

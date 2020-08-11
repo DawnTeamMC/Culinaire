@@ -1,0 +1,20 @@
+{
+	"block.ce_foodstuffs.milk_cauldron": "Milk Cauldron",
+	"block.ce_foodstuffs.lettuce": "Lettuce",
+
+	"item.ce_foodstuffs.cheese": "Cheese",
+	"item.ce_foodstuffs.lettuce": "Lettuce",
+	"item.ce_foodstuffs.lettuce_seeds": "Lettuce Seeds",
+	"item.ce_foodstuffs.tomato": "Tomato",
+	"item.ce_foodstuffs.chocolate": "Chocolate",
+	"item.ce_foodstuffs.marshmallow": "Marshmallow",
+	"item.ce_foodstuffs.apple_pie": "Apple Pie",
+	"item.ce_foodstuffs.sweet_berry_pie": "Sweet Berry Pie",
+	"item.ce_foodstuffs.salad": "Salad",
+	"item.ce_foodstuffs.mashed_potatoes": "Mashed Potatoes",
+	"item.ce_foodstuffs.sandwich": "Sandwich",
+	"item.ce_foodstuffs.uncooked_marshmallow_on_a_stick": "Uncooked Marshmallow on a Stick",
+	"item.ce_foodstuffs.toasty_marshmallow_on_a_stick": "Toasty Marshmallow on a Stick",
+	"item.ce_foodstuffs.golden_marshmallow_on_a_stick": "Golden Marshmallow on a Stick",
+	"item.ce_foodstuffs.burnt_marshmallow_on_a_stick": "Burnt Marshmallow on a Stick"
+}

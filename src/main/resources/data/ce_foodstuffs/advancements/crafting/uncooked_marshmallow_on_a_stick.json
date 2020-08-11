@@ -1,0 +1,32 @@
+{
+	"parent": "minecraft:recipes/root",
+	"rewards": {
+		"recipes": [
+			"ce_foodstuffs:crafting/uncooked_marshmallow_on_a_stick"
+		]
+	},
+	"criteria": {
+		"has_marshmallow": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "ce_foodstuffs:marshmallow"
+					}
+				]
+			}
+		},
+		"has_the_recipe": {
+			"trigger": "minecraft:recipe_unlocked",
+			"conditions": {
+				"recipe": "ce_foodstuffs:crafting/uncooked_marshmallow_on_a_stick"
+			}
+		}
+	},
+	"requirements": [
+		[
+			"has_marshmallow",
+			"has_the_recipe"
+		]
+	]
+}

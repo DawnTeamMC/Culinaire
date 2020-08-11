@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "hugman.ce_foodstuffs.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"mixins": [
+		"CauldronMixin"
+	],
+	"client": [
+		"PlayerRendererMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

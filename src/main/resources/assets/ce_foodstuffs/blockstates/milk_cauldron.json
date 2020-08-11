@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"coagulated=false": {
+			"model": "ce_foodstuffs:block/milk_cauldron/coagulated/false"
+		},
+		"coagulated=true": {
+			"model": "ce_foodstuffs:block/milk_cauldron/coagulated/true"
+		}
+	}
+}

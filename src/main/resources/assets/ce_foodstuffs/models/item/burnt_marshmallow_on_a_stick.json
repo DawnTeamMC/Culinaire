@@ -1,0 +1,6 @@
+{
+	"parent": "item/handheld",
+	"textures": {
+		"layer0": "ce_foodstuffs:item/marshmallow_on_a_stick/burnt"
+	}
+}

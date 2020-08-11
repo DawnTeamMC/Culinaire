@@ -1,6 +1,0 @@
-{
-	"parent": "item/generated",
-	"textures": {
-		"layer0": "common_expansion:item/lettuce_seeds"
-	}
-}
