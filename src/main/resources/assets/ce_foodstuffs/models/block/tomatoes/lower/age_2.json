@@ -1,0 +1,6 @@
+{
+	"parent": "minecraft:block/crop",
+	"textures": {
+		"crop": "ce_foodstuffs:block/tomatoes/lower/age_2"
+	}
+}

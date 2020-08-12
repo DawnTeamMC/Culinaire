@@ -16,29 +16,84 @@ import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
+import net.minecraft.world.WorldView;
 
 import java.util.Random;
 
 public class TomatoesBlock extends CropBlock {
 	public static final IntProperty AGE = Properties.AGE_3;
 	public static final EnumProperty<DoubleBlockHalf> HALF = Properties.DOUBLE_BLOCK_HALF;
-	private static final VoxelShape[] AGE_TO_SHAPE = new VoxelShape[]{
-			Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D),
-			Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 9.0D, 16.0D),
-			Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 11.0D, 16.0D),
-			Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D)};
+	private static final VoxelShape LOWER_SHAPE_0 = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 5.0D, 16.0D);
+	private static final VoxelShape LOWER_SHAPE_1 = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 13.0D, 16.0D);
+	private static final VoxelShape UPPER_SHAPE_2 = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D);
+	private static final VoxelShape UPPER_SHAPE_3 = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D);
 
 	public TomatoesBlock(Settings settings) {
 		super(settings);
+		this.setDefaultState(this.stateManager.getDefaultState().with(this.getAgeProperty(), 0).with(HALF, DoubleBlockHalf.LOWER));
 	}
 
 	@Override
 	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		if(random.nextInt(3) != 0) {
-			super.randomTick(state, world, pos, random);
+		if(random.nextInt(3) != 0 && state.get(HALF) == DoubleBlockHalf.LOWER) {
+			if(world.getBaseLightLevel(pos, 0) >= 9) {
+				if(!this.isMature(state)) {
+					float f = getAvailableMoisture(this, world, pos);
+					if(random.nextInt((int) (25.0F / f) + 1) == 0) {
+						int age = this.getAge(state) + 1;
+						if(age <= 1) {
+							world.setBlockState(pos, this.withAge(age).with(HALF, DoubleBlockHalf.LOWER), 2);
+						}
+						if(age == 2) {
+							if(world.getBlockState(pos.up()).isAir()) {
+								world.setBlockState(pos, this.withAge(age).with(HALF, DoubleBlockHalf.LOWER), 2);
+								world.setBlockState(pos.up(), this.withAge(age).with(HALF, DoubleBlockHalf.UPPER), 2);
+							}
+						}
+						if(age >= 3) {
+							if(world.getBlockState(pos.up()).isOf(this)) {
+								world.setBlockState(pos, this.withAge(age).with(HALF, DoubleBlockHalf.LOWER), 2);
+								world.setBlockState(pos.up(), this.withAge(age).with(HALF, DoubleBlockHalf.UPPER), 2);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public boolean isFertilizable(BlockView world, BlockPos pos, BlockState state, boolean isClient) {
+		DoubleBlockHalf doubleBlockHalf = state.get(HALF);
+		BlockPos otherHalfPos = doubleBlockHalf == DoubleBlockHalf.LOWER ? pos.up() : pos.down();
+		int age = this.getAge(state) + 1;
+		if(age == 2) {
+			if(!world.getBlockState(otherHalfPos).isAir()) {
+				return false;
+			}
+		}
+		if(age >= 3) {
+			if(!world.getBlockState(otherHalfPos).isOf(this)) {
+				return false;
+			}
+		}
+		return !this.isMature(state);
+	}
+
+	@Override
+	public void applyGrowth(World world, BlockPos pos, BlockState state) {
+		DoubleBlockHalf doubleBlockHalf = state.get(HALF);
+		int age = this.getAge(state) + this.getGrowthAmount(world);
+		int maxAge = this.getMaxAge();
+		if(age > maxAge) {
+			age = maxAge;
+		}
+		world.setBlockState(pos, this.withAge(age).with(HALF, doubleBlockHalf), 2);
+		if(age >= 2) {
+			world.setBlockState(doubleBlockHalf == DoubleBlockHalf.LOWER ? pos.up() : pos.down(), this.withAge(age).with(HALF, doubleBlockHalf == DoubleBlockHalf.LOWER ? DoubleBlockHalf.UPPER : DoubleBlockHalf.LOWER), 2);
 		}
 	}
 
@@ -68,12 +123,37 @@ public class TomatoesBlock extends CropBlock {
 		builder.add(AGE, HALF);
 	}
 
-	public void placeAt(WorldAccess world, BlockPos pos, int flags) {
-		world.setBlockState(pos, (BlockState)this.getDefaultState().with(HALF, DoubleBlockHalf.LOWER), flags);
+	@Override
+	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+		DoubleBlockHalf doubleBlockHalf = state.get(HALF);
+		int age = this.getAge(state);
+		if(doubleBlockHalf == DoubleBlockHalf.LOWER) {
+			if(age == 0) {
+				return LOWER_SHAPE_0;
+			}
+			if(age == 1) {
+				return LOWER_SHAPE_1;
+			}
+		}
+		if(doubleBlockHalf == DoubleBlockHalf.UPPER) {
+			if(age == 2) {
+				return UPPER_SHAPE_2;
+			}
+			if(age == 3) {
+				return UPPER_SHAPE_3;
+			}
+		}
+		return VoxelShapes.fullCube();
 	}
 
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		return AGE_TO_SHAPE[state.get(this.getAgeProperty())];
+	public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
+		DoubleBlockHalf doubleBlockHalf = state.get(HALF);
+		BlockPos otherHalfPos = doubleBlockHalf == DoubleBlockHalf.LOWER ? pos.up() : pos.down();
+		int age = this.getAge(state);
+		if(age >= 2) {
+			return world.getBlockState(otherHalfPos).isOf(this);
+		}
+		return super.canPlaceAt(state, world, pos);
 	}
 }

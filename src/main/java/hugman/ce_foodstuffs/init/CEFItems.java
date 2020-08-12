@@ -1,7 +1,7 @@
 package hugman.ce_foodstuffs.init;
 
-import hugman.ce_foodstuffs.init.data.CEFFoods;
 import hugman.ce_foodstuffs.CEFoodstuffs;
+import hugman.ce_foodstuffs.init.data.CEFFoods;
 import hugman.ce_foodstuffs.objects.item.MarshmallowOnAStickItem;
 import hugman.ce_foodstuffs.objects.item.SandwichItem;
 import net.minecraft.item.AliasedBlockItem;
@@ -13,7 +13,7 @@ public class CEFItems {
 	public static final Item CHEESE = register("cheese", new Item(new Item.Settings().group(ItemGroup.FOOD).food(CEFFoods.CHEESE)));
 	public static final Item LETTUCE = register("lettuce", new Item(new Item.Settings().group(ItemGroup.FOOD).food(CEFFoods.LETTUCE)));
 	public static final Item LETTUCE_SEEDS = register("lettuce_seeds", new AliasedBlockItem(CEFBlocks.LETTUCE, new Item.Settings().group(ItemGroup.MATERIALS)));
-	public static final Item TOMATO = register("tomato", new Item(new Item.Settings().group(ItemGroup.FOOD).food(CEFFoods.TOMATO)));
+	public static final Item TOMATO = register("tomato", new AliasedBlockItem(CEFBlocks.TOMATOES, new Item.Settings().group(ItemGroup.FOOD).food(CEFFoods.TOMATO)));
 	public static final Item CHOCOLATE = register("chocolate", new Item(new Item.Settings().group(ItemGroup.FOOD).food(CEFFoods.CHOCOLATE)));
 	public static final Item MARSHMALLOW = register("marshmallow", new Item(new Item.Settings().group(ItemGroup.FOOD).food(CEFFoods.UNCOOKED_MARSHMALLOW)));
 	public static final Item APPLE_PIE = register("apple_pie", new Item(new Item.Settings().group(ItemGroup.FOOD).food(CEFFoods.APPLE_PIE)));

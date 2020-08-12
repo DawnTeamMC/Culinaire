@@ -17,6 +17,9 @@
 	"entrypoints": {
 		"main": [
 			"hugman.ce_foodstuffs.CEFoodstuffs"
+		],
+		"client": [
+			"hugman.ce_foodstuffs.CEFoodstuffsClient"
 		]
 	},
 	"mixins": [
