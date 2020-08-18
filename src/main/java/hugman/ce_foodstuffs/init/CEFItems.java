@@ -18,7 +18,7 @@ public class CEFItems {
 	public static final Item MARSHMALLOW = register("marshmallow", new Item(new Item.Settings().group(ItemGroup.FOOD).food(CEFFoods.UNCOOKED_MARSHMALLOW)));
 	public static final Item APPLE_PIE = register("apple_pie", new Item(new Item.Settings().group(ItemGroup.FOOD).food(CEFFoods.APPLE_PIE)));
 	public static final Item SWEET_BERRY_PIE = register("sweet_berry_pie", new Item(new Item.Settings().group(ItemGroup.FOOD).food(CEFFoods.SWEET_BERRY_PIE)));
-	public static final Item SALAD = register("salad", new Item(new Item.Settings().group(ItemGroup.FOOD).maxCount(1).food(CEFFoods.SALAD_BASE)));
+	public static final Item SALAD = register("salad", new Item(new Item.Settings().group(ItemGroup.FOOD).maxCount(1).food(CEFFoods.SALAD)));
 	public static final Item MASHED_POTATOES = register("mashed_potatoes", new Item(new Item.Settings().group(ItemGroup.FOOD).food(CEFFoods.MASHED_POTATOES).maxCount(1)));
 	public static final Item SANDWICH = register("sandwich", new SandwichItem(new Item.Settings().group(ItemGroup.FOOD).food(CEFFoods.SANDWICH_BASE).maxCount(1)));
 	public static final Item UNCOOKED_MARSHMALLOW_ON_A_STICK = register("uncooked_marshmallow_on_a_stick", new MarshmallowOnAStickItem(new Item.Settings().group(ItemGroup.FOOD).food(CEFFoods.UNCOOKED_MARSHMALLOW).maxCount(1)));
