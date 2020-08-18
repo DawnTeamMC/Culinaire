@@ -161,7 +161,7 @@ public class SandwichItem extends Item {
 	@Override
 	public boolean hasGlint(ItemStack sandwich) {
 		List<Pair<Item, Integer>> ingredientList = getIngredients(sandwich);
-		if(ingredientList != null) {
+		if(!ingredientList.isEmpty()) {
 			for(Pair<Item, Integer> ingredientEntry : ingredientList) {
 				Item ingredient = ingredientEntry.getFirst();
 				if(ingredient.hasGlint(new ItemStack(ingredient))) {
