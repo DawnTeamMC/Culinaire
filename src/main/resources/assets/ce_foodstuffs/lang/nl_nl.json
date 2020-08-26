@@ -1,0 +1,21 @@
+{
+	"block.ce_foodstuffs.milk_cauldron": "Melk ketel",
+	"block.ce_foodstuffs.lettuce": "Sla",
+	"block.ce_foodstuffs.tomatoes": "Tomaten",
+
+	"item.ce_foodstuffs.cheese": "Kaas",
+	"item.ce_foodstuffs.lettuce": "Sla",
+	"item.ce_foodstuffs.lettuce_seeds": "Sla zaden",
+	"item.ce_foodstuffs.tomato": "Tomaat",
+	"item.ce_foodstuffs.chocolate": "Chocolade",
+	"item.ce_foodstuffs.marshmallow": "Marshmallow",
+	"item.ce_foodstuffs.apple_pie": "Appeltaart",
+	"item.ce_foodstuffs.sweet_berry_pie": "Zoetebessentaart",
+	"item.ce_foodstuffs.salad": "Salade",
+	"item.ce_foodstuffs.mashed_potatoes": "Aardappelpuree",
+	"item.ce_foodstuffs.sandwich": "Sandwich",
+	"item.ce_foodstuffs.uncooked_marshmallow_on_a_stick": "Ongekookte marshmallow aan een stok",
+	"item.ce_foodstuffs.toasty_marshmallow_on_a_stick": "Toasty marshmallow aan een stok",
+	"item.ce_foodstuffs.golden_marshmallow_on_a_stick": "Gouden marshmallow aan een stok",
+	"item.ce_foodstuffs.burnt_marshmallow_on_a_stick": "Verbrande marshmallow aan een stok"
+}
