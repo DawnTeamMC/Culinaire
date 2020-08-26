@@ -25,8 +25,7 @@
 	},
 	"requirements": [
 		[
-			"has_cocoa_beans",
-			"has_the_recipe"
+			"has_cocoa_beans", "has_the_recipe"
 		]
 	]
 }

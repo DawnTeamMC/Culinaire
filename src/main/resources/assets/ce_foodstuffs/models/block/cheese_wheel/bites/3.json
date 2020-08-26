@@ -1,0 +1,40 @@
+{
+	"textures": {
+		"particle": "ce_foodstuffs:block/cheese_wheel/side",
+		"bottom": "ce_foodstuffs:block/cheese_wheel/bottom",
+		"top": "ce_foodstuffs:block/cheese_wheel/top",
+		"side": "ce_foodstuffs:block/cheese_wheel/side",
+		"inside": "ce_foodstuffs:block/cheese_wheel/inside"
+	},
+	"elements": [
+		{
+			"from": [
+				8, 0, 2
+			],
+			"to": [
+				14, 8, 14
+			],
+			"faces": {
+				"down": {
+					"texture": "#bottom",
+					"cullface": "down"
+				},
+				"up": {
+					"texture": "#top"
+				},
+				"north": {
+					"texture": "#side"
+				},
+				"south": {
+					"texture": "#side"
+				},
+				"west": {
+					"texture": "#inside"
+				},
+				"east": {
+					"texture": "#side"
+				}
+			}
+		}
+	]
+}

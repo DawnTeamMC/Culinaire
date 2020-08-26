@@ -117,7 +117,8 @@ public class SandwichItem extends Item {
 	private static float getProvidedSaturation(ItemStack sandwich) {
 		float saturation = sandwich.getItem().getFoodComponent().getSaturationModifier();
 		for(Pair<Integer, Integer> indexes : getComplements(sandwich)) {
-			saturation = +(float) ((Math.ceil(getIngredient(sandwich, indexes.getFirst()).getFoodComponent().getSaturationModifier() / 3) + Math.ceil(getIngredient(sandwich, indexes.getSecond()).getFoodComponent().getSaturationModifier() / 3)) * 2);
+			saturation = +(float) ((Math.ceil(getIngredient(sandwich, indexes.getFirst()).getFoodComponent().getSaturationModifier() / 3) + Math.ceil(getIngredient(sandwich, indexes.getSecond()).getFoodComponent()
+																																																  .getSaturationModifier() / 3)) * 2);
 		}
 		for(Integer index : getNormalIngredients(sandwich)) {
 			saturation = +(float) Math.ceil(getIngredient(sandwich, index).getFoodComponent().getSaturationModifier() / 3);

@@ -94,7 +94,7 @@ public class MarshmallowOnAStickItem extends Item {
 	@Override
 	public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
 		if(!world.isClient() && selected && entity instanceof LivingEntity && entity.isSneaking()) {
-			HitResult hitResult = entity.rayTrace(1.5D, 0.0F, true);
+			HitResult hitResult = entity.raycast(1.5D, 0.0F, true);
 			if(hitResult.getType() == HitResult.Type.BLOCK) {
 				BlockHitResult blockHitResult = (BlockHitResult) hitResult;
 				BlockState state = world.getBlockState(blockHitResult.getBlockPos());

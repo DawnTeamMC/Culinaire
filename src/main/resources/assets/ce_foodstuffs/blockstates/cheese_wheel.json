@@ -1,0 +1,22 @@
+{
+	"variants": {
+		"bites=0": {
+			"model": "ce_foodstuffs:block/cheese_wheel/bites/0"
+		},
+		"bites=1": {
+			"model": "ce_foodstuffs:block/cheese_wheel/bites/1"
+		},
+		"bites=2": {
+			"model": "ce_foodstuffs:block/cheese_wheel/bites/2"
+		},
+		"bites=3": {
+			"model": "ce_foodstuffs:block/cheese_wheel/bites/3"
+		},
+		"bites=4": {
+			"model": "ce_foodstuffs:block/cheese_wheel/bites/4"
+		},
+		"bites=5": {
+			"model": "ce_foodstuffs:block/cheese_wheel/bites/5"
+		}
+	}
+}

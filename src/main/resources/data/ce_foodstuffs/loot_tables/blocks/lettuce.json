@@ -19,16 +19,14 @@
 								}
 							],
 							"name": "ce_foodstuffs:lettuce"
-						},
-						{
+						}, {
 							"type": "minecraft:item",
 							"name": "ce_foodstuffs:lettuce_seeds"
 						}
 					]
 				}
 			]
-		},
-		{
+		}, {
 			"rolls": 1.0,
 			"entries": [
 				{

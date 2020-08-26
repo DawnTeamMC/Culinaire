@@ -3,11 +3,9 @@
 	"ingredients": [
 		{
 			"item": "minecraft:milk_bucket"
-		},
-		{
+		}, {
 			"item": "minecraft:cocoa_beans"
-		},
-		{
+		}, {
 			"item": "minecraft:sugar"
 		}
 	],

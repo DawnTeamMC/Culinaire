@@ -2,16 +2,16 @@
 	"parent": "minecraft:recipes/root",
 	"rewards": {
 		"recipes": [
-			"ce_foodstuffs:crafting/sandwich"
+			"ce_foodstuffs:crafting/cheese_wheel"
 		]
 	},
 	"criteria": {
-		"has_bread": {
+		"has_cheese": {
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
 					{
-						"tag": "ce_foodstuffs:sandwich/bread"
+						"item": "ce_foodstuffs:cheese"
 					}
 				]
 			}
@@ -19,13 +19,13 @@
 		"has_the_recipe": {
 			"trigger": "minecraft:recipe_unlocked",
 			"conditions": {
-				"recipe": "ce_foodstuffs:crafting/sandwich"
+				"recipe": "ce_foodstuffs:crafting/cheese_wheel"
 			}
 		}
 	},
 	"requirements": [
 		[
-			"has_bread", "has_the_recipe"
+			"has_cheese", "has_the_recipe"
 		]
 	]
 }

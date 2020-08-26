@@ -25,8 +25,7 @@
 	},
 	"requirements": [
 		[
-			"has_sweet_berries",
-			"has_the_recipe"
+			"has_sweet_berries", "has_the_recipe"
 		]
 	]
 }

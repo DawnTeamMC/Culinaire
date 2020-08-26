@@ -23,7 +23,7 @@ public class PlayerRendererMixin {
 		ItemStack itemStack = abstractClientPlayerEntity.getStackInHand(hand);
 		if(!itemStack.isEmpty() && abstractClientPlayerEntity.isSneaking()) {
 			if(!abstractClientPlayerEntity.handSwinging && itemStack.getItem() instanceof MarshmallowOnAStickItem) {
-				HitResult hitResult = abstractClientPlayerEntity.rayTrace(1.5D, 0.0F, true);
+				HitResult hitResult = abstractClientPlayerEntity.raycast(1.5D, 0.0F, true);
 				if(hitResult.getType() == HitResult.Type.BLOCK) {
 					BlockHitResult blockHitResult = (BlockHitResult) hitResult;
 					BlockState state = abstractClientPlayerEntity.getEntityWorld().getBlockState(blockHitResult.getBlockPos());
