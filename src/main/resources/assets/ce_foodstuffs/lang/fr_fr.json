@@ -1,0 +1,22 @@
+{
+	"block.ce_foodstuffs.milk_cauldron": "Chaudron de lait",
+	"block.ce_foodstuffs.lettuce": "Laitue",
+	"block.ce_foodstuffs.tomatoes": "Tomates",
+	"block.ce_foodstuffs.cheese_wheel": "Meule de fromage",
+
+	"item.ce_foodstuffs.cheese": "Fromage",
+	"item.ce_foodstuffs.lettuce": "Laitue",
+	"item.ce_foodstuffs.lettuce_seeds": "Graines de laitue",
+	"item.ce_foodstuffs.tomato": "Tomate",
+	"item.ce_foodstuffs.chocolate": "Chocolat",
+	"item.ce_foodstuffs.marshmallow": "Guimauve",
+	"item.ce_foodstuffs.apple_pie": "Tarte aux pommes",
+	"item.ce_foodstuffs.sweet_berry_pie": "Tartes aux baies sucrées",
+	"item.ce_foodstuffs.salad": "Salade",
+	"item.ce_foodstuffs.mashed_potatoes": "Purée de pomme de terre",
+	"item.ce_foodstuffs.sandwich": "Sandwich",
+	"item.ce_foodstuffs.uncooked_marshmallow_on_a_stick": "Guimauve non cuite sur un bâton",
+	"item.ce_foodstuffs.toasty_marshmallow_on_a_stick": "Guimauve grillée sur un bâton",
+	"item.ce_foodstuffs.golden_marshmallow_on_a_stick": "Guimauve dorée sur un bâton",
+	"item.ce_foodstuffs.burnt_marshmallow_on_a_stick": "Guimauve brûlée sur un bâton"
+}
