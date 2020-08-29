@@ -11,16 +11,19 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -29,11 +32,12 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 public class MilkCauldronBlock extends BlockWithEntity {
+	public static final IntProperty LEVEL = CEFProperties.LEVEL_1_3;
 	public static final BooleanProperty COAGULATED = CEFProperties.COAGULATED;
 
 	public MilkCauldronBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(this.stateManager.getDefaultState().with(COAGULATED, false));
+		this.setDefaultState(this.stateManager.getDefaultState().with(COAGULATED, false).with(LEVEL, 3));
 	}
 
 	@Nullable
@@ -45,6 +49,7 @@ public class MilkCauldronBlock extends BlockWithEntity {
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		boolean isReady = state.get(COAGULATED);
+		int i = state.get(LEVEL);
 		ItemStack itemStack = player.getStackInHand(hand);
 		if(isReady) {
 			if(!world.isClient) {
@@ -52,7 +57,7 @@ public class MilkCauldronBlock extends BlockWithEntity {
 				double d = (world.random.nextFloat() * f) + 0.15D;
 				double e = (world.random.nextFloat() * f) + 0.66D;
 				double g = (world.random.nextFloat() * f) + 0.15D;
-				ItemEntity itemEntity = new ItemEntity(world, (double) pos.getX() + d, (double) pos.getY() + e, (double) pos.getZ() + g, new ItemStack(CEFItems.CHEESE));
+				ItemEntity itemEntity = new ItemEntity(world, (double) pos.getX() + d, (double) pos.getY() + e, (double) pos.getZ() + g, new ItemStack(CEFItems.CHEESE, i));
 				itemEntity.setToDefaultPickupDelay();
 				world.spawnEntity(itemEntity);
 				player.incrementStat(Stats.USE_CAULDRON);
@@ -66,7 +71,48 @@ public class MilkCauldronBlock extends BlockWithEntity {
 			}
 			else {
 				Item item = itemStack.getItem();
-				if(item == Items.BUCKET) {
+				if(item == Items.GLASS_BOTTLE) {
+					if(i > 0 && !world.isClient) {
+						if(!player.abilities.creativeMode) {
+							ItemStack stack = new ItemStack(CEFItems.MILK_BOTTLE);
+							player.incrementStat(Stats.USE_CAULDRON);
+							itemStack.decrement(1);
+							if(itemStack.isEmpty()) {
+								player.setStackInHand(hand, stack);
+							}
+							else if(!player.inventory.insertStack(stack)) {
+								player.dropItem(stack, false);
+							}
+							else if(player instanceof ServerPlayerEntity) {
+								((ServerPlayerEntity) player).openHandledScreen(player.playerScreenHandler);
+							}
+						}
+						world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+						if(i == 1) {
+							world.setBlockState(pos, Blocks.CAULDRON.getDefaultState().with(CauldronBlock.LEVEL, 0), 2);
+						}
+						else {
+							this.setLevel(world, pos, state, i - 1);
+						}
+					}
+					return ActionResult.success(world.isClient);
+				}
+				else if(item == CEFItems.MILK_BOTTLE) {
+					if(i < 3 && !world.isClient) {
+						if(!player.abilities.creativeMode) {
+							ItemStack stack = new ItemStack(Items.GLASS_BOTTLE);
+							player.incrementStat(Stats.USE_CAULDRON);
+							player.setStackInHand(hand, stack);
+							if(player instanceof ServerPlayerEntity) {
+								((ServerPlayerEntity) player).openHandledScreen(player.playerScreenHandler);
+							}
+						}
+						world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+						this.setLevel(world, pos, state, i + 1);
+					}
+					return ActionResult.success(world.isClient);
+				}
+				else if(item == Items.BUCKET) {
 					if(!world.isClient) {
 						if(!player.abilities.creativeMode) {
 							itemStack.decrement(1);
@@ -78,7 +124,7 @@ public class MilkCauldronBlock extends BlockWithEntity {
 							}
 						}
 						player.incrementStat(Stats.USE_CAULDRON);
-						world.setBlockState(pos, Blocks.CAULDRON.getDefaultState(), 2);
+						world.setBlockState(pos, Blocks.CAULDRON.getDefaultState().with(CauldronBlock.LEVEL, 0), 2);
 						world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
 					}
 					return ActionResult.success(world.isClient);
@@ -88,6 +134,11 @@ public class MilkCauldronBlock extends BlockWithEntity {
 				}
 			}
 		}
+	}
+
+	public void setLevel(World world, BlockPos pos, BlockState state, int level) {
+		world.setBlockState(pos, state.with(LEVEL, MathHelper.clamp(level, 1, 3)), 2);
+		world.updateComparators(pos, this);
 	}
 
 	@Override
@@ -102,7 +153,7 @@ public class MilkCauldronBlock extends BlockWithEntity {
 
 	@Override
 	public VoxelShape getRaycastShape(BlockState state, BlockView world, BlockPos pos) {
-		return createCuboidShape(2.0D, state.get(COAGULATED) ? 15.0D : 4.0D, 2.0D, 14.0D, 16.0D, 14.0D);
+		return createCuboidShape(2.0D, state.get(COAGULATED) ? 6.0D + (state.get(LEVEL) * 3) : 4.0D, 2.0D, 14.0D, 16.0D, 14.0D);
 	}
 
 	@Override
@@ -112,7 +163,15 @@ public class MilkCauldronBlock extends BlockWithEntity {
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(COAGULATED);
+		builder.add(COAGULATED, LEVEL);
+	}
+
+	public boolean hasComparatorOutput(BlockState state) {
+		return true;
+	}
+
+	public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
+		return state.get(LEVEL);
 	}
 
 	@Override

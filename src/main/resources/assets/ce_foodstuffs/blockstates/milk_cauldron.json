@@ -1,10 +1,22 @@
 {
 	"variants": {
-		"coagulated=false": {
-			"model": "ce_foodstuffs:block/milk_cauldron/coagulated/false"
+		"coagulated=false,level=1": {
+			"model": "ce_foodstuffs:block/milk_cauldron/coagulated/false/level/1"
 		},
-		"coagulated=true": {
-			"model": "ce_foodstuffs:block/milk_cauldron/coagulated/true"
+		"coagulated=false,level=2": {
+			"model": "ce_foodstuffs:block/milk_cauldron/coagulated/false/level/2"
+		},
+		"coagulated=false,level=3": {
+			"model": "ce_foodstuffs:block/milk_cauldron/coagulated/false/level/3"
+		},
+		"coagulated=true,level=1": {
+			"model": "ce_foodstuffs:block/milk_cauldron/coagulated/true/level/1"
+		},
+		"coagulated=true,level=2": {
+			"model": "ce_foodstuffs:block/milk_cauldron/coagulated/true/level/2"
+		},
+		"coagulated=true,level=3": {
+			"model": "ce_foodstuffs:block/milk_cauldron/coagulated/true/level/3"
 		}
 	}
 }
