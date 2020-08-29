@@ -1,8 +1,9 @@
 {
-	"block.ce_foodstuffs.milk_cauldron": "Chaudron de lait",
 	"block.ce_foodstuffs.lettuce": "Laitue",
 	"block.ce_foodstuffs.tomatoes": "Tomates",
 	"block.ce_foodstuffs.cheese_wheel": "Meule de fromage",
+	"block.ce_foodstuffs.milk_cauldron": "Chaudron de lait",
+	"block.ce_foodstuffs.kettle": "Bouilloire",
 
 	"item.ce_foodstuffs.cheese": "Fromage",
 	"item.ce_foodstuffs.lettuce": "Laitue",

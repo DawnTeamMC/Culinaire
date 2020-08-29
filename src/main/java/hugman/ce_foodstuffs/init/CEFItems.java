@@ -27,6 +27,7 @@ public class CEFItems {
 	public static final Item TOASTY_MARSHMALLOW_ON_A_STICK = register("toasty_marshmallow_on_a_stick", new MarshmallowOnAStickItem(new Item.Settings().group(ItemGroup.FOOD).food(CEFFoods.TOASTY_MARSHMALLOW).maxCount(1)));
 	public static final Item GOLDEN_MARSHMALLOW_ON_A_STICK = register("golden_marshmallow_on_a_stick", new MarshmallowOnAStickItem(new Item.Settings().group(ItemGroup.FOOD).food(CEFFoods.GOLDEN_MARSHMALLOW).maxCount(1)));
 	public static final Item BURNT_MARSHMALLOW_ON_A_STICK = register("burnt_marshmallow_on_a_stick", new MarshmallowOnAStickItem(new Item.Settings().group(ItemGroup.FOOD).food(CEFFoods.BURNT_MARSHMALLOW).maxCount(1)));
+	public static final Item KETTLE = register("kettle", new BlockItem(CEFBlocks.KETTLE, new Item.Settings().group(ItemGroup.DECORATIONS)));
 
 	private static Item register(String name, Item item) {
 		return Registry.register(Registry.ITEM, CEFoodstuffs.id(name), item);

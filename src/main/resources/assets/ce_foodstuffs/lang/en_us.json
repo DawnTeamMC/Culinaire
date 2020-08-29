@@ -1,8 +1,9 @@
 {
-	"block.ce_foodstuffs.milk_cauldron": "Milk Cauldron",
 	"block.ce_foodstuffs.lettuce": "Lettuce",
 	"block.ce_foodstuffs.tomatoes": "Tomatoes",
 	"block.ce_foodstuffs.cheese_wheel": "Cheese Wheel",
+	"block.ce_foodstuffs.milk_cauldron": "Milk Cauldron",
+	"block.ce_foodstuffs.kettle": "Kettle",
 
 	"item.ce_foodstuffs.cheese": "Cheese",
 	"item.ce_foodstuffs.lettuce": "Lettuce",
