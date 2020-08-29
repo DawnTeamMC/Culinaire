@@ -113,7 +113,7 @@ public class MilkCauldronBlock extends BlockWithEntity {
 					return ActionResult.success(world.isClient);
 				}
 				else if(item == Items.BUCKET) {
-					if(!world.isClient) {
+					if(i == 3 && !world.isClient) {
 						if(!player.abilities.creativeMode) {
 							itemStack.decrement(1);
 							if(itemStack.isEmpty()) {
