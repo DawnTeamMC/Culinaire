@@ -3,7 +3,7 @@
 	"block.ce_foodstuffs.tomatoes": "Tomaten",
 	"block.ce_foodstuffs.cheese_wheel": "Kaaswiel",
 	"block.ce_foodstuffs.milk_cauldron": "Melk ketel",
-	"//block.ce_foodstuffs.kettle": "Kettle",
+	"block.ce_foodstuffs.kettle": "Ketel",
 
 	"item.ce_foodstuffs.cheese": "Kaas",
 	"item.ce_foodstuffs.lettuce": "Sla",
@@ -20,5 +20,5 @@
 	"item.ce_foodstuffs.toasty_marshmallow_on_a_stick": "Toasty marshmallow aan een stok",
 	"item.ce_foodstuffs.golden_marshmallow_on_a_stick": "Gouden marshmallow aan een stok",
 	"item.ce_foodstuffs.burnt_marshmallow_on_a_stick": "Verbrande marshmallow aan een stok",
-	"//item.ce_foodstuffs.milk_bottle": "Milk Bottle"
+	"item.ce_foodstuffs.milk_bottle": "Melk beker"
 }
