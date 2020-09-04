@@ -1,6 +1,7 @@
 package hugman.ce_foodstuffs.objects.recipe;
 
 import hugman.ce_foodstuffs.init.CEFItems;
+import hugman.ce_foodstuffs.init.data.CEFRecipeSerializers;
 import hugman.ce_foodstuffs.init.data.CEFTags;
 import hugman.ce_foodstuffs.objects.item.SandwichItem;
 import net.fabricmc.api.EnvType;
@@ -73,6 +74,6 @@ public class SandwichRecipe extends SpecialCraftingRecipe {
 	}
 
 	public RecipeSerializer<?> getSerializer() {
-		return RecipeSerializer.FIREWORK_ROCKET;
+		return CEFRecipeSerializers.SANDWICH_MAKING;
 	}
 }
