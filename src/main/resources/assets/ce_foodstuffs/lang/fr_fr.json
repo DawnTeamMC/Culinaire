@@ -20,5 +20,6 @@
 	"item.ce_foodstuffs.toasty_marshmallow_on_a_stick": "Guimauve grillée sur un bâton",
 	"item.ce_foodstuffs.golden_marshmallow_on_a_stick": "Guimauve dorée sur un bâton",
 	"item.ce_foodstuffs.burnt_marshmallow_on_a_stick": "Guimauve brûlée sur un bâton",
-	"item.ce_foodstuffs.milk_bottle": "Fiole de lait"
+	"item.ce_foodstuffs.milk_bottle": "Fiole de lait",
+	"//item.ce_foodstuffs.teabag" : "Tea Bag"
 }
