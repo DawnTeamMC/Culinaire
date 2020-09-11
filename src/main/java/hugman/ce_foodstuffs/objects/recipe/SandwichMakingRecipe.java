@@ -1,6 +1,7 @@
 package hugman.ce_foodstuffs.objects.recipe;
 
 import hugman.ce_foodstuffs.init.CEFItems;
+import hugman.ce_foodstuffs.init.data.CEFRecipeSerializers;
 import hugman.ce_foodstuffs.init.data.CEFTags;
 import hugman.ce_foodstuffs.objects.item.SandwichItem;
 import net.fabricmc.api.EnvType;
@@ -13,11 +14,11 @@ import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-public class SandwichRecipe extends SpecialCraftingRecipe {
+public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 	private static final Ingredient BREAD = Ingredient.fromTag(CEFTags.Items.SANDWICH_BREAD);
 	private static final Ingredient BLACKLIST = Ingredient.fromTag(CEFTags.Items.SANDWICH_BLACKLIST);
 
-	public SandwichRecipe(Identifier identifier) {
+	public SandwichMakingRecipe(Identifier identifier) {
 		super(identifier);
 	}
 
@@ -73,6 +74,6 @@ public class SandwichRecipe extends SpecialCraftingRecipe {
 	}
 
 	public RecipeSerializer<?> getSerializer() {
-		return RecipeSerializer.FIREWORK_ROCKET;
+		return CEFRecipeSerializers.SANDWICH_MAKING;
 	}
 }
