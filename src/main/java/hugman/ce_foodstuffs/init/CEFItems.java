@@ -28,7 +28,7 @@ public class CEFItems {
 	public static final Item BURNT_MARSHMALLOW_ON_A_STICK = register("burnt_marshmallow_on_a_stick", new MarshmallowOnAStickItem(new Item.Settings().group(ItemGroup.FOOD).food(CEFFoods.BURNT_MARSHMALLOW).maxCount(1).recipeRemainder(Items.STICK)));
 	public static final Item MILK_BOTTLE = register("milk_bottle", new MilkBottleItem(new Item.Settings().group(ItemGroup.FOOD).maxCount(1).recipeRemainder(Items.GLASS_BOTTLE)));
 	public static final Item KETTLE = register("kettle", new BlockItem(CEFBlocks.KETTLE, new Item.Settings().group(ItemGroup.DECORATIONS)));
-	public static final Item TEA_BAG = register("teabag",new TeaBagItem(new Item.Settings().group(ItemGroup.FOOD).maxCount(16).recipeRemainder(Items.PAPER)));
+	public static final Item TEA_BAG = register("tea_bag", new TeaBagItem(new Item.Settings().group(ItemGroup.FOOD).maxCount(16).recipeRemainder(Items.PAPER)));
 
 	private static Item register(String name, Item item) {
 		return Registry.register(Registry.ITEM, CEFoodstuffs.id(name), item);

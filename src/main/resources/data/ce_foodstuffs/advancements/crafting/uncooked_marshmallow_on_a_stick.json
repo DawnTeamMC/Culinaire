@@ -25,7 +25,8 @@
 	},
 	"requirements": [
 		[
-			"has_marshmallow", "has_the_recipe"
+			"has_marshmallow",
+			"has_the_recipe"
 		]
 	]
 }

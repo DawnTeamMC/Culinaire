@@ -26,25 +26,25 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 		return new ItemStack(CEFItems.SANDWICH);
 	}
 
-	public boolean matches(CraftingInventory craftingInventory, World world) {
+	public boolean matches(CraftingInventory inv, World world) {
 		boolean hasBread = false;
 		boolean hasAnIngredient = false;
 		int[] emptySlots = new int[]{0, 2, 6, 8};
 		for(int i = 0; i < emptySlots.length; i++) {
-			ItemStack itemStack = craftingInventory.getStack(emptySlots[i]);
+			ItemStack itemStack = inv.getStack(emptySlots[i]);
 			if(!itemStack.isEmpty()) {
 				return false;
 			}
 		}
-		ItemStack topMiddleStack = craftingInventory.getStack(1);
-		ItemStack bottomMiddleStack = craftingInventory.getStack(7);
+		ItemStack topMiddleStack = inv.getStack(1);
+		ItemStack bottomMiddleStack = inv.getStack(7);
 		if(!topMiddleStack.isEmpty() && !bottomMiddleStack.isEmpty()) {
 			if(BREAD.test(topMiddleStack) && BREAD.test(bottomMiddleStack)) {
 				hasBread = true;
 			}
 		}
 		for(int i = 3; i < 6; ++i) {
-			ItemStack itemStack = craftingInventory.getStack(i);
+			ItemStack itemStack = inv.getStack(i);
 			if(!itemStack.isEmpty()) {
 				if(itemStack.isFood() && !BLACKLIST.test(itemStack)) {
 					hasAnIngredient = true;

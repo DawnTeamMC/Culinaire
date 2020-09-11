@@ -3,11 +3,14 @@
 	"ingredients": [
 		{
 			"item": "ce_foodstuffs:lettuce"
-		}, {
+		},
+		{
 			"item": "ce_foodstuffs:tomato"
-		}, {
+		},
+		{
 			"item": "ce_foodstuffs:cheese"
-		}, {
+		},
+		{
 			"item": "minecraft:bowl"
 		}
 	],

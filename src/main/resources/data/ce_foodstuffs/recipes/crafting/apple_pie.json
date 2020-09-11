@@ -3,11 +3,14 @@
 	"ingredients": [
 		{
 			"item": "minecraft:apple"
-		}, {
+		},
+		{
 			"item": "minecraft:apple"
-		}, {
+		},
+		{
 			"item": "minecraft:sugar"
-		}, {
+		},
+		{
 			"item": "minecraft:egg"
 		}
 	],

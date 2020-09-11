@@ -1,6 +1,7 @@
 {
 	"replace": false,
 	"values": [
-		"ce_foodstuffs:lettuce", "ce_foodstuffs:tomatoes"
+		"ce_foodstuffs:lettuce",
+		"ce_foodstuffs:tomatoes"
 	]
 }

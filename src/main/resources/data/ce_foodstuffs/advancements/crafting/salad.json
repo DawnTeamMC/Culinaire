@@ -25,7 +25,8 @@
 	},
 	"requirements": [
 		[
-			"has_lettuce", "has_the_recipe"
+			"has_lettuce",
+			"has_the_recipe"
 		]
 	]
 }

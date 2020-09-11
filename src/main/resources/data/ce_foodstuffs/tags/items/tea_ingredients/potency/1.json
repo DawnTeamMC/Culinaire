@@ -1,0 +1,15 @@
+{
+	"replace": false,
+	"values": [
+		"minecraft:beetroot_seeds",
+		"minecraft:sugar",
+		"minecraft:bamboo",
+		"minecraft:cactus",
+		"minecraft:carrot",
+		"minecraft:crimson_fungus",
+		"minecraft:nether_sprouts",
+		"minecraft:warped_fungus",
+		"minecraft:red_mushroom",
+		"minecraft:brown_mushroom"
+	]
+}

@@ -3,7 +3,8 @@
 	"ingredients": [
 		{
 			"item": "minecraft:baked_potato"
-		}, {
+		},
+		{
 			"item": "minecraft:bowl"
 		}
 	],

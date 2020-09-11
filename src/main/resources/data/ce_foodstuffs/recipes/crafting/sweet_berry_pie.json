@@ -3,13 +3,17 @@
 	"ingredients": [
 		{
 			"item": "minecraft:sweet_berries"
-		}, {
+		},
+		{
 			"item": "minecraft:sweet_berries"
-		}, {
+		},
+		{
 			"item": "minecraft:sweet_berries"
-		}, {
+		},
+		{
 			"item": "minecraft:sugar"
-		}, {
+		},
+		{
 			"item": "minecraft:egg"
 		}
 	],
