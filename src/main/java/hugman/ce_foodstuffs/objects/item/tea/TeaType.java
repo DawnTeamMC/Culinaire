@@ -34,10 +34,6 @@ public class TeaType {
 		return teaTypes;
 	}
 
-	public boolean isCorrect() {
-		return this.getStrength() != null && this.getFlavor() != null;
-	}
-
 	public static List<TeaType> getAll() {
 		List<TeaType> teaTypes = new ArrayList<>();
 		for(Strength strength : Strength.values()) {
@@ -46,6 +42,10 @@ public class TeaType {
 			}
 		}
 		return teaTypes;
+	}
+
+	public boolean isCorrect() {
+		return this.getStrength() != null && this.getFlavor() != null;
 	}
 
 	public Strength getStrength() {

@@ -29,7 +29,6 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
 		boolean hasPaper = false;
 		boolean hasString = false;
 		int totalPotency = 0;
-		System.out.println("tea bag making?");
 		for(int j = 0; j < inv.size(); ++j) {
 			ItemStack stack = inv.getStack(j);
 			if(!stack.isEmpty()) {
