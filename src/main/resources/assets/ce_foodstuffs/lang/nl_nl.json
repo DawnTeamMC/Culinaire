@@ -21,5 +21,27 @@
 	"item.ce_foodstuffs.golden_marshmallow_on_a_stick": "Gouden marshmallow aan een stok",
 	"item.ce_foodstuffs.burnt_marshmallow_on_a_stick": "Verbrande marshmallow aan een stok",
 	"item.ce_foodstuffs.milk_bottle": "Melk beker",
-	"item.ce_foodstuffs.tea_bag": "Theezak"
+	"item.ce_foodstuffs.tea_bag": "Theezak",
+
+	"//tea_type.ce_foodstuffs.bitter.normal": "Bitter",
+	"//tea_type.ce_foodstuffs.bitter.strong": "Very Bitter",
+	"//tea_type.ce_foodstuffs.bitter.weak": "Slightly Bitter",
+	"//tea_type.ce_foodstuffs.gloopy.normal": "Gloopy",
+	"//tea_type.ce_foodstuffs.gloopy.strong": "Very Gloopy",
+	"//tea_type.ce_foodstuffs.gloopy.weak": "Slightly Gloopy",
+	"//tea_type.ce_foodstuffs.salty.normal": "Salty",
+	"//tea_type.ce_foodstuffs.salty.strong": "Very Salty",
+	"//tea_type.ce_foodstuffs.salty.weak": "Slightly Salty",
+	"//tea_type.ce_foodstuffs.shining.normal": "Shining",
+	"//tea_type.ce_foodstuffs.shining.strong": "Very Shining",
+	"//tea_type.ce_foodstuffs.shining.weak": "Slightly Shining",
+	"//tea_type.ce_foodstuffs.sour.normal": "Sour",
+	"//tea_type.ce_foodstuffs.sour.strong": "Very Sour",
+	"//tea_type.ce_foodstuffs.sour.weak": "Slightly Sour",
+	"//tea_type.ce_foodstuffs.sweet.normal": "Sweet",
+	"//tea_type.ce_foodstuffs.sweet.strong": "Very Sweet",
+	"//tea_type.ce_foodstuffs.sweet.weak": "Slightly Sweet",
+	"//tea_type.ce_foodstuffs.umami.normal": "Umami",
+	"//tea_type.ce_foodstuffs.umami.strong": "Very Umami",
+	"//tea_type.ce_foodstuffs.umami.weak": "Slightly Umami"
 }

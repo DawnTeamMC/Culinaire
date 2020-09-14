@@ -29,6 +29,7 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
 		boolean hasPaper = false;
 		boolean hasString = false;
 		int totalPotency = 0;
+		System.out.println("tea bag making?");
 		for(int j = 0; j < inv.size(); ++j) {
 			ItemStack stack = inv.getStack(j);
 			if(!stack.isEmpty()) {
@@ -38,7 +39,7 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
 					}
 					hasPaper = true;
 				}
-				if(STRING.test(stack)) {
+				else if(STRING.test(stack)) {
 					if(hasString) {
 						return false;
 					}
@@ -64,25 +65,22 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
 	public ItemStack craft(CraftingInventory inv) {
 		ItemStack givenStack = new ItemStack(CEFItems.TEA_BAG);
 		CompoundTag compoundTag = givenStack.getOrCreateTag();
-		ListTag listTag = compoundTag.getList("TeaTypes", 9);
+		ListTag listTag = new ListTag();
 		for(int j = 0; j < inv.size(); ++j) {
 			ItemStack stack = inv.getStack(j);
 			if(!stack.isEmpty()) {
 				List<TeaType> teaTypes = TeaType.getTypes(stack);
-				if(teaTypes.isEmpty()) {
-					continue;
-				}
-				else {
+				if(!teaTypes.isEmpty()) {
 					for(TeaType teaType : teaTypes) {
-						CompoundTag flavorTag = new CompoundTag();
-						flavorTag.putString("Flavor", teaType.getFlavor().getName());
-						flavorTag.putString("Strength", teaType.getStrength().getName());
-						listTag.add(flavorTag);
+						CompoundTag typeTag = new CompoundTag();
+						typeTag.putString("Flavor", teaType.getFlavor().getName());
+						typeTag.putString("Strength", teaType.getStrength().getName());
+						listTag.add(typeTag);
 					}
 				}
 			}
 		}
-		compoundTag.put("Flavors", listTag);
+		compoundTag.put("TeaTypes", listTag);
 		return givenStack;
 	}
 

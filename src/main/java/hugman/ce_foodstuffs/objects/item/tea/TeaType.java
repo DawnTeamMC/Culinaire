@@ -15,6 +15,10 @@ public class TeaType {
 	private final Strength strength;
 	private final Flavor flavor;
 
+	public TeaType(String strength, String flavor) {
+		this(Strength.byName(strength), Flavor.byName(flavor));
+	}
+
 	public TeaType(Strength strength, Flavor flavor) {
 		this.strength = strength;
 		this.flavor = flavor;
@@ -23,9 +27,15 @@ public class TeaType {
 	public static List<TeaType> getTypes(ItemStack stack) {
 		List<TeaType> teaTypes = new ArrayList<>();
 		for(TeaType teaType : getAll()) {
-			Ingredient.fromTag(teaType.getTag()).test(stack);
+			if(Ingredient.fromTag(teaType.getTag()).test(stack)) {
+				teaTypes.add(teaType);
+			}
 		}
 		return teaTypes;
+	}
+
+	public boolean isCorrect() {
+		return this.getStrength() != null && this.getFlavor() != null;
 	}
 
 	public static List<TeaType> getAll() {
@@ -36,10 +46,6 @@ public class TeaType {
 			}
 		}
 		return teaTypes;
-	}
-
-	public static TeaType byName(String strength, String flavor) {
-		return new TeaType(Strength.byName(strength), Flavor.byName(flavor));
 	}
 
 	public Strength getStrength() {
@@ -55,17 +61,15 @@ public class TeaType {
 	}
 
 	public enum Strength {
-		WEAK("weak", "slightly", 1),
-		NORMAL("normal", "", 2),
-		STRONG("strong", "very", 3);
+		WEAK("weak", 1),
+		NORMAL("normal", 2),
+		STRONG("strong", 3);
 
 		private final String name;
-		private final String prefix;
 		private final int potency;
 
-		Strength(String name, String prefix, int potency) {
+		Strength(String name, int potency) {
 			this.name = name;
-			this.prefix = prefix;
 			this.potency = potency;
 		}
 
@@ -80,15 +84,6 @@ public class TeaType {
 
 		public String getName() {
 			return name;
-		}
-
-		public String getPrefix() {
-			if(!prefix.isEmpty()) {
-				return prefix + "_";
-			}
-			else {
-				return prefix;
-			}
 		}
 
 		public int getPotency() {

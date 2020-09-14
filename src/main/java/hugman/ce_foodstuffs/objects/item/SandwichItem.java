@@ -14,7 +14,6 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -146,16 +145,21 @@ public class SandwichItem extends Item {
 		return super.finishUsing(sandwich, world, user);
 	}
 
-	@Override
-	@Environment(EnvType.CLIENT)
-	public void appendTooltip(ItemStack sandwich, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-		for(Pair<Integer, Integer> indexes : getComplements(sandwich)) {
-			tooltip.add((new LiteralText("- ")).append(new TranslatableText(getIngredient(sandwich, indexes.getFirst()).getTranslationKey())).formatted(Formatting.GREEN));
-			tooltip.add((new LiteralText("- ")).append(new TranslatableText(getIngredient(sandwich, indexes.getSecond()).getTranslationKey())).formatted(Formatting.GREEN));
-		}
-		for(Integer index : getNormalIngredients(sandwich)) {
-			tooltip.add((new LiteralText("- ")).append(new TranslatableText(getIngredient(sandwich, index).getTranslationKey())).formatted(Formatting.GRAY));
-		}
+	private static List<Pair<Item, Item>> getComplementsList() {
+		List<Pair<Item, Item>> list = new ArrayList<>();
+		list.add(Pair.of(Items.APPLE, CEFItems.CHOCOLATE));
+		list.add(Pair.of(Items.CHICKEN, Items.HONEY_BOTTLE));
+		list.add(Pair.of(Items.COOKED_BEEF, CEFItems.CHEESE));
+		list.add(Pair.of(Items.ENCHANTED_GOLDEN_APPLE, Items.BEETROOT));
+		list.add(Pair.of(Items.GOLDEN_APPLE, Items.DRIED_KELP));
+		list.add(Pair.of(CEFItems.MARSHMALLOW, CEFItems.CHOCOLATE));
+		list.add(Pair.of(CEFItems.MARSHMALLOW, Items.HONEY_BOTTLE));
+		list.add(Pair.of(Items.RABBIT, Items.BEETROOT));
+		list.add(Pair.of(Items.SPIDER_EYE, CEFItems.CHOCOLATE));
+		list.add(Pair.of(CEFItems.TOMATO, CEFItems.CHEESE));
+		list.add(Pair.of(CEFItems.TOMATO, CEFItems.LETTUCE));
+		list.add(Pair.of(CEFItems.TOMATO, Items.COOKED_CHICKEN));
+		return list;
 	}
 
 	@Override
@@ -172,19 +176,15 @@ public class SandwichItem extends Item {
 		return false;
 	}
 
-	private static List<Pair<Item, Item>> getComplementsList() {
-		List<Pair<Item, Item>> list = new ArrayList<>();
-		list.add(Pair.of(Items.APPLE, CEFItems.CHOCOLATE));
-		list.add(Pair.of(Items.CHICKEN, Items.HONEY_BOTTLE));
-		list.add(Pair.of(Items.COOKED_BEEF, CEFItems.CHEESE));
-		list.add(Pair.of(Items.ENCHANTED_GOLDEN_APPLE, Items.BEETROOT));
-		list.add(Pair.of(Items.GOLDEN_APPLE, Items.DRIED_KELP));
-		list.add(Pair.of(CEFItems.MARSHMALLOW, CEFItems.CHOCOLATE));
-		list.add(Pair.of(CEFItems.MARSHMALLOW, Items.HONEY_BOTTLE));
-		list.add(Pair.of(Items.RABBIT, Items.BEETROOT));
-		list.add(Pair.of(Items.SPIDER_EYE, CEFItems.CHOCOLATE));
-		list.add(Pair.of(CEFItems.TOMATO, CEFItems.CHEESE));
-		list.add(Pair.of(CEFItems.TOMATO, CEFItems.LETTUCE));
-		return list;
+	@Override
+	@Environment(EnvType.CLIENT)
+	public void appendTooltip(ItemStack sandwich, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+		for(Pair<Integer, Integer> indexes : getComplements(sandwich)) {
+			tooltip.add((new LiteralText("- ")).append(getIngredient(sandwich, indexes.getFirst()).getName()).formatted(Formatting.GREEN));
+			tooltip.add((new LiteralText("- ")).append(getIngredient(sandwich, indexes.getSecond()).getName()).formatted(Formatting.GREEN));
+		}
+		for(Integer index : getNormalIngredients(sandwich)) {
+			tooltip.add((new LiteralText("- ")).append(getIngredient(sandwich, index).getName()).formatted(Formatting.GRAY));
+		}
 	}
 }
