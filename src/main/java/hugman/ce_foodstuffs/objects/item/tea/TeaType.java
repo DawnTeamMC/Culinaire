@@ -3,13 +3,8 @@ package hugman.ce_foodstuffs.objects.item.tea;
 import hugman.ce_foodstuffs.CEFoodstuffs;
 import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Ingredient;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TeaType {
 	private final Strength strength;
@@ -24,26 +19,6 @@ public class TeaType {
 		this.flavor = flavor;
 	}
 
-	public static List<TeaType> getTypes(ItemStack stack) {
-		List<TeaType> teaTypes = new ArrayList<>();
-		for(TeaType teaType : getAll()) {
-			if(Ingredient.fromTag(teaType.getTag()).test(stack)) {
-				teaTypes.add(teaType);
-			}
-		}
-		return teaTypes;
-	}
-
-	public static List<TeaType> getAll() {
-		List<TeaType> teaTypes = new ArrayList<>();
-		for(Strength strength : Strength.values()) {
-			for(Flavor flavor : Flavor.values()) {
-				teaTypes.add(new TeaType(strength, flavor));
-			}
-		}
-		return teaTypes;
-	}
-
 	public boolean isCorrect() {
 		return this.getStrength() != null && this.getFlavor() != null;
 	}
@@ -56,7 +31,7 @@ public class TeaType {
 		return flavor;
 	}
 
-	private Tag<Item> getTag() {
+	public Tag<Item> getTag() {
 		return TagRegistry.item(new Identifier(CEFoodstuffs.MOD_ID, "tea_ingredients/" + getFlavor().getName() + "/" + getStrength().getName()));
 	}
 
@@ -76,6 +51,15 @@ public class TeaType {
 		public static Strength byName(String name) {
 			for(Strength strength : Strength.values()) {
 				if(strength.getName().equals(name)) {
+					return strength;
+				}
+			}
+			return null;
+		}
+
+		public static Strength byPotency(int potency) {
+			for(Strength strength : Strength.values()) {
+				if(strength.getPotency() == potency) {
 					return strength;
 				}
 			}

@@ -36,30 +36,30 @@ public class TeaBottleItem extends Item {
 	}
 
 	public static List<TeaType> getTeaTypes(ItemStack stack) {
-		List<TeaType> teaTypes = new ArrayList<>();
+		List<TeaType> list = new ArrayList<>();
 		CompoundTag compoundTag = stack.getTag();
 		if(compoundTag != null) {
 			if(compoundTag.contains("TeaTypes")) {
-				ListTag listTag = compoundTag.getList("TeaTypes", 10);
-				if(!listTag.isEmpty()) {
-					for(int i = 0; i < listTag.size(); ++i) {
-						CompoundTag typeTag = listTag.getCompound(i);
+				ListTag teaTypeList = compoundTag.getList("TeaTypes", 10);
+				if(!teaTypeList.isEmpty()) {
+					for(int i = 0; i < teaTypeList.size(); ++i) {
+						CompoundTag typeTag = teaTypeList.getCompound(i);
 						TeaType teaType = new TeaType(typeTag.getString("Strength"), typeTag.getString("Flavor"));
 						if(teaType.isCorrect()) {
-							teaTypes.add(teaType);
+							list.add(teaType);
 						}
 					}
 				}
 			}
 		}
-		return teaTypes;
+		return list;
 	}
 
 	@Environment(EnvType.CLIENT)
 	public static void appendTeaTooltip(ItemStack stack, List<Text> tooltip) {
+		MutableText text = (new LiteralText("")).formatted(Formatting.GRAY);
 		List<TeaType> teaTypes = getTeaTypes(stack);
 		if(!teaTypes.isEmpty()) {
-			MutableText text = (new LiteralText("")).formatted(Formatting.GRAY);
 			for(int i = 0; i < teaTypes.size(); ++i) {
 				TeaType teaType = teaTypes.get(i);
 				if(i > 0) {

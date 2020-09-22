@@ -2,6 +2,7 @@ package hugman.ce_foodstuffs.objects.recipe;
 
 import hugman.ce_foodstuffs.init.CEFItems;
 import hugman.ce_foodstuffs.init.data.CEFRecipeSerializers;
+import hugman.ce_foodstuffs.objects.item.tea.TeaHelper;
 import hugman.ce_foodstuffs.objects.item.tea.TeaType;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
@@ -14,6 +15,7 @@ import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
@@ -25,10 +27,20 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
 	}
 
 	@Override
+	public RecipeSerializer<?> getSerializer() {
+		return CEFRecipeSerializers.TEA_BAG_MAKING;
+	}
+
+	@Override
+	public boolean fits(int width, int height) {
+		return width * height >= 3;
+	}
+
+	@Override
 	public boolean matches(CraftingInventory inv, World world) {
 		boolean hasPaper = false;
 		boolean hasString = false;
-		int totalPotency = 0;
+		List<TeaType> bagTeaTypes = new ArrayList<>();
 		for(int j = 0; j < inv.size(); ++j) {
 			ItemStack stack = inv.getStack(j);
 			if(!stack.isEmpty()) {
@@ -45,51 +57,70 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
 					hasString = true;
 				}
 				else {
-					List<TeaType> teaTypes = TeaType.getTypes(stack);
-					if(teaTypes.isEmpty()) {
+					List<TeaType> ingredientTeaTypes = TeaHelper.getTypes(stack);
+					if(ingredientTeaTypes.isEmpty()) {
 						return false;
 					}
 					else {
-						for(TeaType teaType : teaTypes) {
-							totalPotency = totalPotency + teaType.getStrength().getPotency();
+						for(TeaType teaType1 : ingredientTeaTypes) {
+							if(bagTeaTypes.stream().anyMatch(teaType2 -> teaType1.getFlavor() == teaType2.getFlavor())) {
+								TeaType teaType2 = bagTeaTypes.stream().filter(t -> t.getFlavor() == teaType1.getFlavor()).findFirst().get();
+								TeaType newTeaType = new TeaType(TeaType.Strength.byPotency(teaType1.getStrength().getPotency() + teaType2.getStrength().getPotency()), teaType1.getFlavor());
+								if(newTeaType.isCorrect()) {
+									bagTeaTypes.remove(teaType2);
+									bagTeaTypes.add(newTeaType);
+								}
+								else {
+									return false;
+								}
+							}
+							else {
+								bagTeaTypes.add(teaType1);
+							}
 						}
 					}
 				}
 			}
 		}
-		return hasPaper && hasString && totalPotency >= 1 && totalPotency <= 3;
+		int totalStrength = 0;
+		for(TeaType teaType : bagTeaTypes) {
+			totalStrength = totalStrength + teaType.getStrength().getPotency();
+		}
+		return hasPaper && hasString && totalStrength >= 1 && totalStrength <= 3 && bagTeaTypes.size() <= 2;
 	}
 
 	@Override
 	public ItemStack craft(CraftingInventory inv) {
 		ItemStack givenStack = new ItemStack(CEFItems.TEA_BAG);
 		CompoundTag compoundTag = givenStack.getOrCreateTag();
-		ListTag listTag = new ListTag();
+		List<TeaType> bagTeaTypes = new ArrayList<>();
 		for(int j = 0; j < inv.size(); ++j) {
 			ItemStack stack = inv.getStack(j);
 			if(!stack.isEmpty()) {
-				List<TeaType> teaTypes = TeaType.getTypes(stack);
-				if(!teaTypes.isEmpty()) {
-					for(TeaType teaType : teaTypes) {
-						CompoundTag typeTag = new CompoundTag();
-						typeTag.putString("Flavor", teaType.getFlavor().getName());
-						typeTag.putString("Strength", teaType.getStrength().getName());
-						listTag.add(typeTag);
+				List<TeaType> ingredientTeaTypes = TeaHelper.getTypes(stack);
+				if(!ingredientTeaTypes.isEmpty()) {
+					for(TeaType teaType1 : ingredientTeaTypes) {
+						if(bagTeaTypes.stream().anyMatch(teaType2 -> teaType1.getFlavor() == teaType2.getFlavor())) {
+							TeaType teaType2 = bagTeaTypes.stream().filter(t -> t.getFlavor() == teaType1.getFlavor()).findFirst().get();
+							TeaType.Strength strength = TeaType.Strength.byPotency(teaType1.getStrength().getPotency() + teaType2.getStrength().getPotency());
+							bagTeaTypes.remove(teaType2);
+							bagTeaTypes.add(new TeaType(strength, teaType1.getFlavor()));
+						}
+						else {
+							bagTeaTypes.add(teaType1);
+						}
 					}
 				}
 			}
 		}
+		ListTag listTag = new ListTag();
+		for(TeaType teaType : bagTeaTypes) {
+			CompoundTag typeTag = new CompoundTag();
+			typeTag.putString("Flavor", teaType.getFlavor().getName());
+			typeTag.putString("Strength", teaType.getStrength().getName());
+			listTag.add(typeTag);
+		}
 		compoundTag.put("TeaTypes", listTag);
 		return givenStack;
-	}
-
-	@Override
-	public boolean fits(int width, int height) {
-		return width * height >= 2;
-	}
-
-	@Override
-	public RecipeSerializer<?> getSerializer() {
-		return CEFRecipeSerializers.TEA_BAG_MAKING;
 	}
 }

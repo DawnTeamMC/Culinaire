@@ -1,25 +1,44 @@
 package hugman.ce_foodstuffs.objects.recipe;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 import hugman.ce_foodstuffs.init.CEFItems;
 import hugman.ce_foodstuffs.init.data.CEFRecipeSerializers;
 import hugman.ce_foodstuffs.init.data.CEFTags;
-import hugman.ce_foodstuffs.objects.item.SandwichItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 	private static final Ingredient BREAD = Ingredient.fromTag(CEFTags.Items.SANDWICH_BREAD);
 	private static final Ingredient BLACKLIST = Ingredient.fromTag(CEFTags.Items.SANDWICH_BLACKLIST);
+	public static final ListMultimap<Item, Item> COMPLEMENTS = ArrayListMultimap.create();
 
 	public SandwichMakingRecipe(Identifier identifier) {
 		super(identifier);
+		COMPLEMENTS.put(Items.APPLE, CEFItems.CHOCOLATE);
+		COMPLEMENTS.put(Items.CHICKEN, Items.HONEY_BOTTLE);
+		COMPLEMENTS.put(Items.COOKED_BEEF, CEFItems.CHEESE);
+		COMPLEMENTS.put(Items.ENCHANTED_GOLDEN_APPLE, Items.BEETROOT);
+		COMPLEMENTS.put(Items.GOLDEN_APPLE, Items.DRIED_KELP);
+		COMPLEMENTS.put(CEFItems.MARSHMALLOW, CEFItems.CHOCOLATE);
+		COMPLEMENTS.put(CEFItems.MARSHMALLOW, Items.HONEY_BOTTLE);
+		COMPLEMENTS.put(Items.RABBIT, Items.BEETROOT);
+		COMPLEMENTS.put(Items.SPIDER_EYE, CEFItems.CHOCOLATE);
+		COMPLEMENTS.put(CEFItems.TOMATO, CEFItems.CHEESE);
+		COMPLEMENTS.put(CEFItems.TOMATO, CEFItems.LETTUCE);
+		COMPLEMENTS.put(CEFItems.TOMATO, Items.COOKED_CHICKEN);
 	}
 
 	public ItemStack getOutput() {
@@ -30,8 +49,8 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 		boolean hasBread = false;
 		boolean hasAnIngredient = false;
 		int[] emptySlots = new int[]{0, 2, 6, 8};
-		for(int i = 0; i < emptySlots.length; i++) {
-			ItemStack itemStack = inv.getStack(emptySlots[i]);
+		for(int emptySlot : emptySlots) {
+			ItemStack itemStack = inv.getStack(emptySlot);
 			if(!itemStack.isEmpty()) {
 				return false;
 			}
@@ -57,15 +76,182 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 		return hasBread && hasAnIngredient;
 	}
 
-	public ItemStack craft(CraftingInventory craftingInventory) {
-		ItemStack sandwich = new ItemStack(CEFItems.SANDWICH);
-		for(int j = 3; j < 6; ++j) {
-			ItemStack ingredient = craftingInventory.getStack(j);
-			if(!ingredient.isEmpty()) {
-				SandwichItem.addIngredient(sandwich, ingredient);
+	public boolean areComplements(Item item1, Item item2) {
+		return COMPLEMENTS.get(item1).contains(item2) || COMPLEMENTS.get(item2).contains(item1);
+	}
+
+	public ItemStack craft(CraftingInventory inv) {
+		ItemStack givenStack = new ItemStack(CEFItems.SANDWICH);
+		int hunger = 0;
+		float saturation = 0;
+		Item item1 = inv.getStack(3).getItem();
+		Item item2 = inv.getStack(4).getItem();
+		Item item3 = inv.getStack(5).getItem();
+		CompoundTag ingredientTag1 = new CompoundTag();
+		CompoundTag ingredientTag2 = new CompoundTag();
+		CompoundTag ingredientTag3 = new CompoundTag();
+		ListTag listTag = new ListTag();
+		if(item1.isFood()) {
+			int hunger1 = item1.getFoodComponent().getHunger() / 3;
+			float saturation1 = item1.getFoodComponent().getSaturationModifier() / 3;
+			if(item2.isFood()) {
+				int hunger2 = item2.getFoodComponent().getHunger() / 3;
+				float saturation2 = item2.getFoodComponent().getSaturationModifier() / 3;
+				if(item3.isFood()) {
+					int hunger3 = item3.getFoodComponent().getHunger() / 3;
+					float saturation3 = item3.getFoodComponent().getSaturationModifier() / 3;
+					if((areComplements(item1, item2) || (areComplements(item1, item3)) && areComplements(item2, item3))) {
+						// 1, 2, 3 present
+						// 1, 2, 3 complements
+						hunger = (hunger1 + hunger2 + hunger3) * 2;
+						saturation = (saturation1 + saturation2 + saturation3) * 2;
+						ingredientTag1.putBoolean("Complementary", true);
+						ingredientTag2.putBoolean("Complementary", true);
+						ingredientTag3.putBoolean("Complementary", true);
+					}
+					else if(areComplements(item1, item2)) {
+						// 1, 2, 3 present
+						// 1, 2 complements
+						hunger = (hunger1 + hunger2) * 2 + hunger3;
+						saturation = (saturation1 + saturation2) * 2 + saturation3;
+						ingredientTag1.putBoolean("Complementary", true);
+						ingredientTag2.putBoolean("Complementary", true);
+						ingredientTag3.putBoolean("Complementary", false);
+					}
+					else if(areComplements(item1, item3)) {
+						// 1, 2, 3 present
+						// 1, 3 complements
+						hunger = (hunger1 + hunger3) * 2 + hunger2;
+						saturation = (saturation1 + saturation3) * 2 + saturation2;
+						ingredientTag1.putBoolean("Complementary", true);
+						ingredientTag2.putBoolean("Complementary", false);
+						ingredientTag3.putBoolean("Complementary", true);
+					}
+					else if(areComplements(item2, item3)) {
+						// 1, 2, 3 present
+						// 2, 3 complements
+						hunger = (hunger2 + hunger3) * 2 + hunger1;
+						saturation = (saturation2 + saturation3) * 2 + saturation1;
+						ingredientTag1.putBoolean("Complementary", false);
+						ingredientTag2.putBoolean("Complementary", true);
+						ingredientTag3.putBoolean("Complementary", true);
+					}
+					else {
+						// 1, 2, 3 present
+						// none complements
+						hunger = hunger1 + hunger2 + hunger3;
+						saturation = saturation1 + saturation2 + saturation3;
+						ingredientTag1.putBoolean("Complementary", false);
+						ingredientTag2.putBoolean("Complementary", false);
+						ingredientTag3.putBoolean("Complementary", false);
+					}
+					ingredientTag3.putString("Item", Registry.ITEM.getId(item3).toString());
+					listTag.add(ingredientTag3);
+				}
+				else {
+					if(areComplements(item1, item2)) {
+						// 1, 2 present
+						// 1, 2 complements
+						hunger = (hunger1 + hunger2) * 2;
+						saturation = (saturation1 + saturation2) * 2;
+						ingredientTag1.putBoolean("Complementary", true);
+						ingredientTag2.putBoolean("Complementary", true);
+					}
+					else {
+						// 1, 2 present
+						// none complements
+						hunger = hunger1 + hunger2;
+						saturation = saturation1 + saturation2;
+						ingredientTag1.putBoolean("Complementary", false);
+						ingredientTag2.putBoolean("Complementary", false);
+					}
+				}
+				ingredientTag2.putString("Item", Registry.ITEM.getId(item2).toString());
+				listTag.add(ingredientTag2);
 			}
+			else if(item3.isFood()) {
+				int hunger3 = item3.getFoodComponent().getHunger() / 3;
+				float saturation3 = item3.getFoodComponent().getSaturationModifier() / 3;
+				if(areComplements(item1, item3)) {
+					// 1, 3 present
+					// 1, 3 complements
+					hunger = (hunger1 + hunger3) * 2;
+					saturation = (saturation1 + saturation3) * 2;
+					ingredientTag1.putBoolean("Complementary", true);
+					ingredientTag3.putBoolean("Complementary", true);
+				}
+				else {
+					// 1, 3 present
+					// none complements
+					hunger = hunger1 + hunger3;
+					saturation = saturation1 + saturation3;
+					ingredientTag1.putBoolean("Complementary", false);
+					ingredientTag3.putBoolean("Complementary", false);
+				}
+				ingredientTag3.putString("Item", Registry.ITEM.getId(item3).toString());
+				listTag.add(ingredientTag3);
+			}
+			else {
+				// 1 present
+				// none complements
+				hunger = hunger1;
+				saturation = saturation1;
+				ingredientTag1.putBoolean("Complementary", false);
+			}
+			ingredientTag1.putString("Item", Registry.ITEM.getId(item1).toString());
+			listTag.add(ingredientTag1);
 		}
-		return sandwich;
+		else if(item2.isFood()) {
+			int hunger2 = item2.getFoodComponent().getHunger() / 3;
+			float saturation2 = item2.getFoodComponent().getSaturationModifier() / 3;
+			if(item3.isFood()) {
+				int hunger3 = item3.getFoodComponent().getHunger() / 3;
+				float saturation3 = item3.getFoodComponent().getSaturationModifier() / 3;
+				if(areComplements(item2, item3)) {
+					// 2, 3 present
+					// 2, 3 complements
+					hunger = (hunger2 + hunger3) * 2;
+					saturation = (saturation2 + saturation3) * 2;
+					ingredientTag2.putBoolean("Complementary", true);
+					ingredientTag3.putBoolean("Complementary", true);
+				}
+				else {
+					// 2, 3 present
+					// none complements
+					hunger = hunger2 + hunger3;
+					saturation = saturation2 + saturation3;
+					ingredientTag2.putBoolean("Complementary", false);
+					ingredientTag3.putBoolean("Complementary", false);
+				}
+				ingredientTag3.putString("Item", Registry.ITEM.getId(item3).toString());
+				listTag.add(ingredientTag3);
+			}
+			else {
+				// 2 present
+				// none complements
+				hunger = hunger2;
+				saturation = saturation2;
+				ingredientTag2.putBoolean("Complementary", false);
+			}
+			ingredientTag2.putString("Item", Registry.ITEM.getId(item2).toString());
+			listTag.add(ingredientTag2);
+		}
+		else if(item3.isFood()) {
+			// 3 present
+			// none complements
+			int hunger3 = item3.getFoodComponent().getHunger() / 3;
+			float saturation3 = item3.getFoodComponent().getSaturationModifier() / 3;
+			hunger = hunger3;
+			saturation = saturation3;
+			ingredientTag3.putBoolean("Complementary", false);
+			ingredientTag3.putString("Item", Registry.ITEM.getId(item3).toString());
+			listTag.add(ingredientTag3);
+		}
+		CompoundTag compoundTag = givenStack.getOrCreateSubTag("SandwichData");
+		compoundTag.putInt("Hunger", hunger);
+		compoundTag.putFloat("SaturationModifier", saturation);
+		compoundTag.put("Ingredients", listTag);
+		return givenStack;
 	}
 
 	@Environment(EnvType.CLIENT)
