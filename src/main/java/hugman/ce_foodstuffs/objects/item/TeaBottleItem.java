@@ -7,6 +7,8 @@ import net.fabricmc.api.Environment;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -29,6 +31,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class TeaBottleItem extends Item {
 	public TeaBottleItem(Settings settings) {
@@ -80,8 +83,25 @@ public class TeaBottleItem extends Item {
 			serverPlayerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
 		}
 		if(!world.isClient) {
-			//TODO manage effects here
-			//example: user.removeStatusEffect(StatusEffects.POISON);
+			List<TeaType> teaTypes = getTeaTypes(stack);
+			if(!teaTypes.isEmpty()) {
+				for(TeaType teaType : teaTypes) {
+					StatusEffect effect = teaType.getFlavor().getEffect();
+					if(effect != null) {
+						Random random = new Random();
+						if(effect.isInstant()) {
+							effect.applyInstantEffect(user, user, user, teaType.getStrength().getPotency(), 1.0D);
+						}
+						else {
+							user.addStatusEffect(new StatusEffectInstance(effect, teaType.getStrength().getPotency() * (40 + random.nextInt(10))));
+
+						}
+					}
+					if(teaType.getFlavor() == TeaType.Flavor.GLOOPY) {
+						Items.CHORUS_FRUIT.finishUsing(stack, world, user);
+					}
+				}
+			}
 		}
 		if(playerEntity != null) {
 			playerEntity.incrementStat(Stats.USED.getOrCreateStat(this));

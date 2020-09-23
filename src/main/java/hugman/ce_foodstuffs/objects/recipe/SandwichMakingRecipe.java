@@ -100,7 +100,7 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 				if(item3.isFood()) {
 					int hunger3 = item3.getFoodComponent().getHunger() / 3;
 					float saturation3 = item3.getFoodComponent().getSaturationModifier() / 3;
-					if((areComplements(item1, item2) || (areComplements(item1, item3)) && areComplements(item2, item3))) {
+					if((areComplements(item1, item2) && (areComplements(item1, item3)) || (areComplements(item1, item2) && areComplements(item2, item3)))) {
 						// 1, 2, 3 present
 						// 1, 2, 3 complements
 						hunger = (hunger1 + hunger2 + hunger3) * 2;

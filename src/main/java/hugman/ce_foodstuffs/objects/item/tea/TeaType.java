@@ -2,6 +2,8 @@ package hugman.ce_foodstuffs.objects.item.tea;
 
 import hugman.ce_foodstuffs.CEFoodstuffs;
 import net.fabricmc.fabric.api.tag.TagRegistry;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
@@ -76,28 +78,24 @@ public class TeaType {
 	}
 
 	public enum Flavor {
-		SWEET("sweet", 0.25f, 0.5f, 0.75f),
-		UMAMI("umami", 0.2f, 0.6f, 0.8f),
-		SALTY("salty", 0.25f, 0.5f, 0.75f),
-		SOUR("sour", 0.2f, 0.6f, 0.8f),
-		BITTER("bitter", 0.2f, 0.5f, 0.8f),
-		SHINING("shining", 1f),
-		GLOOPY("gloopy", 1f);
+		SWEET("sweet"),
+		UMAMI("umami", StatusEffects.NIGHT_VISION),
+		SALTY("salty", StatusEffects.SPEED),
+		SOUR("sour", StatusEffects.INSTANT_HEALTH),
+		BITTER("bitter", StatusEffects.REGENERATION),
+		SHINING("shining", StatusEffects.GLOWING),
+		GLOOPY("gloopy");
 
 		private final String name;
-		private final float weakRatio;
-		private final float normalRatio;
-		private final float strongRatio;
+		private final StatusEffect effect;
 
-		Flavor(String name, float ratio) {
-			this(name, ratio, ratio, ratio);
+		Flavor(String name) {
+			this(name, null);
 		}
 
-		Flavor(String name, float weakRatio, float normalRatio, float strongRatio) {
+		Flavor(String name, StatusEffect effect) {
 			this.name = name;
-			this.weakRatio = weakRatio;
-			this.normalRatio = normalRatio;
-			this.strongRatio = strongRatio;
+			this.effect = effect;
 		}
 
 		public static Flavor byName(String name) {
@@ -111,6 +109,10 @@ public class TeaType {
 
 		public String getName() {
 			return name;
+		}
+
+		public StatusEffect getEffect() {
+			return effect;
 		}
 	}
 }
