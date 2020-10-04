@@ -1,6 +1,6 @@
 package hugman.ce_foodstuffs.objects.block.block_entity;
 
-import hugman.ce_foodstuffs.init.data.CEFBlockEntityTypes;
+import hugman.ce_foodstuffs.init.CEFBlocks;
 import hugman.ce_foodstuffs.objects.block.MilkCauldronBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -14,7 +14,7 @@ public class MilkCauldronBlockEntity extends BlockEntity implements Tickable {
 	private int maxCoagulationTime;
 
 	public MilkCauldronBlockEntity() {
-		super(CEFBlockEntityTypes.MILK_CAULDRON);
+		super(CEFBlocks.MILK_CAULDRON_ENTITY);
 		Random random = new Random();
 		this.maxCoagulationTime = random.nextInt(16000) + 32000;
 	}

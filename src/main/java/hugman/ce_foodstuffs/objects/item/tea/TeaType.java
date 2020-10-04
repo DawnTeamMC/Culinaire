@@ -6,7 +6,6 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
 import net.minecraft.tag.Tag;
-import net.minecraft.util.Identifier;
 
 public class TeaType {
 	private final Strength strength;
@@ -34,7 +33,7 @@ public class TeaType {
 	}
 
 	public Tag<Item> getTag() {
-		return TagRegistry.item(new Identifier(CEFoodstuffs.MOD_ID, "tea_ingredients/" + getFlavor().getName() + "/" + getStrength().getName()));
+		return TagRegistry.item(CEFoodstuffs.MOD_DATA.id("tea_ingredients/" + getFlavor().getName() + "/" + getStrength().getName()));
 	}
 
 	public enum Strength {

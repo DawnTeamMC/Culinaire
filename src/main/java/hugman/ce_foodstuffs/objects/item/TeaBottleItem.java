@@ -68,7 +68,7 @@ public class TeaBottleItem extends Item {
 				if(i > 0) {
 					text.append(", ");
 				}
-				text.append(new TranslatableText("tea_type." + CEFoodstuffs.MOD_ID + "." + teaType.getFlavor().getName() + "." + teaType.getStrength().getName()));
+				text.append(new TranslatableText("tea_type." + CEFoodstuffs.MOD_DATA + "." + teaType.getFlavor().getName() + "." + teaType.getStrength().getName()));
 			}
 			tooltip.add(text);
 		}

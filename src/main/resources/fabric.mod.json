@@ -17,16 +17,14 @@
 	"entrypoints": {
 		"main": [
 			"hugman.ce_foodstuffs.CEFoodstuffs"
-		],
-		"client": [
-			"hugman.ce_foodstuffs.CEFoodstuffsClient"
 		]
 	},
 	"mixins": [
 		"ce_foodstuffs.mixins.json"
 	],
 	"depends": {
-		"fabric": "*"
+		"fabric": "*",
+		"dawn": "*"
 	},
 	"custom": {
 		"modupdater": {

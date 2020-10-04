@@ -1,7 +1,7 @@
 package hugman.ce_foodstuffs.objects.block;
 
+import hugman.ce_foodstuffs.init.CEFBlocks;
 import hugman.ce_foodstuffs.init.CEFItems;
-import hugman.ce_foodstuffs.init.data.CEFProperties;
 import hugman.ce_foodstuffs.objects.block.block_entity.MilkCauldronBlockEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -32,8 +32,8 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 public class MilkCauldronBlock extends BlockWithEntity {
-	public static final IntProperty LEVEL = CEFProperties.LEVEL_1_3;
-	public static final BooleanProperty COAGULATED = CEFProperties.COAGULATED;
+	public static final IntProperty LEVEL = CEFBlocks.Properties.LEVEL_1_3;
+	public static final BooleanProperty COAGULATED = CEFBlocks.Properties.COAGULATED;
 
 	public MilkCauldronBlock(Settings settings) {
 		super(settings);
