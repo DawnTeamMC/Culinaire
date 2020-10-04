@@ -57,7 +57,7 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
 					hasString = true;
 				}
 				else {
-					List<TeaType> ingredientTeaTypes = TeaHelper.getTypes(stack);
+					List<TeaType> ingredientTeaTypes = TeaHelper.getNaturalTypesOfIngredient(stack);
 					if(ingredientTeaTypes.isEmpty()) {
 						return false;
 					}
@@ -97,7 +97,7 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
 		for(int j = 0; j < inv.size(); ++j) {
 			ItemStack stack = inv.getStack(j);
 			if(!stack.isEmpty()) {
-				List<TeaType> ingredientTeaTypes = TeaHelper.getTypes(stack);
+				List<TeaType> ingredientTeaTypes = TeaHelper.getNaturalTypesOfIngredient(stack);
 				if(!ingredientTeaTypes.isEmpty()) {
 					for(TeaType teaType1 : ingredientTeaTypes) {
 						if(bagTeaTypes.stream().anyMatch(teaType2 -> teaType1.getFlavor() == teaType2.getFlavor())) {
