@@ -2,13 +2,12 @@ package hugman.ce_foodstuffs.objects.recipe;
 
 import hugman.ce_foodstuffs.init.CEFItems;
 import hugman.ce_foodstuffs.init.data.CEFRecipeSerializers;
+import hugman.ce_foodstuffs.objects.item.TeaBottleItem;
 import hugman.ce_foodstuffs.objects.item.tea.TeaHelper;
 import hugman.ce_foodstuffs.objects.item.tea.TeaType;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
@@ -92,7 +91,6 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
 	@Override
 	public ItemStack craft(CraftingInventory inv) {
 		ItemStack givenStack = new ItemStack(CEFItems.TEA_BAG);
-		CompoundTag compoundTag = givenStack.getOrCreateTag();
 		List<TeaType> bagTeaTypes = new ArrayList<>();
 		for(int j = 0; j < inv.size(); ++j) {
 			ItemStack stack = inv.getStack(j);
@@ -113,14 +111,7 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
 				}
 			}
 		}
-		ListTag listTag = new ListTag();
-		for(TeaType teaType : bagTeaTypes) {
-			CompoundTag typeTag = new CompoundTag();
-			typeTag.putString("Flavor", teaType.getFlavor().getName());
-			typeTag.putString("Strength", teaType.getStrength().getName());
-			listTag.add(typeTag);
-		}
-		compoundTag.put("TeaTypes", listTag);
+		givenStack = TeaBottleItem.stackWithTeaTypes(givenStack, bagTeaTypes);
 		return givenStack;
 	}
 }

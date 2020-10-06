@@ -58,6 +58,19 @@ public class TeaBottleItem extends Item {
 		return list;
 	}
 
+	public static ItemStack stackWithTeaTypes(ItemStack stack, List<TeaType> teaTypes) {
+		CompoundTag compoundTag = stack.getOrCreateTag();
+		ListTag listTag = new ListTag();
+		for(TeaType teaType : teaTypes) {
+			CompoundTag typeTag = new CompoundTag();
+			typeTag.putString("Flavor", teaType.getFlavor().getName());
+			typeTag.putString("Strength", teaType.getStrength().getName());
+			listTag.add(typeTag);
+		}
+		compoundTag.put("TeaTypes", listTag);
+		return stack;
+	}
+
 	@Environment(EnvType.CLIENT)
 	public static void appendTeaTooltip(ItemStack stack, List<Text> tooltip) {
 		MutableText text = (new LiteralText("")).formatted(Formatting.GRAY);
@@ -68,7 +81,7 @@ public class TeaBottleItem extends Item {
 				if(i > 0) {
 					text.append(", ");
 				}
-				text.append(new TranslatableText("tea_type." + CEFoodstuffs.MOD_DATA + "." + teaType.getFlavor().getName() + "." + teaType.getStrength().getName()));
+				text.append(new TranslatableText("tea_type." + CEFoodstuffs.MOD_DATA.getModName() + "." + teaType.getFlavor().getName() + "." + teaType.getStrength().getName()));
 			}
 			tooltip.add(text);
 		}

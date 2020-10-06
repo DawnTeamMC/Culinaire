@@ -50,7 +50,7 @@ public class MilkCauldronBlock extends BlockWithEntity {
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		boolean isReady = state.get(COAGULATED);
 		int i = state.get(LEVEL);
-		ItemStack itemStack = player.getStackInHand(hand);
+		ItemStack handStack = player.getStackInHand(hand);
 		if(isReady) {
 			if(!world.isClient) {
 				float f = 0.7F;
@@ -66,22 +66,22 @@ public class MilkCauldronBlock extends BlockWithEntity {
 			return ActionResult.success(world.isClient);
 		}
 		else {
-			if(itemStack.isEmpty()) {
+			if(handStack.isEmpty()) {
 				return ActionResult.PASS;
 			}
 			else {
-				Item item = itemStack.getItem();
+				Item item = handStack.getItem();
 				if(item == Items.GLASS_BOTTLE) {
 					if(i > 0 && !world.isClient) {
 						if(!player.abilities.creativeMode) {
-							ItemStack stack = new ItemStack(CEFItems.MILK_BOTTLE);
+							ItemStack milkBottleStack = new ItemStack(CEFItems.MILK_BOTTLE);
 							player.incrementStat(Stats.USE_CAULDRON);
-							itemStack.decrement(1);
-							if(itemStack.isEmpty()) {
-								player.setStackInHand(hand, stack);
+							handStack.decrement(1);
+							if(handStack.isEmpty()) {
+								player.setStackInHand(hand, milkBottleStack);
 							}
-							else if(!player.inventory.insertStack(stack)) {
-								player.dropItem(stack, false);
+							else if(!player.inventory.insertStack(milkBottleStack)) {
+								player.dropItem(milkBottleStack, false);
 							}
 							else if(player instanceof ServerPlayerEntity) {
 								((ServerPlayerEntity) player).openHandledScreen(player.playerScreenHandler);
@@ -115,8 +115,8 @@ public class MilkCauldronBlock extends BlockWithEntity {
 				else if(item == Items.BUCKET) {
 					if(i == 3 && !world.isClient) {
 						if(!player.abilities.creativeMode) {
-							itemStack.decrement(1);
-							if(itemStack.isEmpty()) {
+							handStack.decrement(1);
+							if(handStack.isEmpty()) {
 								player.setStackInHand(hand, new ItemStack(Items.MILK_BUCKET));
 							}
 							else if(!player.inventory.insertStack(new ItemStack(Items.MILK_BUCKET))) {

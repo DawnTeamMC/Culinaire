@@ -26,6 +26,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class KettleBlockEntity extends LockableContainerBlockEntity implements SidedInventory, Tickable {
@@ -40,6 +41,8 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 	public KettleBlockEntity() {
 		super(CEFBlocks.KETTLE_ENTITY);
 		this.inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
+		this.fluid = Fluid.EMPTY;
+		this.teaTypes = new ArrayList<>();
 	}
 
 	@Override
@@ -52,35 +55,6 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 		//TODO
 		return null;
 	}
-
-	@Override
-	public void tick() {
-		ItemStack stack = this.inventory.get(0);
-		boolean canBrew = this.canBrew();
-		boolean isBrewing = this.brewTime > 0;
-		if(isBrewing) {
-			--this.brewTime;
-			boolean isFinishedBrewing = this.brewTime == 0;
-			if(canBrew && isFinishedBrewing) {
-				this.brew();
-				this.markDirty();
-			}
-			else if(!canBrew) {
-				this.brewTime = 0;
-				this.markDirty();
-			}
-			else if(this.itemBrewing != stack.getItem()) {
-				this.brewTime = 0;
-				this.markDirty();
-			}
-		}
-		else if(canBrew) {
-			this.brewTime = 800;
-			this.itemBrewing = stack.getItem();
-			this.markDirty();
-		}
-	}
-
 
 	@Override
 	public int size() {
@@ -117,7 +91,6 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 		if(slot >= 0 && slot < this.inventory.size()) {
 			this.inventory.set(slot, stack);
 		}
-
 	}
 
 	@Override
@@ -165,13 +138,102 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 		this.inventory.clear();
 	}
 
+	public boolean addFluidLevel(Fluid fluid, int amount) {
+		byte fLevel = (byte) (this.fluidLevel + amount);
+		if(fLevel <= 3) {
+			this.fluid = fluid;
+			this.fluidLevel = fLevel;
+			return true;
+		}
+		return false;
+	}
+
+	public boolean removeFluidLevel(int amount) {
+		byte fLevel = (byte) (this.fluidLevel - amount);
+		if(fLevel >= 0) {
+			this.fluidLevel = fLevel;
+			if(fLevel == 0) {
+				this.fluid = Fluid.EMPTY;
+				this.teaTypes = new ArrayList<>();
+			}
+			return true;
+		}
+		return false;
+	}
+
+	public Fluid getFluid() {
+		return this.fluid;
+	}
+
+	public List<TeaType> getTeaTypes() {
+		return this.teaTypes;
+	}
+
+	@Override
+	public void tick() {
+		ItemStack stack = this.inventory.get(0);
+		boolean canBrew = this.canBrew(stack);
+		boolean isBrewing = this.brewTime > 0;
+		if(isBrewing) {
+			--this.brewTime;
+			boolean isFinishedBrewing = this.brewTime == 0;
+			if(canBrew && isFinishedBrewing) {
+				this.brew(stack);
+				this.markDirty();
+			}
+			else if(!canBrew) {
+				this.brewTime = 0;
+				this.markDirty();
+			}
+			else if(this.itemBrewing != stack.getItem()) {
+				this.brewTime = 0;
+				this.markDirty();
+			}
+		}
+		else if(canBrew) {
+			this.brewTime = 800;
+			this.itemBrewing = stack.getItem();
+			this.markDirty();
+		}
+	}
+
+	private boolean canBrew(ItemStack stack) {
+		boolean isHot = CampfireBlock.isLitCampfire(this.world.getBlockState(this.getPos().down())) || this.world.getDimension().isUltrawarm();
+		if(stack.isEmpty()) {
+			return false;
+		}
+		else if(stack.getItem() instanceof TeaBagItem) {
+			return !TeaBottleItem.getTeaTypes(stack).isEmpty() && fluid == Fluid.WATER && fluidLevel >= 1 && isHot;
+		}
+		else {
+			return false;
+		}
+	}
+
+	private void brew(ItemStack stack) {
+		this.fluid = Fluid.TEA;
+		this.teaTypes = TeaBottleItem.getTeaTypes(stack);
+		stack.decrement(1);
+		BlockPos blockPos = this.getPos();
+		if(stack.getItem().hasRecipeRemainder()) {
+			ItemStack remainderStack = new ItemStack(stack.getItem().getRecipeRemainder());
+			if(stack.isEmpty()) {
+				stack = remainderStack;
+			}
+			else if(!this.world.isClient) {
+				ItemScatterer.spawn(this.world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), remainderStack);
+			}
+		}
+		this.inventory.set(0, stack);
+	}
+
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
 		super.toTag(tag);
 		Inventories.toTag(tag, this.inventory);
 		tag.putShort("BrewTime", (short) this.brewTime);
 		tag.putString("Fluid", this.fluid.toString().toLowerCase());
-		tag.putShort("FluidLevel", (short) this.fluidLevel);
+		tag.putByte("FluidLevel", (byte) this.fluidLevel);
 		ListTag listTag = new ListTag();
 		for(TeaType teaType : teaTypes) {
 			CompoundTag typeTag = new CompoundTag();
@@ -190,7 +252,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 		Inventories.fromTag(tag, this.inventory);
 		this.brewTime = tag.getShort("BrewTime");
 		this.fluid = Fluid.valueOf(tag.getString("Fluid").toUpperCase());
-		this.fluidLevel = tag.getShort("FluidLevel");
+		this.fluidLevel = tag.getByte("FluidLevel");
 		ListTag teaTypeList = tag.getList("TeaTypes", 10);
 		if(!teaTypeList.isEmpty()) {
 			for(int i = 0; i < teaTypeList.size(); ++i) {
@@ -201,38 +263,6 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 				}
 			}
 		}
-	}
-
-	private boolean canBrew() {
-		ItemStack stack = this.inventory.get(0);
-		boolean isHot = CampfireBlock.isLitCampfire(this.world.getBlockState(this.getPos().down())) || this.world.getDimension().isUltrawarm();
-		if(stack.isEmpty()) {
-			return false;
-		}
-		else if(stack.getItem() instanceof TeaBagItem) {
-			return !TeaBottleItem.getTeaTypes(stack).isEmpty() && fluid == Fluid.WATER && fluidLevel >= 1 && isHot;
-		}
-		else {
-			return false;
-		}
-	}
-
-	private void brew() {
-		ItemStack stack = this.inventory.get(0);
-		stack.decrement(1);
-		BlockPos blockPos = this.getPos();
-		if(stack.getItem().hasRecipeRemainder()) {
-			ItemStack itemStack2 = new ItemStack(stack.getItem().getRecipeRemainder());
-			if(stack.isEmpty()) {
-				stack = itemStack2;
-			}
-			else if(!this.world.isClient) {
-				ItemScatterer.spawn(this.world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), itemStack2);
-			}
-		}
-		this.inventory.set(0, stack);
-		this.fluid = Fluid.TEA;
-		this.teaTypes = TeaBottleItem.getTeaTypes(stack);
 	}
 
 	public enum Fluid {
