@@ -1,6 +1,8 @@
 package hugman.ce_foodstuffs.objects.block;
 
 import hugman.ce_foodstuffs.init.CEFItems;
+import hugman.ce_foodstuffs.init.CEFSounds;
+import hugman.ce_foodstuffs.init.data.CEFStats;
 import hugman.ce_foodstuffs.objects.block.block_entity.KettleBlockEntity;
 import hugman.ce_foodstuffs.objects.item.TeaBottleItem;
 import net.minecraft.block.*;
@@ -150,8 +152,6 @@ public class KettleBlock extends BlockWithEntity {
 							if(!player.abilities.creativeMode) {
 								ItemStack newStack = new ItemStack(Items.GLASS_BOTTLE);
 								player.setStackInHand(hand, newStack);
-								//TODO stat
-								//player.incrementStat(Stats.USE_CAULDRON);
 							}
 							world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
 						}
@@ -162,8 +162,6 @@ public class KettleBlock extends BlockWithEntity {
 							if(!player.abilities.creativeMode) {
 								ItemStack newStack = new ItemStack(Items.GLASS_BOTTLE);
 								player.setStackInHand(hand, newStack);
-								//TODO stat
-								//player.incrementStat(Stats.USE_CAULDRON);
 							}
 							world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
 						}
@@ -182,19 +180,13 @@ public class KettleBlock extends BlockWithEntity {
 							else if(player instanceof ServerPlayerEntity) {
 								((ServerPlayerEntity) player).openHandledScreen(player.playerScreenHandler);
 							}
-							if(!player.abilities.creativeMode) {
-								//TODO stat
-								//player.incrementStat(Stats.USE_CAULDRON);
-							}
-							//TODO Other sound
-							world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+							world.playSound(null, pos, CEFSounds.ITEM_TEA_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
 						}
 					}
 				}
 				if(shouldOpenScreen) {
 					player.openHandledScreen((KettleBlockEntity) blockEntity);
-					//TODO stat
-					//player.incrementStat(Stats.INTERACT_WITH_BREWINGSTAND);
+					player.incrementStat(CEFStats.INTERACT_WITH_KETTLE);
 				}
 			}
 		}

@@ -2,6 +2,7 @@ package hugman.ce_foodstuffs.objects.block.block_entity;
 
 import hugman.ce_foodstuffs.CEFoodstuffs;
 import hugman.ce_foodstuffs.init.CEFBlocks;
+import hugman.ce_foodstuffs.init.CEFSounds;
 import hugman.ce_foodstuffs.objects.item.TeaBagItem;
 import hugman.ce_foodstuffs.objects.item.TeaBottleItem;
 import hugman.ce_foodstuffs.objects.item.tea.TeaType;
@@ -19,6 +20,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ItemScatterer;
@@ -275,8 +277,8 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 			else if(!this.world.isClient) {
 				ItemScatterer.spawn(this.world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), remainderStack);
 			}
-			//TODO Add sound
 		}
+		this.world.playSound(null, pos, CEFSounds.BLOCK_KETTLE_BREW, SoundCategory.BLOCKS, 1.0F, 1.0F);
 		this.inventory.set(0, stack);
 	}
 

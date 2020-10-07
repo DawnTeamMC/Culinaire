@@ -46,5 +46,10 @@
 	"tea_type.ce_foodstuffs.sweet.weak": "Beetje zoet",
 	"tea_type.ce_foodstuffs.umami.normal": "Umami",
 	"tea_type.ce_foodstuffs.umami.strong": "Erg umami",
-	"tea_type.ce_foodstuffs.umami.weak": "Beetje umami"
+	"tea_type.ce_foodstuffs.umami.weak": "Beetje umami",
+
+	"//subtitles.ce_foodstuffs.block.kettle.brew": "Kettle whistles",
+	"//subtitles.ce_foodstuffs.item.tea_bottle.fill": "Tea Bottle fills",
+
+	"//stat.ce_foodstuffs.interact_with_kettle": "Interactions with Kettle"
 }

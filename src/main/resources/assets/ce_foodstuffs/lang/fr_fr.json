@@ -46,5 +46,10 @@
 	"tea_type.ce_foodstuffs.sweet.weak": "Légèrement sucré",
 	"tea_type.ce_foodstuffs.umami.normal": "Umami",
 	"tea_type.ce_foodstuffs.umami.strong": "Très umami",
-	"tea_type.ce_foodstuffs.umami.weak": "Légèrement umami"
+	"tea_type.ce_foodstuffs.umami.weak": "Légèrement umami",
+
+	"//subtitles.ce_foodstuffs.block.kettle.brew": "Kettle whistles",
+	"//subtitles.ce_foodstuffs.item.tea_bottle.fill": "Tea Bottle fills",
+
+	"//stat.ce_foodstuffs.interact_with_kettle": "Interactions with Kettle"
 }
