@@ -144,8 +144,8 @@ public class KettleBlock extends BlockWithEntity {
 			if(blockEntity instanceof KettleBlockEntity) {
 				if(!handStack.isEmpty()) {
 					KettleBlockEntity kettleEntity = (KettleBlockEntity) blockEntity;
-					if(handStack.getItem() == Items.WATER_BUCKET && kettleEntity.getFluid() != KettleBlockEntity.Fluid.TEA) {
-						if(kettleEntity.addFluidLevel(KettleBlockEntity.Fluid.WATER, 3)) {
+					if(handStack.getItem() == Items.WATER_BUCKET && kettleEntity.getFluid() != 2) {
+						if(kettleEntity.addWater(3)) {
 							shouldOpenScreen = false;
 							if(!player.abilities.creativeMode) {
 								ItemStack newStack = new ItemStack(Items.GLASS_BOTTLE);
@@ -156,8 +156,8 @@ public class KettleBlock extends BlockWithEntity {
 							world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
 						}
 					}
-					else if(handStack.getItem() == Items.POTION && PotionUtil.getPotion(handStack) == Potions.WATER && kettleEntity.getFluid() != KettleBlockEntity.Fluid.TEA) {
-						if(kettleEntity.addFluidLevel(KettleBlockEntity.Fluid.WATER, 1)) {
+					else if(handStack.getItem() == Items.POTION && PotionUtil.getPotion(handStack) == Potions.WATER && kettleEntity.getFluid() != 2) {
+						if(kettleEntity.addWater(1)) {
 							shouldOpenScreen = false;
 							if(!player.abilities.creativeMode) {
 								ItemStack newStack = new ItemStack(Items.GLASS_BOTTLE);
@@ -168,8 +168,8 @@ public class KettleBlock extends BlockWithEntity {
 							world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
 						}
 					}
-					else if(handStack.getItem() == Items.GLASS_BOTTLE && kettleEntity.getFluid() == KettleBlockEntity.Fluid.TEA) {
-						if(kettleEntity.removeFluidLevel(1)) {
+					else if(handStack.getItem() == Items.GLASS_BOTTLE && kettleEntity.getFluid() == 2) {
+						if(kettleEntity.removeFluid(1)) {
 							shouldOpenScreen = false;
 							ItemStack newStack = TeaBottleItem.stackWithTeaTypes(new ItemStack(CEFItems.TEA_BOTTLE), kettleEntity.getTeaTypes());
 							handStack.decrement(1);
@@ -186,6 +186,7 @@ public class KettleBlock extends BlockWithEntity {
 								//TODO stat
 								//player.incrementStat(Stats.USE_CAULDRON);
 							}
+							//TODO Other sound
 							world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
 						}
 					}

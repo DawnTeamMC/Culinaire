@@ -24,6 +24,8 @@
 	"item.ce_foodstuffs.tea_bag": "Sachet de thé",
 	"item.ce_foodstuffs.tea_bottle": "Fiole de thé",
 
+	"container.ce_foodstuffs.kettle": "Théière",
+
 	"tea_type.ce_foodstuffs.bitter.normal": "Amer",
 	"tea_type.ce_foodstuffs.bitter.strong": "Très amer",
 	"tea_type.ce_foodstuffs.bitter.weak": "Légèrement amer",

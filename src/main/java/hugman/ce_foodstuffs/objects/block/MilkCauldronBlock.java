@@ -57,7 +57,7 @@ public class MilkCauldronBlock extends BlockWithEntity {
 				double d = (world.random.nextFloat() * f) + 0.15D;
 				double e = (world.random.nextFloat() * f) + 0.66D;
 				double g = (world.random.nextFloat() * f) + 0.15D;
-				ItemEntity itemEntity = new ItemEntity(world, (double) pos.getX() + d, (double) pos.getY() + e, (double) pos.getZ() + g, new ItemStack(CEFItems.CHEESE, i));
+				ItemEntity itemEntity = new ItemEntity(world, (double) pos.getX() + d, (double) pos.getY() + e, (double) pos.getZ() + g, new ItemStack(CEFItems.CHEESE, 2));
 				itemEntity.setToDefaultPickupDelay();
 				world.spawnEntity(itemEntity);
 				player.incrementStat(Stats.USE_CAULDRON);

@@ -24,6 +24,8 @@
 	"//item.ce_foodstuffs.tea_bag": "Tea Bag",
 	"//item.ce_foodstuffs.tea_bottle": "Tea Bottle",
 
+	"//container.ce_foodstuffs.kettle": "Ketel",
+
 	"//tea_type.ce_foodstuffs.bitter.normal": "Bitter",
 	"//tea_type.ce_foodstuffs.bitter.strong": "Very Bitter",
 	"//tea_type.ce_foodstuffs.bitter.weak": "Slightly Bitter",

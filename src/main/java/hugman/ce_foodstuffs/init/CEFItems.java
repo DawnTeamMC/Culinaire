@@ -22,6 +22,6 @@ public class CEFItems extends CEFPack {
 	public static final Item GOLDEN_MARSHMALLOW_ON_A_STICK = register(new ItemCreator.Builder("golden_marshmallow_on_a_stick", new MarshmallowOnAStickItem(new Item.Settings().group(ItemGroup.FOOD).food(CEFFoods.GOLDEN_MARSHMALLOW).maxCount(1).recipeRemainder(Items.STICK))));
 	public static final Item BURNT_MARSHMALLOW_ON_A_STICK = register(new ItemCreator.Builder("burnt_marshmallow_on_a_stick", new MarshmallowOnAStickItem(new Item.Settings().group(ItemGroup.FOOD).food(CEFFoods.BURNT_MARSHMALLOW).maxCount(1).recipeRemainder(Items.STICK))));
 	public static final Item MILK_BOTTLE = register(new ItemCreator.Builder("milk_bottle", new MilkBottleItem(new Item.Settings().group(ItemGroup.FOOD).maxCount(1).recipeRemainder(Items.GLASS_BOTTLE))));
-	public static final Item TEA_BAG = register(new ItemCreator.Builder("tea_bag", new TeaBagItem(new Item.Settings().group(ItemGroup.FOOD).maxCount(16).recipeRemainder(Items.PAPER))));
+	public static final Item TEA_BAG = register(new ItemCreator.Builder("tea_bag", new TeaBagItem(new Item.Settings().group(ItemGroup.FOOD).maxCount(16))));
 	public static final Item TEA_BOTTLE = register(new ItemCreator.Builder("tea_bottle", new TeaBottleItem(new Item.Settings().group(ItemGroup.FOOD).maxCount(1).recipeRemainder(Items.GLASS_BOTTLE))));
 }

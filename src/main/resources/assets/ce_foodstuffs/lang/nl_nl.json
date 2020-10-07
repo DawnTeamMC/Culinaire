@@ -24,6 +24,8 @@
 	"item.ce_foodstuffs.tea_bag": "Theezak",
 	"item.ce_foodstuffs.tea_bottle": "Theeglas",
 
+	"container.ce_foodstuffs.kettle": "Ketel",
+
 	"tea_type.ce_foodstuffs.bitter.normal": "Bitter",
 	"tea_type.ce_foodstuffs.bitter.strong": "Erg bitter",
 	"tea_type.ce_foodstuffs.bitter.weak": "Beetje bitter",
