@@ -48,8 +48,8 @@
 	"tea_type.ce_foodstuffs.umami.strong": "Très umami",
 	"tea_type.ce_foodstuffs.umami.weak": "Légèrement umami",
 
-	"//subtitles.ce_foodstuffs.block.kettle.brew": "Kettle whistles",
-	"//subtitles.ce_foodstuffs.item.tea_bottle.fill": "Tea Bottle fills",
+	"subtitles.ce_foodstuffs.block.kettle.brew": "Théière qui siffle",
+	"subtitles.ce_foodstuffs.item.tea_bottle.fill": "Remplissage d'une fiole de thé",
 
-	"//stat.ce_foodstuffs.interact_with_kettle": "Interactions with Kettle"
+	"stat.ce_foodstuffs.interact_with_kettle": "Interactions avec une théière"
 }
