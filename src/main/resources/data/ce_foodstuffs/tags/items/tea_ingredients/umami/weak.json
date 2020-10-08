@@ -2,6 +2,7 @@
 	"replace": false,
 	"values": [
 		"minecraft:carrot",
-		"minecraft:crimson_fungus"
+		"minecraft:crimson_fungus",
+		"ce_foodstuffs:lettuce_seeds"
 	]
 }
