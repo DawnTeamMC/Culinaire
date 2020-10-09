@@ -135,7 +135,7 @@ public class TeaBottleItem extends Item {
 
 	@Override
 	public int getMaxUseTime(ItemStack stack) {
-		return 60;
+		return 46;
 	}
 
 	@Override

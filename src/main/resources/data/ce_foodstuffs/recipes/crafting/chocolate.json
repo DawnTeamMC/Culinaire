@@ -2,16 +2,23 @@
 	"type": "minecraft:crafting_shapeless",
 	"ingredients": [
 		{
-			"item": "minecraft:milk_bucket"
+			"item": "minecraft:sugar"
+		},
+		{
+			"item": "minecraft:sugar"
 		},
 		{
 			"item": "minecraft:cocoa_beans"
 		},
 		{
-			"item": "minecraft:sugar"
+			"item": "minecraft:cocoa_beans"
+		},
+		{
+			"item": "ce_foodstuffs:milk_bottle"
 		}
 	],
 	"result": {
-		"item": "ce_foodstuffs:chocolate"
+		"item": "ce_foodstuffs:chocolate",
+		"count": 2
 	}
 }

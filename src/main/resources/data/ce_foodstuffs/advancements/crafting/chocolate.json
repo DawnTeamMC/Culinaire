@@ -6,12 +6,12 @@
 		]
 	},
 	"criteria": {
-		"has_cocoa_beans": {
+		"has_sugar": {
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
 					{
-						"item": "minecraft:cocoa_beans"
+						"item": "minecraft:sugar"
 					}
 				]
 			}
@@ -25,7 +25,7 @@
 	},
 	"requirements": [
 		[
-			"has_cocoa_beans",
+			"has_sugar",
 			"has_the_recipe"
 		]
 	]

@@ -5,6 +5,7 @@ import hugman.ce_foodstuffs.init.CEFSounds;
 import hugman.ce_foodstuffs.init.data.CEFStats;
 import hugman.ce_foodstuffs.objects.block.block_entity.KettleBlockEntity;
 import hugman.ce_foodstuffs.objects.item.TeaBottleItem;
+import hugman.ce_foodstuffs.objects.item.tea.TeaType;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
@@ -32,6 +33,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class KettleBlock extends BlockWithEntity {
 	public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
@@ -167,9 +169,10 @@ public class KettleBlock extends BlockWithEntity {
 						}
 					}
 					else if(handStack.getItem() == Items.GLASS_BOTTLE && kettleEntity.getFluid() == 2) {
+						List<TeaType> teaTypes = kettleEntity.getTeaTypes();
 						if(kettleEntity.removeFluid(1)) {
 							shouldOpenScreen = false;
-							ItemStack newStack = TeaBottleItem.stackWithTeaTypes(new ItemStack(CEFItems.TEA_BOTTLE), kettleEntity.getTeaTypes());
+							ItemStack newStack = TeaBottleItem.stackWithTeaTypes(new ItemStack(CEFItems.TEA_BOTTLE), teaTypes);
 							handStack.decrement(1);
 							if(handStack.isEmpty()) {
 								player.setStackInHand(hand, newStack);
