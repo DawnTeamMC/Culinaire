@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"ingredients": [
+		{
+			"item": "minecraft:sugar"
+		},
+		{
+			"item": "minecraft:wheat"
+		},
+		{
+			"item": "ce_foodstuffs:milk_bottle"
+		}
+	],
+	"result": {
+		"item": "ce_foodstuffs:chouquette",
+		"count": 4
+	}
+}
