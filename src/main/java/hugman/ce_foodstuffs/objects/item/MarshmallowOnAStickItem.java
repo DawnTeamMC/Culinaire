@@ -56,7 +56,7 @@ public class MarshmallowOnAStickItem extends Item {
 	}
 
 	public int getDefaultMaxBurnTime(Item item) {
-		if(item == CEFItems.UNCOOKED_MARSHMALLOW_ON_A_STICK) {
+		if(item == CEFItems.MARSHMALLOW_ON_A_STICK) {
 			return 150;
 		}
 		else if(item == CEFItems.TOASTY_MARSHMALLOW_ON_A_STICK) {
@@ -74,7 +74,7 @@ public class MarshmallowOnAStickItem extends Item {
 	}
 
 	public Item getDefaultBurnItem(Item item) {
-		if(item == CEFItems.UNCOOKED_MARSHMALLOW_ON_A_STICK) {
+		if(item == CEFItems.MARSHMALLOW_ON_A_STICK) {
 			return CEFItems.TOASTY_MARSHMALLOW_ON_A_STICK;
 		}
 		else if(item == CEFItems.TOASTY_MARSHMALLOW_ON_A_STICK) {

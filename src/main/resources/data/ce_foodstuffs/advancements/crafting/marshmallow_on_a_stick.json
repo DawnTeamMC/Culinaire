@@ -2,7 +2,7 @@
 	"parent": "minecraft:recipes/root",
 	"rewards": {
 		"recipes": [
-			"ce_foodstuffs:crafting/uncooked_marshmallow_on_a_stick"
+			"ce_foodstuffs:crafting/marshmallow_on_a_stick"
 		]
 	},
 	"criteria": {
@@ -19,7 +19,7 @@
 		"has_the_recipe": {
 			"trigger": "minecraft:recipe_unlocked",
 			"conditions": {
-				"recipe": "ce_foodstuffs:crafting/uncooked_marshmallow_on_a_stick"
+				"recipe": "ce_foodstuffs:crafting/marshmallow_on_a_stick"
 			}
 		}
 	},
