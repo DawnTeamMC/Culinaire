@@ -2,7 +2,6 @@ package hugman.ce_foodstuffs.objects.recipe;
 
 import hugman.ce_foodstuffs.init.CEFItems;
 import hugman.ce_foodstuffs.init.data.CEFRecipeSerializers;
-import hugman.ce_foodstuffs.objects.item.TeaBottleItem;
 import hugman.ce_foodstuffs.objects.item.tea.TeaHelper;
 import hugman.ce_foodstuffs.objects.item.tea.TeaType;
 import net.minecraft.inventory.CraftingInventory;
@@ -56,7 +55,7 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
 					hasString = true;
 				}
 				else {
-					List<TeaType> ingredientTeaTypes = TeaHelper.getNaturalTypesOfIngredient(stack);
+					List<TeaType> ingredientTeaTypes = TeaHelper.getIngredientTypes(stack);
 					if(ingredientTeaTypes.isEmpty()) {
 						return false;
 					}
@@ -95,7 +94,7 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
 		for(int j = 0; j < inv.size(); ++j) {
 			ItemStack stack = inv.getStack(j);
 			if(!stack.isEmpty()) {
-				List<TeaType> ingredientTeaTypes = TeaHelper.getNaturalTypesOfIngredient(stack);
+				List<TeaType> ingredientTeaTypes = TeaHelper.getIngredientTypes(stack);
 				if(!ingredientTeaTypes.isEmpty()) {
 					for(TeaType teaType1 : ingredientTeaTypes) {
 						if(bagTeaTypes.stream().anyMatch(teaType2 -> teaType1.getFlavor() == teaType2.getFlavor())) {
@@ -111,7 +110,7 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
 				}
 			}
 		}
-		givenStack = TeaBottleItem.stackWithTeaTypes(givenStack, bagTeaTypes);
+		givenStack = TeaHelper.appendTeaTypes(givenStack, bagTeaTypes);
 		return givenStack;
 	}
 }

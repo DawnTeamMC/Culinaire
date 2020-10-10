@@ -4,7 +4,7 @@ import hugman.ce_foodstuffs.init.CEFItems;
 import hugman.ce_foodstuffs.init.CEFSounds;
 import hugman.ce_foodstuffs.init.data.CEFStats;
 import hugman.ce_foodstuffs.objects.block.block_entity.KettleBlockEntity;
-import hugman.ce_foodstuffs.objects.item.TeaBottleItem;
+import hugman.ce_foodstuffs.objects.item.tea.TeaHelper;
 import hugman.ce_foodstuffs.objects.item.tea.TeaType;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -172,7 +172,7 @@ public class KettleBlock extends BlockWithEntity {
 						List<TeaType> teaTypes = kettleEntity.getTeaTypes();
 						if(kettleEntity.removeFluid(1)) {
 							shouldOpenScreen = false;
-							ItemStack newStack = TeaBottleItem.stackWithTeaTypes(new ItemStack(CEFItems.TEA_BOTTLE), teaTypes);
+							ItemStack newStack = TeaHelper.appendTeaTypes(new ItemStack(CEFItems.TEA_BOTTLE), teaTypes);
 							handStack.decrement(1);
 							if(handStack.isEmpty()) {
 								player.setStackInHand(hand, newStack);

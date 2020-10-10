@@ -10,40 +10,57 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsage;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.item.*;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Random;
 
 public class TeaBottleItem extends Item {
 	public TeaBottleItem(Settings settings) {
 		super(settings);
 	}
 
-	public static ItemStack stackWithTeaTypes(ItemStack stack, List<TeaType> teaTypes) {
-		CompoundTag compoundTag = stack.getOrCreateTag();
-		ListTag listTag = new ListTag();
-		for(TeaType teaType : teaTypes) {
-			CompoundTag typeTag = new CompoundTag();
-			typeTag.putString("Flavor", teaType.getFlavor().getName());
-			typeTag.putString("Strength", teaType.getStrength().getName());
-			listTag.add(typeTag);
+	@Override
+	@Environment(EnvType.CLIENT)
+	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+		TeaHelper.appendTeaTooltip(tooltip, TeaHelper.getTeaTypesByCompound(stack.getTag()));
+	}
+
+	@Override
+	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
+		if(group == ItemGroup.SEARCH) {
+			for(TeaType teaType : TeaHelper.getAllTypes()) {
+				stacks.add(TeaHelper.appendTeaType(new ItemStack(this), teaType));
+			}
 		}
-		compoundTag.put("TeaTypes", listTag);
-		return stack;
+		else if(this.isIn(group)) {
+			for(TeaType.Flavor flavor : TeaType.Flavor.values()) {
+				stacks.add(TeaHelper.appendTeaType(new ItemStack(this), new TeaType(TeaType.Strength.NORMAL, flavor)));
+			}
+		}
+	}
+
+	@Override
+	public UseAction getUseAction(ItemStack stack) {
+		return UseAction.DRINK;
+	}
+
+	@Override
+	public int getMaxUseTime(ItemStack stack) {
+		return 46;
+	}
+
+	@Override
+	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+		return ItemUsage.consumeHeldItem(world, user, hand);
 	}
 
 	@Override
@@ -60,12 +77,11 @@ public class TeaBottleItem extends Item {
 				for(TeaType teaType : teaTypes) {
 					StatusEffect effect = teaType.getFlavor().getEffect();
 					if(effect != null) {
-						Random random = new Random();
 						if(effect.isInstant()) {
 							effect.applyInstantEffect(user, user, user, teaType.getStrength().getPotency(), 1.0D);
 						}
 						else {
-							user.addStatusEffect(new StatusEffectInstance(effect, teaType.getStrength().getPotency() * (40 + random.nextInt(10))));
+							user.addStatusEffect(new StatusEffectInstance(effect, teaType.getStrength().getPotency() * 400));
 
 						}
 					}
@@ -90,26 +106,5 @@ public class TeaBottleItem extends Item {
 			}
 		}
 		return stack;
-	}
-
-	@Override
-	public int getMaxUseTime(ItemStack stack) {
-		return 46;
-	}
-
-	@Override
-	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.DRINK;
-	}
-
-	@Override
-	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-		return ItemUsage.consumeHeldItem(world, user, hand);
-	}
-
-	@Environment(EnvType.CLIENT)
-	@Override
-	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-		TeaHelper.appendTeaTooltip(tooltip, TeaHelper.getTeaTypesByCompound(stack.getTag()));
 	}
 }

@@ -1,6 +1,7 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "ce_foodstuffs:item/tea_bottle"
+		"layer0": "minecraft:item/potion_overlay",
+		"layer1": "minecraft:item/potion"
 	}
 }

@@ -2,6 +2,7 @@ package hugman.ce_foodstuffs;
 
 import com.hugman.dawn.api.creator.ModData;
 import hugman.ce_foodstuffs.init.CEFBlocks;
+import hugman.ce_foodstuffs.init.CEFEffects;
 import hugman.ce_foodstuffs.init.CEFItems;
 import hugman.ce_foodstuffs.init.CEFSounds;
 import hugman.ce_foodstuffs.init.data.CEFLootTables;
@@ -21,6 +22,7 @@ public class CEFoodstuffs implements ModInitializer {
 		new CEFBlocks();
 		new CEFItems();
 		new CEFSounds();
+		new CEFEffects();
 		new CEFStats();
 		new CEFScreenHandlers();
 		new CEFRecipeSerializers();

@@ -1,6 +1,7 @@
 package hugman.ce_foodstuffs.objects.item.tea;
 
 import hugman.ce_foodstuffs.CEFoodstuffs;
+import hugman.ce_foodstuffs.init.CEFEffects;
 import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
@@ -34,6 +35,52 @@ public class TeaType {
 
 	public Tag<Item> getTag() {
 		return TagRegistry.item(CEFoodstuffs.MOD_DATA.id("tea_ingredients/" + getFlavor().getName() + "/" + getStrength().getName()));
+	}
+
+	public enum Flavor {
+		SWEET("sweet", 6048577, CEFEffects.FULFILLMENT),
+		UMAMI("umami", 11358757, StatusEffects.RESISTANCE),
+		SALTY("salty", 16440596, CEFEffects.GUARD),
+		SOUR("sour", 7596722, CEFEffects.POISON_RESISTANCE),
+		BITTER("bitter", 9966823, CEFEffects.FORESIGHT),
+		SHINING("shining", 16759902, StatusEffects.GLOWING),
+		GLOOPY("gloopy", 9332621);
+
+		private final String name;
+
+		private final StatusEffect effect;
+		private final int color;
+
+		Flavor(String name, int color) {
+			this(name, color, null);
+		}
+
+		Flavor(String name, int color, StatusEffect effect) {
+			this.name = name;
+			this.effect = effect;
+			this.color = color;
+		}
+
+		public static Flavor byName(String name) {
+			for(Flavor flavor : Flavor.values()) {
+				if(flavor.getName().equals(name)) {
+					return flavor;
+				}
+			}
+			return null;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public StatusEffect getEffect() {
+			return effect;
+		}
+
+		public int getColor() {
+			return color;
+		}
 	}
 
 	public enum Strength {
@@ -73,45 +120,6 @@ public class TeaType {
 
 		public int getPotency() {
 			return potency;
-		}
-	}
-
-	public enum Flavor {
-		SWEET("sweet"),
-		UMAMI("umami", StatusEffects.NIGHT_VISION),
-		SALTY("salty", StatusEffects.SPEED),
-		SOUR("sour", StatusEffects.INSTANT_HEALTH),
-		BITTER("bitter", StatusEffects.REGENERATION),
-		SHINING("shining", StatusEffects.GLOWING),
-		GLOOPY("gloopy");
-
-		private final String name;
-		private final StatusEffect effect;
-
-		Flavor(String name) {
-			this(name, null);
-		}
-
-		Flavor(String name, StatusEffect effect) {
-			this.name = name;
-			this.effect = effect;
-		}
-
-		public static Flavor byName(String name) {
-			for(Flavor flavor : Flavor.values()) {
-				if(flavor.getName().equals(name)) {
-					return flavor;
-				}
-			}
-			return null;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public StatusEffect getEffect() {
-			return effect;
 		}
 	}
 }
