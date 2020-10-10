@@ -11,7 +11,7 @@
 	"item.ce_foodstuffs.tomato": "Tomaat",
 	"item.ce_foodstuffs.chocolate": "Chocolade",
 	"item.ce_foodstuffs.marshmallow": "Marshmallow",
-	"//item.ce_foodstuffs.chouquette": "Chouquette",
+	"item.ce_foodstuffs.chouquette": "Chouquette",
 	"item.ce_foodstuffs.apple_pie": "Appeltaart",
 	"item.ce_foodstuffs.sweet_berry_pie": "Zoetebessentaart",
 	"item.ce_foodstuffs.salad": "Salade",
@@ -49,10 +49,10 @@
 	"tea_type.ce_foodstuffs.umami.strong": "Erg umami",
 	"tea_type.ce_foodstuffs.umami.weak": "Beetje umami",
 
-	"//effect.ce_foodstuffs.foresight": "Foresight",
-	"//effect.ce_foodstuffs.fulfillment": "Fulfillment",
-	"//effect.ce_foodstuffs.guard": "Guard",
-	"//effect.ce_foodstuffs.poison_resistance": "Poison Resistance",
+	"effect.ce_foodstuffs.foresight": "Vooruitziendheid",
+	"effect.ce_foodstuffs.fulfillment": "Voldoening",
+	"effect.ce_foodstuffs.guard": "Besherming",
+	"effect.ce_foodstuffs.poison_resistance": "Gifbescherming",
 
 	"subtitles.ce_foodstuffs.block.kettle.brew": "Ketel fluit",
 	"subtitles.ce_foodstuffs.item.tea_bottle.fill": "Theeglas vult",
