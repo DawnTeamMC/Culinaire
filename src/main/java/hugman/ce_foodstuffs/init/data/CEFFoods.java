@@ -15,7 +15,7 @@ public class CEFFoods {
 	public static final FoodComponent CHOCOLATE = build(2, 0.1F);
 	public static final FoodComponent APPLE_PIE = build(9, 0.15F);
 	public static final FoodComponent SWEET_BERRY_PIE = build(7, 0.15F);
-	public static final FoodComponent SALAD = build(2, 0.75F);
+	public static final FoodComponent SALAD = build(9, 0.4F);
 	public static final FoodComponent MASHED_POTATOES = build(7, 0.6F);
 
 	private static FoodComponent build(int hunger, float saturationModifier) {
