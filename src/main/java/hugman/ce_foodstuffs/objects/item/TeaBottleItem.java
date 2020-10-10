@@ -1,6 +1,6 @@
 package hugman.ce_foodstuffs.objects.item;
 
-import hugman.ce_foodstuffs.CEFoodstuffs;
+import hugman.ce_foodstuffs.objects.item.tea.TeaHelper;
 import hugman.ce_foodstuffs.objects.item.tea.TeaType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -18,44 +18,19 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class TeaBottleItem extends Item {
 	public TeaBottleItem(Settings settings) {
 		super(settings);
-	}
-
-	public static List<TeaType> getTeaTypes(ItemStack stack) {
-		List<TeaType> list = new ArrayList<>();
-		CompoundTag compoundTag = stack.getTag();
-		if(compoundTag != null) {
-			if(compoundTag.contains("TeaTypes")) {
-				ListTag teaTypeList = compoundTag.getList("TeaTypes", 10);
-				if(!teaTypeList.isEmpty()) {
-					for(int i = 0; i < teaTypeList.size(); ++i) {
-						CompoundTag typeTag = teaTypeList.getCompound(i);
-						TeaType teaType = new TeaType(typeTag.getString("Strength"), typeTag.getString("Flavor"));
-						if(teaType.isCorrect()) {
-							list.add(teaType);
-						}
-					}
-				}
-			}
-		}
-		return list;
 	}
 
 	public static ItemStack stackWithTeaTypes(ItemStack stack, List<TeaType> teaTypes) {
@@ -71,22 +46,6 @@ public class TeaBottleItem extends Item {
 		return stack;
 	}
 
-	@Environment(EnvType.CLIENT)
-	public static void appendTeaTooltip(ItemStack stack, List<Text> tooltip) {
-		MutableText text = (new LiteralText("")).formatted(Formatting.GRAY);
-		List<TeaType> teaTypes = getTeaTypes(stack);
-		if(!teaTypes.isEmpty()) {
-			for(int i = 0; i < teaTypes.size(); ++i) {
-				TeaType teaType = teaTypes.get(i);
-				if(i > 0) {
-					text.append(", ");
-				}
-				text.append(new TranslatableText("tea_type." + CEFoodstuffs.MOD_DATA.getModName() + "." + teaType.getFlavor().getName() + "." + teaType.getStrength().getName()));
-			}
-			tooltip.add(text);
-		}
-	}
-
 	@Override
 	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
 		PlayerEntity playerEntity = user instanceof PlayerEntity ? (PlayerEntity) user : null;
@@ -96,7 +55,7 @@ public class TeaBottleItem extends Item {
 			serverPlayerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
 		}
 		if(!world.isClient) {
-			List<TeaType> teaTypes = getTeaTypes(stack);
+			List<TeaType> teaTypes = TeaHelper.getTeaTypesByCompound(stack.getTag());
 			if(!teaTypes.isEmpty()) {
 				for(TeaType teaType : teaTypes) {
 					StatusEffect effect = teaType.getFlavor().getEffect();
@@ -151,6 +110,6 @@ public class TeaBottleItem extends Item {
 	@Environment(EnvType.CLIENT)
 	@Override
 	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-		appendTeaTooltip(stack, tooltip);
+		TeaHelper.appendTeaTooltip(tooltip, TeaHelper.getTeaTypesByCompound(stack.getTag()));
 	}
 }

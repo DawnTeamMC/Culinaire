@@ -4,7 +4,7 @@ import hugman.ce_foodstuffs.CEFoodstuffs;
 import hugman.ce_foodstuffs.init.CEFBlocks;
 import hugman.ce_foodstuffs.init.CEFSounds;
 import hugman.ce_foodstuffs.objects.item.TeaBagItem;
-import hugman.ce_foodstuffs.objects.item.TeaBottleItem;
+import hugman.ce_foodstuffs.objects.item.tea.TeaHelper;
 import hugman.ce_foodstuffs.objects.item.tea.TeaType;
 import hugman.ce_foodstuffs.objects.screen.handler.KettleScreenHandler;
 import net.minecraft.block.BlockState;
@@ -187,7 +187,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 	@Override
 	public boolean isValid(int slot, ItemStack stack) {
 		if(stack.getItem() instanceof TeaBagItem) {
-			return !TeaBottleItem.getTeaTypes(stack).isEmpty();
+			return !TeaHelper.getTeaTypesByCompound(stack.getTag()).isEmpty();
 		}
 		else {
 			return false;
@@ -257,7 +257,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 			return false;
 		}
 		else if(stack.getItem() instanceof TeaBagItem) {
-			return !TeaBottleItem.getTeaTypes(stack).isEmpty() && fluid == 1 && fluidLevel >= 1 && this.isHot;
+			return !TeaHelper.getTeaTypesByCompound(stack.getTag()).isEmpty() && fluid == 1 && fluidLevel >= 1 && this.isHot;
 		}
 		else {
 			return false;
@@ -266,7 +266,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 
 	private void brew(ItemStack stack) {
 		this.fluid = 2;
-		this.teaTypes = TeaBottleItem.getTeaTypes(stack);
+		this.teaTypes = TeaHelper.getTeaTypesByCompound(stack.getTag());
 		stack.decrement(1);
 		BlockPos blockPos = this.getPos();
 		if(stack.getItem().hasRecipeRemainder()) {

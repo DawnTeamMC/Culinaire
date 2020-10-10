@@ -1,5 +1,6 @@
 package hugman.ce_foodstuffs.objects.item;
 
+import hugman.ce_foodstuffs.objects.item.tea.TeaHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
@@ -19,6 +20,6 @@ public class TeaBagItem extends Item {
 	@Environment(EnvType.CLIENT)
 	@Override
 	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-		TeaBottleItem.appendTeaTooltip(stack, tooltip);
+		TeaHelper.appendTeaTooltip(tooltip, TeaHelper.getTeaTypesByCompound(stack.getTag()));
 	}
 }

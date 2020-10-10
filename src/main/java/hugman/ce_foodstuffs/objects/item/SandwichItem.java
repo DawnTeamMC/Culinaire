@@ -57,7 +57,7 @@ public class SandwichItem extends Item {
 	@Override
 	@Environment(EnvType.CLIENT)
 	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-		MutableText text = (new LiteralText("")).formatted(Formatting.GRAY);
+		MutableText text = new LiteralText("").formatted(Formatting.GRAY);
 		CompoundTag sandwichData = stack.getSubTag("SandwichData");
 		if(sandwichData != null) {
 			ListTag ingredientList = sandwichData.getList("Ingredients", 10);
@@ -68,10 +68,8 @@ public class SandwichItem extends Item {
 					if(i > 0) {
 						text.append(", ");
 					}
-					text.append(item.getName()).formatted(ingredientData.getBoolean("Complementary") ? Formatting.GREEN : Formatting.GRAY);
+					text.append(((MutableText) (item.getName())).formatted(ingredientData.getBoolean("Complementary") ? Formatting.GREEN : Formatting.GRAY));
 				}
-				//TODO delete the line below
-				tooltip.add((new LiteralText("").append("[DEBUG] Restores " + sandwichData.getInt("Hunger") + " hunger and " + sandwichData.getFloat("SaturationModifier") + " saturation")));
 				tooltip.add(text);
 			}
 		}

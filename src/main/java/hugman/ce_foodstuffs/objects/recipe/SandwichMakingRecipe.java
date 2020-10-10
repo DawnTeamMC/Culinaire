@@ -91,16 +91,37 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 		CompoundTag ingredientTag2 = new CompoundTag();
 		CompoundTag ingredientTag3 = new CompoundTag();
 		ListTag listTag = new ListTag();
+		int hunger1 = 0;
+		float saturation1 = 0;
+		int hunger2 = 0;
+		float saturation2 = 0;
+		int hunger3 = 0;
+		float saturation3 = 0;
 		if(item1.isFood()) {
-			int hunger1 = item1.getFoodComponent().getHunger() / 3;
-			float saturation1 = item1.getFoodComponent().getSaturationModifier() / 3;
+			hunger1 = item1.getFoodComponent().getHunger() / 3;
+			saturation1 = item1.getFoodComponent().getSaturationModifier() / 3;
+			ingredientTag1.putString("Item", Registry.ITEM.getId(item1).toString());
+			listTag.add(ingredientTag1);
+		}
+		if(item2.isFood()) {
+			hunger2 = item2.getFoodComponent().getHunger() / 3;
+			saturation2 = item2.getFoodComponent().getSaturationModifier() / 3;
+			ingredientTag2.putString("Item", Registry.ITEM.getId(item2).toString());
+			listTag.add(ingredientTag2);
+		}
+		if(item3.isFood()) {
+			hunger3 = item3.getFoodComponent().getHunger() / 3;
+			saturation3 = item3.getFoodComponent().getSaturationModifier() / 3;
+			ingredientTag3.putString("Item", Registry.ITEM.getId(item3).toString());
+			listTag.add(ingredientTag3);
+		}
+		if(item1.isFood()) {
 			if(item2.isFood()) {
-				int hunger2 = item2.getFoodComponent().getHunger() / 3;
-				float saturation2 = item2.getFoodComponent().getSaturationModifier() / 3;
 				if(item3.isFood()) {
-					int hunger3 = item3.getFoodComponent().getHunger() / 3;
-					float saturation3 = item3.getFoodComponent().getSaturationModifier() / 3;
-					if((areComplements(item1, item2) && (areComplements(item1, item3)) || (areComplements(item1, item2) && areComplements(item2, item3)))) {
+					boolean b1 = areComplements(item1, item2) && areComplements(item1, item3);
+					boolean b2 = areComplements(item1, item3) && areComplements(item2, item3);
+					boolean b3 = areComplements(item1, item2) && areComplements(item2, item3);
+					if(b1 || b2 || b3) {
 						// 1, 2, 3 present
 						// 1, 2, 3 complements
 						hunger = (hunger1 + hunger2 + hunger3) * 2;
@@ -145,8 +166,6 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 						ingredientTag2.putBoolean("Complementary", false);
 						ingredientTag3.putBoolean("Complementary", false);
 					}
-					ingredientTag3.putString("Item", Registry.ITEM.getId(item3).toString());
-					listTag.add(ingredientTag3);
 				}
 				else {
 					if(areComplements(item1, item2)) {
@@ -166,12 +185,8 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 						ingredientTag2.putBoolean("Complementary", false);
 					}
 				}
-				ingredientTag2.putString("Item", Registry.ITEM.getId(item2).toString());
-				listTag.add(ingredientTag2);
 			}
 			else if(item3.isFood()) {
-				int hunger3 = item3.getFoodComponent().getHunger() / 3;
-				float saturation3 = item3.getFoodComponent().getSaturationModifier() / 3;
 				if(areComplements(item1, item3)) {
 					// 1, 3 present
 					// 1, 3 complements
@@ -188,8 +203,6 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 					ingredientTag1.putBoolean("Complementary", false);
 					ingredientTag3.putBoolean("Complementary", false);
 				}
-				ingredientTag3.putString("Item", Registry.ITEM.getId(item3).toString());
-				listTag.add(ingredientTag3);
 			}
 			else {
 				// 1 present
@@ -198,15 +211,9 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 				saturation = saturation1;
 				ingredientTag1.putBoolean("Complementary", false);
 			}
-			ingredientTag1.putString("Item", Registry.ITEM.getId(item1).toString());
-			listTag.add(ingredientTag1);
 		}
 		else if(item2.isFood()) {
-			int hunger2 = item2.getFoodComponent().getHunger() / 3;
-			float saturation2 = item2.getFoodComponent().getSaturationModifier() / 3;
 			if(item3.isFood()) {
-				int hunger3 = item3.getFoodComponent().getHunger() / 3;
-				float saturation3 = item3.getFoodComponent().getSaturationModifier() / 3;
 				if(areComplements(item2, item3)) {
 					// 2, 3 present
 					// 2, 3 complements
@@ -223,8 +230,6 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 					ingredientTag2.putBoolean("Complementary", false);
 					ingredientTag3.putBoolean("Complementary", false);
 				}
-				ingredientTag3.putString("Item", Registry.ITEM.getId(item3).toString());
-				listTag.add(ingredientTag3);
 			}
 			else {
 				// 2 present
@@ -233,19 +238,13 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 				saturation = saturation2;
 				ingredientTag2.putBoolean("Complementary", false);
 			}
-			ingredientTag2.putString("Item", Registry.ITEM.getId(item2).toString());
-			listTag.add(ingredientTag2);
 		}
 		else if(item3.isFood()) {
 			// 3 present
 			// none complements
-			int hunger3 = item3.getFoodComponent().getHunger() / 3;
-			float saturation3 = item3.getFoodComponent().getSaturationModifier() / 3;
 			hunger = hunger3;
 			saturation = saturation3;
 			ingredientTag3.putBoolean("Complementary", false);
-			ingredientTag3.putString("Item", Registry.ITEM.getId(item3).toString());
-			listTag.add(ingredientTag3);
 		}
 		CompoundTag compoundTag = givenStack.getOrCreateSubTag("SandwichData");
 		compoundTag.putInt("Hunger", hunger);
