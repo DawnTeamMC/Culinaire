@@ -37,12 +37,17 @@ public class TeaType {
 		return TagRegistry.item(CEFoodstuffs.MOD_DATA.id("tea_ingredients/" + getFlavor().getName() + "/" + getStrength().getName()));
 	}
 
+	@Override
+	public String toString() {
+		return "TeaType{" + "strength=" + strength + ", flavor=" + flavor + '}';
+	}
+
 	public enum Flavor {
-		SWEET("sweet", 6048577, CEFEffects.FULFILLMENT),
-		UMAMI("umami", 11358757, StatusEffects.RESISTANCE),
-		SALTY("salty", 16440596, CEFEffects.GUARD),
-		SOUR("sour", 7596722, CEFEffects.POISON_RESISTANCE),
-		BITTER("bitter", 9966823, CEFEffects.FORESIGHT),
+		SWEET("sweet", 9523743, CEFEffects.FULFILLMENT),
+		UMAMI("umami", 10059295, StatusEffects.RESISTANCE),
+		SALTY("salty", 10251038, CEFEffects.GUARD),
+		SOUR("sour", 7238946, CEFEffects.POISON_RESISTANCE),
+		BITTER("bitter", 5057061, CEFEffects.FORESIGHT),
 		SHINING("shining", 16759902, StatusEffects.GLOWING),
 		GLOOPY("gloopy", 9332621);
 
