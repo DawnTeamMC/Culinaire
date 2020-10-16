@@ -29,8 +29,8 @@ public class TeaHelper {
 
 	public static ItemStack appendTeaTypes(ItemStack stack, List<TeaType> teaTypes) {
 		ListTag listTag = new ListTag();
-		CompoundTag typeTag = new CompoundTag();
 		for(TeaType teaType : teaTypes) {
+			CompoundTag typeTag = new CompoundTag();
 			typeTag.putString("Flavor", teaType.getFlavor().getName());
 			typeTag.putString("Strength", teaType.getStrength().getName());
 			listTag.add(typeTag);
