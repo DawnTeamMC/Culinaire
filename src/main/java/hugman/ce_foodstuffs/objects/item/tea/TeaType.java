@@ -1,7 +1,7 @@
 package hugman.ce_foodstuffs.objects.item.tea;
 
+import com.hugman.dawn.mod.init.DawnEffects;
 import hugman.ce_foodstuffs.CEFoodstuffs;
-import hugman.ce_foodstuffs.init.CEFEffects;
 import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
@@ -43,11 +43,11 @@ public class TeaType {
 	}
 
 	public enum Flavor {
-		SWEET("sweet", 9523743, CEFEffects.FULFILLMENT),
+		SWEET("sweet", 9523743, DawnEffects.FULFILLMENT),
 		UMAMI("umami", 10059295, StatusEffects.RESISTANCE),
-		SALTY("salty", 10251038, CEFEffects.GUARD),
-		SOUR("sour", 7238946, CEFEffects.POISON_RESISTANCE),
-		BITTER("bitter", 5057061, CEFEffects.FORESIGHT),
+		SALTY("salty", 10251038, DawnEffects.GUARD),
+		SOUR("sour", 7238946, DawnEffects.POISON_RESISTANCE),
+		BITTER("bitter", 5057061, DawnEffects.FORESIGHT),
 		SHINING("shining", 16759902, StatusEffects.GLOWING),
 		GLOOPY("gloopy", 9332621);
 

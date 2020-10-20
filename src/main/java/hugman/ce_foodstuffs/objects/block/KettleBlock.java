@@ -1,8 +1,7 @@
 package hugman.ce_foodstuffs.objects.block;
 
+import hugman.ce_foodstuffs.init.CEFBlocks;
 import hugman.ce_foodstuffs.init.CEFItems;
-import hugman.ce_foodstuffs.init.CEFSounds;
-import hugman.ce_foodstuffs.init.data.CEFStats;
 import hugman.ce_foodstuffs.objects.block.block_entity.KettleBlockEntity;
 import hugman.ce_foodstuffs.objects.item.tea.TeaHelper;
 import hugman.ce_foodstuffs.objects.item.tea.TeaType;
@@ -183,13 +182,13 @@ public class KettleBlock extends BlockWithEntity {
 							else if(player instanceof ServerPlayerEntity) {
 								((ServerPlayerEntity) player).openHandledScreen(player.playerScreenHandler);
 							}
-							world.playSound(null, pos, CEFSounds.ITEM_TEA_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+							world.playSound(null, pos, CEFItems.TEA_BOTTLE_FILL_SOUND, SoundCategory.BLOCKS, 1.0F, 1.0F);
 						}
 					}
 				}
 				if(shouldOpenScreen) {
 					player.openHandledScreen((KettleBlockEntity) blockEntity);
-					player.incrementStat(CEFStats.INTERACT_WITH_KETTLE);
+					player.incrementStat(CEFBlocks.KETTLE_INTERACTION_STAT);
 				}
 			}
 		}

@@ -1,7 +1,7 @@
 package hugman.ce_foodstuffs.objects.screen.handler;
 
+import hugman.ce_foodstuffs.init.CEFBlocks;
 import hugman.ce_foodstuffs.init.CEFItems;
-import hugman.ce_foodstuffs.init.data.CEFScreenHandlers;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,19 +17,18 @@ import net.minecraft.screen.slot.Slot;
 public class KettleScreenHandler extends ScreenHandler {
 	private final Inventory inventory;
 	private final PropertyDelegate propertyDelegate;
-	private final Slot ingredientSlot;
 
 	public KettleScreenHandler(int syncId, PlayerInventory playerInventory) {
-		this(syncId, playerInventory, new SimpleInventory(1), new ArrayPropertyDelegate(4));
+		this(syncId, playerInventory, new SimpleInventory(1), new ArrayPropertyDelegate(5));
 	}
 
 	public KettleScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, PropertyDelegate propertyDelegate) {
-		super(CEFScreenHandlers.KETTLE_SCREEN_HANDLER, syncId);
+		super(CEFBlocks.KETTLE_SCREEN_HANDLER, syncId);
 		checkSize(inventory, 1);
-		checkDataCount(propertyDelegate, 4);
+		checkDataCount(propertyDelegate, 5);
 		this.inventory = inventory;
 		this.propertyDelegate = propertyDelegate;
-		this.ingredientSlot = this.addSlot(new TeaBagSlot(inventory, 0, 80, 17));
+		this.addSlot(new TeaBagSlot(inventory, 0, 80, 17));
 		this.addProperties(propertyDelegate);
 		int k;
 		for(k = 0; k < 3; ++k) {
@@ -60,12 +59,12 @@ public class KettleScreenHandler extends ScreenHandler {
 						return ItemStack.EMPTY;
 					}
 				}
-				else if(index >= 1 && index < 27) {
+				else if(index < 27) {
 					if(!this.insertItem(itemStack2, 27, 36, false)) {
 						return ItemStack.EMPTY;
 					}
 				}
-				else if(index >= 27 && index < 36 && !this.insertItem(itemStack2, 1, 27, false)) {
+				else if(index < 36 && !this.insertItem(itemStack2, 1, 27, false)) {
 					return ItemStack.EMPTY;
 				}
 			}
@@ -104,6 +103,11 @@ public class KettleScreenHandler extends ScreenHandler {
 	@Environment(EnvType.CLIENT)
 	public boolean isHot() {
 		return this.propertyDelegate.get(3) > 0;
+	}
+
+	@Environment(EnvType.CLIENT)
+	public int getTeaColor() {
+		return this.propertyDelegate.get(4);
 	}
 
 	static class TeaBagSlot extends Slot {

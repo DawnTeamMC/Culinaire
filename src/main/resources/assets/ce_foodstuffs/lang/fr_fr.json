@@ -49,11 +49,6 @@
 	"tea_type.ce_foodstuffs.umami.strong": "Très umami",
 	"tea_type.ce_foodstuffs.umami.weak": "Légèrement umami",
 
-	"effect.ce_foodstuffs.foresight": "Regard précis",
-	"effect.ce_foodstuffs.fulfillment": "Remplissage",
-	"effect.ce_foodstuffs.guard": "Défense",
-	"effect.ce_foodstuffs.poison_resistance": "Résistance au poison",
-
 	"subtitles.ce_foodstuffs.block.kettle.brew": "Théière qui siffle",
 	"subtitles.ce_foodstuffs.item.tea_bottle.fill": "Remplissage d'une fiole de thé",
 

@@ -46,17 +46,32 @@ public class KettleScreen extends HandledScreen<KettleScreenHandler> {
 		if(brewTime > 0) {
 			int brewBarHeight = (int) (27.0F * (1.0F - (float) brewTime / 800.0F));
 			if(brewBarHeight > 0) {
-				this.drawTexture(matrices, i + 99, j + 17, 224, 0, 7, brewBarHeight);
+				this.drawTexture(matrices, i + 99, j + 17, 222, 0, 7, brewBarHeight);
 			}
 		}
-		if(fluid != 0 && fluidLevel > 0) {
-			int fluidWidth = (int) (48.0F * (float) fluidLevel / 3.0F);
-			if(fluidWidth > 0) {
-				this.drawTexture(matrices, i + 64, j + 47, 176, fluid == 1 ? 0 : 18, fluidWidth, 18);
+		if(fluid == 0) {
+			this.drawTexture(matrices, i + 65, j + 48, 176, 0, 46, 16);
+		}
+		else {
+			if(fluidLevel > 0) {
+				int teaColor;
+				if(fluid == 2) {
+					teaColor = this.handler.getTeaColor();
+				}
+				else {
+					teaColor = 3694022;
+				}
+				float red = (float) (teaColor >> 16 & 255) / 255.0F;
+				float green = (float) (teaColor >> 8 & 255) / 255.0F;
+				float blue = (float) (teaColor & 255) / 255.0F;
+				RenderSystem.color3f(red, green, blue);
+				int fluidHeight = (int) (12.0F * (float) fluidLevel / 3.0F) + 4;
+				this.drawTexture(matrices, i + 65, j + 64 - fluidHeight, 176, 16, 46, fluidHeight);
 			}
 		}
+		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		if(isHot) {
-			this.drawTexture(matrices, i + 76, j + 68, 176, 36, 24, 9);
+			this.drawTexture(matrices, i + 76, j + 68, 176, 32, 24, 9);
 		}
 	}
 }

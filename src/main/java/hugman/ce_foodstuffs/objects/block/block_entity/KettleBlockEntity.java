@@ -2,12 +2,12 @@ package hugman.ce_foodstuffs.objects.block.block_entity;
 
 import hugman.ce_foodstuffs.CEFoodstuffs;
 import hugman.ce_foodstuffs.init.CEFBlocks;
-import hugman.ce_foodstuffs.init.CEFSounds;
 import hugman.ce_foodstuffs.objects.item.TeaBagItem;
 import hugman.ce_foodstuffs.objects.item.tea.TeaHelper;
 import hugman.ce_foodstuffs.objects.item.tea.TeaType;
 import hugman.ce_foodstuffs.objects.screen.handler.KettleScreenHandler;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -60,6 +60,8 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 						return KettleBlockEntity.this.fluid;
 					case 3:
 						return KettleBlockEntity.this.isHot ? 1 : 0;
+					case 4:
+						return TeaHelper.getColor(KettleBlockEntity.this.teaTypes);
 					default:
 						return 0;
 				}
@@ -79,12 +81,14 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 					case 3:
 						KettleBlockEntity.this.isHot = value == 1;
 						break;
+					case 4:
+						break;
 				}
 
 			}
 
 			public int size() {
-				return 4;
+				return 5;
 			}
 		};
 	}
@@ -222,7 +226,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 	@Override
 	public void tick() {
 		ItemStack stack = this.inventory.get(0);
-		this.isHot = CampfireBlock.isLitCampfire(this.world.getBlockState(this.getPos().down())) || this.world.getDimension().isUltrawarm();
+		this.isHot = isHot();
 		boolean canBrew = this.canBrew(stack);
 		boolean isBrewing = this.brewTime > 0;
 		if(isBrewing) {
@@ -252,6 +256,20 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 		}
 	}
 
+	public boolean isHot() {
+		for(Direction direction : Direction.values()) {
+			if(isHotBlock(this.getPos().offset(direction))) {
+				return true;
+			}
+		}
+		return this.world.getDimension().isUltrawarm();
+	}
+
+	public boolean isHotBlock(BlockPos pos) {
+		BlockState blockState = this.world.getBlockState(pos);
+		return CampfireBlock.isLitCampfire(blockState) || blockState.isOf(Blocks.MAGMA_BLOCK) || blockState.isOf(Blocks.LAVA);
+	}
+
 	private boolean canBrew(ItemStack stack) {
 		if(stack.isEmpty()) {
 			return false;
@@ -278,7 +296,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 				ItemScatterer.spawn(this.world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), remainderStack);
 			}
 		}
-		this.world.playSound(null, pos, CEFSounds.BLOCK_KETTLE_BREW, SoundCategory.BLOCKS, 1.0F, 1.0F);
+		this.world.playSound(null, pos, CEFBlocks.KETTLE_BREW_SOUND, SoundCategory.BLOCKS, 1.0F, 1.0F);
 		this.inventory.set(0, stack);
 	}
 

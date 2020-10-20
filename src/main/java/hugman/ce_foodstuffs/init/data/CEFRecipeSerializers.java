@@ -9,6 +9,9 @@ import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.util.registry.Registry;
 
 public class CEFRecipeSerializers {
+	public static void init() {
+	}
+
 	public static final SpecialRecipeSerializer<SandwichMakingRecipe> SANDWICH_MAKING = register("sandwich_making", new SpecialRecipeSerializer<>(SandwichMakingRecipe::new));
 	public static final SpecialRecipeSerializer<TeaBagMakingRecipe> TEA_BAG_MAKING = register("tea_bag_making", new SpecialRecipeSerializer<>(TeaBagMakingRecipe::new));
 

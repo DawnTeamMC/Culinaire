@@ -49,11 +49,6 @@
 	"tea_type.ce_foodstuffs.umami.strong": "Erg umami",
 	"tea_type.ce_foodstuffs.umami.weak": "Beetje umami",
 
-	"effect.ce_foodstuffs.foresight": "Vooruitziendheid",
-	"effect.ce_foodstuffs.fulfillment": "Voldoening",
-	"effect.ce_foodstuffs.guard": "Besherming",
-	"effect.ce_foodstuffs.poison_resistance": "Gifbescherming",
-
 	"subtitles.ce_foodstuffs.block.kettle.brew": "Ketel fluit",
 	"subtitles.ce_foodstuffs.item.tea_bottle.fill": "Theeglas vult",
 
