@@ -3,7 +3,6 @@ package hugman.ce_foodstuffs.objects.recipe;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import hugman.ce_foodstuffs.init.CEFItems;
-import hugman.ce_foodstuffs.init.data.CEFRecipeSerializers;
 import hugman.ce_foodstuffs.init.data.CEFTags;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -259,6 +258,6 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 	}
 
 	public RecipeSerializer<?> getSerializer() {
-		return CEFRecipeSerializers.SANDWICH_MAKING;
+		return CEFItems.SANDWICH_MAKING;
 	}
 }

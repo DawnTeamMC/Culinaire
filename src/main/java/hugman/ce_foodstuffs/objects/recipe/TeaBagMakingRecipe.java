@@ -1,7 +1,6 @@
 package hugman.ce_foodstuffs.objects.recipe;
 
 import hugman.ce_foodstuffs.init.CEFItems;
-import hugman.ce_foodstuffs.init.data.CEFRecipeSerializers;
 import hugman.ce_foodstuffs.objects.item.tea.TeaHelper;
 import hugman.ce_foodstuffs.objects.item.tea.TeaType;
 import net.minecraft.inventory.CraftingInventory;
@@ -26,7 +25,7 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return CEFRecipeSerializers.TEA_BAG_MAKING;
+		return CEFItems.TEA_BAG_MAKING;
 	}
 
 	@Override

@@ -52,5 +52,10 @@
 	"subtitles.ce_foodstuffs.block.kettle.brew": "Ketel fluit",
 	"subtitles.ce_foodstuffs.item.tea_bottle.fill": "Theeglas vult",
 
-	"stat.ce_foodstuffs.interact_with_kettle": "Interacties met ketel"
+	"stat.ce_foodstuffs.interact_with_kettle": "Interacties met ketel",
+
+	"comment": "CONFIG",
+	"//text.autoconfig.ce_foodstuffs.title": "Common Expansion: Foodstuffs Configuration",
+	"//text.autoconfig.ce_foodstuffs.category.features": "Features",
+	"//text.autoconfig.ce_foodstuffs.option.features.canDrinkMilkBucket": "Drinkable Milk Buckets"
 }

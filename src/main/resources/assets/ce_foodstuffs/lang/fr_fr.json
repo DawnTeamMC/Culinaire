@@ -52,5 +52,10 @@
 	"subtitles.ce_foodstuffs.block.kettle.brew": "Théière qui siffle",
 	"subtitles.ce_foodstuffs.item.tea_bottle.fill": "Remplissage d'une fiole de thé",
 
-	"stat.ce_foodstuffs.interact_with_kettle": "Interactions avec une théière"
+	"stat.ce_foodstuffs.interact_with_kettle": "Interactions avec une théière",
+
+	"comment": "CONFIG",
+	"text.autoconfig.ce_foodstuffs.title": "Configuration de Common Expansion: Foodstuffs",
+	"text.autoconfig.ce_foodstuffs.category.features": "Fonctionnalités",
+	"text.autoconfig.ce_foodstuffs.option.features.canDrinkMilkBucket": "Seaux de lait buvables"
 }
