@@ -1,6 +1,6 @@
 {
 	"required": true,
-	"package": "hugman.ce_foodstuffs.mixin",
+	"package": "com.hugman.ce_foodstuffs.mixin",
 	"compatibilityLevel": "JAVA_8",
 	"mixins": [
 		"CauldronMixin",
@@ -8,7 +8,7 @@
 		"MilkBucketMixin"
 	],
 	"client": [
-		"PlayerRendererMixin"
+		"client.PlayerRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
