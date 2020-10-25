@@ -27,7 +27,7 @@ public class CEFItems extends CEFPack {
 	public static final Item SWEET_BERRY_PIE = register(new ItemCreator.Builder("sweet_berry_pie", new Item(new Item.Settings().group(ItemGroup.FOOD).food(CEFFoods.SWEET_BERRY_PIE))).compostingChance(1.0f));
 
 	public static final Item SANDWICH = register(new ItemCreator.Builder("sandwich", new SandwichItem(new Item.Settings().group(ItemGroup.FOOD).food(CEFFoods.SANDWICH_BASE).maxCount(1))).compostingChance(1.0f));
-	public static final SpecialRecipeSerializer<FireworkRocketRecipe> SANDWICH_MAKING = register(new RecipeSerializerCreator.Builder<>("sandwich_making", new SpecialRecipeSerializer<>(SandwichMakingRecipe::new)));
+	public static final SpecialRecipeSerializer<SandwichMakingRecipe> SANDWICH_MAKING = register(new RecipeSerializerCreator.Builder<>("sandwich_making", new SpecialRecipeSerializer<>(SandwichMakingRecipe::new)));
 
 	public static final Item SALAD = register(new ItemCreator.Builder("salad", new MushroomStewItem(new Item.Settings().group(ItemGroup.FOOD).maxCount(1).food(CEFFoods.SALAD))));
 	public static final Item MASHED_POTATOES = register(new ItemCreator.Builder("mashed_potatoes", new MushroomStewItem(new Item.Settings().group(ItemGroup.FOOD).food(CEFFoods.MASHED_POTATOES).maxCount(1))));
