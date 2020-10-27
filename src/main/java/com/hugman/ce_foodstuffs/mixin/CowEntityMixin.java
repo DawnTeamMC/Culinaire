@@ -26,8 +26,5 @@ public class CowEntityMixin {
 			player.setStackInHand(hand, itemStack2);
 			info.setReturnValue(ActionResult.success(cowEntity.world.isClient));
 		}
-		else {
-			info.setReturnValue(cowEntity.interactMob(player, hand));
-		}
 	}
 }
