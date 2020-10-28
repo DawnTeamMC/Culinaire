@@ -22,6 +22,6 @@ public class CEFoodstuffs implements ModInitializer {
 		CEFBlocks.init();
 		CEFItems.init();
 		CEFLootTables.addToVanillaTables();
-		MOD_DATA.registerEverything();
+		MOD_DATA.registerCreators();
 	}
 }

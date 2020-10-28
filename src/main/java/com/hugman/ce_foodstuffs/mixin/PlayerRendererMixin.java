@@ -1,4 +1,4 @@
-package com.hugman.ce_foodstuffs.mixin.client;
+package com.hugman.ce_foodstuffs.mixin;
 
 import com.hugman.ce_foodstuffs.objects.item.MarshmallowOnAStickItem;
 import net.minecraft.block.BlockState;

@@ -2,13 +2,12 @@ package com.hugman.ce_foodstuffs.init;
 
 import com.hugman.ce_foodstuffs.init.data.CEFFoods;
 import com.hugman.ce_foodstuffs.objects.item.*;
+import com.hugman.ce_foodstuffs.objects.recipe.SandwichMakingRecipe;
+import com.hugman.ce_foodstuffs.objects.recipe.TeaBagMakingRecipe;
 import com.hugman.dawn.api.creator.ItemCreator;
 import com.hugman.dawn.api.creator.RecipeSerializerCreator;
 import com.hugman.dawn.api.creator.SoundCreator;
-import com.hugman.ce_foodstuffs.objects.recipe.SandwichMakingRecipe;
-import com.hugman.ce_foodstuffs.objects.recipe.TeaBagMakingRecipe;
 import net.minecraft.item.*;
-import net.minecraft.recipe.FireworkRocketRecipe;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.sound.SoundEvent;
 

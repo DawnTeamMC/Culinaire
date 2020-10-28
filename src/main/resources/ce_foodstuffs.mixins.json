@@ -8,7 +8,7 @@
 		"MilkBucketMixin"
 	],
 	"client": [
-		"client.PlayerRendererMixin"
+		"PlayerRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
