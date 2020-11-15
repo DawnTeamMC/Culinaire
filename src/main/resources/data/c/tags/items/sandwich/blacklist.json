@@ -1,7 +1,7 @@
 {
 	"replace": false,
 	"values": [
-		"#ce_foodstuffs:sandwich/bread",
+		"#c:sandwich/bread",
 		"ce_foodstuffs:sandwich",
 		"minecraft:mushroom_stew",
 		"minecraft:rabbit_stew",

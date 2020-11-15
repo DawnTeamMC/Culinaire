@@ -37,7 +37,7 @@ public class CauldronMixin {
 						player.incrementStat(Stats.USE_CAULDRON);
 						player.setStackInHand(hand, stack);
 						if(player instanceof ServerPlayerEntity) {
-							((ServerPlayerEntity) player).openHandledScreen(player.playerScreenHandler);
+							((ServerPlayerEntity) player).refreshScreenHandler(player.playerScreenHandler);
 						}
 					}
 					world.setBlockState(pos, CEFBlocks.MILK_CAULDRON.getDefaultState().with(MilkCauldronBlock.COAGULATED, false).with(MilkCauldronBlock.LEVEL, 1), 2);

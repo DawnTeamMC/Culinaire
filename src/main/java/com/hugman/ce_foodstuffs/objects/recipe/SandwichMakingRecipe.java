@@ -20,9 +20,9 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 public class SandwichMakingRecipe extends SpecialCraftingRecipe {
+	public static final ListMultimap<Item, Item> COMPLEMENTS = ArrayListMultimap.create();
 	private static final Ingredient BREAD = Ingredient.fromTag(CEFTags.Items.SANDWICH_BREAD);
 	private static final Ingredient BLACKLIST = Ingredient.fromTag(CEFTags.Items.SANDWICH_BLACKLIST);
-	public static final ListMultimap<Item, Item> COMPLEMENTS = ArrayListMultimap.create();
 
 	public SandwichMakingRecipe(Identifier identifier) {
 		super(identifier);

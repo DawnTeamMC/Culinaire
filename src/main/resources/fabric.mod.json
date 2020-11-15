@@ -8,7 +8,8 @@
 		"Hugman",
 		"Plantkillable",
 		"Cydian",
-		"Wintrius"
+		"Wintrius",
+		"Dawn Team"
 	],
 	"contact": {
 		"homepage": "https://www.curseforge.com/minecraft/mc-mods/ce-foodstuffs",
@@ -31,6 +32,7 @@
 		"ce_foodstuffs.mixins.json"
 	],
 	"depends": {
+		"minecraft": "*",
 		"fabric": "*",
 		"dawn": "*"
 	},

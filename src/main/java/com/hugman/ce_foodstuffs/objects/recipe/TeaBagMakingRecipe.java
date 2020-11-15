@@ -1,8 +1,8 @@
 package com.hugman.ce_foodstuffs.objects.recipe;
 
 import com.hugman.ce_foodstuffs.init.CEFItems;
-import com.hugman.ce_foodstuffs.objects.item.tea.TeaType;
 import com.hugman.ce_foodstuffs.objects.item.tea.TeaHelper;
+import com.hugman.ce_foodstuffs.objects.item.tea.TeaType;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;

@@ -1,7 +1,7 @@
 package com.hugman.ce_foodstuffs.objects.item;
 
-import com.hugman.ce_foodstuffs.objects.item.tea.TeaType;
 import com.hugman.ce_foodstuffs.objects.item.tea.TeaHelper;
+import com.hugman.ce_foodstuffs.objects.item.tea.TeaType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.advancement.criterion.Criteria;

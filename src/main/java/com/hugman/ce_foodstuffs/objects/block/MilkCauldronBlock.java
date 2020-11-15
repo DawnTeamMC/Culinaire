@@ -84,7 +84,7 @@ public class MilkCauldronBlock extends BlockWithEntity {
 								player.dropItem(milkBottleStack, false);
 							}
 							else if(player instanceof ServerPlayerEntity) {
-								((ServerPlayerEntity) player).openHandledScreen(player.playerScreenHandler);
+								((ServerPlayerEntity) player).refreshScreenHandler(player.playerScreenHandler);
 							}
 						}
 						world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -104,7 +104,7 @@ public class MilkCauldronBlock extends BlockWithEntity {
 							player.incrementStat(Stats.USE_CAULDRON);
 							player.setStackInHand(hand, stack);
 							if(player instanceof ServerPlayerEntity) {
-								((ServerPlayerEntity) player).openHandledScreen(player.playerScreenHandler);
+								((ServerPlayerEntity) player).refreshScreenHandler(player.playerScreenHandler);
 							}
 						}
 						world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);

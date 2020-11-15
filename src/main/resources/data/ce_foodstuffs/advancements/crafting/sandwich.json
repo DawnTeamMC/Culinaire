@@ -11,7 +11,7 @@
 			"conditions": {
 				"items": [
 					{
-						"tag": "ce_foodstuffs:sandwich/bread"
+						"tag": "c:sandwich/bread"
 					}
 				]
 			}

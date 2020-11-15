@@ -1,12 +1,12 @@
 package com.hugman.ce_foodstuffs.objects.item.tea;
 
 import com.hugman.dawn.mod.init.DawnEffects;
-import com.hugman.ce_foodstuffs.CEFoodstuffs;
 import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
 import net.minecraft.tag.Tag;
+import net.minecraft.util.Identifier;
 
 public class TeaType {
 	private final Strength strength;
@@ -34,7 +34,7 @@ public class TeaType {
 	}
 
 	public Tag<Item> getTag() {
-		return TagRegistry.item(CEFoodstuffs.MOD_DATA.id("tea_ingredients/" + getFlavor().getName() + "/" + getStrength().getName()));
+		return TagRegistry.item(new Identifier("c", "tea_ingredients/" + getFlavor().getName() + "/" + getStrength().getName()));
 	}
 
 	@Override

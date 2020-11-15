@@ -3,9 +3,9 @@ package com.hugman.ce_foodstuffs.objects.block.block_entity;
 import com.hugman.ce_foodstuffs.CEFoodstuffs;
 import com.hugman.ce_foodstuffs.init.CEFBlocks;
 import com.hugman.ce_foodstuffs.objects.item.TeaBagItem;
+import com.hugman.ce_foodstuffs.objects.item.tea.TeaHelper;
 import com.hugman.ce_foodstuffs.objects.item.tea.TeaType;
 import com.hugman.ce_foodstuffs.objects.screen.handler.KettleScreenHandler;
-import com.hugman.ce_foodstuffs.objects.item.tea.TeaHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
@@ -35,11 +35,11 @@ import java.util.List;
 
 public class KettleBlockEntity extends LockableContainerBlockEntity implements SidedInventory, Tickable {
 	private static final int[] TOP_SLOTS = new int[]{0};
+	protected final PropertyDelegate propertyDelegate;
 	private DefaultedList<ItemStack> inventory;
 	private Item itemBrewing;
 	private int brewTime;
 	private int fluidLevel;
-	protected final PropertyDelegate propertyDelegate;
 	private int fluid;
 	private List<TeaType> teaTypes;
 	private boolean isHot;

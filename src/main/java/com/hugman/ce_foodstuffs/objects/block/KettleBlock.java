@@ -3,8 +3,8 @@ package com.hugman.ce_foodstuffs.objects.block;
 import com.hugman.ce_foodstuffs.init.CEFBlocks;
 import com.hugman.ce_foodstuffs.init.CEFItems;
 import com.hugman.ce_foodstuffs.objects.block.block_entity.KettleBlockEntity;
-import com.hugman.ce_foodstuffs.objects.item.tea.TeaType;
 import com.hugman.ce_foodstuffs.objects.item.tea.TeaHelper;
+import com.hugman.ce_foodstuffs.objects.item.tea.TeaType;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
@@ -180,7 +180,7 @@ public class KettleBlock extends BlockWithEntity {
 								player.dropItem(newStack, false);
 							}
 							else if(player instanceof ServerPlayerEntity) {
-								((ServerPlayerEntity) player).openHandledScreen(player.playerScreenHandler);
+								((ServerPlayerEntity) player).refreshScreenHandler(player.playerScreenHandler);
 							}
 							world.playSound(null, pos, CEFItems.TEA_BOTTLE_FILL_SOUND, SoundCategory.BLOCKS, 1.0F, 1.0F);
 						}
