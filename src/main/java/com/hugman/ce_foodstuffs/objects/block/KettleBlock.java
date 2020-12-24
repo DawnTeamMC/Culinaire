@@ -151,7 +151,7 @@ public class KettleBlock extends BlockWithEntity {
 						if(kettleEntity.addWater(3)) {
 							shouldOpenScreen = false;
 							if(!player.abilities.creativeMode) {
-								ItemStack newStack = new ItemStack(Items.GLASS_BOTTLE);
+								ItemStack newStack = new ItemStack(Items.BUCKET);
 								player.setStackInHand(hand, newStack);
 							}
 							world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
