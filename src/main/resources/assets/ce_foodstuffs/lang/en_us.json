@@ -1,4 +1,6 @@
 {
+	"modmenu.descriptionTranslation.ce_foodstuffs": "An expansion onto the existing foodstuffs in Minecraft with intricate, well-made additions.\nIt includes a innovative sandwich system to the creation of cheese in cauldrons and brewing of tea in kettles",
+
 	"block.ce_foodstuffs.lettuce": "Lettuce",
 	"block.ce_foodstuffs.tomatoes": "Tomatoes",
 	"block.ce_foodstuffs.cheese_wheel": "Cheese Wheel",
@@ -54,7 +56,6 @@
 
 	"stat.ce_foodstuffs.interact_with_kettle": "Interactions with Kettle",
 
-	"comment": "CONFIG",
 	"text.autoconfig.ce_foodstuffs.title": "Common Expansion: Foodstuffs Configuration",
 	"text.autoconfig.ce_foodstuffs.category.features": "Features",
 	"text.autoconfig.ce_foodstuffs.option.features.canDrinkMilkBucket": "Drinkable Milk Buckets"
