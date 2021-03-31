@@ -5,9 +5,14 @@
 	"mixins": [
 		"CauldronMixin",
 		"CowEntityMixin",
-		"MilkBucketMixin"
+		"MilkBucketMixin",
+		"LivingEntityMixin",
+		"PlayerEntityMixin",
+		"StatusEffectInstanceMixin"
 	],
 	"client": [
+		"BackgroundRendererMixin",
+		"ClientPlayerEntityMixin",
 		"PlayerRendererMixin"
 	],
 	"injectors": {
