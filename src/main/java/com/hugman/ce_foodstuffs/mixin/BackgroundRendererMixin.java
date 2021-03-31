@@ -1,7 +1,6 @@
 package com.hugman.ce_foodstuffs.mixin;
 
-import com.hugman.ce_foodstuffs.init.CEEffects;
-import com.hugman.dawn.mod.init.DawnEffects;
+import com.hugman.ce_foodstuffs.init.CEFEffects;
 import net.minecraft.client.render.BackgroundRenderer;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.world.ClientWorld;
@@ -16,13 +15,13 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class BackgroundRendererMixin {
 	@Redirect(method = "applyFog", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"))
 	private static boolean dawn_hasStatusEffect(LivingEntity entity, StatusEffect effect, Camera camera, BackgroundRenderer.FogType fogType, float viewDistance, boolean thickFog) {
-		if(effect == StatusEffects.BLINDNESS && entity.hasStatusEffect(CEEffects.FORESIGHT)) return false;
+		if(effect == StatusEffects.BLINDNESS && entity.hasStatusEffect(CEFEffects.FORESIGHT)) return false;
 		else return entity.hasStatusEffect(effect);
 	}
 
 	@Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z", ordinal = 0))
 	private static boolean dawn_hasStatusEffect(LivingEntity entity, StatusEffect effect, Camera camera, float tickDelta, ClientWorld world, int i, float f) {
-		if(effect == StatusEffects.BLINDNESS && entity.hasStatusEffect(CEEffects.FORESIGHT)) return false;
+		if(effect == StatusEffects.BLINDNESS && entity.hasStatusEffect(CEFEffects.FORESIGHT)) return false;
 		else return entity.hasStatusEffect(effect);
 	}
 }

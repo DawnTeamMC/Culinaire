@@ -1,7 +1,6 @@
 package com.hugman.ce_foodstuffs.mixin;
 
-import com.hugman.ce_foodstuffs.init.CEEffects;
-import com.hugman.dawn.mod.init.DawnEffects;
+import com.hugman.ce_foodstuffs.init.CEFEffects;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,7 +17,7 @@ public abstract class PlayerEntityMixin {
 	@Redirect(method = "eatFood", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/HungerManager;eat(Lnet/minecraft/item/Item;Lnet/minecraft/item/ItemStack;)V"))
 	public void dawn_eat(HungerManager hungerManager, Item item, ItemStack stack, World world) {
 		PlayerEntity player = (PlayerEntity) (Object) this;
-		StatusEffectInstance fulfillmentInstance = player.getStatusEffect(CEEffects.FULFILLMENT);
+		StatusEffectInstance fulfillmentInstance = player.getStatusEffect(CEFEffects.FULFILLMENT);
 		if(fulfillmentInstance != null) {
 			if(item.isFood()) {
 				FoodComponent foodComponent = item.getFoodComponent();

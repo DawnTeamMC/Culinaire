@@ -1,7 +1,6 @@
 package com.hugman.ce_foodstuffs.mixin;
 
-import com.hugman.ce_foodstuffs.init.CEEffects;
-import com.hugman.dawn.mod.init.DawnEffects;
+import com.hugman.ce_foodstuffs.init.CEFEffects;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -15,7 +14,7 @@ public class StatusEffectInstanceMixin {
 	@Redirect(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffect;canApplyUpdateEffect(II)Z"))
 	public boolean dawn_canApplyUpdateEffect(StatusEffect effect, int duration, int amplifier, LivingEntity entity, Runnable overwriteCallback) {
 		if(effect == StatusEffects.POISON || effect == StatusEffects.WITHER) {
-			StatusEffectInstance poisonResistanceInstance = entity.getStatusEffect(CEEffects.POISON_RESISTANCE);
+			StatusEffectInstance poisonResistanceInstance = entity.getStatusEffect(CEFEffects.POISON_RESISTANCE);
 			if(poisonResistanceInstance != null) {
 				int seconds = (effect == StatusEffects.POISON ? 25 : 40) * (poisonResistanceInstance.getAmplifier() + 2);
 				int j = seconds >> amplifier;

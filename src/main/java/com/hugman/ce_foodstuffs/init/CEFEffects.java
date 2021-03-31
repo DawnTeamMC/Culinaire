@@ -1,13 +1,11 @@
 package com.hugman.ce_foodstuffs.init;
 
 import com.hugman.dawn.api.creator.EffectCreator;
-import com.hugman.dawn.mod.init.DawnPack;
-import com.hugman.dawn.mod.object.effect.HiccupEffect;
 import com.hugman.dawn.mod.object.effect.SimpleEffect;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectType;
 
-public class CEEffects extends DawnPack {
+public class CEFEffects extends CEFPack {
 	public static final StatusEffect FORESIGHT = register(new EffectCreator.Builder("foresight", new SimpleEffect(StatusEffectType.BENEFICIAL, 9966823)));
 	public static final StatusEffect FULFILLMENT = register(new EffectCreator.Builder("fulfillment", new SimpleEffect(StatusEffectType.BENEFICIAL, 6048577)));
 	public static final StatusEffect GUARD = register(new EffectCreator.Builder("guard", new SimpleEffect(StatusEffectType.BENEFICIAL, 16440596)));
