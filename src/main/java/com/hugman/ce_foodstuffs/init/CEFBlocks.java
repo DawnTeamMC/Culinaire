@@ -1,10 +1,18 @@
 package com.hugman.ce_foodstuffs.init;
 
-import com.hugman.ce_foodstuffs.objects.block.*;
+import com.hugman.ce_foodstuffs.objects.block.CheeseWheelBlock;
+import com.hugman.ce_foodstuffs.objects.block.KettleBlock;
+import com.hugman.ce_foodstuffs.objects.block.LettuceBlock;
+import com.hugman.ce_foodstuffs.objects.block.MilkCauldronBlock;
+import com.hugman.ce_foodstuffs.objects.block.TomatoesBlock;
 import com.hugman.ce_foodstuffs.objects.block.block_entity.KettleBlockEntity;
 import com.hugman.ce_foodstuffs.objects.block.block_entity.MilkCauldronBlockEntity;
 import com.hugman.ce_foodstuffs.objects.screen.handler.KettleScreenHandler;
-import com.hugman.dawn.api.creator.*;
+import com.hugman.dawn.api.creator.BlockCreator;
+import com.hugman.dawn.api.creator.BlockEntityCreator;
+import com.hugman.dawn.api.creator.ScreenHandlerCreator;
+import com.hugman.dawn.api.creator.SoundCreator;
+import com.hugman.dawn.api.creator.StatCreator;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;

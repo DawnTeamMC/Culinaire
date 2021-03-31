@@ -1,13 +1,21 @@
 package com.hugman.ce_foodstuffs.init;
 
 import com.hugman.ce_foodstuffs.init.data.CEFFoods;
-import com.hugman.ce_foodstuffs.objects.item.*;
+import com.hugman.ce_foodstuffs.objects.item.MarshmallowOnAStickItem;
+import com.hugman.ce_foodstuffs.objects.item.MilkBottleItem;
+import com.hugman.ce_foodstuffs.objects.item.SandwichItem;
+import com.hugman.ce_foodstuffs.objects.item.TeaBagItem;
+import com.hugman.ce_foodstuffs.objects.item.TeaBottleItem;
 import com.hugman.ce_foodstuffs.objects.recipe.SandwichMakingRecipe;
 import com.hugman.ce_foodstuffs.objects.recipe.TeaBagMakingRecipe;
 import com.hugman.dawn.api.creator.ItemCreator;
 import com.hugman.dawn.api.creator.RecipeSerializerCreator;
 import com.hugman.dawn.api.creator.SoundCreator;
-import net.minecraft.item.*;
+import net.minecraft.item.AliasedBlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.Items;
+import net.minecraft.item.MushroomStewItem;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.sound.SoundEvent;
 

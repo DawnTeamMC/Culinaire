@@ -170,9 +170,10 @@ public class TomatoesBlock extends CropBlock {
 	@Override
 	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
 		DoubleBlockHalf doubleBlockHalf = state.get(HALF);
-		if (direction.getAxis() == Direction.Axis.Y && doubleBlockHalf == DoubleBlockHalf.LOWER == (direction == Direction.UP) && (!newState.isOf(this) || newState.get(HALF) == doubleBlockHalf)) {
+		if(direction.getAxis() == Direction.Axis.Y && doubleBlockHalf == DoubleBlockHalf.LOWER == (direction == Direction.UP) && (!newState.isOf(this) || newState.get(HALF) == doubleBlockHalf)) {
 			return Blocks.AIR.getDefaultState();
-		} else {
+		}
+		else {
 			return doubleBlockHalf == DoubleBlockHalf.LOWER && direction == Direction.DOWN && !state.canPlaceAt(world, pos) ? Blocks.AIR.getDefaultState() : super.getStateForNeighborUpdate(state, direction, newState, world, pos, posFrom);
 		}
 	}

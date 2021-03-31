@@ -1,8 +1,8 @@
 package com.hugman.ce_foodstuffs;
 
 import com.hugman.ce_foodstuffs.config.CEFConfig;
-import com.hugman.ce_foodstuffs.init.CEFEffects;
 import com.hugman.ce_foodstuffs.init.CEFBlocks;
+import com.hugman.ce_foodstuffs.init.CEFEffects;
 import com.hugman.ce_foodstuffs.init.CEFItems;
 import com.hugman.ce_foodstuffs.init.data.CEFLootTables;
 import com.hugman.dawn.api.util.ModData;
