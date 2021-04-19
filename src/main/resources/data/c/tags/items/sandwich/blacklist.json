@@ -2,13 +2,13 @@
 	"replace": false,
 	"values": [
 		"#c:sandwich/bread",
-		"ce_foodstuffs:sandwich",
+		"culinaire:sandwich",
 		"minecraft:mushroom_stew",
 		"minecraft:rabbit_stew",
 		"minecraft:beetroot_soup",
-		"ce_foodstuffs:apple_pie",
-		"ce_foodstuffs:sweet_berry_pie",
-		"ce_foodstuffs:salad",
-		"ce_foodstuffs:mashed_potatoes"
+		"culinaire:apple_pie",
+		"culinaire:sweet_berry_pie",
+		"culinaire:salad",
+		"culinaire:mashed_potatoes"
 	]
 }

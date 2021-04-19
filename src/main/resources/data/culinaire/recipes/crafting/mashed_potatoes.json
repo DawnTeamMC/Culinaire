@@ -1,0 +1,14 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:baked_potato"
+		},
+		{
+			"item": "minecraft:bowl"
+		}
+	],
+	"result": {
+		"item": "culinaire:mashed_potatoes"
+	}
+}

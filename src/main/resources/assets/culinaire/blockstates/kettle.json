@@ -1,0 +1,19 @@
+{
+	"variants": {
+		"facing=east": {
+			"model": "culinaire:block/kettle",
+			"y": 90
+		},
+		"facing=north": {
+			"model": "culinaire:block/kettle"
+		},
+		"facing=south": {
+			"model": "culinaire:block/kettle",
+			"y": 180
+		},
+		"facing=west": {
+			"model": "culinaire:block/kettle",
+			"y": 270
+		}
+	}
+}

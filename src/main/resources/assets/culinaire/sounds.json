@@ -1,0 +1,16 @@
+{
+	"block.kettle.brew": {
+		"subtitle": "subtitles.culinaire.block.kettle.brew",
+		"sounds": [
+			"culinaire:block/kettle/brew"
+		]
+	},
+	"item.tea_bottle.fill": {
+		"subtitle": "subtitles.culinaire.item.tea_bottle.fill",
+		"sounds": [
+			"culinaire:item/tea_bottle/fill/1",
+			"culinaire:item/tea_bottle/fill/2",
+			"culinaire:item/tea_bottle/fill/3"
+		]
+	}
+}

@@ -17,17 +17,17 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.hugman.ce_foodstuffs.CEFoodstuffs"
+			"com.hugman.culinaire.Culinaire"
 		],
 		"client": [
-			"com.hugman.ce_foodstuffs.CEFoodstuffsClient"
+			"com.hugman.culinaire.CulinaireClient"
 		],
 		"modmenu": [
-			"com.hugman.ce_foodstuffs.config.CEFModMenuIntegration"
+			"com.hugman.culinaire.config.CulinaireModMenuIntegration"
 		]
 	},
 	"mixins": [
-		"ce_foodstuffs.mixins.json"
+		"culinaire.mixins.json"
 	],
 	"depends": {
 		"minecraft": "*",

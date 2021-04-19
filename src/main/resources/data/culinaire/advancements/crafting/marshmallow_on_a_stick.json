@@ -1,0 +1,32 @@
+{
+	"parent": "minecraft:recipes/root",
+	"rewards": {
+		"recipes": [
+			"culinaire:crafting/marshmallow_on_a_stick"
+		]
+	},
+	"criteria": {
+		"has_marshmallow": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "culinaire:marshmallow"
+					}
+				]
+			}
+		},
+		"has_the_recipe": {
+			"trigger": "minecraft:recipe_unlocked",
+			"conditions": {
+				"recipe": "culinaire:crafting/marshmallow_on_a_stick"
+			}
+		}
+	},
+	"requirements": [
+		[
+			"has_marshmallow",
+			"has_the_recipe"
+		]
+	]
+}

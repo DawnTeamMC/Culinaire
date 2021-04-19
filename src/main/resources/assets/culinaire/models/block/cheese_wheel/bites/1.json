@@ -1,0 +1,44 @@
+{
+	"textures": {
+		"particle": "culinaire:block/cheese_wheel/side",
+		"bottom": "culinaire:block/cheese_wheel/bottom",
+		"top": "culinaire:block/cheese_wheel/top",
+		"side": "culinaire:block/cheese_wheel/side",
+		"inside": "culinaire:block/cheese_wheel/inside"
+	},
+	"elements": [
+		{
+			"from": [
+				4,
+				0,
+				2
+			],
+			"to": [
+				14,
+				8,
+				14
+			],
+			"faces": {
+				"down": {
+					"texture": "#bottom",
+					"cullface": "down"
+				},
+				"up": {
+					"texture": "#top"
+				},
+				"north": {
+					"texture": "#side"
+				},
+				"south": {
+					"texture": "#side"
+				},
+				"west": {
+					"texture": "#inside"
+				},
+				"east": {
+					"texture": "#side"
+				}
+			}
+		}
+	]
+}

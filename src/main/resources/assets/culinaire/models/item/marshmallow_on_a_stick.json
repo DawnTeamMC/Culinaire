@@ -1,0 +1,6 @@
+{
+	"parent": "item/handheld",
+	"textures": {
+		"layer0": "culinaire:item/marshmallow_on_a_stick/normal"
+	}
+}
