@@ -1,2 +1,3 @@
-![Check Build](https://github.com/DawnTeamMC/CommonExpansionFoodstuffs/workflows/Check%20Build/badge.svg)
-[![Common Expansion: Foodstuffs](https://raw.githubusercontent.com/DawnTeamMC/DawnTeamMC/master/common_expansion/foodstuffs/header.png)](https://www.curseforge.com/minecraft/mc-mods/ce-foodstuffs)
+# Culinaire [![Latest release](https://img.shields.io/github/release/DawnTeamMC/Culinaire.svg)](https://github.com/DawnTeamMC/Culinaire/releases/latest) [![License](https://img.shields.io/github/license/DawnTeamMC/Culinaire.svg)](https://github.com/DawnTeamMC/Culinaire/blob/master/LICENSE)
+
+[![Culinaire](https://raw.githubusercontent.com/DawnTeamMC/DawnTeamMC/master/culinaire/header.png)](https://github.com/DawnTeamMC/Culinaire/wiki)
