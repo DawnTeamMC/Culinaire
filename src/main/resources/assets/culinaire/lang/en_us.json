@@ -61,7 +61,7 @@
 
 	"stat.culinaire.interact_with_kettle": "Interactions with Kettle",
 
-	"text.autoconfig.culinaire.title": "Common Expansion: Foodstuffs Configuration",
+	"text.autoconfig.culinaire.title": "Culinaire Configuration",
 	"text.autoconfig.culinaire.category.features": "Features",
 	"text.autoconfig.culinaire.option.features.canDrinkMilkBucket": "Drinkable Milk Buckets"
 }
