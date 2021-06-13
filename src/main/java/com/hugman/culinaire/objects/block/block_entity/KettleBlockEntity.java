@@ -16,55 +16,49 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ItemScatterer;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KettleBlockEntity extends LockableContainerBlockEntity implements SidedInventory, Tickable {
+public class KettleBlockEntity extends LockableContainerBlockEntity implements SidedInventory {
 	private static final int[] TOP_SLOTS = new int[]{0};
 	protected final PropertyDelegate propertyDelegate;
 	private DefaultedList<ItemStack> inventory;
 	private Item itemBrewing;
 	private int brewTime;
 	private int fluidLevel;
-	private int fluid;
+	private Fluid fluid;
 	private List<TeaType> teaTypes;
 	private boolean isHot;
 
-	public KettleBlockEntity() {
-		super(CulinaireBlocks.KETTLE_ENTITY);
+	public KettleBlockEntity(BlockPos pos, BlockState state) {
+		super(CulinaireBlocks.KETTLE_ENTITY, pos, state);
 		this.inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
-		this.fluid = 0;
+		this.fluid = Fluid.EMPTY;
 		this.teaTypes = new ArrayList<>();
 		this.propertyDelegate = new PropertyDelegate() {
 			public int get(int index) {
-				switch(index) {
-					case 0:
-						return KettleBlockEntity.this.brewTime;
-					case 1:
-						return KettleBlockEntity.this.fluidLevel;
-					case 2:
-						return KettleBlockEntity.this.fluid;
-					case 3:
-						return KettleBlockEntity.this.isHot ? 1 : 0;
-					case 4:
-						return TeaHelper.getColor(KettleBlockEntity.this.teaTypes);
-					default:
-						return 0;
-				}
+				return switch(index) {
+					case 0 -> KettleBlockEntity.this.brewTime;
+					case 1 -> KettleBlockEntity.this.fluidLevel;
+					case 2 -> KettleBlockEntity.this.fluid.toIndex();
+					case 3 -> KettleBlockEntity.this.isHot ? 1 : 0;
+					case 4 -> TeaHelper.getColor(KettleBlockEntity.this.teaTypes);
+					default -> 0;
+				};
 			}
 
 			public void set(int index, int value) {
@@ -76,7 +70,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 						KettleBlockEntity.this.fluidLevel = value;
 						break;
 					case 2:
-						KettleBlockEntity.this.fluid = value;
+						KettleBlockEntity.this.fluid = Fluid.byIndex(value);
 						break;
 					case 3:
 						KettleBlockEntity.this.isHot = value == 1;
@@ -108,25 +102,59 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 		return this.inventory.size();
 	}
 
-	/**
-	 * <code>0</code> = Empty<p>
-	 * <code>1</code> = Water<p>
-	 * <code>2</code> = Tea
-	 *
-	 * @return
-	 */
-	public int getFluid() {
+	public Fluid getFluid() {
 		return this.fluid;
 	}
 
 	public boolean addWater(int amount) {
 		byte fLevel = (byte) (this.fluidLevel + amount);
 		if(fLevel <= 3) {
-			this.fluid = 1;
+			this.fluid = Fluid.WATER;
 			this.fluidLevel = fLevel;
 			return true;
 		}
 		return false;
+	}
+
+	public enum Fluid {
+		EMPTY(0, "empty"),
+		WATER(1, "water"),
+		TEA(2, "tea");
+
+		private final int index;
+		private final String string;
+
+		Fluid(final int index, final String string) {
+			this.index= index;
+			this.string = string;
+		}
+
+		@Override
+		public String toString() {
+			return string;
+		}
+
+		public int toIndex() {
+			return index;
+		}
+
+		public static Fluid byString(String s) {
+			for (Fluid f : Fluid.values()) {
+				if (f.string.equals(s)) {
+					return f;
+				}
+			}
+			return null;
+		}
+
+		public static Fluid byIndex(int i) {
+			for (Fluid f : Fluid.values()) {
+				if (f.index == i) {
+					return f;
+				}
+			}
+			return null;
+		}
 	}
 
 	public boolean removeFluid(int amount) {
@@ -134,7 +162,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 		if(fLevel >= 0) {
 			this.fluidLevel = fLevel;
 			if(fLevel == 0) {
-				this.fluid = 0;
+				this.fluid = Fluid.EMPTY;
 				this.teaTypes = new ArrayList<>();
 			}
 			return true;
@@ -223,50 +251,49 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 		this.inventory.clear();
 	}
 
-	@Override
-	public void tick() {
-		ItemStack stack = this.inventory.get(0);
-		this.isHot = isHot();
-		boolean canBrew = this.canBrew(stack);
-		boolean isBrewing = this.brewTime > 0;
+	public static void tick(World world, BlockPos pos, BlockState state, KettleBlockEntity blockEntity) {
+		ItemStack stack = blockEntity.inventory.get(0);
+		blockEntity.isHot = blockEntity.isHot(world);
+		boolean canBrew = blockEntity.canBrew(stack);
+		boolean isBrewing = blockEntity.brewTime > 0;
 		if(isBrewing) {
-			--this.brewTime;
-			boolean isFinishedBrewing = this.brewTime == 0;
+			--blockEntity.brewTime;
+			boolean isFinishedBrewing = blockEntity.brewTime == 0;
 			if(canBrew && isFinishedBrewing) {
-				this.brew(stack);
-				this.markDirty();
+				blockEntity.brew(world, stack);
+				blockEntity.markDirty();
 			}
 			else if(!canBrew) {
-				this.brewTime = 0;
-				this.markDirty();
+				blockEntity.brewTime = 0;
+				blockEntity.markDirty();
 			}
-			else if(this.itemBrewing != stack.getItem()) {
-				this.brewTime = 0;
-				this.markDirty();
+			else if(blockEntity.itemBrewing != stack.getItem()) {
+				blockEntity.brewTime = 0;
+				blockEntity.markDirty();
 			}
 		}
 		else if(canBrew) {
-			this.brewTime = 800;
-			this.itemBrewing = stack.getItem();
-			this.markDirty();
+			blockEntity.brewTime = 800;
+			blockEntity.itemBrewing = stack.getItem();
+			blockEntity.markDirty();
 		}
-		if(this.fluid != 0 && this.fluidLevel == 0) {
-			this.fluid = 0;
-			this.markDirty();
+		if(blockEntity.fluid != Fluid.EMPTY && blockEntity.fluidLevel == 0) {
+			blockEntity.fluid = Fluid.EMPTY;
+			blockEntity.markDirty();
 		}
 	}
 
-	public boolean isHot() {
+	public boolean isHot(World world) {
 		for(Direction direction : Direction.values()) {
-			if(isHotBlock(this.getPos().offset(direction))) {
+			if(isHotBlock(world, this.getPos().offset(direction))) {
 				return true;
 			}
 		}
-		return this.world.getDimension().isUltrawarm();
+		return world.getDimension().isUltrawarm();
 	}
 
-	public boolean isHotBlock(BlockPos pos) {
-		BlockState blockState = this.world.getBlockState(pos);
+	public boolean isHotBlock(World world, BlockPos pos) {
+		BlockState blockState = world.getBlockState(pos);
 		return CampfireBlock.isLitCampfire(blockState) || blockState.isOf(Blocks.MAGMA_BLOCK) || blockState.isOf(Blocks.LAVA);
 	}
 
@@ -275,15 +302,15 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 			return false;
 		}
 		else if(stack.getItem() instanceof TeaBagItem) {
-			return !TeaHelper.getTeaTypesByCompound(stack.getTag()).isEmpty() && fluid == 1 && fluidLevel >= 1 && this.isHot;
+			return !TeaHelper.getTeaTypesByCompound(stack.getTag()).isEmpty() && fluid == Fluid.WATER && fluidLevel >= 1 && this.isHot;
 		}
 		else {
 			return false;
 		}
 	}
 
-	private void brew(ItemStack stack) {
-		this.fluid = 2;
+	private void brew(World world, ItemStack stack) {
+		this.fluid = Fluid.TEA;
 		this.teaTypes = TeaHelper.getTeaTypesByCompound(stack.getTag());
 		stack.decrement(1);
 		BlockPos blockPos = this.getPos();
@@ -292,49 +319,49 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 			if(stack.isEmpty()) {
 				stack = remainderStack;
 			}
-			else if(!this.world.isClient) {
-				ItemScatterer.spawn(this.world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), remainderStack);
+			else if(!world.isClient) {
+				ItemScatterer.spawn(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), remainderStack);
 			}
 		}
-		this.world.playSound(null, pos, CulinaireBlocks.KETTLE_BREW_SOUND, SoundCategory.BLOCKS, 1.0F, 1.0F);
+		world.playSound(null, pos, CulinaireBlocks.KETTLE_BREW_SOUND, SoundCategory.BLOCKS, 1.0F, 1.0F);
 		this.inventory.set(0, stack);
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		super.toTag(tag);
-		Inventories.toTag(tag, this.inventory);
-		tag.putShort("BrewTime", (short) this.brewTime);
-		tag.putByte("Fluid", (byte) this.fluid);
-		tag.putByte("FluidLevel", (byte) this.fluidLevel);
-		ListTag listTag = new ListTag();
-		for(TeaType teaType : teaTypes) {
-			CompoundTag typeTag = new CompoundTag();
-			typeTag.putString("Flavor", teaType.getFlavor().getName());
-			typeTag.putString("Strength", teaType.getStrength().getName());
-			listTag.add(typeTag);
-		}
-		tag.put("TeaTypes", listTag);
-		return tag;
-	}
-
-	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
-		super.fromTag(state, tag);
+	public void readNbt(NbtCompound tag) {
+		super.readNbt(tag);
 		this.inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
-		Inventories.fromTag(tag, this.inventory);
+		Inventories.readNbt(tag, this.inventory);
 		this.brewTime = tag.getShort("BrewTime");
-		this.fluid = tag.getByte("Fluid");
+		this.fluid = Fluid.byString(tag.getString("Fluid"));
 		this.fluidLevel = tag.getByte("FluidLevel");
-		ListTag teaTypeList = tag.getList("TeaTypes", 10);
+		NbtList teaTypeList = tag.getList("TeaTypes", 10);
 		if(!teaTypeList.isEmpty()) {
 			for(int i = 0; i < teaTypeList.size(); ++i) {
-				CompoundTag typeTag = teaTypeList.getCompound(i);
+				NbtCompound typeTag = teaTypeList.getCompound(i);
 				TeaType teaType = new TeaType(typeTag.getString("Strength"), typeTag.getString("Flavor"));
 				if(teaType.isCorrect()) {
 					teaTypes.add(teaType);
 				}
 			}
 		}
+	}
+
+	@Override
+	public NbtCompound writeNbt(NbtCompound tag) {
+		super.writeNbt(tag);
+		Inventories.writeNbt(tag, this.inventory);
+		tag.putShort("BrewTime", (short) this.brewTime);
+		tag.putString("Fluid", this.fluid.toString());
+		tag.putByte("FluidLevel", (byte) this.fluidLevel);
+		NbtList listTag = new NbtList();
+		for(TeaType teaType : teaTypes) {
+			NbtCompound typeTag = new NbtCompound();
+			typeTag.putString("Flavor", teaType.getFlavor().getName());
+			typeTag.putString("Strength", teaType.getStrength().getName());
+			listTag.add(typeTag);
+		}
+		tag.put("TeaTypes", listTag);
+		return tag;
 	}
 }

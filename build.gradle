@@ -1,15 +1,17 @@
 plugins {
-    id 'fabric-loom' version '0.5-SNAPSHOT' apply false
+    id 'fabric-loom' version '0.8-SNAPSHOT' apply false
     id 'maven-publish'
 }
 
-apply from: 'https://raw.githubusercontent.com/DawnTeamMC/DawnTeamMC/master/build_template/1.16.gradle'
+apply from: 'https://raw.githubusercontent.com/DawnTeamMC/DawnTeamMC/master/build_template/1.17.gradle'
 
 repositories {
     mavenLocal()
     maven { url 'https://jitpack.io' }
     maven { url "https://maven.shedaniel.me/" }
     maven { url 'https://maven.terraformersmc.com/' }
+    maven { url 'https://server.bbkr.space/artifactory/libs-release' }
+    maven { url 'https://www.cursemaven.com' }
 }
 
 dependencies {
@@ -18,7 +20,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
-    modApi "com.github.DawnTeamMC:DawnAPI:v${dawn_version}"
+    modApi "com.github.DawnTeamMC:DawnAPI:${dawn_version}"
 
     compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 }

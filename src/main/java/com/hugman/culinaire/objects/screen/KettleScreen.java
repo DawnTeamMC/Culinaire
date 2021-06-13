@@ -6,6 +6,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
@@ -34,12 +35,13 @@ public class KettleScreen extends HandledScreen<KettleScreenHandler> {
 
 	@Override
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.setShaderTexture(0, TEXTURE);
 		int brewTime = this.handler.getBrewTime();
 		int fluidLevel = this.handler.getFluidLevel();
 		int fluid = this.handler.getFluid();
 		boolean isHot = this.handler.isHot();
-		this.client.getTextureManager().bindTexture(TEXTURE);
 		int i = (this.width - this.backgroundWidth) / 2;
 		int j = (this.height - this.backgroundHeight) / 2;
 		this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
@@ -64,12 +66,12 @@ public class KettleScreen extends HandledScreen<KettleScreenHandler> {
 				float red = (float) (teaColor >> 16 & 255) / 255.0F;
 				float green = (float) (teaColor >> 8 & 255) / 255.0F;
 				float blue = (float) (teaColor & 255) / 255.0F;
-				RenderSystem.color3f(red, green, blue);
+				RenderSystem.setShaderColor(red, green, blue, 1.0F);
 				int fluidHeight = (int) (12.0F * (float) fluidLevel / 3.0F) + 4;
 				this.drawTexture(matrices, i + 65, j + 64 - fluidHeight, 176, 16, 46, fluidHeight);
 			}
 		}
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		if(isHot) {
 			this.drawTexture(matrices, i + 76, j + 68, 176, 32, 24, 9);
 		}

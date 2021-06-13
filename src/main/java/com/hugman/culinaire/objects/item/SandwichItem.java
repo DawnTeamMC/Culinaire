@@ -7,8 +7,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -28,7 +28,7 @@ public class SandwichItem extends Item {
 
 	@Override
 	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-		CompoundTag sandwichData = stack.getSubTag("SandwichData");
+		NbtCompound sandwichData = stack.getSubTag("SandwichData");
 		if(sandwichData != null && user instanceof PlayerEntity) {
 			PlayerEntity player = (PlayerEntity) user;
 			player.getHungerManager().add(sandwichData.getInt("Hunger"), sandwichData.getFloat("SaturationModifier"));
@@ -38,12 +38,12 @@ public class SandwichItem extends Item {
 
 	@Override
 	public boolean hasGlint(ItemStack stack) {
-		CompoundTag sandwichData = stack.getSubTag("SandwichData");
+		NbtCompound sandwichData = stack.getSubTag("SandwichData");
 		if(sandwichData != null) {
-			ListTag ingredientList = sandwichData.getList("Ingredients", 10);
+			NbtList ingredientList = sandwichData.getList("Ingredients", 10);
 			if(!ingredientList.isEmpty()) {
 				for(int i = 0; i < ingredientList.size(); ++i) {
-					CompoundTag ingredientData = ingredientList.getCompound(i);
+					NbtCompound ingredientData = ingredientList.getCompound(i);
 					Item item = Registry.ITEM.get(new Identifier(ingredientData.getString("Item")));
 					if(item.hasGlint(new ItemStack(item))) {
 						return true;
@@ -58,12 +58,12 @@ public class SandwichItem extends Item {
 	@Environment(EnvType.CLIENT)
 	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
 		MutableText text = new LiteralText("").formatted(Formatting.GRAY);
-		CompoundTag sandwichData = stack.getSubTag("SandwichData");
+		NbtCompound sandwichData = stack.getSubTag("SandwichData");
 		if(sandwichData != null) {
-			ListTag ingredientList = sandwichData.getList("Ingredients", 10);
+			NbtList ingredientList = sandwichData.getList("Ingredients", 10);
 			if(!ingredientList.isEmpty()) {
 				for(int i = 0; i < ingredientList.size(); ++i) {
-					CompoundTag ingredientData = ingredientList.getCompound(i);
+					NbtCompound ingredientData = ingredientList.getCompound(i);
 					Item item = Registry.ITEM.get(new Identifier(ingredientData.getString("Item")));
 					if(i > 0) {
 						text.append(", ");

@@ -23,7 +23,7 @@ public class KettleScreenHandler extends ScreenHandler {
 	}
 
 	public KettleScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, PropertyDelegate propertyDelegate) {
-		super(CulinaireBlocks.KETTLE_SCREEN_HANDLER, syncId);
+		super(CulinaireBlocks.KETTLE_SCREEN_HANDLER.getType(), syncId);
 		checkSize(inventory, 1);
 		checkDataCount(propertyDelegate, 5);
 		this.inventory = inventory;

@@ -10,8 +10,8 @@ import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
@@ -86,10 +86,10 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 		Item item1 = inv.getStack(3).getItem();
 		Item item2 = inv.getStack(4).getItem();
 		Item item3 = inv.getStack(5).getItem();
-		CompoundTag ingredientTag1 = new CompoundTag();
-		CompoundTag ingredientTag2 = new CompoundTag();
-		CompoundTag ingredientTag3 = new CompoundTag();
-		ListTag listTag = new ListTag();
+		NbtCompound ingredientTag1 = new NbtCompound();
+		NbtCompound ingredientTag2 = new NbtCompound();
+		NbtCompound ingredientTag3 = new NbtCompound();
+		NbtList listTag = new NbtList();
 		int hunger1 = 0;
 		float saturation1 = 0;
 		int hunger2 = 0;
@@ -245,7 +245,7 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 			saturation = saturation3;
 			ingredientTag3.putBoolean("Complementary", false);
 		}
-		CompoundTag compoundTag = givenStack.getOrCreateSubTag("SandwichData");
+		NbtCompound compoundTag = givenStack.getOrCreateSubTag("SandwichData");
 		compoundTag.putInt("Hunger", hunger);
 		compoundTag.putFloat("SaturationModifier", saturation);
 		compoundTag.put("Ingredients", listTag);

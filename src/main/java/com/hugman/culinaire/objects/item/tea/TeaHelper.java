@@ -4,8 +4,9 @@ import com.hugman.culinaire.Culinaire;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -28,15 +29,15 @@ public class TeaHelper {
 	}
 
 	public static ItemStack appendTeaTypes(ItemStack stack, List<TeaType> teaTypes) {
-		ListTag listTag = new ListTag();
+		NbtList NbtList = new NbtList();
 		for(TeaType teaType : teaTypes) {
-			CompoundTag typeTag = new CompoundTag();
+			NbtCompound typeTag = new NbtCompound();
 			typeTag.putString("Flavor", teaType.getFlavor().getName());
 			typeTag.putString("Strength", teaType.getStrength().getName());
-			listTag.add(typeTag);
+			NbtList.add(typeTag);
 		}
-		CompoundTag compoundTag = stack.getOrCreateTag();
-		compoundTag.put("TeaTypes", listTag);
+		NbtCompound nbtCompound = stack.getOrCreateTag();
+		nbtCompound.put("TeaTypes", NbtList);
 		return stack;
 	}
 
@@ -60,14 +61,14 @@ public class TeaHelper {
 		return teaTypes;
 	}
 
-	public static List<TeaType> getTeaTypesByCompound(CompoundTag compoundTag) {
+	public static List<TeaType> getTeaTypesByCompound(NbtCompound nbtCompound) {
 		List<TeaType> list = new ArrayList<>();
-		if(compoundTag != null) {
-			if(compoundTag.contains("TeaTypes")) {
-				ListTag teaTypeList = compoundTag.getList("TeaTypes", 10);
+		if(nbtCompound != null) {
+			if(nbtCompound.contains("TeaTypes")) {
+				NbtList teaTypeList = nbtCompound.getList("TeaTypes", 10);
 				if(!teaTypeList.isEmpty()) {
 					for(int i = 0; i < teaTypeList.size(); ++i) {
-						CompoundTag typeTag = teaTypeList.getCompound(i);
+						NbtCompound typeTag = teaTypeList.getCompound(i);
 						TeaType teaType = new TeaType(typeTag.getString("Strength"), typeTag.getString("Flavor"));
 						if(teaType.isCorrect()) {
 							list.add(teaType);

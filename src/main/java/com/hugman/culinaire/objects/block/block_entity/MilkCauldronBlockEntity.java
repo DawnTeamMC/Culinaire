@@ -4,48 +4,44 @@ import com.hugman.culinaire.init.CulinaireBlocks;
 import com.hugman.culinaire.objects.block.MilkCauldronBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Tickable;
+import net.minecraft.block.entity.BrewingStandBlockEntity;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class MilkCauldronBlockEntity extends BlockEntity implements Tickable {
+public class MilkCauldronBlockEntity extends BlockEntity {
 	private int coagulationTime;
 	private int maxCoagulationTime;
 
-	public MilkCauldronBlockEntity() {
-		super(CulinaireBlocks.MILK_CAULDRON_ENTITY);
+	public MilkCauldronBlockEntity(BlockPos pos, BlockState state) {
+		super(CulinaireBlocks.MILK_CAULDRON_ENTITY, pos, state);
 		Random random = new Random();
 		this.maxCoagulationTime = random.nextInt(16000) + 32000;
 	}
 
-	@Override
-	public void tick() {
-		BlockState blockState = this.getCachedState();
-		if(!this.world.isClient) {
-			if(coagulationTime >= maxCoagulationTime && this.world.getBlockState(this.getPos()).get(MilkCauldronBlock.LEVEL) == 3) {
-				this.setCoagulatedProperty(blockState, true);
+	public static void tick(World world, BlockPos pos, BlockState state, MilkCauldronBlockEntity blockEntity) {
+		if(!world.isClient) {
+			if(blockEntity.coagulationTime >= blockEntity.maxCoagulationTime && state.get(MilkCauldronBlock.LEVEL) == 3) {
+				world.setBlockState(pos, state.with(MilkCauldronBlock.COAGULATED, true), 3);
 			}
-			if(coagulationTime < maxCoagulationTime) {
-				coagulationTime++;
+			if(blockEntity.coagulationTime < blockEntity.maxCoagulationTime) {
+				blockEntity.coagulationTime++;
 			}
 		}
 	}
 
-	private void setCoagulatedProperty(BlockState state, boolean coagulated) {
-		this.world.setBlockState(this.getPos(), state.with(MilkCauldronBlock.COAGULATED, Boolean.valueOf(coagulated)), 3);
-	}
-
 	@Override
-	public void fromTag(BlockState state, CompoundTag tag) {
-		super.fromTag(state, tag);
+	public void readNbt(NbtCompound tag) {
+		super.readNbt(tag);
 		this.coagulationTime = tag.getInt("CoagulationTime");
 		this.maxCoagulationTime = tag.getInt("MaxCoagulationTime");
 	}
 
 	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		super.toTag(tag);
+	public NbtCompound writeNbt(NbtCompound tag) {
+		super.writeNbt(tag);
 		tag.putInt("CoagulationTime", this.coagulationTime);
 		tag.putInt("MaxCoagulationTime", this.maxCoagulationTime);
 		return tag;

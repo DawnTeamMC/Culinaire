@@ -9,7 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
@@ -25,14 +25,14 @@ public class MarshmallowOnAStickItem extends Item {
 
 	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
 		ItemStack itemStack = super.finishUsing(stack, world, user);
-		return user instanceof PlayerEntity && ((PlayerEntity) user).abilities.creativeMode ? itemStack : new ItemStack(Items.STICK);
+		return user instanceof PlayerEntity && ((PlayerEntity) user).getAbilities().creativeMode ? itemStack : new ItemStack(Items.STICK);
 	}
 
 	public void incrementBurningTime(LivingEntity livingEntity, ItemStack stack) {
 		int burnTime = 0;
 		int maxBurnTime = getDefaultMaxBurnTime(stack.getItem());
 		Item burnItem = getDefaultBurnItem(stack.getItem());
-		CompoundTag compoundTag = stack.getOrCreateTag();
+		NbtCompound compoundTag = stack.getOrCreateTag();
 		if(compoundTag.contains("BurnTime")) {
 			burnTime = compoundTag.getInt("BurnTime");
 		}

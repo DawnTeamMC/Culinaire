@@ -9,6 +9,6 @@ import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 @Environment(EnvType.CLIENT)
 public class CulinaireScreens {
 	public static void init() {
-		ScreenRegistry.register(CulinaireBlocks.KETTLE_SCREEN_HANDLER, KettleScreen::new);
+		ScreenRegistry.register(CulinaireBlocks.KETTLE_SCREEN_HANDLER.getType(), KettleScreen::new);
 	}
 }

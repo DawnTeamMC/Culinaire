@@ -3,6 +3,7 @@ package com.hugman.culinaire.objects.block;
 import com.hugman.culinaire.init.CulinaireBlocks;
 import com.hugman.culinaire.init.CulinaireItems;
 import com.hugman.culinaire.objects.block.block_entity.KettleBlockEntity;
+import com.hugman.culinaire.objects.block.block_entity.MilkCauldronBlockEntity;
 import com.hugman.culinaire.objects.item.tea.TeaHelper;
 import com.hugman.culinaire.objects.item.tea.TeaType;
 import net.minecraft.block.Block;
@@ -11,6 +12,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -101,23 +104,23 @@ public class KettleBlock extends BlockWithEntity {
 	}
 
 	private VoxelShape getShape(BlockState state) {
-		switch(state.get(FACING)) {
-			case NORTH:
-			default:
-				return NORTH_SHAPE;
-			case EAST:
-				return EAST_SHAPE;
-			case SOUTH:
-				return SOUTH_SHAPE;
-			case WEST:
-				return WEST_SHAPE;
-		}
+		return switch(state.get(FACING)) {
+			default -> NORTH_SHAPE;
+			case EAST -> EAST_SHAPE;
+			case SOUTH -> SOUTH_SHAPE;
+			case WEST -> WEST_SHAPE;
+		};
 	}
 
 	@Nullable
 	@Override
-	public BlockEntity createBlockEntity(BlockView world) {
-		return new KettleBlockEntity();
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new KettleBlockEntity(pos, state);
+	}
+
+	@Nullable
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		return world.isClient ? null : checkType(type, CulinaireBlocks.KETTLE_ENTITY, KettleBlockEntity::tick);
 	}
 
 	@Override
@@ -155,27 +158,27 @@ public class KettleBlock extends BlockWithEntity {
 			if(blockEntity instanceof KettleBlockEntity) {
 				if(!handStack.isEmpty()) {
 					KettleBlockEntity kettleEntity = (KettleBlockEntity) blockEntity;
-					if(handStack.getItem() == Items.WATER_BUCKET && kettleEntity.getFluid() != 2) {
+					if(handStack.getItem() == Items.WATER_BUCKET && kettleEntity.getFluid() != KettleBlockEntity.Fluid.TEA) {
 						if(kettleEntity.addWater(3)) {
 							shouldOpenScreen = false;
-							if(!player.abilities.creativeMode) {
+							if(!player.getAbilities().creativeMode) {
 								ItemStack newStack = new ItemStack(Items.BUCKET);
 								player.setStackInHand(hand, newStack);
 							}
 							world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
 						}
 					}
-					else if(handStack.getItem() == Items.POTION && PotionUtil.getPotion(handStack) == Potions.WATER && kettleEntity.getFluid() != 2) {
+					else if(handStack.getItem() == Items.POTION && PotionUtil.getPotion(handStack) == Potions.WATER && kettleEntity.getFluid() != KettleBlockEntity.Fluid.TEA) {
 						if(kettleEntity.addWater(1)) {
 							shouldOpenScreen = false;
-							if(!player.abilities.creativeMode) {
+							if(!player.getAbilities().creativeMode) {
 								ItemStack newStack = new ItemStack(Items.GLASS_BOTTLE);
 								player.setStackInHand(hand, newStack);
 							}
 							world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
 						}
 					}
-					else if(handStack.getItem() == Items.GLASS_BOTTLE && kettleEntity.getFluid() == 2) {
+					else if(handStack.getItem() == Items.GLASS_BOTTLE && kettleEntity.getFluid() == KettleBlockEntity.Fluid.TEA) {
 						List<TeaType> teaTypes = kettleEntity.getTeaTypes();
 						if(kettleEntity.removeFluid(1)) {
 							shouldOpenScreen = false;
@@ -184,11 +187,8 @@ public class KettleBlock extends BlockWithEntity {
 							if(handStack.isEmpty()) {
 								player.setStackInHand(hand, newStack);
 							}
-							else if(!player.inventory.insertStack(newStack)) {
+							else if(!player.getInventory().insertStack(newStack)) {
 								player.dropItem(newStack, false);
-							}
-							else if(player instanceof ServerPlayerEntity) {
-								((ServerPlayerEntity) player).refreshScreenHandler(player.playerScreenHandler);
 							}
 							world.playSound(null, pos, CulinaireItems.TEA_BOTTLE_FILL_SOUND, SoundCategory.BLOCKS, 1.0F, 1.0F);
 						}
