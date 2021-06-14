@@ -1,6 +1,6 @@
 package com.hugman.culinaire.objects.block;
 
-import com.hugman.culinaire.init.CulinaireItems;
+import com.hugman.culinaire.init.CulinaireFoodBundle;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
@@ -113,7 +113,7 @@ public class TomatoesBlock extends CropBlock {
 	@Override
 	@Environment(EnvType.CLIENT)
 	protected ItemConvertible getSeedsItem() {
-		return CulinaireItems.TOMATO;
+		return CulinaireFoodBundle.TOMATO;
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package com.hugman.culinaire.objects.item.tea;
 
-import com.hugman.culinaire.init.CulinaireEffects;
+import com.hugman.culinaire.init.CulinaireTeaBundle;
 import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
@@ -43,11 +43,11 @@ public class TeaType {
 	}
 
 	public enum Flavor {
-		SWEET("sweet", 9523743, CulinaireEffects.FULFILLMENT),
+		SWEET("sweet", 9523743, CulinaireTeaBundle.FULFILLMENT),
 		UMAMI("umami", 10059295, StatusEffects.RESISTANCE),
-		SALTY("salty", 10251038, CulinaireEffects.GUARD),
-		SOUR("sour", 7238946, CulinaireEffects.POISON_RESISTANCE),
-		BITTER("bitter", 5057061, CulinaireEffects.FORESIGHT),
+		SALTY("salty", 10251038, CulinaireTeaBundle.GUARD),
+		SOUR("sour", 7238946, CulinaireTeaBundle.POISON_RESISTANCE),
+		BITTER("bitter", 5057061, CulinaireTeaBundle.FORESIGHT),
 		SHINING("shining", 16759902, StatusEffects.GLOWING),
 		GLOOPY("gloopy", 9332621);
 

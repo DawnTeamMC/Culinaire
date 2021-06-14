@@ -1,22 +1,13 @@
 {
 	"variants": {
-		"coagulated=false,level=1": {
-			"model": "culinaire:block/milk_cauldron/coagulated/false/level/1"
+		"level=1": {
+			"model": "culinaire:block/milk_cauldron/level/1"
 		},
-		"coagulated=false,level=2": {
-			"model": "culinaire:block/milk_cauldron/coagulated/false/level/2"
+		"level=2": {
+			"model": "culinaire:block/milk_cauldron/level/2"
 		},
-		"coagulated=false,level=3": {
-			"model": "culinaire:block/milk_cauldron/coagulated/false/level/3"
-		},
-		"coagulated=true,level=1": {
-			"model": "culinaire:block/milk_cauldron/coagulated/true/level/1"
-		},
-		"coagulated=true,level=2": {
-			"model": "culinaire:block/milk_cauldron/coagulated/true/level/2"
-		},
-		"coagulated=true,level=3": {
-			"model": "culinaire:block/milk_cauldron/coagulated/true/level/3"
+		"level=3": {
+			"model": "culinaire:block/milk_cauldron/level/3"
 		}
 	}
 }

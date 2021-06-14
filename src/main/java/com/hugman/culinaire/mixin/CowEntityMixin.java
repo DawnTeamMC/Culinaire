@@ -1,6 +1,6 @@
 package com.hugman.culinaire.mixin;
 
-import com.hugman.culinaire.init.CulinaireItems;
+import com.hugman.culinaire.init.CulinaireFoodBundle;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -22,7 +22,7 @@ public class CowEntityMixin {
 		ItemStack itemStack = player.getStackInHand(hand);
 		if(itemStack.getItem() == Items.GLASS_BOTTLE && !cowEntity.isBaby()) {
 			player.playSound(SoundEvents.ENTITY_COW_MILK, 1.0F, 1.0F);
-			ItemStack itemStack2 = ItemUsage.exchangeStack(itemStack, player, CulinaireItems.MILK_BOTTLE.getDefaultStack());
+			ItemStack itemStack2 = ItemUsage.exchangeStack(itemStack, player, CulinaireFoodBundle.MILK_BOTTLE.getDefaultStack());
 			player.setStackInHand(hand, itemStack2);
 			info.setReturnValue(ActionResult.success(cowEntity.world.isClient));
 		}

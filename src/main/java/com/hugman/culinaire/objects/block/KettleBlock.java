@@ -1,9 +1,7 @@
 package com.hugman.culinaire.objects.block;
 
-import com.hugman.culinaire.init.CulinaireBlocks;
-import com.hugman.culinaire.init.CulinaireItems;
-import com.hugman.culinaire.objects.block.block_entity.KettleBlockEntity;
-import com.hugman.culinaire.objects.block.block_entity.MilkCauldronBlockEntity;
+import com.hugman.culinaire.init.CulinaireTeaBundle;
+import com.hugman.culinaire.objects.block_entity.KettleBlockEntity;
 import com.hugman.culinaire.objects.item.tea.TeaHelper;
 import com.hugman.culinaire.objects.item.tea.TeaType;
 import net.minecraft.block.Block;
@@ -23,7 +21,6 @@ import net.minecraft.item.Items;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.potion.Potions;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
@@ -120,7 +117,7 @@ public class KettleBlock extends BlockWithEntity {
 
 	@Nullable
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-		return world.isClient ? null : checkType(type, CulinaireBlocks.KETTLE_ENTITY, KettleBlockEntity::tick);
+		return world.isClient ? null : checkType(type, CulinaireTeaBundle.KETTLE_ENTITY, KettleBlockEntity::tick);
 	}
 
 	@Override
@@ -182,7 +179,7 @@ public class KettleBlock extends BlockWithEntity {
 						List<TeaType> teaTypes = kettleEntity.getTeaTypes();
 						if(kettleEntity.removeFluid(1)) {
 							shouldOpenScreen = false;
-							ItemStack newStack = TeaHelper.appendTeaTypes(new ItemStack(CulinaireItems.TEA_BOTTLE), teaTypes);
+							ItemStack newStack = TeaHelper.appendTeaTypes(new ItemStack(CulinaireTeaBundle.TEA_BOTTLE), teaTypes);
 							handStack.decrement(1);
 							if(handStack.isEmpty()) {
 								player.setStackInHand(hand, newStack);
@@ -190,13 +187,13 @@ public class KettleBlock extends BlockWithEntity {
 							else if(!player.getInventory().insertStack(newStack)) {
 								player.dropItem(newStack, false);
 							}
-							world.playSound(null, pos, CulinaireItems.TEA_BOTTLE_FILL_SOUND, SoundCategory.BLOCKS, 1.0F, 1.0F);
+							world.playSound(null, pos, CulinaireTeaBundle.TEA_BOTTLE_FILL_SOUND.getSound(), SoundCategory.BLOCKS, 1.0F, 1.0F);
 						}
 					}
 				}
 				if(shouldOpenScreen) {
 					player.openHandledScreen((KettleBlockEntity) blockEntity);
-					player.incrementStat(CulinaireBlocks.KETTLE_INTERACTION_STAT);
+					player.incrementStat(CulinaireTeaBundle.KETTLE_INTERACTION_STAT.getStat());
 				}
 			}
 		}

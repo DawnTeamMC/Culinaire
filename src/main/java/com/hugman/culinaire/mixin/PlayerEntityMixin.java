@@ -1,6 +1,6 @@
 package com.hugman.culinaire.mixin;
 
-import com.hugman.culinaire.init.CulinaireEffects;
+import com.hugman.culinaire.init.CulinaireTeaBundle;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,7 +17,7 @@ public abstract class PlayerEntityMixin {
 	@Redirect(method = "eatFood", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/HungerManager;eat(Lnet/minecraft/item/Item;Lnet/minecraft/item/ItemStack;)V"))
 	public void dawn_eat(HungerManager hungerManager, Item item, ItemStack stack, World world) {
 		PlayerEntity player = (PlayerEntity) (Object) this;
-		StatusEffectInstance fulfillmentInstance = player.getStatusEffect(CulinaireEffects.FULFILLMENT);
+		StatusEffectInstance fulfillmentInstance = player.getStatusEffect(CulinaireTeaBundle.FULFILLMENT);
 		if(fulfillmentInstance != null) {
 			if(item.isFood()) {
 				FoodComponent foodComponent = item.getFoodComponent();

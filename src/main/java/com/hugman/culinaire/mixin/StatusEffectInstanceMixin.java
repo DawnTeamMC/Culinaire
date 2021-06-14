@@ -1,6 +1,6 @@
 package com.hugman.culinaire.mixin;
 
-import com.hugman.culinaire.init.CulinaireEffects;
+import com.hugman.culinaire.init.CulinaireTeaBundle;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -14,7 +14,7 @@ public class StatusEffectInstanceMixin {
 	@Redirect(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffect;canApplyUpdateEffect(II)Z"))
 	public boolean dawn_canApplyUpdateEffect(StatusEffect effect, int duration, int amplifier, LivingEntity entity, Runnable overwriteCallback) {
 		if(effect == StatusEffects.POISON || effect == StatusEffects.WITHER) {
-			StatusEffectInstance poisonResistanceInstance = entity.getStatusEffect(CulinaireEffects.POISON_RESISTANCE);
+			StatusEffectInstance poisonResistanceInstance = entity.getStatusEffect(CulinaireTeaBundle.POISON_RESISTANCE);
 			if(poisonResistanceInstance != null) {
 				int seconds = (effect == StatusEffects.POISON ? 25 : 40) * (poisonResistanceInstance.getAmplifier() + 2);
 				int j = seconds >> amplifier;

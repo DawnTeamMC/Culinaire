@@ -1,6 +1,6 @@
 package com.hugman.culinaire.objects.block;
 
-import com.hugman.culinaire.init.CulinaireBlocks;
+import com.hugman.culinaire.init.data.CulinaireBlockProperties;
 import com.hugman.culinaire.init.data.CulinaireFoods;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -24,7 +24,7 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 
 public class CheeseWheelBlock extends Block {
-	public static final IntProperty BITES = CulinaireBlocks.Properties.BITES_4;
+	public static final IntProperty BITES = CulinaireBlockProperties.BITES_4;
 	protected static final VoxelShape[] BITES_TO_SHAPE = new VoxelShape[]{Block.createCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 8.0D, 14.0D), Block.createCuboidShape(4.0D, 0.0D, 2.0D, 14.0D, 8.0D, 14.0D), Block.createCuboidShape(6.0D, 0.0D, 2.0D, 14.0D, 8.0D, 14.0D), Block.createCuboidShape(8.0D, 0.0D, 2.0D, 14.0D, 8.0D, 14.0D), Block.createCuboidShape(10.0D, 0.0D, 2.0D, 14.0D, 8.0D, 14.0D), Block.createCuboidShape(12.0D, 0.0D, 2.0D, 14.0D, 8.0D, 14.0D)};
 
 	public CheeseWheelBlock(Settings settings) {

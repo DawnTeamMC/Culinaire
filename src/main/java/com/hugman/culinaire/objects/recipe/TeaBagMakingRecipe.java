@@ -1,6 +1,6 @@
 package com.hugman.culinaire.objects.recipe;
 
-import com.hugman.culinaire.init.CulinaireItems;
+import com.hugman.culinaire.init.CulinaireTeaBundle;
 import com.hugman.culinaire.objects.item.tea.TeaHelper;
 import com.hugman.culinaire.objects.item.tea.TeaType;
 import net.minecraft.inventory.CraftingInventory;
@@ -25,7 +25,7 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return CulinaireItems.TEA_BAG_MAKING;
+		return CulinaireTeaBundle.TEA_BAG_MAKING;
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
 
 	@Override
 	public ItemStack craft(CraftingInventory inv) {
-		ItemStack givenStack = new ItemStack(CulinaireItems.TEA_BAG);
+		ItemStack givenStack = new ItemStack(CulinaireTeaBundle.TEA_BAG);
 		List<TeaType> bagTeaTypes = new ArrayList<>();
 		for(int j = 0; j < inv.size(); ++j) {
 			ItemStack stack = inv.getStack(j);

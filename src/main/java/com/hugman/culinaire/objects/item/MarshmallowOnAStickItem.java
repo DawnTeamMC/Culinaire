@@ -1,6 +1,6 @@
 package com.hugman.culinaire.objects.item;
 
-import com.hugman.culinaire.init.CulinaireItems;
+import com.hugman.culinaire.init.CulinaireFoodBundle;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.entity.Entity;
@@ -56,16 +56,16 @@ public class MarshmallowOnAStickItem extends Item {
 	}
 
 	public int getDefaultMaxBurnTime(Item item) {
-		if(item == CulinaireItems.MARSHMALLOW_ON_A_STICK) {
+		if(item == CulinaireFoodBundle.MARSHMALLOW_ON_A_STICK) {
 			return 150;
 		}
-		else if(item == CulinaireItems.TOASTY_MARSHMALLOW_ON_A_STICK) {
+		else if(item == CulinaireFoodBundle.TOASTY_MARSHMALLOW_ON_A_STICK) {
 			return 75;
 		}
-		else if(item == CulinaireItems.GOLDEN_MARSHMALLOW_ON_A_STICK) {
+		else if(item == CulinaireFoodBundle.GOLDEN_MARSHMALLOW_ON_A_STICK) {
 			return 20;
 		}
-		else if(item == CulinaireItems.BURNT_MARSHMALLOW_ON_A_STICK) {
+		else if(item == CulinaireFoodBundle.BURNT_MARSHMALLOW_ON_A_STICK) {
 			return 30;
 		}
 		else {
@@ -74,16 +74,16 @@ public class MarshmallowOnAStickItem extends Item {
 	}
 
 	public Item getDefaultBurnItem(Item item) {
-		if(item == CulinaireItems.MARSHMALLOW_ON_A_STICK) {
-			return CulinaireItems.TOASTY_MARSHMALLOW_ON_A_STICK;
+		if(item == CulinaireFoodBundle.MARSHMALLOW_ON_A_STICK) {
+			return CulinaireFoodBundle.TOASTY_MARSHMALLOW_ON_A_STICK;
 		}
-		else if(item == CulinaireItems.TOASTY_MARSHMALLOW_ON_A_STICK) {
-			return CulinaireItems.GOLDEN_MARSHMALLOW_ON_A_STICK;
+		else if(item == CulinaireFoodBundle.TOASTY_MARSHMALLOW_ON_A_STICK) {
+			return CulinaireFoodBundle.GOLDEN_MARSHMALLOW_ON_A_STICK;
 		}
-		else if(item == CulinaireItems.GOLDEN_MARSHMALLOW_ON_A_STICK) {
-			return CulinaireItems.BURNT_MARSHMALLOW_ON_A_STICK;
+		else if(item == CulinaireFoodBundle.GOLDEN_MARSHMALLOW_ON_A_STICK) {
+			return CulinaireFoodBundle.BURNT_MARSHMALLOW_ON_A_STICK;
 		}
-		else if(item == CulinaireItems.BURNT_MARSHMALLOW_ON_A_STICK) {
+		else if(item == CulinaireFoodBundle.BURNT_MARSHMALLOW_ON_A_STICK) {
 			return Items.STICK;
 		}
 		else {

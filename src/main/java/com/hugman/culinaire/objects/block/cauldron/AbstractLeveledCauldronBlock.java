@@ -1,4 +1,4 @@
-package com.hugman.culinaire.objects.block;
+package com.hugman.culinaire.objects.block.cauldron;
 
 import net.minecraft.block.AbstractCauldronBlock;
 import net.minecraft.block.BlockState;

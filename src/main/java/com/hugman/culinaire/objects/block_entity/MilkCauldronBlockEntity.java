@@ -1,10 +1,10 @@
-package com.hugman.culinaire.objects.block.block_entity;
+package com.hugman.culinaire.objects.block_entity;
 
-import com.hugman.culinaire.init.CulinaireBlocks;
+import com.hugman.culinaire.init.CulinaireFoodBundle;
 import com.hugman.culinaire.objects.block.MilkCauldronBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BrewingStandBlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -16,7 +16,7 @@ public class MilkCauldronBlockEntity extends BlockEntity {
 	private int maxCoagulationTime;
 
 	public MilkCauldronBlockEntity(BlockPos pos, BlockState state) {
-		super(CulinaireBlocks.MILK_CAULDRON_ENTITY, pos, state);
+		super(CulinaireFoodBundle.MILK_CAULDRON_ENTITY, pos, state);
 		Random random = new Random();
 		this.maxCoagulationTime = random.nextInt(16000) + 32000;
 	}
@@ -24,7 +24,7 @@ public class MilkCauldronBlockEntity extends BlockEntity {
 	public static void tick(World world, BlockPos pos, BlockState state, MilkCauldronBlockEntity blockEntity) {
 		if(!world.isClient) {
 			if(blockEntity.coagulationTime >= blockEntity.maxCoagulationTime && state.get(MilkCauldronBlock.LEVEL) == 3) {
-				world.setBlockState(pos, state.with(MilkCauldronBlock.COAGULATED, true), 3);
+				world.setBlockState(pos, CulinaireFoodBundle.CHEESE_CAULDRON.getDefaultState(), Block.NOTIFY_ALL);
 			}
 			if(blockEntity.coagulationTime < blockEntity.maxCoagulationTime) {
 				blockEntity.coagulationTime++;

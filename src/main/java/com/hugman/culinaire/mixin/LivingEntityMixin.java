@@ -1,6 +1,6 @@
 package com.hugman.culinaire.mixin;
 
-import com.hugman.culinaire.init.CulinaireEffects;
+import com.hugman.culinaire.init.CulinaireTeaBundle;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.util.math.MathHelper;
@@ -14,9 +14,9 @@ public abstract class LivingEntityMixin {
 	@Inject(method = "getArmor", at = @At("HEAD"), cancellable = true)
 	private void dawn_getArmor(CallbackInfoReturnable<Integer> info) {
 		LivingEntity entity = (LivingEntity) (Object) this;
-		if(entity.hasStatusEffect(CulinaireEffects.GUARD)) {
+		if(entity.hasStatusEffect(CulinaireTeaBundle.GUARD)) {
 			double d = entity.getAttributeValue(EntityAttributes.GENERIC_ARMOR);
-			info.setReturnValue(MathHelper.floor(d + d * 0.15F * (float) (entity.getStatusEffect(CulinaireEffects.GUARD).getAmplifier() + 1)));
+			info.setReturnValue(MathHelper.floor(d + d * 0.15F * (float) (entity.getStatusEffect(CulinaireTeaBundle.GUARD).getAmplifier() + 1)));
 		}
 	}
 }

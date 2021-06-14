@@ -1,4 +1,4 @@
-package com.hugman.culinaire.objects.block;
+package com.hugman.culinaire.objects.block.cauldron;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 
 import java.util.Map;
 
-public class ThreeLeveledCauldronBlock extends AbstractLeveledCauldronBlock {
+public abstract class ThreeLeveledCauldronBlock extends AbstractLeveledCauldronBlock {
 	public static final IntProperty LEVEL = Properties.LEVEL_3;
 
 	public ThreeLeveledCauldronBlock(Settings settings, Map<Item, CauldronBehavior> behaviorMap) {

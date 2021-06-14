@@ -1,16 +1,16 @@
 {
 	"variants": {
 		"age=0": {
-			"model": "culinaire:block/lettuce/age_0"
+			"model": "culinaire:block/lettuce/age/0"
 		},
 		"age=1": {
-			"model": "culinaire:block/lettuce/age_1"
+			"model": "culinaire:block/lettuce/age/1"
 		},
 		"age=2": {
-			"model": "culinaire:block/lettuce/age_2"
+			"model": "culinaire:block/lettuce/age/2"
 		},
 		"age=3": {
-			"model": "culinaire:block/lettuce/age_3"
+			"model": "culinaire:block/lettuce/age/3"
 		}
 	}
 }

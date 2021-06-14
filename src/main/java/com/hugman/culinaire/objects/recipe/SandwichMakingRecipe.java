@@ -2,7 +2,7 @@ package com.hugman.culinaire.objects.recipe;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
-import com.hugman.culinaire.init.CulinaireItems;
+import com.hugman.culinaire.init.CulinaireFoodBundle;
 import com.hugman.culinaire.init.data.CulinaireTags;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -26,22 +26,22 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 
 	public SandwichMakingRecipe(Identifier identifier) {
 		super(identifier);
-		COMPLEMENTS.put(Items.APPLE, CulinaireItems.CHOCOLATE);
+		COMPLEMENTS.put(Items.APPLE, CulinaireFoodBundle.CHOCOLATE);
 		COMPLEMENTS.put(Items.CHICKEN, Items.HONEY_BOTTLE);
-		COMPLEMENTS.put(Items.COOKED_BEEF, CulinaireItems.CHEESE);
+		COMPLEMENTS.put(Items.COOKED_BEEF, CulinaireFoodBundle.CHEESE);
 		COMPLEMENTS.put(Items.ENCHANTED_GOLDEN_APPLE, Items.BEETROOT);
 		COMPLEMENTS.put(Items.GOLDEN_APPLE, Items.DRIED_KELP);
-		COMPLEMENTS.put(CulinaireItems.MARSHMALLOW, CulinaireItems.CHOCOLATE);
-		COMPLEMENTS.put(CulinaireItems.MARSHMALLOW, Items.HONEY_BOTTLE);
+		COMPLEMENTS.put(CulinaireFoodBundle.MARSHMALLOW, CulinaireFoodBundle.CHOCOLATE);
+		COMPLEMENTS.put(CulinaireFoodBundle.MARSHMALLOW, Items.HONEY_BOTTLE);
 		COMPLEMENTS.put(Items.RABBIT, Items.BEETROOT);
-		COMPLEMENTS.put(Items.SPIDER_EYE, CulinaireItems.CHOCOLATE);
-		COMPLEMENTS.put(CulinaireItems.TOMATO, CulinaireItems.CHEESE);
-		COMPLEMENTS.put(CulinaireItems.TOMATO, CulinaireItems.LETTUCE);
-		COMPLEMENTS.put(CulinaireItems.TOMATO, Items.COOKED_CHICKEN);
+		COMPLEMENTS.put(Items.SPIDER_EYE, CulinaireFoodBundle.CHOCOLATE);
+		COMPLEMENTS.put(CulinaireFoodBundle.TOMATO, CulinaireFoodBundle.CHEESE);
+		COMPLEMENTS.put(CulinaireFoodBundle.TOMATO, CulinaireFoodBundle.LETTUCE);
+		COMPLEMENTS.put(CulinaireFoodBundle.TOMATO, Items.COOKED_CHICKEN);
 	}
 
 	public ItemStack getOutput() {
-		return new ItemStack(CulinaireItems.SANDWICH);
+		return new ItemStack(CulinaireFoodBundle.SANDWICH);
 	}
 
 	public boolean matches(CraftingInventory inv, World world) {
@@ -80,7 +80,7 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 	}
 
 	public ItemStack craft(CraftingInventory inv) {
-		ItemStack givenStack = new ItemStack(CulinaireItems.SANDWICH);
+		ItemStack givenStack = new ItemStack(CulinaireFoodBundle.SANDWICH);
 		int hunger = 0;
 		float saturation = 0;
 		Item item1 = inv.getStack(3).getItem();
@@ -258,6 +258,6 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 	}
 
 	public RecipeSerializer<?> getSerializer() {
-		return CulinaireItems.SANDWICH_MAKING;
+		return CulinaireFoodBundle.SANDWICH_MAKING;
 	}
 }

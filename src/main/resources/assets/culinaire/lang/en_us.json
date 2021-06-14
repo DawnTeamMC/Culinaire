@@ -3,8 +3,9 @@
 
 	"block.culinaire.lettuce": "Lettuce",
 	"block.culinaire.tomatoes": "Tomatoes",
-	"block.culinaire.cheese_wheel": "Cheese Wheel",
 	"block.culinaire.milk_cauldron": "Milk Cauldron",
+	"block.culinaire.cheese_cauldron": "Cheese Cauldron",
+	"block.culinaire.cheese_wheel": "Cheese Wheel",
 	"block.culinaire.kettle": "Kettle",
 
 	"item.culinaire.cheese": "Cheese",

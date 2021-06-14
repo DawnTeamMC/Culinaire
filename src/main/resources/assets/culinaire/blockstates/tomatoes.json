@@ -1,16 +1,16 @@
 {
 	"variants": {
 		"half=lower,age=0": {
-			"model": "culinaire:block/tomatoes/lower/age_0"
+			"model": "culinaire:block/tomatoes/lower/age/0"
 		},
 		"half=lower,age=1": {
-			"model": "culinaire:block/tomatoes/lower/age_1"
+			"model": "culinaire:block/tomatoes/lower/age/1"
 		},
 		"half=lower,age=2": {
-			"model": "culinaire:block/tomatoes/lower/age_2"
+			"model": "culinaire:block/tomatoes/lower/age/2"
 		},
 		"half=lower,age=3": {
-			"model": "culinaire:block/tomatoes/lower/age_3"
+			"model": "culinaire:block/tomatoes/lower/age/3"
 		},
 		"half=upper,age=0": {
 			"model": "minecraft:block/air"
@@ -19,10 +19,10 @@
 			"model": "minecraft:block/air"
 		},
 		"half=upper,age=2": {
-			"model": "culinaire:block/tomatoes/upper/age_2"
+			"model": "culinaire:block/tomatoes/upper/age/2"
 		},
 		"half=upper,age=3": {
-			"model": "culinaire:block/tomatoes/upper/age_3"
+			"model": "culinaire:block/tomatoes/upper/age/3"
 		}
 	}
 }
