@@ -18,6 +18,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.potion.Potions;
 import net.minecraft.screen.ScreenHandler;
@@ -41,6 +42,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 public class KettleBlock extends BlockWithEntity {
 	public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
@@ -109,6 +111,18 @@ public class KettleBlock extends BlockWithEntity {
 		};
 	}
 
+	@Override
+	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+		BlockEntity blockEntity = world.getBlockEntity(pos);
+		if(blockEntity instanceof KettleBlockEntity kettleEntity && kettleEntity.shouldGetHot(world) && kettleEntity.getFluid() != KettleBlockEntity.Fluid.EMPTY) {
+			Direction direction = state.get(FACING);
+			double offsetX = (double)pos.getX() + 0.5D;
+			double offsetY = (double)pos.getY() + 0.5D;
+			double offsetZ = (double)pos.getZ() + 0.5D;
+			world.addParticle(ParticleTypes.SMOKE, offsetX + direction.getOffsetX() * 0.5, offsetY, offsetZ + direction.getOffsetZ() * 0.5, direction.getOffsetX() * 0.02, 0.0D, direction.getOffsetZ() * 0.02);
+		}
+	}
+
 	@Nullable
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
@@ -129,8 +143,8 @@ public class KettleBlock extends BlockWithEntity {
 	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
 		if(itemStack.hasCustomName()) {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
-			if(blockEntity instanceof KettleBlockEntity) {
-				((KettleBlockEntity) blockEntity).setCustomName(itemStack.getName());
+			if(blockEntity instanceof KettleBlockEntity kettleEntity) {
+				kettleEntity.setCustomName(itemStack.getName());
 			}
 		}
 	}
@@ -152,9 +166,8 @@ public class KettleBlock extends BlockWithEntity {
 		if(!world.isClient) {
 			boolean shouldOpenScreen = true;
 			BlockEntity blockEntity = world.getBlockEntity(pos);
-			if(blockEntity instanceof KettleBlockEntity) {
+			if(blockEntity instanceof KettleBlockEntity kettleEntity) {
 				if(!handStack.isEmpty()) {
-					KettleBlockEntity kettleEntity = (KettleBlockEntity) blockEntity;
 					if(handStack.getItem() == Items.WATER_BUCKET && kettleEntity.getFluid() != KettleBlockEntity.Fluid.TEA) {
 						if(kettleEntity.addWater(3)) {
 							shouldOpenScreen = false;

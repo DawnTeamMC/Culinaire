@@ -253,7 +253,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 
 	public static void tick(World world, BlockPos pos, BlockState state, KettleBlockEntity blockEntity) {
 		ItemStack stack = blockEntity.inventory.get(0);
-		blockEntity.isHot = blockEntity.isHot(world);
+		blockEntity.isHot = blockEntity.shouldGetHot(world);
 		boolean canBrew = blockEntity.canBrew(stack);
 		boolean isBrewing = blockEntity.brewTime > 0;
 		if(isBrewing) {
@@ -283,7 +283,11 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 		}
 	}
 
-	public boolean isHot(World world) {
+	public boolean isHot() {
+		return isHot;
+	}
+
+	public boolean shouldGetHot(World world) {
 		for(Direction direction : Direction.values()) {
 			if(isHotBlock(world, this.getPos().offset(direction))) {
 				return true;
