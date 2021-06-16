@@ -18,13 +18,13 @@ public class KettleScreenHandler extends ScreenHandler {
 	private final PropertyDelegate propertyDelegate;
 
 	public KettleScreenHandler(int syncId, PlayerInventory playerInventory) {
-		this(syncId, playerInventory, new SimpleInventory(1), new ArrayPropertyDelegate(5));
+		this(syncId, playerInventory, new SimpleInventory(1), new ArrayPropertyDelegate(6));
 	}
 
 	public KettleScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, PropertyDelegate propertyDelegate) {
 		super(CulinaireTeaBundle.KETTLE_SCREEN_HANDLER.getType(), syncId);
 		checkSize(inventory, 1);
-		checkDataCount(propertyDelegate, 5);
+		checkDataCount(propertyDelegate, 6);
 		this.inventory = inventory;
 		this.propertyDelegate = propertyDelegate;
 		this.addSlot(new TeaBagSlot(inventory, 0, 80, 17));
@@ -49,7 +49,7 @@ public class KettleScreenHandler extends ScreenHandler {
 	public ItemStack transferSlot(PlayerEntity player, int index) {
 		ItemStack itemStack = ItemStack.EMPTY;
 		Slot slot = this.slots.get(index);
-		if(slot != null && slot.hasStack()) {
+		if(slot.hasStack()) {
 			ItemStack itemStack2 = slot.getStack();
 			itemStack = itemStack2.copy();
 			if(index != 0) {
@@ -90,23 +90,28 @@ public class KettleScreenHandler extends ScreenHandler {
 	}
 
 	@Environment(EnvType.CLIENT)
-	public int getFluidLevel() {
+	public int getTotalBrewTime() {
 		return this.propertyDelegate.get(1);
 	}
 
 	@Environment(EnvType.CLIENT)
-	public int getFluid() {
+	public int getFluidLevel() {
 		return this.propertyDelegate.get(2);
 	}
 
 	@Environment(EnvType.CLIENT)
+	public int getFluid() {
+		return this.propertyDelegate.get(3);
+	}
+
+	@Environment(EnvType.CLIENT)
 	public boolean isHot() {
-		return this.propertyDelegate.get(3) > 0;
+		return this.propertyDelegate.get(4) == 1;
 	}
 
 	@Environment(EnvType.CLIENT)
 	public int getTeaColor() {
-		return this.propertyDelegate.get(4);
+		return this.propertyDelegate.get(5);
 	}
 
 	static class TeaBagSlot extends Slot {

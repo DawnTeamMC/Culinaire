@@ -39,6 +39,7 @@ public class KettleScreen extends HandledScreen<KettleScreenHandler> {
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		int brewTime = this.handler.getBrewTime();
+		int totalBrewTime = this.handler.getTotalBrewTime();
 		int fluidLevel = this.handler.getFluidLevel();
 		int fluid = this.handler.getFluid();
 		boolean isHot = this.handler.isHot();
@@ -46,7 +47,7 @@ public class KettleScreen extends HandledScreen<KettleScreenHandler> {
 		int j = (this.height - this.backgroundHeight) / 2;
 		this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
 		if(brewTime > 0) {
-			int brewBarHeight = (int) (27.0F * (1.0F - (float) brewTime / 800.0F));
+			int brewBarHeight = (int) (27.0F * (1.0F - (float) brewTime / totalBrewTime));
 			if(brewBarHeight > 0) {
 				this.drawTexture(matrices, i + 99, j + 17, 222, 0, 7, brewBarHeight);
 			}

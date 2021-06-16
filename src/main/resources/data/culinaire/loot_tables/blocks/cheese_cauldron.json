@@ -26,7 +26,33 @@
 			"functions": [
 				{
 					"function": "minecraft:set_count",
-					"count": 3
+					"count": 1
+				},
+				{
+					"function": "minecraft:set_count",
+					"count": 2,
+					"conditions": [
+						{
+							"condition": "minecraft:block_state_property",
+							"block": "culinaire:cheese_cauldron",
+							"properties": {
+								"level": "2"
+							}
+						}
+					]
+				},
+				{
+					"function": "minecraft:set_count",
+					"count": 3,
+					"conditions": [
+						{
+							"condition": "minecraft:block_state_property",
+							"block": "culinaire:cheese_cauldron",
+							"properties": {
+								"level": "3"
+							}
+						}
+					]
 				}
 			]
 		}

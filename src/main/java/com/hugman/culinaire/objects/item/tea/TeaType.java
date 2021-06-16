@@ -37,6 +37,10 @@ public class TeaType {
 		return TagRegistry.item(new Identifier("c", "tea_ingredients/" + getFlavor().getName() + "/" + getStrength().getName()));
 	}
 
+	public int getBrewTime() {
+		return flavor.getBrewTime() * strength.getPotency();
+	}
+
 	@Override
 	public String toString() {
 		return "TeaType{" + "strength=" + strength + ", flavor=" + flavor + '}';
@@ -53,17 +57,23 @@ public class TeaType {
 
 		private final String name;
 
-		private final StatusEffect effect;
 		private final int color;
+		private final int brewTime;
+		private final StatusEffect effect;
 
 		Flavor(String name, int color) {
 			this(name, color, null);
 		}
 
 		Flavor(String name, int color, StatusEffect effect) {
+			this(name, color, 200, effect);
+		}
+
+		Flavor(String name, int color, int brewTime, StatusEffect effect) {
 			this.name = name;
-			this.effect = effect;
+			this.brewTime = brewTime;
 			this.color = color;
+			this.effect = effect;
 		}
 
 		public static Flavor byName(String name) {
@@ -85,6 +95,10 @@ public class TeaType {
 
 		public int getColor() {
 			return color;
+		}
+
+		public int getBrewTime() {
+			return brewTime;
 		}
 	}
 

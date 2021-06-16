@@ -1,7 +1,7 @@
 package com.hugman.culinaire.objects.block;
 
 import com.hugman.culinaire.init.CulinaireTeaBundle;
-import com.hugman.culinaire.objects.block_entity.KettleBlockEntity;
+import com.hugman.culinaire.objects.block.entity.KettleBlockEntity;
 import com.hugman.culinaire.objects.item.tea.TeaHelper;
 import com.hugman.culinaire.objects.item.tea.TeaType;
 import net.minecraft.block.Block;
@@ -17,13 +17,14 @@ import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsage;
 import net.minecraft.item.Items;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.potion.Potions;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
@@ -39,10 +40,10 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Random;
 
 public class KettleBlock extends BlockWithEntity {
 	public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
@@ -111,18 +112,6 @@ public class KettleBlock extends BlockWithEntity {
 		};
 	}
 
-	@Override
-	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-		BlockEntity blockEntity = world.getBlockEntity(pos);
-		if(blockEntity instanceof KettleBlockEntity kettleEntity && kettleEntity.shouldGetHot(world) && kettleEntity.getFluid() != KettleBlockEntity.Fluid.EMPTY) {
-			Direction direction = state.get(FACING);
-			double offsetX = (double)pos.getX() + 0.5D;
-			double offsetY = (double)pos.getY() + 0.5D;
-			double offsetZ = (double)pos.getZ() + 0.5D;
-			world.addParticle(ParticleTypes.SMOKE, offsetX + direction.getOffsetX() * 0.5, offsetY, offsetZ + direction.getOffsetZ() * 0.5, direction.getOffsetX() * 0.02, 0.0D, direction.getOffsetZ() * 0.02);
-		}
-	}
-
 	@Nullable
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
@@ -131,7 +120,7 @@ public class KettleBlock extends BlockWithEntity {
 
 	@Nullable
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-		return world.isClient ? null : checkType(type, CulinaireTeaBundle.KETTLE_ENTITY, KettleBlockEntity::tick);
+		return world.isClient ? null : checkType(type, CulinaireTeaBundle.KETTLE_ENTITY, KettleBlockEntity::serverTick);
 	}
 
 	@Override
@@ -162,53 +151,46 @@ public class KettleBlock extends BlockWithEntity {
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		ItemStack handStack = player.getStackInHand(hand);
+		ItemStack stack = player.getStackInHand(hand);
 		if(!world.isClient) {
-			boolean shouldOpenScreen = true;
+			boolean openScreen = true;
 			BlockEntity blockEntity = world.getBlockEntity(pos);
-			if(blockEntity instanceof KettleBlockEntity kettleEntity) {
-				if(!handStack.isEmpty()) {
-					if(handStack.getItem() == Items.WATER_BUCKET && kettleEntity.getFluid() != KettleBlockEntity.Fluid.TEA) {
-						if(kettleEntity.addWater(3)) {
-							shouldOpenScreen = false;
-							if(!player.getAbilities().creativeMode) {
-								ItemStack newStack = new ItemStack(Items.BUCKET);
-								player.setStackInHand(hand, newStack);
-							}
+			if(blockEntity instanceof KettleBlockEntity kettle) {
+				if(!stack.isEmpty()) {
+					if(stack.getItem() == Items.WATER_BUCKET && kettle.getFluid() != KettleBlockEntity.Fluid.TEA) {
+						if(kettle.addWater(3)) {
+							openScreen = false;
+							player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.BUCKET)));
+							player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
 							world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+							world.emitGameEvent(null, GameEvent.FLUID_PLACE, pos);
 						}
 					}
-					else if(handStack.getItem() == Items.POTION && PotionUtil.getPotion(handStack) == Potions.WATER && kettleEntity.getFluid() != KettleBlockEntity.Fluid.TEA) {
-						if(kettleEntity.addWater(1)) {
-							shouldOpenScreen = false;
-							if(!player.getAbilities().creativeMode) {
-								ItemStack newStack = new ItemStack(Items.GLASS_BOTTLE);
-								player.setStackInHand(hand, newStack);
-							}
+					else if(stack.getItem() == Items.POTION && PotionUtil.getPotion(stack) == Potions.WATER && kettle.getFluid() != KettleBlockEntity.Fluid.TEA) {
+						if(kettle.addWater(1)) {
+							openScreen = false;
+							player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
+							player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
 							world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+							world.emitGameEvent(null, GameEvent.FLUID_PLACE, pos);
 						}
 					}
-					else if(handStack.getItem() == Items.GLASS_BOTTLE && kettleEntity.getFluid() == KettleBlockEntity.Fluid.TEA) {
-						List<TeaType> teaTypes = kettleEntity.getTeaTypes();
-						if(kettleEntity.removeFluid(1)) {
-							shouldOpenScreen = false;
-							ItemStack newStack = TeaHelper.appendTeaTypes(new ItemStack(CulinaireTeaBundle.TEA_BOTTLE), teaTypes);
-							handStack.decrement(1);
-							if(handStack.isEmpty()) {
-								player.setStackInHand(hand, newStack);
-							}
-							else if(!player.getInventory().insertStack(newStack)) {
-								player.dropItem(newStack, false);
-							}
+					else if(stack.getItem() == Items.GLASS_BOTTLE && kettle.getFluid() == KettleBlockEntity.Fluid.TEA) {
+						List<TeaType> teaTypes = kettle.getTeaTypes();
+						if(kettle.removeFluid(1)) {
+							openScreen = false;
+							player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, TeaHelper.appendTeaTypes(new ItemStack(CulinaireTeaBundle.TEA_BOTTLE), teaTypes)));
+							player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
 							world.playSound(null, pos, CulinaireTeaBundle.TEA_BOTTLE_FILL_SOUND.getSound(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+							world.emitGameEvent(null, GameEvent.FLUID_PICKUP, pos);
 						}
 					}
 				}
-				if(shouldOpenScreen) {
+				if(openScreen) {
 					player.openHandledScreen((KettleBlockEntity) blockEntity);
-					player.incrementStat(CulinaireTeaBundle.KETTLE_INTERACTION_STAT.getStat());
 				}
 			}
+			player.incrementStat(CulinaireTeaBundle.KETTLE_INTERACTION_STAT.getStat());
 		}
 		return ActionResult.success(world.isClient);
 	}

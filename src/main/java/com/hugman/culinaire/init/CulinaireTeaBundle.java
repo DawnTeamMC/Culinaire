@@ -1,7 +1,7 @@
 package com.hugman.culinaire.init;
 
 import com.hugman.culinaire.objects.block.KettleBlock;
-import com.hugman.culinaire.objects.block_entity.KettleBlockEntity;
+import com.hugman.culinaire.objects.block.entity.KettleBlockEntity;
 import com.hugman.culinaire.objects.item.TeaBagItem;
 import com.hugman.culinaire.objects.item.TeaBottleItem;
 import com.hugman.culinaire.objects.recipe.TeaBagMakingRecipe;

@@ -17,15 +17,19 @@ public abstract class AbstractLeveledCauldronBlock extends AbstractCauldronBlock
 		this.setDefaultState(this.stateManager.getDefaultState().with(getLevelProperty(), 1));
 	}
 
-	public abstract IntProperty getLevelProperty();
+	public static int getFluidLevel(BlockState state) {
+		return state.get(((AbstractLeveledCauldronBlock) state.getBlock()).getLevelProperty());
+	}
 
-	public abstract int getMaxLevel();
-
-	public static void decrementFluidLevel(BlockState state, World world, BlockPos pos, int amount) {
+	public static void setFluidLevel(BlockState state, World world, BlockPos pos, int amount) {
 		IntProperty level = ((AbstractLeveledCauldronBlock) state.getBlock()).getLevelProperty();
 		int max = ((AbstractLeveledCauldronBlock) state.getBlock()).getMaxLevel();
-		int i = Math.min(state.get(level) - amount, max);
+		int i = Math.min(amount, max);
 		world.setBlockState(pos, i <= 0 ? Blocks.CAULDRON.getDefaultState() : state.with(level, i));
+	}
+
+	public static void decrementFluidLevel(BlockState state, World world, BlockPos pos, int amount) {
+		setFluidLevel(state, world, pos, state.get(((AbstractLeveledCauldronBlock) state.getBlock()).getLevelProperty()) - amount);
 	}
 
 	public static void decrementFluidLevel(BlockState state, World world, BlockPos pos) {
@@ -33,15 +37,16 @@ public abstract class AbstractLeveledCauldronBlock extends AbstractCauldronBlock
 	}
 
 	public static void incrementFluidLevel(BlockState state, World world, BlockPos pos, int amount) {
-		IntProperty level = ((AbstractLeveledCauldronBlock) state.getBlock()).getLevelProperty();
-		int max = ((AbstractLeveledCauldronBlock) state.getBlock()).getMaxLevel();
-		int i = Math.min(state.get(level) + amount, max);
-		world.setBlockState(pos, i <= 0 ? Blocks.CAULDRON.getDefaultState() : state.with(level, i));
+		setFluidLevel(state, world, pos, state.get(((AbstractLeveledCauldronBlock) state.getBlock()).getLevelProperty()) + amount);
 	}
 
 	public static void incrementFluidLevel(BlockState state, World world, BlockPos pos) {
 		incrementFluidLevel(state, world, pos, 1);
 	}
+
+	public abstract IntProperty getLevelProperty();
+
+	public abstract int getMaxLevel();
 
 	@Override
 	public boolean isFull(BlockState state) {

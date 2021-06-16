@@ -31,7 +31,7 @@ public abstract class ThreeLeveledCauldronBlock extends AbstractLeveledCauldronB
 
 	@Override
 	protected double getFluidHeight(BlockState state) {
-		return (6.0D + (double)state.get(LEVEL) * 3.0D) / 16.0D;
+		return (6.0D + (double) state.get(LEVEL) * 3.0D) / 16.0D;
 	}
 
 	@Override
