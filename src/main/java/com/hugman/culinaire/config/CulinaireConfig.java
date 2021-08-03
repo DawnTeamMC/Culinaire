@@ -16,5 +16,6 @@ public class CulinaireConfig extends PartitioningSerializer.GlobalData {
 	@Config(name = "features")
 	public static class FeaturesCategory implements ConfigData {
 		public boolean canDrinkMilkBucket = false;
+		public int milkBottlesMaxCount = 1;
 	}
 }

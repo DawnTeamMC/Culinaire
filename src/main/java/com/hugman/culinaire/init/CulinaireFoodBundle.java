@@ -1,5 +1,6 @@
 package com.hugman.culinaire.init;
 
+import com.hugman.culinaire.Culinaire;
 import com.hugman.culinaire.init.data.CulinaireFoods;
 import com.hugman.culinaire.objects.block.CheeseCauldronBlock;
 import com.hugman.culinaire.objects.block.CheeseWheelBlock;
@@ -26,7 +27,7 @@ import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.sound.BlockSoundGroup;
 
 public class CulinaireFoodBundle extends CulinaireBundle {
-	public static final Item MILK_BOTTLE = add(new ItemCreator.Builder("milk_bottle", MilkBottleItem::new, new Item.Settings().group(ItemGroup.FOOD).maxCount(1).recipeRemainder(Items.GLASS_BOTTLE)).build());
+	public static final Item MILK_BOTTLE = add(new ItemCreator.Builder("milk_bottle", MilkBottleItem::new, new Item.Settings().group(ItemGroup.FOOD).maxCount(Culinaire.CONFIG.features.milkBottlesMaxCount).recipeRemainder(Items.GLASS_BOTTLE)).build());
 	public static final Block MILK_CAULDRON = add(new BlockCreator.Builder("milk_cauldron", s -> new MilkCauldronBlock(s, CulinaireCauldronBehaviors.MILK_CAULDRON_BEHAVIOR), FabricBlockSettings.of(Material.METAL, MapColor.STONE_GRAY).requiresTool().ticksRandomly().strength(2.0F).nonOpaque()).noItem().build());
 	public static final Block CHEESE_CAULDRON = add(new BlockCreator.Builder("cheese_cauldron", s -> new CheeseCauldronBlock(s, CulinaireCauldronBehaviors.CHEESE_CAULDRON_BEHAVIOR), FabricBlockSettings.of(Material.METAL, MapColor.STONE_GRAY).requiresTool().strength(2.0F).nonOpaque()).noItem().build());
 	public static final Item CHEESE = add(new ItemCreator.Builder("cheese", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.CHEESE)).compostingChance(0.5f).build());

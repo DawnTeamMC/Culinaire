@@ -64,5 +64,6 @@
 
 	"text.autoconfig.culinaire.title": "Culinaire Configuration",
 	"text.autoconfig.culinaire.category.features": "Features",
-	"text.autoconfig.culinaire.option.features.canDrinkMilkBucket": "Drinkable Milk Buckets"
+	"text.autoconfig.culinaire.option.features.canDrinkMilkBucket": "Drinkable Milk Buckets",
+	"text.autoconfig.culinaire.option.features.milkBottlesMaxCount": "Maximum Stack Size of Milk Bottles"
 }
