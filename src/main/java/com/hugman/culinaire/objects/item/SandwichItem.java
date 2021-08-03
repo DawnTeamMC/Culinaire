@@ -28,7 +28,7 @@ public class SandwichItem extends Item {
 
 	@Override
 	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-		NbtCompound sandwichData = stack.getSubTag("SandwichData");
+		NbtCompound sandwichData = stack.getSubNbt("SandwichData");
 		if(sandwichData != null && user instanceof PlayerEntity) {
 			PlayerEntity player = (PlayerEntity) user;
 			player.getHungerManager().add(sandwichData.getInt("Hunger"), sandwichData.getFloat("SaturationModifier"));
@@ -38,7 +38,7 @@ public class SandwichItem extends Item {
 
 	@Override
 	public boolean hasGlint(ItemStack stack) {
-		NbtCompound sandwichData = stack.getSubTag("SandwichData");
+		NbtCompound sandwichData = stack.getSubNbt("SandwichData");
 		if(sandwichData != null) {
 			NbtList ingredientList = sandwichData.getList("Ingredients", 10);
 			if(!ingredientList.isEmpty()) {
@@ -58,7 +58,7 @@ public class SandwichItem extends Item {
 	@Environment(EnvType.CLIENT)
 	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
 		MutableText text = new LiteralText("").formatted(Formatting.GRAY);
-		NbtCompound sandwichData = stack.getSubTag("SandwichData");
+		NbtCompound sandwichData = stack.getSubNbt("SandwichData");
 		if(sandwichData != null) {
 			NbtList ingredientList = sandwichData.getList("Ingredients", 10);
 			if(!ingredientList.isEmpty()) {

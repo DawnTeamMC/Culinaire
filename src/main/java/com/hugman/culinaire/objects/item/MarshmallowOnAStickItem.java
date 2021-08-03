@@ -32,7 +32,7 @@ public class MarshmallowOnAStickItem extends Item {
 		int burnTime = 0;
 		int maxBurnTime = getDefaultMaxBurnTime(stack.getItem());
 		Item burnItem = getDefaultBurnItem(stack.getItem());
-		NbtCompound compoundTag = stack.getOrCreateTag();
+		NbtCompound compoundTag = stack.getOrCreateNbt();
 		if(compoundTag.contains("BurnTime")) {
 			burnTime = compoundTag.getInt("BurnTime");
 		}

@@ -111,7 +111,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 				kettle.brewTime = 0;
 				kettle.markDirty();
 			}
-			else if(!ItemStack.areTagsEqual(kettle.stackBrewing, stack)) {
+			else if(!ItemStack.areNbtEqual(kettle.stackBrewing, stack)) {
 				kettle.brewTime = 0;
 				kettle.markDirty();
 			}
@@ -160,7 +160,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 
 	private void brew(World world, ItemStack stack) {
 		this.fluid = Fluid.TEA;
-		this.teaTypes = TeaHelper.getTeaTypesByCompound(stack.getTag());
+		this.teaTypes = TeaHelper.getTeaTypesByCompound(stack.getNbt());
 		stack.decrement(1);
 		if(stack.getItem().hasRecipeRemainder()) {
 			ItemStack remainderStack = new ItemStack(stack.getItem().getRecipeRemainder());
@@ -286,7 +286,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 	@Override
 	public boolean isValid(int slot, ItemStack stack) {
 		if(stack.getItem() instanceof TeaBagItem) {
-			return !TeaHelper.getTeaTypesByCompound(stack.getTag()).isEmpty();
+			return !TeaHelper.getTeaTypesByCompound(stack.getNbt()).isEmpty();
 		}
 		else {
 			return false;
@@ -298,7 +298,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 			return false;
 		}
 		else if(stack.getItem() instanceof TeaBagItem) {
-			return !TeaHelper.getTeaTypesByCompound(stack.getTag()).isEmpty() && this.fluid == Fluid.WATER && this.fluidLevel >= 1 && this.isHot;
+			return !TeaHelper.getTeaTypesByCompound(stack.getNbt()).isEmpty() && this.fluid == Fluid.WATER && this.fluidLevel >= 1 && this.isHot;
 		}
 		else {
 			return false;
@@ -306,7 +306,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 	}
 
 	public int getBrewTime(ItemStack stack) {
-		List<TeaType> teaTypeList = TeaHelper.getTeaTypesByCompound(stack.getTag());
+		List<TeaType> teaTypeList = TeaHelper.getTeaTypesByCompound(stack.getNbt());
 		if(!teaTypeList.isEmpty()) {
 			return teaTypeList.stream().mapToInt(TeaType::getBrewTime).sum();
 		}

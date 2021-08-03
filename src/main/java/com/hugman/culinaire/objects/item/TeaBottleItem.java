@@ -35,7 +35,7 @@ public class TeaBottleItem extends Item {
 	@Override
 	@Environment(EnvType.CLIENT)
 	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-		TeaHelper.appendTeaTooltip(tooltip, TeaHelper.getTeaTypesByCompound(stack.getTag()));
+		TeaHelper.appendTeaTooltip(tooltip, TeaHelper.getTeaTypesByCompound(stack.getNbt()));
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class TeaBottleItem extends Item {
 			serverPlayerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
 		}
 		if(!world.isClient) {
-			List<TeaType> teaTypes = TeaHelper.getTeaTypesByCompound(stack.getTag());
+			List<TeaType> teaTypes = TeaHelper.getTeaTypesByCompound(stack.getNbt());
 			if(!teaTypes.isEmpty()) {
 				for(TeaType teaType : teaTypes) {
 					StatusEffect effect = teaType.getFlavor().getEffect();

@@ -35,7 +35,7 @@ public class TeaHelper {
 			typeTag.putString("Strength", teaType.getStrength().getName());
 			NbtList.add(typeTag);
 		}
-		NbtCompound nbtCompound = stack.getOrCreateTag();
+		NbtCompound nbtCompound = stack.getOrCreateNbt();
 		nbtCompound.put("TeaTypes", NbtList);
 		return stack;
 	}
@@ -80,7 +80,7 @@ public class TeaHelper {
 	}
 
 	public static int getColor(ItemStack stack) {
-		return getColor(getTeaTypesByCompound(stack.getTag()));
+		return getColor(getTeaTypesByCompound(stack.getNbt()));
 	}
 
 	public static int getColor(List<TeaType> teaTypes) {

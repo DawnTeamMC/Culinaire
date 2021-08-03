@@ -245,7 +245,7 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 			saturation = saturation3;
 			ingredientTag3.putBoolean("Complementary", false);
 		}
-		NbtCompound compoundTag = givenStack.getOrCreateSubTag("SandwichData");
+		NbtCompound compoundTag = givenStack.getOrCreateSubNbt("SandwichData");
 		compoundTag.putInt("Hunger", hunger);
 		compoundTag.putFloat("SaturationModifier", saturation);
 		compoundTag.put("Ingredients", listTag);
