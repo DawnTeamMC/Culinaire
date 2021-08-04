@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
-	private static final Ingredient PAPER = Ingredient.ofItems(Items.PAPER);
-	private static final Ingredient STRING = Ingredient.ofItems(Items.STRING);
+	public static final Ingredient PAPER = Ingredient.ofItems(Items.PAPER);
+	public static final Ingredient STRING = Ingredient.ofItems(Items.STRING);
 
 	public TeaBagMakingRecipe(Identifier id) {
 		super(id);

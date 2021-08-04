@@ -62,6 +62,8 @@
 
 	"stat.culinaire.interact_with_kettle": "Interactions with Kettle",
 
+	"rei_category.culinaire.tea_brewing": "Tea Brewing",
+
 	"text.autoconfig.culinaire.title": "Culinaire Configuration",
 	"text.autoconfig.culinaire.category.features": "Features",
 	"text.autoconfig.culinaire.option.features.canDrinkMilkBucket": "Drinkable Milk Buckets",

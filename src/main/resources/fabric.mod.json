@@ -26,6 +26,9 @@
 		],
 		"modmenu": [
 			"com.hugman.culinaire.config.CulinaireModMenuIntegration"
+		],
+		"rei": [
+			"com.hugman.culinaire.rei.CulinairePlugin"
 		]
 	},
 	"mixins": [
