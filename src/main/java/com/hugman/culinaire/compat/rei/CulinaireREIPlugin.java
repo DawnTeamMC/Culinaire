@@ -1,4 +1,4 @@
-package com.hugman.culinaire.rei;
+package com.hugman.culinaire.compat.rei;
 
 import com.hugman.culinaire.init.CulinaireTeaBundle;
 import com.hugman.culinaire.objects.item.tea.TeaHelper;
@@ -18,7 +18,7 @@ import net.minecraft.recipe.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 
-public class CulinairePlugin implements REIClientPlugin {
+public class CulinaireREIPlugin implements REIClientPlugin {
     private static final Identifier DISPLAY_TEXTURE = new Identifier("culinaire", "textures/gui/rei/display.png");
     private static final Identifier DARK_DISPLAY_TEXTURE = new Identifier("culinaire", "textures/gui/rei/dark_display.png");
 
@@ -30,7 +30,7 @@ public class CulinairePlugin implements REIClientPlugin {
 
         registry.removePlusButton(TEA_BREWING);
 
-        registry.addWorkstations(CulinairePlugin.TEA_BREWING, EntryStacks.of(CulinaireTeaBundle.KETTLE));
+        registry.addWorkstations(CulinaireREIPlugin.TEA_BREWING, EntryStacks.of(CulinaireTeaBundle.KETTLE));
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.hugman.culinaire.rei;
+package com.hugman.culinaire.compat.rei;
 
 import com.google.common.collect.Lists;
 import com.hugman.culinaire.init.CulinaireTeaBundle;
@@ -21,7 +21,7 @@ public class TeaBrewingCategory implements DisplayCategory<TeaBrewingDisplay> {
 
     @Override
     public CategoryIdentifier<? extends TeaBrewingDisplay> getCategoryIdentifier() {
-        return CulinairePlugin.TEA_BREWING;
+        return CulinaireREIPlugin.TEA_BREWING;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class TeaBrewingCategory implements DisplayCategory<TeaBrewingDisplay> {
         List<Widget> widgets = Lists.newArrayList();
         widgets.add(Widgets.createRecipeBase(bounds));
         widgets.add(Widgets.createDrawableWidget((helper, matrices, mouseX, mouseY, delta) -> {
-            RenderSystem.setShaderTexture(0, CulinairePlugin.getDisplayTexture());
+            RenderSystem.setShaderTexture(0, CulinaireREIPlugin.getDisplayTexture());
 
             // main texture
             helper.drawTexture(matrices, startPoint.x, startPoint.y, 0, 0, 70, 60);

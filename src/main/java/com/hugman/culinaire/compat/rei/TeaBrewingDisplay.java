@@ -1,4 +1,4 @@
-package com.hugman.culinaire.rei;
+package com.hugman.culinaire.compat.rei;
 
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.Display;
@@ -38,6 +38,6 @@ public class TeaBrewingDisplay implements Display {
 
     @Override
     public CategoryIdentifier<?> getCategoryIdentifier() {
-        return CulinairePlugin.TEA_BREWING;
+        return CulinaireREIPlugin.TEA_BREWING;
     }
 }
