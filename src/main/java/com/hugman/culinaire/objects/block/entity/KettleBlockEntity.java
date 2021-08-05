@@ -2,14 +2,13 @@ package com.hugman.culinaire.objects.block.entity;
 
 import com.hugman.culinaire.Culinaire;
 import com.hugman.culinaire.init.CulinaireTeaBundle;
+import com.hugman.culinaire.init.data.CulinaireTags;
 import com.hugman.culinaire.objects.block.KettleBlock;
 import com.hugman.culinaire.objects.item.TeaBagItem;
 import com.hugman.culinaire.objects.item.tea.TeaHelper;
 import com.hugman.culinaire.objects.item.tea.TeaType;
 import com.hugman.culinaire.objects.screen.handler.KettleScreenHandler;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.CampfireBlock;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -23,6 +22,7 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ItemScatterer;
@@ -140,7 +140,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 	}
 
 	public static boolean isHotBlock(BlockState state) {
-		return CampfireBlock.isLitCampfire(state) || state.isOf(Blocks.MAGMA_BLOCK) || state.isOf(Blocks.LAVA) || state.isOf(Blocks.LAVA_CAULDRON);
+		return state.isIn(CulinaireTags.Blocks.KETTLE_HOT_BLOCKS) && (!state.contains(Properties.LIT) || state.get(Properties.LIT));
 	}
 
 	public static void produceSteam(World world, BlockPos pos, BlockState state) {
