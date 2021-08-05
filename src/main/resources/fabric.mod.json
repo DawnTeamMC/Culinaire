@@ -26,6 +26,9 @@
 		],
 		"modmenu": [
 			"com.hugman.culinaire.config.CulinaireModMenuIntegration"
+		],
+		"rei": [
+			"com.hugman.culinaire.compat.rei.CulinaireREIPlugin"
 		]
 	},
 	"mixins": [
@@ -33,7 +36,7 @@
 	],
 	"depends": {
 		"minecraft": "1.17.*",
-		"java": ">=8",
+		"java": ">=16",
 		"fabric": "*",
 		"fabricloader": ">=0.11.3",
 		"dawn": ">=2.0.3"
