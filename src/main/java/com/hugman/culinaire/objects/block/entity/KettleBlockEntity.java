@@ -140,7 +140,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 	}
 
 	public static boolean isHotBlock(BlockState state) {
-		return CampfireBlock.isLitCampfire(state) || state.isOf(Blocks.MAGMA_BLOCK) || state.isOf(Blocks.LAVA);
+		return CampfireBlock.isLitCampfire(state) || state.isOf(Blocks.MAGMA_BLOCK) || state.isOf(Blocks.LAVA) || state.isOf(Blocks.LAVA_CAULDRON);
 	}
 
 	public static void produceSteam(World world, BlockPos pos, BlockState state) {
