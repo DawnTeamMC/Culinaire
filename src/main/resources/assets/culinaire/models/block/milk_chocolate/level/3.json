@@ -1,0 +1,6 @@
+{
+	"parent": "culinaire:block/cauldron/level_height/11",
+	"textures": {
+		"content": "culinaire:block/cauldron/milk_chocolate"
+	}
+}
