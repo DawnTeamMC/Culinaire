@@ -13,6 +13,8 @@ public class CulinaireFoods {
 	public static final FoodComponent GOLDEN_MARSHMALLOW = build(4, 0.15F, true);
 	public static final FoodComponent BURNT_MARSHMALLOW = build(1, 0.1F, true);
 	public static final FoodComponent CHOCOLATE = build(2, 0.1F);
+	public static final FoodComponent CHOCOLATE_PIE = build(8, 0.15F);
+	public static final FoodComponent CHOCOLATE_BAR = build(3, 0.2F);
 	public static final FoodComponent APPLE_PIE = build(9, 0.15F);
 	public static final FoodComponent SWEET_BERRY_PIE = build(7, 0.15F);
 	public static final FoodComponent SALAD = build(9, 0.4F);
