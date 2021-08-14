@@ -1,6 +1,6 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "culinaire:item/chocolate_pie"
+		"layer0": "culinaire:item/milk_chocolate_pie"
 	}
 }
