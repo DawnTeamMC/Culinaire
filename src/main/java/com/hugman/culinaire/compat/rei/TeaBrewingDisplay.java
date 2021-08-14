@@ -12,32 +12,32 @@ import java.util.Collections;
 import java.util.List;
 
 public class TeaBrewingDisplay implements Display {
-    private final EntryIngredient input;
-    private final EntryStack<?> output;
-    private final int teaColor;
+	private final EntryIngredient input;
+	private final EntryStack<?> output;
+	private final int teaColor;
 
-    public TeaBrewingDisplay(ItemStack input, ItemStack output, int teaColor) {
-        this.input = EntryIngredients.of(input);
-        this.output = EntryStacks.of(output);
-        this.teaColor = teaColor;
-    }
+	public TeaBrewingDisplay(ItemStack input, ItemStack output, int teaColor) {
+		this.input = EntryIngredients.of(input);
+		this.output = EntryStacks.of(output);
+		this.teaColor = teaColor;
+	}
 
-    @Override
-    public List<EntryIngredient> getInputEntries() {
-        return Collections.singletonList(this.input);
-    }
+	@Override
+	public List<EntryIngredient> getInputEntries() {
+		return Collections.singletonList(this.input);
+	}
 
-    @Override
-    public List<EntryIngredient> getOutputEntries() {
-        return Collections.singletonList(EntryIngredient.of(this.output));
-    }
+	@Override
+	public List<EntryIngredient> getOutputEntries() {
+		return Collections.singletonList(EntryIngredient.of(this.output));
+	}
 
-    public int getTeaColor() {
-        return this.teaColor;
-    }
+	public int getTeaColor() {
+		return this.teaColor;
+	}
 
-    @Override
-    public CategoryIdentifier<?> getCategoryIdentifier() {
-        return CulinaireREIPlugin.TEA_BREWING;
-    }
+	@Override
+	public CategoryIdentifier<?> getCategoryIdentifier() {
+		return CulinaireREIPlugin.TEA_BREWING;
+	}
 }

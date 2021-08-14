@@ -14,8 +14,8 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 
-public class MilkBottleItem extends Item {
-	public MilkBottleItem(Settings settings) {
+public class ChocolateBottleItem extends Item {
+	public ChocolateBottleItem(Settings settings) {
 		super(settings);
 	}
 
@@ -26,9 +26,6 @@ public class MilkBottleItem extends Item {
 		if(user instanceof ServerPlayerEntity serverPlayerEntity) {
 			Criteria.CONSUME_ITEM.trigger(serverPlayerEntity, stack);
 			serverPlayerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
-		}
-		if(!world.isClient) {
-			user.clearStatusEffects();
 		}
 		if(playerEntity != null) {
 			playerEntity.incrementStat(Stats.USED.getOrCreateStat(this));

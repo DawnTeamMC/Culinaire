@@ -2,8 +2,13 @@ package com.hugman.culinaire.init;
 
 import com.hugman.culinaire.Culinaire;
 import com.hugman.culinaire.init.data.CulinaireFoods;
-import com.hugman.culinaire.objects.block.*;
+import com.hugman.culinaire.objects.block.CheeseCauldronBlock;
+import com.hugman.culinaire.objects.block.CheeseWheelBlock;
+import com.hugman.culinaire.objects.block.LettuceBlock;
+import com.hugman.culinaire.objects.block.MilkCauldronBlock;
+import com.hugman.culinaire.objects.block.TomatoesBlock;
 import com.hugman.culinaire.objects.block.cauldron.ThreeLeveledCauldronBlock;
+import com.hugman.culinaire.objects.item.ChocolateBottleItem;
 import com.hugman.culinaire.objects.item.MarshmallowOnAStickItem;
 import com.hugman.culinaire.objects.item.MilkBottleItem;
 import com.hugman.culinaire.objects.item.SandwichItem;
@@ -12,7 +17,9 @@ import com.hugman.dawn.api.creator.BlockCreator;
 import com.hugman.dawn.api.creator.ItemCreator;
 import com.hugman.dawn.api.creator.RecipeSerializerCreator;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.MapColor;
+import net.minecraft.block.Material;
 import net.minecraft.item.AliasedBlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -28,25 +35,26 @@ public class CulinaireFoodBundle extends CulinaireBundle {
 	public static final Item CHEESE = add(new ItemCreator.Builder("cheese", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.CHEESE)).compostingChance(0.5f).build());
 	public static final Block CHEESE_WHEEL = add(new BlockCreator.Builder("cheese_wheel", CheeseWheelBlock::new, FabricBlockSettings.of(Material.CAKE).strength(0.5F).sounds(BlockSoundGroup.WOOL)).itemGroup(ItemGroup.FOOD).build());
 
+	public static final Item WHITE_CHOCOLATE_BOTTLE = add(new ItemCreator.Builder("white_chocolate_bottle", ChocolateBottleItem::new, new Item.Settings().group(ItemGroup.FOOD).recipeRemainder(Items.GLASS_BOTTLE)).build());
+	public static final Item WHITE_CHOCOLATE_BAR = add(new ItemCreator.Builder("white_chocolate_bar", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.CHOCOLATE_BAR)).build());
+	public static final Item WHITE_CHOCOLATE_PIE = add(new ItemCreator.Builder("white_chocolate_pie", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.CHOCOLATE_PIE)).build());
+	public static final Block WHITE_CHOCOLATE_CAULDRON = add(new BlockCreator.Builder("white_chocolate_cauldron", s -> new ThreeLeveledCauldronBlock(s, CulinaireCauldronBehaviors.WHITE_CHOCOLATE_BEHAVIOR), FabricBlockSettings.of(Material.METAL, MapColor.STONE_GRAY).requiresTool().strength(2.0F).nonOpaque()).noItem().build());
+
+	public static final Item MILK_CHOCOLATE_PIE = add(new ItemCreator.Builder("milk_chocolate_pie", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.CHOCOLATE_PIE)).build());
+	public static final Item MILK_CHOCOLATE_BAR = add(new ItemCreator.Builder("milk_chocolate_bar", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.CHOCOLATE_BAR)).build());
+	public static final Item MILK_CHOCOLATE_BOTTLE = add(new ItemCreator.Builder("milk_chocolate_bottle", ChocolateBottleItem::new, new Item.Settings().group(ItemGroup.FOOD).recipeRemainder(Items.GLASS_BOTTLE)).build());
+	public static final Block MILK_CHOCOLATE_CAULDRON = add(new BlockCreator.Builder("milk_chocolate_cauldron", s -> new ThreeLeveledCauldronBlock(s, CulinaireCauldronBehaviors.MILK_CHOCOLATE_BEHAVIOR), FabricBlockSettings.of(Material.METAL, MapColor.STONE_GRAY).requiresTool().strength(2.0F).nonOpaque()).noItem().build());
+
+	public static final Item DARK_CHOCOLATE_PIE = add(new ItemCreator.Builder("dark_chocolate_pie", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.CHOCOLATE_PIE)).build());
+	public static final Item DARK_CHOCOLATE_BAR = add(new ItemCreator.Builder("dark_chocolate_bar", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.CHOCOLATE_BAR)).build());
+	public static final Item DARK_CHOCOLATE_BOTTLE = add(new ItemCreator.Builder("dark_chocolate_bottle", ChocolateBottleItem::new, new Item.Settings().group(ItemGroup.FOOD).recipeRemainder(Items.GLASS_BOTTLE)).build());
+	public static final Block DARK_CHOCOLATE_CAULDRON = add(new BlockCreator.Builder("dark_chocolate_cauldron", s -> new ThreeLeveledCauldronBlock(s, CulinaireCauldronBehaviors.DARK_CHOCOLATE_BEHAVIOR), FabricBlockSettings.of(Material.METAL, MapColor.STONE_GRAY).requiresTool().strength(2.0F).nonOpaque()).noItem().build());
+
 	public static final Block LETTUCE_BLOCK = add(new BlockCreator.Builder("lettuce", LettuceBlock::new, FabricBlockSettings.of(Material.PLANT).noCollision().ticksRandomly().breakInstantly().sounds(BlockSoundGroup.CROP)).render(BlockCreator.Render.CUTOUT).noItem().build());
 	public static final Item LETTUCE_SEEDS = add(new ItemCreator.Builder("lettuce_seeds", s -> new AliasedBlockItem(LETTUCE_BLOCK, s), new Item.Settings().group(ItemGroup.MATERIALS)).compostingChance(0.3f).build());
 	public static final Item LETTUCE = add(new ItemCreator.Builder("lettuce", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.LETTUCE)).compostingChance(0.3f).build());
 	public static final Block TOMATO_BLOCK = add(new BlockCreator.Builder("tomatoes", TomatoesBlock::new, FabricBlockSettings.of(Material.PLANT).noCollision().ticksRandomly().breakInstantly().sounds(BlockSoundGroup.CROP)).render(BlockCreator.Render.CUTOUT).noItem().build());
 	public static final Item TOMATO = add(new ItemCreator.Builder("tomato", s -> new AliasedBlockItem(TOMATO_BLOCK, s), new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.TOMATO)).compostingChance(0.3f).build());
-
-	public static final Item CHOCOLATE = add(new ItemCreator.Builder("chocolate", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.CHOCOLATE)).compostingChance(0.3f).build());
-	public static final Item DARK_CHOCOLATE_PIE = add(new ItemCreator.Builder("dark_chocolate_pie", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.CHOCOLATE_PIE)).build());
-	public static final Item DARK_CHOCOLATE_BAR = add(new ItemCreator.Builder("dark_chocolate_bar", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.CHOCOLATE_BAR)).build());
-	public static final Item DARK_CHOCOLATE_BOTTLE = add(new ItemCreator.Builder("dark_chocolate_bottle", Item::new, new Item.Settings().group(ItemGroup.FOOD).recipeRemainder(Items.GLASS_BOTTLE)).build());
-	public static final Block DARK_CHOCOLATE_CAULDRON = add(new BlockCreator.Builder("dark_chocolate_cauldron", s -> new ThreeLeveledCauldronBlock(s, CulinaireCauldronBehaviors.DARK_CHOCOLATE_BEHAVIOR), FabricBlockSettings.of(Material.METAL, MapColor.STONE_GRAY).requiresTool().strength(2.0F).nonOpaque()).noItem().build());
-	public static final Item MILK_CHOCOLATE_PIE = add(new ItemCreator.Builder("milk_chocolate_pie", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.CHOCOLATE_PIE)).build());
-	public static final Item MILK_CHOCOLATE_BAR = add(new ItemCreator.Builder("milk_chocolate_bar", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.CHOCOLATE_BAR)).build());
-	public static final Item MILK_CHOCOLATE_BOTTLE = add(new ItemCreator.Builder("milk_chocolate_bottle", Item::new, new Item.Settings().group(ItemGroup.FOOD).recipeRemainder(Items.GLASS_BOTTLE)).build());
-	public static final Block MILK_CHOCOLATE_CAULDRON = add(new BlockCreator.Builder("milk_chocolate_cauldron", s -> new ThreeLeveledCauldronBlock(s, CulinaireCauldronBehaviors.MILK_CHOCOLATE_BEHAVIOR), FabricBlockSettings.of(Material.METAL, MapColor.STONE_GRAY).requiresTool().strength(2.0F).nonOpaque()).noItem().build());
-	public static final Item WHITE_CHOCOLATE_PIE = add(new ItemCreator.Builder("white_chocolate_pie", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.CHOCOLATE_PIE)).build());
-	public static final Item WHITE_CHOCOLATE_BAR = add(new ItemCreator.Builder("white_chocolate_bar", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.CHOCOLATE_BAR)).build());
-	public static final Item WHITE_CHOCOLATE_BOTTLE = add(new ItemCreator.Builder("white_chocolate_bottle", Item::new, new Item.Settings().group(ItemGroup.FOOD).recipeRemainder(Items.GLASS_BOTTLE)).build());
-	public static final Block WHITE_CHOCOLATE_CAULDRON = add(new BlockCreator.Builder("white_chocolate_cauldron", s -> new ThreeLeveledCauldronBlock(s, CulinaireCauldronBehaviors.WHITE_CHOCOLATE_BEHAVIOR), FabricBlockSettings.of(Material.METAL, MapColor.STONE_GRAY).requiresTool().strength(2.0F).nonOpaque()).noItem().build());
 
 	public static final Item CHOUQUETTE = add(new ItemCreator.Builder("chouquette", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.CHOUQUETTE)).compostingChance(0.3f).build());
 
