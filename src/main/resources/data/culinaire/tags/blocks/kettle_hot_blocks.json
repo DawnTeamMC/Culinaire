@@ -1,10 +1,10 @@
 {
-  "replace": false,
-  "values": [
-    "#minecraft:campfires",
-    "#minecraft:fire",
-    "minecraft:magma_block",
-    "minecraft:lava",
-    "minecraft:lava_cauldron"
-  ]
+	"replace": false,
+	"values": [
+		"#minecraft:campfires",
+		"#minecraft:fire",
+		"minecraft:magma_block",
+		"minecraft:lava",
+		"minecraft:lava_cauldron"
+	]
 }

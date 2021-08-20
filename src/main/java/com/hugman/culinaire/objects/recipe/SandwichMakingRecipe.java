@@ -26,15 +26,15 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 
 	public SandwichMakingRecipe(Identifier identifier) {
 		super(identifier);
-		COMPLEMENTS.put(Items.APPLE, CulinaireFoodBundle.CHOCOLATE);
+		COMPLEMENTS.put(Items.APPLE, CulinaireFoodBundle.MILK_CHOCOLATE_BAR);
 		COMPLEMENTS.put(Items.CHICKEN, Items.HONEY_BOTTLE);
 		COMPLEMENTS.put(Items.COOKED_BEEF, CulinaireFoodBundle.CHEESE);
 		COMPLEMENTS.put(Items.ENCHANTED_GOLDEN_APPLE, Items.BEETROOT);
 		COMPLEMENTS.put(Items.GOLDEN_APPLE, Items.DRIED_KELP);
-		COMPLEMENTS.put(CulinaireFoodBundle.MARSHMALLOW, CulinaireFoodBundle.CHOCOLATE);
+		COMPLEMENTS.put(CulinaireFoodBundle.MARSHMALLOW, CulinaireFoodBundle.MILK_CHOCOLATE_BAR);
 		COMPLEMENTS.put(CulinaireFoodBundle.MARSHMALLOW, Items.HONEY_BOTTLE);
 		COMPLEMENTS.put(Items.RABBIT, Items.BEETROOT);
-		COMPLEMENTS.put(Items.SPIDER_EYE, CulinaireFoodBundle.CHOCOLATE);
+		COMPLEMENTS.put(Items.SPIDER_EYE, CulinaireFoodBundle.DARK_CHOCOLATE_BAR);
 		COMPLEMENTS.put(CulinaireFoodBundle.TOMATO, CulinaireFoodBundle.CHEESE);
 		COMPLEMENTS.put(CulinaireFoodBundle.TOMATO, CulinaireFoodBundle.LETTUCE);
 		COMPLEMENTS.put(CulinaireFoodBundle.TOMATO, Items.COOKED_CHICKEN);

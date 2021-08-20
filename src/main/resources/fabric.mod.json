@@ -5,10 +5,10 @@
 	"version": "${version}",
 	"icon": "assets/${mod_id}/textures/logo.png",
 	"authors": [
-		"Hugman"
+		"Hugman",
+		"YanisBft"
 	],
 	"contributors": [
-		"YanisBft",
 		"Plantkillable",
 		"Cydian",
 		"Wintrius"

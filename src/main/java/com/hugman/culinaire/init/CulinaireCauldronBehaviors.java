@@ -18,6 +18,9 @@ import java.util.Map;
 public interface CulinaireCauldronBehaviors extends CauldronBehavior {
 	Map<Item, CauldronBehavior> MILK_CAULDRON_BEHAVIOR = CauldronBehavior.createMap();
 	Map<Item, CauldronBehavior> CHEESE_CAULDRON_BEHAVIOR = CauldronBehavior.createMap();
+	Map<Item, CauldronBehavior> DARK_CHOCOLATE_BEHAVIOR = CauldronBehavior.createMap();
+	Map<Item, CauldronBehavior> MILK_CHOCOLATE_BEHAVIOR = CauldronBehavior.createMap();
+	Map<Item, CauldronBehavior> WHITE_CHOCOLATE_BEHAVIOR = CauldronBehavior.createMap();
 	CauldronBehavior FILL_WITH_MILK = (state, world, pos, player, hand, stack) -> CauldronBehavior.fillCauldron(world, pos, player, hand, stack, CulinaireFoodBundle.MILK_CAULDRON.getDefaultState().with(ThreeLeveledCauldronBlock.LEVEL, 3), SoundEvents.ITEM_BUCKET_EMPTY);
 
 	static void init() {
@@ -32,6 +35,39 @@ public interface CulinaireCauldronBehaviors extends CauldronBehavior {
 				player.incrementStat(Stats.USE_CAULDRON);
 				player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
 				world.setBlockState(pos, CulinaireFoodBundle.MILK_CAULDRON.getDefaultState().with(ThreeLeveledCauldronBlock.LEVEL, 1));
+				world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				world.emitGameEvent(null, GameEvent.FLUID_PLACE, pos);
+			}
+			return ActionResult.success(world.isClient);
+		});
+		EMPTY_CAULDRON_BEHAVIOR.put(CulinaireFoodBundle.DARK_CHOCOLATE_BOTTLE, (state, world, pos, player, hand, stack) -> {
+			if(!world.isClient) {
+				player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
+				player.incrementStat(Stats.USE_CAULDRON);
+				player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
+				world.setBlockState(pos, CulinaireFoodBundle.DARK_CHOCOLATE_CAULDRON.getDefaultState().with(ThreeLeveledCauldronBlock.LEVEL, 1));
+				world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				world.emitGameEvent(null, GameEvent.FLUID_PLACE, pos);
+			}
+			return ActionResult.success(world.isClient);
+		});
+		EMPTY_CAULDRON_BEHAVIOR.put(CulinaireFoodBundle.MILK_CHOCOLATE_BOTTLE, (state, world, pos, player, hand, stack) -> {
+			if(!world.isClient) {
+				player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
+				player.incrementStat(Stats.USE_CAULDRON);
+				player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
+				world.setBlockState(pos, CulinaireFoodBundle.MILK_CHOCOLATE_CAULDRON.getDefaultState().with(ThreeLeveledCauldronBlock.LEVEL, 1));
+				world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				world.emitGameEvent(null, GameEvent.FLUID_PLACE, pos);
+			}
+			return ActionResult.success(world.isClient);
+		});
+		EMPTY_CAULDRON_BEHAVIOR.put(CulinaireFoodBundle.WHITE_CHOCOLATE_BOTTLE, (state, world, pos, player, hand, stack) -> {
+			if(!world.isClient) {
+				player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
+				player.incrementStat(Stats.USE_CAULDRON);
+				player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
+				world.setBlockState(pos, CulinaireFoodBundle.WHITE_CHOCOLATE_CAULDRON.getDefaultState().with(ThreeLeveledCauldronBlock.LEVEL, 1));
 				world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
 				world.emitGameEvent(null, GameEvent.FLUID_PLACE, pos);
 			}
@@ -67,6 +103,93 @@ public interface CulinaireCauldronBehaviors extends CauldronBehavior {
 			return ActionResult.success(world.isClient);
 		});
 		registerBucketBehaviors(MILK_CAULDRON_BEHAVIOR);
+
+		DARK_CHOCOLATE_BEHAVIOR.put(CulinaireFoodBundle.DARK_CHOCOLATE_BOTTLE, (state, world, pos, player, hand, stack) -> {
+			if(state.get(ThreeLeveledCauldronBlock.LEVEL) != 3) {
+				if(!world.isClient) {
+					player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
+					player.incrementStat(Stats.USE_CAULDRON);
+					player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
+					AbstractLeveledCauldronBlock.incrementFluidLevel(state, world, pos);
+					world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+					world.emitGameEvent(null, GameEvent.FLUID_PLACE, pos);
+				}
+				return ActionResult.success(world.isClient);
+			}
+			else {
+				return ActionResult.PASS;
+			}
+		});
+		DARK_CHOCOLATE_BEHAVIOR.put(Items.GLASS_BOTTLE, (state, world, pos, player, hand, stack) -> {
+			if(!world.isClient) {
+				player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(CulinaireFoodBundle.DARK_CHOCOLATE_BOTTLE)));
+				player.incrementStat(Stats.USE_CAULDRON);
+				player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
+				AbstractLeveledCauldronBlock.decrementFluidLevel(state, world, pos);
+				world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				world.emitGameEvent(null, GameEvent.FLUID_PICKUP, pos);
+			}
+			return ActionResult.success(world.isClient);
+		});
+		registerBucketBehaviors(DARK_CHOCOLATE_BEHAVIOR);
+
+		MILK_CHOCOLATE_BEHAVIOR.put(CulinaireFoodBundle.MILK_CHOCOLATE_BOTTLE, (state, world, pos, player, hand, stack) -> {
+			if(state.get(ThreeLeveledCauldronBlock.LEVEL) != 3) {
+				if(!world.isClient) {
+					player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
+					player.incrementStat(Stats.USE_CAULDRON);
+					player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
+					AbstractLeveledCauldronBlock.incrementFluidLevel(state, world, pos);
+					world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+					world.emitGameEvent(null, GameEvent.FLUID_PLACE, pos);
+				}
+				return ActionResult.success(world.isClient);
+			}
+			else {
+				return ActionResult.PASS;
+			}
+		});
+		MILK_CHOCOLATE_BEHAVIOR.put(Items.GLASS_BOTTLE, (state, world, pos, player, hand, stack) -> {
+			if(!world.isClient) {
+				player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(CulinaireFoodBundle.MILK_CHOCOLATE_BOTTLE)));
+				player.incrementStat(Stats.USE_CAULDRON);
+				player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
+				AbstractLeveledCauldronBlock.decrementFluidLevel(state, world, pos);
+				world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				world.emitGameEvent(null, GameEvent.FLUID_PICKUP, pos);
+			}
+			return ActionResult.success(world.isClient);
+		});
+		registerBucketBehaviors(MILK_CHOCOLATE_BEHAVIOR);
+
+		WHITE_CHOCOLATE_BEHAVIOR.put(CulinaireFoodBundle.WHITE_CHOCOLATE_BOTTLE, (state, world, pos, player, hand, stack) -> {
+			if(state.get(ThreeLeveledCauldronBlock.LEVEL) != 3) {
+				if(!world.isClient) {
+					player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
+					player.incrementStat(Stats.USE_CAULDRON);
+					player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
+					AbstractLeveledCauldronBlock.incrementFluidLevel(state, world, pos);
+					world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+					world.emitGameEvent(null, GameEvent.FLUID_PLACE, pos);
+				}
+				return ActionResult.success(world.isClient);
+			}
+			else {
+				return ActionResult.PASS;
+			}
+		});
+		WHITE_CHOCOLATE_BEHAVIOR.put(Items.GLASS_BOTTLE, (state, world, pos, player, hand, stack) -> {
+			if(!world.isClient) {
+				player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(CulinaireFoodBundle.WHITE_CHOCOLATE_BOTTLE)));
+				player.incrementStat(Stats.USE_CAULDRON);
+				player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
+				AbstractLeveledCauldronBlock.decrementFluidLevel(state, world, pos);
+				world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				world.emitGameEvent(null, GameEvent.FLUID_PICKUP, pos);
+			}
+			return ActionResult.success(world.isClient);
+		});
+		registerBucketBehaviors(WHITE_CHOCOLATE_BEHAVIOR);
 	}
 
 	static void registerBucketBehaviors(Map<Item, CauldronBehavior> behaviorMap) {

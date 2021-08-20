@@ -14,59 +14,59 @@ import me.shedaniel.rei.api.client.registry.screen.ScreenRegistry;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.*;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.ShapelessRecipe;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 
 public class CulinaireREIPlugin implements REIClientPlugin {
-    private static final Identifier DISPLAY_TEXTURE = new Identifier("culinaire", "textures/gui/rei/display.png");
-    private static final Identifier DARK_DISPLAY_TEXTURE = new Identifier("culinaire", "textures/gui/rei/dark_display.png");
+	public static final CategoryIdentifier<TeaBrewingDisplay> TEA_BREWING = CategoryIdentifier.of("culinaire", "plugins/tea_brewing");
+	private static final Identifier DISPLAY_TEXTURE = new Identifier("culinaire", "textures/gui/rei/display.png");
+	private static final Identifier DARK_DISPLAY_TEXTURE = new Identifier("culinaire", "textures/gui/rei/dark_display.png");
 
-    public static final CategoryIdentifier<TeaBrewingDisplay> TEA_BREWING = CategoryIdentifier.of("culinaire", "plugins/tea_brewing");
+	public static Identifier getDisplayTexture() {
+		return REIRuntime.getInstance().isDarkThemeEnabled() ? DARK_DISPLAY_TEXTURE : DISPLAY_TEXTURE;
+	}
 
-    @Override
-    public void registerCategories(CategoryRegistry registry) {
-        registry.add(new TeaBrewingCategory());
+	@Override
+	public void registerCategories(CategoryRegistry registry) {
+		registry.add(new TeaBrewingCategory());
 
-        registry.removePlusButton(TEA_BREWING);
+		registry.removePlusButton(TEA_BREWING);
 
-        registry.addWorkstations(CulinaireREIPlugin.TEA_BREWING, EntryStacks.of(CulinaireTeaBundle.KETTLE));
-    }
+		registry.addWorkstations(CulinaireREIPlugin.TEA_BREWING, EntryStacks.of(CulinaireTeaBundle.KETTLE));
+	}
 
-    @Override
-    public void registerDisplays(DisplayRegistry registry) {
-        this.registerTeaBagDisplays(registry);
-        this.registerTeaBottleDisplays(registry);
-    }
+	@Override
+	public void registerDisplays(DisplayRegistry registry) {
+		this.registerTeaBagDisplays(registry);
+		this.registerTeaBottleDisplays(registry);
+	}
 
-    private void registerTeaBagDisplays(DisplayRegistry registry) {
-        for (TeaType teaType : TeaHelper.getAllTypes()) {
-            DefaultedList<Ingredient> inputs = DefaultedList.of();
-            inputs.add(TeaBagMakingRecipe.PAPER);
-            inputs.add(TeaBagMakingRecipe.STRING);
-            if (!teaType.getTag().values().isEmpty()) {
-                inputs.add(Ingredient.fromTag(teaType.getTag()));
-                ItemStack output = TeaHelper.appendTeaType(new ItemStack(CulinaireTeaBundle.TEA_BAG), teaType);
-                Identifier id = new Identifier("culinaire", teaType.getStrength().getName() + "_" + teaType.getFlavor().getName() + "_tea_bag");
-                registry.add(new ShapelessRecipe(id, "tea_bags", output, inputs));
-            }
-        }
-    }
+	private void registerTeaBagDisplays(DisplayRegistry registry) {
+		for(TeaType teaType : TeaHelper.getAllTypes()) {
+			DefaultedList<Ingredient> inputs = DefaultedList.of();
+			inputs.add(TeaBagMakingRecipe.PAPER);
+			inputs.add(TeaBagMakingRecipe.STRING);
+			if(!teaType.getTag().values().isEmpty()) {
+				inputs.add(Ingredient.fromTag(teaType.getTag()));
+				ItemStack output = TeaHelper.appendTeaType(new ItemStack(CulinaireTeaBundle.TEA_BAG), teaType);
+				Identifier id = new Identifier("culinaire", teaType.getStrength().getName() + "_" + teaType.getFlavor().getName() + "_tea_bag");
+				registry.add(new ShapelessRecipe(id, "tea_bags", output, inputs));
+			}
+		}
+	}
 
-    private void registerTeaBottleDisplays(DisplayRegistry registry) {
-        for (TeaType teaType : TeaHelper.getAllTypes()) {
-            ItemStack input = TeaHelper.appendTeaType(new ItemStack(CulinaireTeaBundle.TEA_BAG), teaType);
-            ItemStack output = TeaHelper.appendTeaType(new ItemStack(CulinaireTeaBundle.TEA_BOTTLE), teaType);
-            registry.add(new TeaBrewingDisplay(input, output, teaType.getFlavor().getColor()));
-        }
-    }
+	private void registerTeaBottleDisplays(DisplayRegistry registry) {
+		for(TeaType teaType : TeaHelper.getAllTypes()) {
+			ItemStack input = TeaHelper.appendTeaType(new ItemStack(CulinaireTeaBundle.TEA_BAG), teaType);
+			ItemStack output = TeaHelper.appendTeaType(new ItemStack(CulinaireTeaBundle.TEA_BOTTLE), teaType);
+			registry.add(new TeaBrewingDisplay(input, output, teaType.getFlavor().getColor()));
+		}
+	}
 
-    @Override
-    public void registerScreens(ScreenRegistry registry) {
-        registry.registerContainerClickArea(new Rectangle(97, 16, 14, 30), KettleScreen.class, TEA_BREWING);
-    }
-
-    public static Identifier getDisplayTexture() {
-        return REIRuntime.getInstance().isDarkThemeEnabled() ? DARK_DISPLAY_TEXTURE : DISPLAY_TEXTURE;
-    }
+	@Override
+	public void registerScreens(ScreenRegistry registry) {
+		registry.registerContainerClickArea(new Rectangle(97, 16, 14, 30), KettleScreen.class, TEA_BREWING);
+	}
 }

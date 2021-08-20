@@ -1,0 +1,13 @@
+{
+	"variants": {
+		"level=1": {
+			"model": "culinaire:block/milk_chocolate_cauldron/level/1"
+		},
+		"level=2": {
+			"model": "culinaire:block/milk_chocolate_cauldron/level/2"
+		},
+		"level=3": {
+			"model": "culinaire:block/milk_chocolate_cauldron/level/3"
+		}
+	}
+}
