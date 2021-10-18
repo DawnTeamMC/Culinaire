@@ -8,6 +8,10 @@
 	"block.culinaire.cheese_wheel": "Cheese Wheel",
 	"block.culinaire.kettle": "Kettle",
 
+	"block.culinaire.dark_chocolate_cauldron": "Dark Chocolate Cauldron",
+	"block.culinaire.milk_chocolate_cauldron": "Milk Chocolate Cauldron",
+	"block.culinaire.white_chocolate_cauldron": "White Chocolate Cauldron",
+
 	"item.culinaire.cheese": "Cheese",
 	"item.culinaire.lettuce": "Lettuce",
 	"item.culinaire.lettuce_seeds": "Lettuce Seeds",
@@ -27,6 +31,18 @@
 	"item.culinaire.milk_bottle": "Milk Bottle",
 	"item.culinaire.tea_bag": "Tea Bag",
 	"item.culinaire.tea_bottle": "Tea Bottle",
+
+	"item.culinaire.dark_chocolate_bottle": "Dark Chocolate Bottle",
+	"item.culinaire.milk_chocolate_bottle": "Milk Chocolate Bottle",
+	"item.culinaire.white_chocolate_bottle": "White Chocolate Bottle",
+
+	"item.culinaire.dark_chocolate_bar": "Dark Chocolate Bar",
+	"item.culinaire.milk_chocolate_bar": "Milk Chocolate Bar",
+	"item.culinaire.white_chocolate_bar": "White Chocolate Bar",
+
+	"item.culinaire.dark_chocolate_pie": "Dark Chocolate Pie",
+	"item.culinaire.milk_chocolate_pie": "Milk Chocolate Pie",
+	"item.culinaire.white_chocolate_pie": "White Chocolate Pie",
 
 	"effect.culinaire.foresight": "Foresight",
 	"effect.culinaire.fulfillment": "Fulfillment",
