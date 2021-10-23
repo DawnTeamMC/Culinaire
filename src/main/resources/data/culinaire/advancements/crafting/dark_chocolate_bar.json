@@ -1,0 +1,32 @@
+{
+	"parent": "minecraft:recipes/root",
+	"rewards": {
+		"recipes": [
+			"culinaire:crafting/dark_chocolate_bar"
+		]
+	},
+	"criteria": {
+		"has_chocolate_bottle": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"items": ["culinaire:dark_chocolate_bottle"]
+					}
+				]
+			}
+		},
+		"has_the_recipe": {
+			"trigger": "minecraft:recipe_unlocked",
+			"conditions": {
+				"recipe": "culinaire:crafting/dark_chocolate_bar"
+			}
+		}
+	},
+	"requirements": [
+		[
+			"has_chocolate_bottle",
+			"has_the_recipe"
+		]
+	]
+}

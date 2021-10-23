@@ -1,0 +1,54 @@
+{
+	"parent": "minecraft:recipes/root",
+	"rewards": {
+		"recipes": [
+			"culinaire:crafting/milk_chocolate_bottle"
+		]
+	},
+	"criteria": {
+		"has_cocoa_beans": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"items": ["minecraft:cocoa_beans"]
+					}
+				]
+			}
+		},
+		"has_sugar": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"items": ["minecraft:sugar"]
+					}
+				]
+			}
+		},
+		"has_milk_bottle": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"items": ["culinaire:milk_bottle"]
+					}
+				]
+			}
+		},
+		"has_the_recipe": {
+			"trigger": "minecraft:recipe_unlocked",
+			"conditions": {
+				"recipe": "culinaire:crafting/milk_chocolate_bottle"
+			}
+		}
+	},
+	"requirements": [
+		[
+			"has_cocoa_beans",
+			"has_sugar",
+			"has_milk_bottle",
+			"has_the_recipe"
+		]
+	]
+}

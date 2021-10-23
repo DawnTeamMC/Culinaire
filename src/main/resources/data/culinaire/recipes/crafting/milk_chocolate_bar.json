@@ -1,0 +1,13 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"group": "culinaire:chocolate_bars",
+	"ingredients": [
+		{
+			"item": "culinaire:milk_chocolate_bottle"
+		}
+	],
+	"result": {
+		"item": "culinaire:milk_chocolate_bar",
+		"count": 2
+	}
+}

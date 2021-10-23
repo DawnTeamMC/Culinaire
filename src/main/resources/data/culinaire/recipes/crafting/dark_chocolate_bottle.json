@@ -2,23 +2,16 @@
 	"type": "minecraft:crafting_shapeless",
 	"ingredients": [
 		{
-			"item": "minecraft:sugar"
+			"item": "minecraft:glass_bottle"
 		},
 		{
 			"item": "minecraft:sugar"
 		},
 		{
 			"item": "minecraft:cocoa_beans"
-		},
-		{
-			"item": "minecraft:cocoa_beans"
-		},
-		{
-			"item": "culinaire:milk_bottle"
 		}
 	],
 	"result": {
-		"item": "culinaire:chocolate",
-		"count": 2
+		"item": "culinaire:dark_chocolate_bottle"
 	}
 }
