@@ -352,9 +352,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 	}
 
 	public enum Fluid {
-		EMPTY,
-		WATER,
-		TEA;
+		EMPTY, WATER, TEA;
 
 		public static Fluid byString(String s) {
 			for(Fluid f : Fluid.values()) {

@@ -30,11 +30,10 @@ public class MilkCauldronBlock extends ThreeLeveledCauldronBlock {
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		if(!world.isClient && entity instanceof LivingEntity livingEntity && this.isEntityTouchingFluid(state, pos, entity)) {
 			if(entity.canModifyAt(world, pos) && livingEntity.clearStatusEffects()) {
-				decrementFluidLevel(state, world, pos);
+				world.setBlockState(pos, changeLevel(state, -1));
 			}
 		}
 	}
-
 
 	@Override
 	public boolean hasRandomTicks(BlockState state) {
@@ -46,7 +45,7 @@ public class MilkCauldronBlock extends ThreeLeveledCauldronBlock {
 		// Formula: 1/(x/(68.27/60))
 		// x = 30 (days)
 		if(random.nextFloat() < 0.0379278F) {
-			world.setBlockState(pos, CulinaireFoodBundle.CHEESE_CAULDRON.getDefaultState().with(CheeseCauldronBlock.LEVEL, getFluidLevel(state)), Block.NOTIFY_LISTENERS);
+			world.setBlockState(pos, CulinaireFoodBundle.CHEESE_CAULDRON.getDefaultState().with(CheeseCauldronBlock.LEVEL, getLevel(state)), Block.NOTIFY_LISTENERS);
 		}
 	}
 }

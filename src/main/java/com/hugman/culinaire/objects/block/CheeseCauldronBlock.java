@@ -22,11 +22,9 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-import java.util.Map;
-
 public class CheeseCauldronBlock extends ThreeLeveledCauldronBlock {
-	public CheeseCauldronBlock(Settings settings, Map<Item, CauldronBehavior> behaviorMap) {
-		super(settings, behaviorMap);
+	public CheeseCauldronBlock(Settings settings) {
+		super(settings, CauldronBehavior.createMap());
 	}
 
 	@Override
@@ -52,7 +50,7 @@ public class CheeseCauldronBlock extends ThreeLeveledCauldronBlock {
 			itemEntity.setToDefaultPickupDelay();
 			world.spawnEntity(itemEntity);
 			if(level > 1) {
-				decrementFluidLevel(state, world, pos);
+				world.setBlockState(pos, changeLevel(state, -1));
 			}
 			else {
 				world.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
@@ -68,10 +66,6 @@ public class CheeseCauldronBlock extends ThreeLeveledCauldronBlock {
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		return VoxelShapes.combineAndSimplify(VoxelShapes.fullCube(), VoxelShapes.union(
-				createCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 3.0D, 12.0D),
-				createCuboidShape(4.0D, 0.0D, 0.0D, 12.0D, 3.0D, 16.0D),
-				createCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D),
-				getRaycastShape(state, world, pos)), BooleanBiFunction.ONLY_FIRST);
+		return VoxelShapes.combineAndSimplify(VoxelShapes.fullCube(), VoxelShapes.union(createCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 3.0D, 12.0D), createCuboidShape(4.0D, 0.0D, 0.0D, 12.0D, 3.0D, 16.0D), createCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D), getRaycastShape(state, world, pos)), BooleanBiFunction.ONLY_FIRST);
 	}
 }
