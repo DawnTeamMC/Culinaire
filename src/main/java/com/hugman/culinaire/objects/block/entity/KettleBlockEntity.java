@@ -334,7 +334,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
+	public void writeNbt(NbtCompound tag) {
 		super.writeNbt(tag);
 		Inventories.writeNbt(tag, this.inventory);
 		tag.putShort("BrewTime", (short) this.brewTime);
@@ -348,7 +348,6 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 			listTag.add(typeTag);
 		}
 		tag.put("TeaTypes", listTag);
-		return tag;
 	}
 
 	public enum Fluid {

@@ -1,6 +1,5 @@
 package com.hugman.culinaire.config;
 
-
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
@@ -16,6 +15,7 @@ public class CulinaireConfig extends PartitioningSerializer.GlobalData {
 	@Config(name = "features")
 	public static class FeaturesCategory implements ConfigData {
 		public boolean canDrinkMilkBucket = false;
+		@ConfigEntry.Gui.RequiresRestart
 		public int milkBottlesMaxCount = 1;
 	}
 }

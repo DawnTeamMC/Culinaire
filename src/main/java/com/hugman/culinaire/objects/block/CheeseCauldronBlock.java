@@ -1,7 +1,8 @@
 package com.hugman.culinaire.objects.block;
 
 import com.hugman.culinaire.init.CulinaireFoodBundle;
-import com.hugman.culinaire.objects.block.cauldron.ThreeLeveledCauldronBlock;
+import com.hugman.dawn.api.object.block.ThreeLeveledCauldronBlock;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;

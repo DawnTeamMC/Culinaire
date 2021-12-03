@@ -1,5 +1,6 @@
 package com.hugman.culinaire.compat.rei;
 
+import com.hugman.culinaire.Culinaire;
 import com.hugman.culinaire.init.CulinaireTeaBundle;
 import com.hugman.culinaire.objects.item.tea.TeaHelper;
 import com.hugman.culinaire.objects.item.tea.TeaType;
@@ -21,8 +22,8 @@ import net.minecraft.util.collection.DefaultedList;
 
 public class CulinaireREIPlugin implements REIClientPlugin {
 	public static final CategoryIdentifier<TeaBrewingDisplay> TEA_BREWING = CategoryIdentifier.of("culinaire", "plugins/tea_brewing");
-	private static final Identifier DISPLAY_TEXTURE = new Identifier("culinaire", "textures/gui/rei/display.png");
-	private static final Identifier DARK_DISPLAY_TEXTURE = new Identifier("culinaire", "textures/gui/rei/dark_display.png");
+	private static final Identifier DISPLAY_TEXTURE = Culinaire.MOD_DATA.id("textures/gui/rei/display.png");
+	private static final Identifier DARK_DISPLAY_TEXTURE = Culinaire.MOD_DATA.id("textures/gui/rei/dark_display.png");
 
 	public static Identifier getDisplayTexture() {
 		return REIRuntime.getInstance().isDarkThemeEnabled() ? DARK_DISPLAY_TEXTURE : DISPLAY_TEXTURE;

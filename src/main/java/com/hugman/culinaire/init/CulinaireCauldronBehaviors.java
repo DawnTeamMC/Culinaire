@@ -1,7 +1,7 @@
 package com.hugman.culinaire.init;
 
-import com.hugman.culinaire.util.CauldronInteractionBuilder;
-import com.hugman.culinaire.util.CauldronUtil;
+import com.hugman.dawn.api.util.CauldronInteractionBuilder;
+import com.hugman.dawn.api.util.CauldronUtil;
 import net.minecraft.block.cauldron.CauldronBehavior;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;

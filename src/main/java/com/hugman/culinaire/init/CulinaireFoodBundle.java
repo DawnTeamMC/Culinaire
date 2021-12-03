@@ -7,7 +7,6 @@ import com.hugman.culinaire.objects.block.CheeseWheelBlock;
 import com.hugman.culinaire.objects.block.LettuceBlock;
 import com.hugman.culinaire.objects.block.MilkCauldronBlock;
 import com.hugman.culinaire.objects.block.TomatoesBlock;
-import com.hugman.culinaire.objects.block.cauldron.ThreeLeveledCauldronBlock;
 import com.hugman.culinaire.objects.item.ChocolateBottleItem;
 import com.hugman.culinaire.objects.item.MarshmallowOnAStickItem;
 import com.hugman.culinaire.objects.item.MilkBottleItem;
@@ -16,6 +15,7 @@ import com.hugman.culinaire.objects.recipe.SandwichMakingRecipe;
 import com.hugman.dawn.api.creator.BlockCreator;
 import com.hugman.dawn.api.creator.ItemCreator;
 import com.hugman.dawn.api.creator.RecipeSerializerCreator;
+import com.hugman.dawn.api.object.block.ThreeLeveledCauldronBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
@@ -24,7 +24,7 @@ import net.minecraft.item.AliasedBlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
-import net.minecraft.item.MushroomStewItem;
+import net.minecraft.item.StewItem;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.sound.BlockSoundGroup;
 
@@ -70,8 +70,8 @@ public class CulinaireFoodBundle extends CulinaireBundle {
 
 	public static final Item APPLE_PIE = add(new ItemCreator.Builder("apple_pie", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.APPLE_PIE)).compostingChance(1.0f).build());
 	public static final Item SWEET_BERRY_PIE = add(new ItemCreator.Builder("sweet_berry_pie", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.SWEET_BERRY_PIE)).compostingChance(1.0f).build());
-	public static final Item SALAD = add(new ItemCreator.Builder("salad", MushroomStewItem::new, new Item.Settings().group(ItemGroup.FOOD).maxCount(1).food(CulinaireFoods.SALAD)).build());
-	public static final Item MASHED_POTATOES = add(new ItemCreator.Builder("mashed_potatoes", MushroomStewItem::new, new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.MASHED_POTATOES).maxCount(1)).build());
+	public static final Item SALAD = add(new ItemCreator.Builder("salad", StewItem::new, new Item.Settings().group(ItemGroup.FOOD).maxCount(1).food(CulinaireFoods.SALAD)).build());
+	public static final Item MASHED_POTATOES = add(new ItemCreator.Builder("mashed_potatoes", StewItem::new, new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.MASHED_POTATOES).maxCount(1)).build());
 
 	public static void init() {
 	}
