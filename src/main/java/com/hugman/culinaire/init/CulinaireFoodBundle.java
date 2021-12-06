@@ -72,7 +72,4 @@ public class CulinaireFoodBundle extends CulinaireBundle {
 	public static final Item SWEET_BERRY_PIE = add(new ItemCreator.Builder("sweet_berry_pie", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.SWEET_BERRY_PIE)).compostingChance(1.0f).build());
 	public static final Item SALAD = add(new ItemCreator.Builder("salad", StewItem::new, new Item.Settings().group(ItemGroup.FOOD).maxCount(1).food(CulinaireFoods.SALAD)).build());
 	public static final Item MASHED_POTATOES = add(new ItemCreator.Builder("mashed_potatoes", StewItem::new, new Item.Settings().group(ItemGroup.FOOD).food(CulinaireFoods.MASHED_POTATOES).maxCount(1)).build());
-
-	public static void init() {
-	}
 }

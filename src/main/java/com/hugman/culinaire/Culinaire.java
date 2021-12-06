@@ -1,5 +1,6 @@
 package com.hugman.culinaire;
 
+import com.google.common.reflect.Reflection;
 import com.hugman.culinaire.config.CulinaireConfig;
 import com.hugman.culinaire.init.CulinaireCauldronBehaviors;
 import com.hugman.culinaire.init.CulinaireFoodBundle;
@@ -20,10 +21,10 @@ public class Culinaire implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		CulinaireFoodBundle.init();
-		CulinaireTeaBundle.init();
-		CulinaireLootTables.addToVanillaTables();
-		CulinaireCauldronBehaviors.init();
+		Reflection.initialize(CulinaireFoodBundle.class);
+		Reflection.initialize(CulinaireTeaBundle.class);
 		MOD_DATA.registerCreators();
+		CulinaireCauldronBehaviors.init();
+		CulinaireLootTables.addToVanillaTables();
 	}
 }

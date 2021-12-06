@@ -39,7 +39,4 @@ public class CulinaireTeaBundle extends CulinaireBundle {
 	public static final StatusEffect FULFILLMENT = add(new EffectCreator("fulfillment", new SimpleEffect(StatusEffectCategory.BENEFICIAL, 6048577)));
 	public static final StatusEffect GUARD = add(new EffectCreator("guard", new SimpleEffect(StatusEffectCategory.BENEFICIAL, 16440596)));
 	public static final StatusEffect POISON_RESISTANCE = add(new EffectCreator("poison_resistance", new SimpleEffect(StatusEffectCategory.BENEFICIAL, 7596722)));
-
-	public static void init() {
-	}
 }
