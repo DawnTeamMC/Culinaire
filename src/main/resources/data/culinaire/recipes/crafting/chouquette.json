@@ -6,13 +6,10 @@
 		},
 		{
 			"item": "minecraft:wheat"
-		},
-		{
-			"item": "culinaire:milk_bottle"
 		}
 	],
 	"result": {
 		"item": "culinaire:chouquette",
-		"count": 4
+		"count": 2
 	}
 }
