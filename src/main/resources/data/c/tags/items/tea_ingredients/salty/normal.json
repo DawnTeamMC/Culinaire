@@ -3,6 +3,7 @@
 	"values": [
 		"minecraft:warped_roots",
 		"minecraft:seagrass",
-		"minecraft:kelp"
+		"minecraft:kelp",
+		"culinaire:tomato"
 	]
 }

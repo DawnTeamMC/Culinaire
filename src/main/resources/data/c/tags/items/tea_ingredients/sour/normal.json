@@ -2,7 +2,6 @@
 	"replace": false,
 	"values": [
 		"minecraft:fern",
-		"minecraft:large_fern",
-		"minecraft:chorus_fruit"
+		"minecraft:large_fern"
 	]
 }

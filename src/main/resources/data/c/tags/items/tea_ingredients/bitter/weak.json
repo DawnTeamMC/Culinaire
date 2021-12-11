@@ -2,6 +2,7 @@
 	"replace": false,
 	"values": [
 		"minecraft:bamboo",
-		"minecraft:cactus"
+		"minecraft:cactus",
+		"minecraft:snowball"
 	]
 }

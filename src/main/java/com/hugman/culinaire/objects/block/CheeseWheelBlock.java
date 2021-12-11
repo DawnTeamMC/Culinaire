@@ -1,13 +1,14 @@
 package com.hugman.culinaire.objects.block;
 
+import com.hugman.culinaire.init.CulinaireFoodBundle;
 import com.hugman.culinaire.init.data.CulinaireBlockProperties;
-import com.hugman.culinaire.init.data.CulinaireFoods;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.FoodComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
@@ -57,7 +58,10 @@ public class CheeseWheelBlock extends Block {
 		}
 		else {
 			player.incrementStat(Stats.EAT_CAKE_SLICE);
-			player.getHungerManager().add(CulinaireFoods.CHEESE.getHunger(), CulinaireFoods.CHEESE.getSaturationModifier());
+			FoodComponent component = CulinaireFoodBundle.CHEESE.getFoodComponent();
+			if(component != null) {
+				player.getHungerManager().add(component.getHunger(), component.getSaturationModifier());
+			}
 			int i = state.get(BITES);
 			if(i < 5) {
 				world.setBlockState(pos, state.with(BITES, i + 1), 3);

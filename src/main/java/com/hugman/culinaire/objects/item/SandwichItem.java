@@ -29,8 +29,7 @@ public class SandwichItem extends Item {
 	@Override
 	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
 		NbtCompound sandwichData = stack.getSubNbt("SandwichData");
-		if(sandwichData != null && user instanceof PlayerEntity) {
-			PlayerEntity player = (PlayerEntity) user;
+		if(sandwichData != null && user instanceof PlayerEntity player) {
 			player.getHungerManager().add(sandwichData.getInt("Hunger"), sandwichData.getFloat("SaturationModifier"));
 		}
 		return super.finishUsing(stack, world, user);
