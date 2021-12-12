@@ -1,6 +1,6 @@
 package com.hugman.culinaire.objects.block;
 
-import com.hugman.culinaire.init.CulinaireFoodBundle;
+import com.hugman.culinaire.init.FoodBundle;
 import com.hugman.culinaire.init.data.CulinaireBlockProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -58,7 +58,7 @@ public class CheeseWheelBlock extends Block {
 		}
 		else {
 			player.incrementStat(Stats.EAT_CAKE_SLICE);
-			FoodComponent component = CulinaireFoodBundle.CHEESE.getFoodComponent();
+			FoodComponent component = FoodBundle.CHEESE.getFoodComponent();
 			if(component != null) {
 				player.getHungerManager().add(component.getHunger(), component.getSaturationModifier());
 			}

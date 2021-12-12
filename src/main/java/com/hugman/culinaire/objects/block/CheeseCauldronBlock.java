@@ -1,8 +1,7 @@
 package com.hugman.culinaire.objects.block;
 
-import com.hugman.culinaire.init.CulinaireFoodBundle;
+import com.hugman.culinaire.init.FoodBundle;
 import com.hugman.dawn.api.object.block.ThreeLeveledCauldronBlock;
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
@@ -47,7 +46,7 @@ public class CheeseCauldronBlock extends ThreeLeveledCauldronBlock {
 			double x = (world.random.nextFloat() * f) + 0.15D;
 			double y = (world.random.nextFloat() * f) + 0.66D;
 			double z = (world.random.nextFloat() * f) + 0.15D;
-			ItemEntity itemEntity = new ItemEntity(world, (double) pos.getX() + x, (double) pos.getY() + y, (double) pos.getZ() + z, new ItemStack(CulinaireFoodBundle.CHEESE));
+			ItemEntity itemEntity = new ItemEntity(world, (double) pos.getX() + x, (double) pos.getY() + y, (double) pos.getZ() + z, new ItemStack(FoodBundle.CHEESE));
 			itemEntity.setToDefaultPickupDelay();
 			world.spawnEntity(itemEntity);
 			if(level > 1) {

@@ -1,7 +1,7 @@
 package com.hugman.culinaire.objects.block.entity;
 
 import com.hugman.culinaire.Culinaire;
-import com.hugman.culinaire.init.CulinaireTeaBundle;
+import com.hugman.culinaire.init.TeaBundle;
 import com.hugman.culinaire.init.data.CulinaireTags;
 import com.hugman.culinaire.objects.block.KettleBlock;
 import com.hugman.culinaire.objects.item.TeaBagItem;
@@ -49,7 +49,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 	private boolean isHot;
 
 	public KettleBlockEntity(BlockPos pos, BlockState state) {
-		super(CulinaireTeaBundle.KETTLE_ENTITY, pos, state);
+		super(TeaBundle.KETTLE_ENTITY, pos, state);
 		this.inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
 		this.stackBrewing = ItemStack.EMPTY;
 		this.fluid = Fluid.EMPTY;
@@ -171,7 +171,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 				ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), remainderStack);
 			}
 		}
-		world.playSound(null, pos, CulinaireTeaBundle.KETTLE_BREW_SOUND.getSound(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+		world.playSound(null, pos, TeaBundle.KETTLE_BREW_SOUND.getSound(), SoundCategory.BLOCKS, 1.0F, 1.0F);
 		this.inventory.set(0, stack);
 	}
 

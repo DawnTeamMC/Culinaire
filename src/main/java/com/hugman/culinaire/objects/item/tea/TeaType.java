@@ -1,13 +1,11 @@
 package com.hugman.culinaire.objects.item.tea;
 
-import com.hugman.culinaire.init.CulinaireTeaBundle;
 import net.fabricmc.fabric.api.tag.TagFactory;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
-import net.minecraft.stat.Stat;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 

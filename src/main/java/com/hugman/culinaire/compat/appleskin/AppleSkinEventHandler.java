@@ -10,7 +10,9 @@ public class AppleSkinEventHandler implements AppleSkinApi {
 	public void registerEvents() {
 		FoodValuesEvent.EVENT.register(event -> {
 			if(event.itemStack.getItem() instanceof DynamicFood dynamic) {
-				event.defaultFoodValues = new FoodValues(dynamic.getHunger(event.itemStack), dynamic.getSaturationModifier(event.itemStack));
+				FoodValues values = new FoodValues(dynamic.getHunger(event.itemStack), dynamic.getSaturationModifier(event.itemStack));
+				event.defaultFoodValues = values;
+				event.modifiedFoodValues = values;
 			}
 		});
 	}

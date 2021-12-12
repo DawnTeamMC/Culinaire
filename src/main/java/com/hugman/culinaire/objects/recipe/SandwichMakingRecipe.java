@@ -1,6 +1,6 @@
 package com.hugman.culinaire.objects.recipe;
 
-import com.hugman.culinaire.init.CulinaireFoodBundle;
+import com.hugman.culinaire.init.FoodBundle;
 import com.hugman.culinaire.init.data.CulinaireTags;
 import com.hugman.culinaire.objects.item.SandwichItem;
 import com.hugman.culinaire.util.FoodUtil;
@@ -21,10 +21,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 	private static final double MAX_HUNGER = 1.0f;
@@ -35,14 +33,14 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 	private static final Ingredient VALID_BREAD = Ingredient.fromTag(CulinaireTags.Items.SANDWICH_BREAD);
 	private static final Ingredient INGREDIENT_BLACKLIST = Ingredient.fromTag(CulinaireTags.Items.SANDWICH_BLACKLIST);
 	private static final Map<Item, List<Item>> INGREDIENT_COMPLEMENTS = Map.ofEntries(
-			Map.entry(Items.APPLE, List.of(CulinaireFoodBundle.MILK_CHOCOLATE_BAR)),
+			Map.entry(Items.APPLE, List.of(FoodBundle.MILK_CHOCOLATE_BAR)),
 			Map.entry(Items.COOKED_CHICKEN, List.of(Items.HONEY_BOTTLE)),
-			Map.entry(Items.COOKED_BEEF, List.of(CulinaireFoodBundle.CHEESE)),
+			Map.entry(Items.COOKED_BEEF, List.of(FoodBundle.CHEESE)),
 			Map.entry(Items.GOLDEN_APPLE, List.of(Items.DRIED_KELP)),
-			Map.entry(CulinaireFoodBundle.MARSHMALLOW, List.of(CulinaireFoodBundle.MILK_CHOCOLATE_BAR, Items.HONEY_BOTTLE)),
+			Map.entry(FoodBundle.MARSHMALLOW, List.of(FoodBundle.MILK_CHOCOLATE_BAR, Items.HONEY_BOTTLE)),
 			Map.entry(Items.RABBIT, List.of(Items.BEETROOT)),
-			Map.entry(Items.SPIDER_EYE, List.of(CulinaireFoodBundle.DARK_CHOCOLATE_BAR)),
-			Map.entry(CulinaireFoodBundle.TOMATO, List.of(CulinaireFoodBundle.CHEESE, CulinaireFoodBundle.LETTUCE, Items.COOKED_CHICKEN))
+			Map.entry(Items.SPIDER_EYE, List.of(FoodBundle.DARK_CHOCOLATE_BAR)),
+			Map.entry(FoodBundle.TOMATO, List.of(FoodBundle.CHEESE, FoodBundle.LETTUCE, Items.COOKED_CHICKEN))
 	);
 	
 	public SandwichMakingRecipe(Identifier identifier) {
@@ -51,12 +49,12 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return CulinaireFoodBundle.SANDWICH_MAKING;
+		return FoodBundle.SANDWICH_MAKING;
 	}
 
 	@Override
 	public ItemStack getOutput() {
-		return new ItemStack(CulinaireFoodBundle.SANDWICH);
+		return new ItemStack(FoodBundle.SANDWICH);
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -112,7 +110,7 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 		ItemStack[] food = new ItemStack[j];
 		System.arraycopy(slots, 0, food, 0, food.length);
 
-		ItemStack givenStack = new ItemStack(CulinaireFoodBundle.SANDWICH);
+		ItemStack givenStack = new ItemStack(FoodBundle.SANDWICH);
 		NbtCompound compoundTag = givenStack.getOrCreateSubNbt(SandwichItem.SANDWICH_DATA);
 		boolean[] complements = getComplements(food);
 
@@ -129,7 +127,7 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 			if(food[i].getItem().hasGlint(food[i])) hasGlint = true;
 		}
 
-		// To NBT
+		// Transfer values to NBT
 		compoundTag.putInt(SandwichItem.HUNGER, MathHelper.fastFloor(hunger));
 		compoundTag.putFloat(SandwichItem.SATURATION_MODIFIER, saturationModifier);
 		compoundTag.putString(SandwichItem.INGREDIENT_LIST, Text.Serializer.toJson(ingredientList));
@@ -156,7 +154,7 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 			boolean[] tab = new boolean[items.length];
 			for(int i = 0; i < items.length; i++) {
 				for(int j = i; j < items.length; j++) {
-					if(i != j && !tab[j]) {
+					if(i != j) {
 						if(areComplements(items[i] , items[j])) {
 							tab[i] = true;
 							tab[j] = true;

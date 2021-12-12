@@ -3,8 +3,8 @@ package com.hugman.culinaire;
 import com.google.common.reflect.Reflection;
 import com.hugman.culinaire.config.CulinaireConfig;
 import com.hugman.culinaire.init.CulinaireCauldronBehaviors;
-import com.hugman.culinaire.init.CulinaireFoodBundle;
-import com.hugman.culinaire.init.CulinaireTeaBundle;
+import com.hugman.culinaire.init.FoodBundle;
+import com.hugman.culinaire.init.TeaBundle;
 import com.hugman.culinaire.init.data.CulinaireLootTables;
 import com.hugman.dawn.api.object.ModData;
 import me.shedaniel.autoconfig.AutoConfig;
@@ -21,8 +21,8 @@ public class Culinaire implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		Reflection.initialize(CulinaireFoodBundle.class);
-		Reflection.initialize(CulinaireTeaBundle.class);
+		Reflection.initialize(FoodBundle.class);
+		Reflection.initialize(TeaBundle.class);
 		MOD_DATA.registerCreators();
 		CulinaireCauldronBehaviors.init();
 		CulinaireLootTables.addToVanillaTables();

@@ -1,6 +1,6 @@
 package com.hugman.culinaire.objects.block;
 
-import com.hugman.culinaire.init.CulinaireFoodBundle;
+import com.hugman.culinaire.init.FoodBundle;
 import com.hugman.dawn.api.object.block.ThreeLeveledCauldronBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -45,7 +45,7 @@ public class MilkCauldronBlock extends ThreeLeveledCauldronBlock {
 		// Formula: 1/(x/(68.27/60))
 		// x = 30 (days)
 		if(random.nextFloat() < 0.0379278F) {
-			world.setBlockState(pos, CulinaireFoodBundle.CHEESE_CAULDRON.getDefaultState().with(CheeseCauldronBlock.LEVEL, getLevel(state)), Block.NOTIFY_LISTENERS);
+			world.setBlockState(pos, FoodBundle.CHEESE_CAULDRON.getDefaultState().with(CheeseCauldronBlock.LEVEL, getLevel(state)), Block.NOTIFY_LISTENERS);
 		}
 	}
 }

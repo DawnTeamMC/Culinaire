@@ -1,7 +1,7 @@
 package com.hugman.culinaire.compat.rei;
 
 import com.hugman.culinaire.Culinaire;
-import com.hugman.culinaire.init.CulinaireTeaBundle;
+import com.hugman.culinaire.init.TeaBundle;
 import com.hugman.culinaire.objects.item.tea.TeaHelper;
 import com.hugman.culinaire.objects.item.tea.TeaType;
 import com.hugman.culinaire.objects.recipe.TeaBagMakingRecipe;
@@ -35,7 +35,7 @@ public class CulinaireREIPlugin implements REIClientPlugin {
 
 		registry.removePlusButton(TEA_BREWING);
 
-		registry.addWorkstations(CulinaireREIPlugin.TEA_BREWING, EntryStacks.of(CulinaireTeaBundle.KETTLE));
+		registry.addWorkstations(CulinaireREIPlugin.TEA_BREWING, EntryStacks.of(TeaBundle.KETTLE));
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class CulinaireREIPlugin implements REIClientPlugin {
 			inputs.add(TeaBagMakingRecipe.STRING);
 			if(!teaType.getTag().values().isEmpty()) {
 				inputs.add(Ingredient.fromTag(teaType.getTag()));
-				ItemStack output = TeaHelper.appendTeaType(new ItemStack(CulinaireTeaBundle.TEA_BAG), teaType);
+				ItemStack output = TeaHelper.appendTeaType(new ItemStack(TeaBundle.TEA_BAG), teaType);
 				Identifier id = new Identifier("culinaire", teaType.getStrength().getName() + "_" + teaType.getFlavor().getName() + "_tea_bag");
 				registry.add(new ShapelessRecipe(id, "tea_bags", output, inputs));
 			}
@@ -60,8 +60,8 @@ public class CulinaireREIPlugin implements REIClientPlugin {
 
 	private void registerTeaBottleDisplays(DisplayRegistry registry) {
 		for(TeaType teaType : TeaHelper.getAllTypes()) {
-			ItemStack input = TeaHelper.appendTeaType(new ItemStack(CulinaireTeaBundle.TEA_BAG), teaType);
-			ItemStack output = TeaHelper.appendTeaType(new ItemStack(CulinaireTeaBundle.TEA_BOTTLE), teaType);
+			ItemStack input = TeaHelper.appendTeaType(new ItemStack(TeaBundle.TEA_BAG), teaType);
+			ItemStack output = TeaHelper.appendTeaType(new ItemStack(TeaBundle.TEA_BOTTLE), teaType);
 			registry.add(new TeaBrewingDisplay(input, output, teaType.getFlavor().getColor()));
 		}
 	}

@@ -22,7 +22,7 @@ import net.minecraft.item.Items;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.sound.BlockSoundGroup;
 
-public class CulinaireTeaBundle extends CulinaireBundle {
+public class TeaBundle extends CulinaireBundle {
 	public static final Item TEA_BAG = add(new ItemCreator.Builder("tea_bag", TeaBagItem::new, new Item.Settings().group(ItemGroup.FOOD).maxCount(16)).build());
 	public static final SpecialRecipeSerializer<TeaBagMakingRecipe> TEA_BAG_MAKING = add(new RecipeSerializerCreator<>("tea_bag_making", new SpecialRecipeSerializer<>(TeaBagMakingRecipe::new)));
 

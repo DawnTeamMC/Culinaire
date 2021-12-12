@@ -1,7 +1,7 @@
 package com.hugman.culinaire.compat.rei;
 
 import com.google.common.collect.Lists;
-import com.hugman.culinaire.init.CulinaireTeaBundle;
+import com.hugman.culinaire.init.TeaBundle;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
@@ -26,7 +26,7 @@ public class TeaBrewingCategory implements DisplayCategory<TeaBrewingDisplay> {
 
 	@Override
 	public Renderer getIcon() {
-		return EntryStacks.of(CulinaireTeaBundle.KETTLE);
+		return EntryStacks.of(TeaBundle.KETTLE);
 	}
 
 	@Override

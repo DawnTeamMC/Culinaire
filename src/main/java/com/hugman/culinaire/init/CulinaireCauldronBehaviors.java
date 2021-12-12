@@ -17,20 +17,20 @@ public class CulinaireCauldronBehaviors {
 
 	public static void init() {
 		// Milk Cauldron
-		CauldronUtil.addBottleInteractions(MILK, CulinaireFoodBundle.MILK_CAULDRON, CulinaireFoodBundle.MILK_BOTTLE);
-		CauldronUtil.addBucketInteractions(MILK, CulinaireFoodBundle.MILK_CAULDRON, Items.MILK_BUCKET);
-		MILK.put(Items.SUGAR, CauldronInteractionBuilder.create().addLevel(0).cauldron(CulinaireFoodBundle.WHITE_CHOCOLATE_CAULDRON).build());
+		CauldronUtil.addBottleInteractions(MILK, FoodBundle.MILK_CAULDRON, FoodBundle.MILK_BOTTLE);
+		CauldronUtil.addBucketInteractions(MILK, FoodBundle.MILK_CAULDRON, Items.MILK_BUCKET);
+		MILK.put(Items.SUGAR, CauldronInteractionBuilder.create().addLevel(0).cauldron(FoodBundle.WHITE_CHOCOLATE_CAULDRON).build());
 
 		// Dark Chocolate Cauldron
-		CauldronUtil.addBottleInteractions(DARK_CHOCOLATE, CulinaireFoodBundle.DARK_CHOCOLATE_CAULDRON, CulinaireFoodBundle.DARK_CHOCOLATE_BOTTLE);
-		DARK_CHOCOLATE.put(Items.MILK_BUCKET, CauldronInteractionBuilder.create().addLevel(3).cauldron(CulinaireFoodBundle.MILK_CHOCOLATE_CAULDRON).sound(SoundEvents.ITEM_BUCKET_EMPTY).build());
-		DARK_CHOCOLATE.put(CulinaireFoodBundle.MILK_BOTTLE, CauldronInteractionBuilder.create().addLevel(1).cauldron(CulinaireFoodBundle.MILK_CHOCOLATE_CAULDRON).sound(SoundEvents.ITEM_BOTTLE_EMPTY).build());
+		CauldronUtil.addBottleInteractions(DARK_CHOCOLATE, FoodBundle.DARK_CHOCOLATE_CAULDRON, FoodBundle.DARK_CHOCOLATE_BOTTLE);
+		DARK_CHOCOLATE.put(Items.MILK_BUCKET, CauldronInteractionBuilder.create().addLevel(3).cauldron(FoodBundle.MILK_CHOCOLATE_CAULDRON).sound(SoundEvents.ITEM_BUCKET_EMPTY).build());
+		DARK_CHOCOLATE.put(FoodBundle.MILK_BOTTLE, CauldronInteractionBuilder.create().addLevel(1).cauldron(FoodBundle.MILK_CHOCOLATE_CAULDRON).sound(SoundEvents.ITEM_BOTTLE_EMPTY).build());
 
 		// Milk Chocolate Cauldron
-		CauldronUtil.addBottleInteractions(MILK_CHOCOLATE, CulinaireFoodBundle.MILK_CHOCOLATE_CAULDRON, CulinaireFoodBundle.MILK_CHOCOLATE_BOTTLE);
+		CauldronUtil.addBottleInteractions(MILK_CHOCOLATE, FoodBundle.MILK_CHOCOLATE_CAULDRON, FoodBundle.MILK_CHOCOLATE_BOTTLE);
 
 		// White Chocolate Cauldron
-		CauldronUtil.addBottleInteractions(WHITE_CHOCOLATE, CulinaireFoodBundle.WHITE_CHOCOLATE_CAULDRON, CulinaireFoodBundle.WHITE_CHOCOLATE_BOTTLE);
-		WHITE_CHOCOLATE.put(Items.COCOA_BEANS, CauldronInteractionBuilder.create().addLevel(0).cauldron(CulinaireFoodBundle.MILK_CHOCOLATE_CAULDRON).build());
+		CauldronUtil.addBottleInteractions(WHITE_CHOCOLATE, FoodBundle.WHITE_CHOCOLATE_CAULDRON, FoodBundle.WHITE_CHOCOLATE_BOTTLE);
+		WHITE_CHOCOLATE.put(Items.COCOA_BEANS, CauldronInteractionBuilder.create().addLevel(0).cauldron(FoodBundle.MILK_CHOCOLATE_CAULDRON).build());
 	}
 }

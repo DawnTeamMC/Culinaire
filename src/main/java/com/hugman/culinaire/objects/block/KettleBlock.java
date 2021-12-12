@@ -1,6 +1,6 @@
 package com.hugman.culinaire.objects.block;
 
-import com.hugman.culinaire.init.CulinaireTeaBundle;
+import com.hugman.culinaire.init.TeaBundle;
 import com.hugman.culinaire.objects.block.entity.KettleBlockEntity;
 import com.hugman.culinaire.objects.item.tea.TeaHelper;
 import com.hugman.culinaire.objects.item.tea.TeaType;
@@ -120,7 +120,7 @@ public class KettleBlock extends BlockWithEntity {
 
 	@Nullable
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-		return world.isClient ? null : checkType(type, CulinaireTeaBundle.KETTLE_ENTITY, KettleBlockEntity::serverTick);
+		return world.isClient ? null : checkType(type, TeaBundle.KETTLE_ENTITY, KettleBlockEntity::serverTick);
 	}
 
 	@Override
@@ -179,9 +179,9 @@ public class KettleBlock extends BlockWithEntity {
 						List<TeaType> teaTypes = kettle.getTeaTypes();
 						if(kettle.removeFluid(1)) {
 							openScreen = false;
-							player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, TeaHelper.appendTeaTypes(new ItemStack(CulinaireTeaBundle.TEA_BOTTLE), teaTypes)));
+							player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, TeaHelper.appendTeaTypes(new ItemStack(TeaBundle.TEA_BOTTLE), teaTypes)));
 							player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
-							world.playSound(null, pos, CulinaireTeaBundle.TEA_BOTTLE_FILL_SOUND.getSound(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+							world.playSound(null, pos, TeaBundle.TEA_BOTTLE_FILL_SOUND.getSound(), SoundCategory.BLOCKS, 1.0F, 1.0F);
 							world.emitGameEvent(null, GameEvent.FLUID_PICKUP, pos);
 						}
 					}
@@ -190,7 +190,7 @@ public class KettleBlock extends BlockWithEntity {
 					player.openHandledScreen((KettleBlockEntity) blockEntity);
 				}
 			}
-			player.incrementStat(CulinaireTeaBundle.KETTLE_INTERACTION_STAT.getStat());
+			player.incrementStat(TeaBundle.KETTLE_INTERACTION_STAT.getStat());
 		}
 		return ActionResult.success(world.isClient);
 	}
