@@ -151,17 +151,19 @@ public class TomatoesBlock extends CropBlock {
 
 	@Override
 	public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
-		DoubleBlockHalf doubleBlockHalf = state.get(HALF);
-		BlockPos otherHalfPos = doubleBlockHalf == DoubleBlockHalf.LOWER ? pos.up() : pos.down();
-		int age = this.getAge(state);
-		if(age >= 2) {
-			if(world.getBlockState(otherHalfPos).isOf(this)) {
-				if(doubleBlockHalf == DoubleBlockHalf.UPPER) {
-					return super.canPlaceAt(state, world, pos);
+		if(state.getBlock() instanceof TomatoesBlock) {
+			DoubleBlockHalf doubleBlockHalf = state.get(HALF);
+			BlockPos otherHalfPos = doubleBlockHalf == DoubleBlockHalf.LOWER ? pos.up() : pos.down();
+			int age = this.getAge(state);
+			if(age >= 2) {
+				if(world.getBlockState(otherHalfPos).isOf(this)) {
+					if(doubleBlockHalf == DoubleBlockHalf.UPPER) {
+						return super.canPlaceAt(state, world, pos);
+					}
 				}
-			}
-			else {
-				return false;
+				else {
+					return false;
+				}
 			}
 		}
 		return super.canPlaceAt(state, world, pos);
