@@ -31,6 +31,9 @@
 		],
 		"rei": [
 			"com.hugman.culinaire.compat.rei.CulinaireREIPlugin"
+		],
+		"appleskin" : [
+			"com.hugman.culinaire.compat.appleskin.AppleSkinEventHandler"
 		]
 	},
 	"mixins": [
@@ -40,6 +43,10 @@
 		"minecraft": ">=1.18",
 		"fabric": "*",
 		"dawn": ">=3.1.0"
+	},
+	"suggests": {
+		"roughlyenoughitems": "*",
+		"appleskin": "*"
 	},
 	"custom": {
 		"modmenu": {

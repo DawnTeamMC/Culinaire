@@ -1,10 +1,12 @@
 package com.hugman.culinaire.objects.item;
 
+import com.hugman.culinaire.util.FoodUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -16,38 +18,61 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
+import org.lwjgl.system.macosx.EnumerationMutationHandlerI;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.Function;
 
-public class SandwichItem extends Item {
+public class SandwichItem extends Item implements DynamicFood {
+	public static final String SANDWICH_DATA = "SandwichData";
+	public static final String HUNGER = "Hunger";
+	public static final String SATURATION_MODIFIER = "SaturationModifier";
+	public static final String HAS_GLINT = "HasGlint";
+	public static final String INGREDIENT_LIST = "IngredientList";
 
 	public SandwichItem(Settings settings) {
 		super(settings);
 	}
 
 	@Override
-	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-		NbtCompound sandwichData = stack.getSubNbt("SandwichData");
-		if(sandwichData != null && user instanceof PlayerEntity player) {
-			player.getHungerManager().add(sandwichData.getInt("Hunger"), sandwichData.getFloat("SaturationModifier"));
+	public int getHunger(ItemStack stack) {
+		NbtCompound sandwichData = stack.getSubNbt(SANDWICH_DATA);
+		if(sandwichData != null) {
+			if(sandwichData.contains(HUNGER))
+			return sandwichData.getInt(HUNGER);
 		}
-		return super.finishUsing(stack, world, user);
+		else {
+			FoodComponent foodComponent = stack.getItem().getFoodComponent();
+			if(foodComponent != null) {
+				return foodComponent.getHunger();
+			}
+		}
+		return 0;
+	}
+
+	@Override
+	public float getSaturationModifier(ItemStack stack) {
+		NbtCompound sandwichData = stack.getSubNbt(SANDWICH_DATA);
+		if(sandwichData != null) {
+			if(sandwichData.contains(SATURATION_MODIFIER))
+				return sandwichData.getFloat(SATURATION_MODIFIER);
+		}
+		else {
+			FoodComponent foodComponent = stack.getItem().getFoodComponent();
+			if(foodComponent != null) {
+				return foodComponent.getSaturationModifier();
+			}
+		}
+		return 0;
 	}
 
 	@Override
 	public boolean hasGlint(ItemStack stack) {
-		NbtCompound sandwichData = stack.getSubNbt("SandwichData");
+		NbtCompound sandwichData = stack.getSubNbt(SANDWICH_DATA);
 		if(sandwichData != null) {
-			NbtList ingredientList = sandwichData.getList("Ingredients", 10);
-			if(!ingredientList.isEmpty()) {
-				for(int i = 0; i < ingredientList.size(); ++i) {
-					NbtCompound ingredientData = ingredientList.getCompound(i);
-					Item item = Registry.ITEM.get(new Identifier(ingredientData.getString("Item")));
-					if(item.hasGlint(new ItemStack(item))) {
-						return true;
-					}
-				}
+			if(sandwichData.contains(HAS_GLINT)) {
+				return sandwichData.getBoolean(HAS_GLINT);
 			}
 		}
 		return false;
@@ -56,20 +81,10 @@ public class SandwichItem extends Item {
 	@Override
 	@Environment(EnvType.CLIENT)
 	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-		MutableText text = new LiteralText("").formatted(Formatting.GRAY);
-		NbtCompound sandwichData = stack.getSubNbt("SandwichData");
+		NbtCompound sandwichData = stack.getSubNbt(SANDWICH_DATA);
 		if(sandwichData != null) {
-			NbtList ingredientList = sandwichData.getList("Ingredients", 10);
-			if(!ingredientList.isEmpty()) {
-				for(int i = 0; i < ingredientList.size(); ++i) {
-					NbtCompound ingredientData = ingredientList.getCompound(i);
-					Item item = Registry.ITEM.get(new Identifier(ingredientData.getString("Item")));
-					if(i > 0) {
-						text.append(", ");
-					}
-					text.append(((MutableText) (item.getName())).formatted(ingredientData.getBoolean("Complementary") ? Formatting.GREEN : Formatting.GRAY));
-				}
-				tooltip.add(text);
+			if(sandwichData.contains(INGREDIENT_LIST)) {
+				tooltip.add(Text.Serializer.fromJson(sandwichData.getString(INGREDIENT_LIST)));
 			}
 		}
 	}

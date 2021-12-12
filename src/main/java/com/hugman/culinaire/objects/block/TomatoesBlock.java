@@ -157,7 +157,7 @@ public class TomatoesBlock extends CropBlock {
 		if(age >= 2) {
 			if(world.getBlockState(otherHalfPos).isOf(this)) {
 				if(doubleBlockHalf == DoubleBlockHalf.UPPER) {
-					return true;
+					return super.canPlaceAt(state, world, pos);
 				}
 			}
 			else {

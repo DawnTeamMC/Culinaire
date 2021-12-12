@@ -1,5 +1,6 @@
 package com.hugman.culinaire.objects.item;
 
+import com.hugman.culinaire.objects.item.tea.TeaEffect;
 import com.hugman.culinaire.objects.item.tea.TeaHelper;
 import com.hugman.culinaire.objects.item.tea.TeaType;
 import net.fabricmc.api.EnvType;
@@ -7,7 +8,6 @@ import net.fabricmc.api.Environment;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -78,19 +78,7 @@ public class TeaBottleItem extends Item {
 			List<TeaType> teaTypes = TeaHelper.getTeaTypesByCompound(stack.getNbt());
 			if(!teaTypes.isEmpty()) {
 				for(TeaType teaType : teaTypes) {
-					StatusEffect effect = teaType.getFlavor().getEffect();
-					if(effect != null) {
-						if(effect.isInstant()) {
-							effect.applyInstantEffect(user, user, user, teaType.getStrength().getPotency(), 1.0D);
-						}
-						else {
-							user.addStatusEffect(new StatusEffectInstance(effect, teaType.getStrength().getPotency() * 400));
-
-						}
-					}
-					if(teaType.getFlavor() == TeaType.Flavor.GLOOPY) {
-						Items.CHORUS_FRUIT.finishUsing(stack, world, user);
-					}
+					teaType.getFlavor().getEffect().apply(user, stack,  world, teaType);
 				}
 			}
 		}

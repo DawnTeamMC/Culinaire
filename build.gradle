@@ -13,6 +13,7 @@ repositories {
     maven { url 'https://maven.terraformersmc.com/' }
     maven { url 'https://server.bbkr.space/artifactory/libs-release' }
     maven { url 'https://www.cursemaven.com' }
+    maven { url "https://maven.ryanliptak.com/" }
 }
 
 dependencies {
@@ -23,6 +24,10 @@ dependencies {
 
     modApi "com.github.DawnTeamMC:DawnAPI:v${dawn_version}"
     modApi "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
+    modApi "squeek.appleskin:appleskin-fabric:mc1.18-${appleskin_version}:api"
+    modApi("squeek.appleskin:appleskin-fabric:mc1.18-${appleskin_version}") {
+        exclude module: 'modmenu'
+    }
 
     compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 }

@@ -2,11 +2,9 @@
 	"required": true,
 	"package": "com.hugman.culinaire.mixin",
 	"compatibilityLevel": "JAVA_16",
-	"mixins": ["CowEntityMixin", "DefaultedRegistryMixin", "LivingEntityMixin", "MilkBucketMixin", "PlayerEntityMixin", "StatusEffectInstanceMixin"],
+	"mixins": ["CowEntityMixin", "DefaultedRegistryMixin", "HungerManagerMixin", "MilkBucketMixin"],
 	"client": [
-		"BackgroundRendererMixin",
-		"ClientPlayerEntityMixin",
-		"PlayerRendererMixin"
+		"client.PlayerRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

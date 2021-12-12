@@ -1,4 +1,4 @@
-package com.hugman.culinaire.mixin;
+package com.hugman.culinaire.mixin.client;
 
 import com.hugman.culinaire.objects.item.MarshmallowOnAStickItem;
 import net.minecraft.block.BlockState;
@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(PlayerEntityRenderer.class)
 public class PlayerRendererMixin {
 	@Inject(method = "getArmPose", at = @At(value = "HEAD"), cancellable = true)
-	private static void commonExpansion_getArmPose(AbstractClientPlayerEntity abstractClientPlayerEntity, Hand hand, CallbackInfoReturnable<BipedEntityModel.ArmPose> info) {
+	private static void culinaire$getArmPose(AbstractClientPlayerEntity abstractClientPlayerEntity, Hand hand, CallbackInfoReturnable<BipedEntityModel.ArmPose> info) {
 		ItemStack itemStack = abstractClientPlayerEntity.getStackInHand(hand);
 		if(!itemStack.isEmpty() && abstractClientPlayerEntity.isSneaking()) {
 			if(!abstractClientPlayerEntity.handSwinging && itemStack.getItem() instanceof MarshmallowOnAStickItem) {

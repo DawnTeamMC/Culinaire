@@ -1,10 +1,13 @@
 package com.hugman.culinaire.objects.item.tea;
 
 import com.hugman.culinaire.init.CulinaireTeaBundle;
-import net.fabricmc.fabric.api.tag.TagRegistry;
+import net.fabricmc.fabric.api.tag.TagFactory;
 import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
+import net.minecraft.stat.Stat;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 
@@ -34,7 +37,7 @@ public class TeaType {
 	}
 
 	public Tag<Item> getTag() {
-		return TagRegistry.item(new Identifier("c", "tea_ingredients/" + getFlavor().getName() + "/" + getStrength().getName()));
+		return TagFactory.ITEM.create(new Identifier("c", "tea_ingredients/" + getFlavor().getName() + "/" + getStrength().getName()));
 	}
 
 	public int getBrewTime() {
@@ -47,33 +50,47 @@ public class TeaType {
 	}
 
 	public enum Flavor {
-		SWEET("sweet", 9523743, CulinaireTeaBundle.FULFILLMENT),
-		UMAMI("umami", 10059295, StatusEffects.RESISTANCE),
-		SALTY("salty", 10251038, CulinaireTeaBundle.GUARD),
-		SOUR("sour", 7238946, CulinaireTeaBundle.POISON_RESISTANCE),
-		BITTER("bitter", 5057061, CulinaireTeaBundle.FORESIGHT),
-		SHINING("shining", 16759902, StatusEffects.GLOWING),
-		GLOOPY("gloopy", 9332621);
+		SWEET("sweet", 9523743,  StatusEffects.SATURATION, true),
+		UMAMI("umami", 10059295, StatusEffects.RESISTANCE, true),
+		SALTY("salty", 10251038, StatusEffects.SPEED, true),
+		SOUR("sour", 7238946, StatusEffects.POISON, false),
+		BITTER("bitter", 5057061, StatusEffects.BLINDNESS, false),
+		SHINING("shining", 16759902, StatusEffects.GLOWING, true),
+		GLOOPY("gloopy", 9332621, (user, stack, world, teaType) -> Items.CHORUS_FRUIT.finishUsing(stack, world, user));
 
 		private final String name;
 
 		private final int color;
 		private final int brewTime;
-		private final StatusEffect effect;
+		private final TeaEffect effect;
 
-		Flavor(String name, int color) {
-			this(name, color, null);
+		Flavor(String name, int color, TeaEffect effect) {
+			this(name, color, effect, 200);
 		}
 
-		Flavor(String name, int color, StatusEffect effect) {
-			this(name, color, 200, effect);
-		}
-
-		Flavor(String name, int color, int brewTime, StatusEffect effect) {
+		Flavor(String name, int color, TeaEffect effect, int brewTime) {
 			this.name = name;
 			this.brewTime = brewTime;
 			this.color = color;
 			this.effect = effect;
+		}
+
+		Flavor(String name, int color, StatusEffect effect, boolean add) {
+			this(name, color, (user, stack, world, teaType) -> {
+				if(effect != null) {
+					if(add) {
+						if(effect.isInstant()) {
+							effect.applyInstantEffect(user, user, user, teaType.getStrength().getPotency(), 1.0D);
+						}
+						else {
+							user.addStatusEffect(new StatusEffectInstance(effect, teaType.getStrength().getPotency() * 400));
+						}
+					}
+					else {
+						user.removeStatusEffect(effect);
+					}
+				}
+			}, 200);
 		}
 
 		public static Flavor byName(String name) {
@@ -89,7 +106,7 @@ public class TeaType {
 			return name;
 		}
 
-		public StatusEffect getEffect() {
+		public TeaEffect getEffect() {
 			return effect;
 		}
 

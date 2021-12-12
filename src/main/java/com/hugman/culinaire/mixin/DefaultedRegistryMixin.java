@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(DefaultedRegistry.class)
 public class DefaultedRegistryMixin {
 	@ModifyVariable(at = @At("HEAD"), method = "get(Lnet/minecraft/util/Identifier;)Ljava/lang/Object;", ordinal = 0)
-	Identifier fixMissingFromRegistry(@Nullable Identifier id) {
+	Identifier culinaire$fixMissingFromRegistry(@Nullable Identifier id) {
 		if(id != null) {
 			if(id.getNamespace().equals("ce_foodstuffs")) return new Identifier(Culinaire.MOD_DATA.getModName(), id.getPath());
 		}

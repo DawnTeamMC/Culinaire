@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(CowEntity.class)
 public class CowEntityMixin {
 	@Inject(method = "interactMob", at = @At(value = "HEAD"), cancellable = true)
-	public void commonExpansion_interactMob(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> info) {
+	public void culinaire$interactMob(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> info) {
 		CowEntity cowEntity = (CowEntity) (Object) this;
 		ItemStack itemStack = player.getStackInHand(hand);
 		if(itemStack.getItem() == Items.GLASS_BOTTLE && !cowEntity.isBaby()) {

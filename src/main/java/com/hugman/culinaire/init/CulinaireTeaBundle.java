@@ -34,9 +34,4 @@ public class CulinaireTeaBundle extends CulinaireBundle {
 	public static final BlockEntityType<KettleBlockEntity> KETTLE_ENTITY = add(new BlockEntityCreator<>("kettle", FabricBlockEntityTypeBuilder.create(KettleBlockEntity::new, KETTLE)));
 	public static final StatCreator KETTLE_INTERACTION_STAT = creator(new StatCreator("interact_with_kettle"));
 	public static final SoundCreator KETTLE_BREW_SOUND = creator(new SoundCreator("block.kettle.brew"));
-
-	public static final StatusEffect FORESIGHT = add(new EffectCreator("foresight", new SimpleEffect(StatusEffectCategory.BENEFICIAL, 9966823)));
-	public static final StatusEffect FULFILLMENT = add(new EffectCreator("fulfillment", new SimpleEffect(StatusEffectCategory.BENEFICIAL, 6048577)));
-	public static final StatusEffect GUARD = add(new EffectCreator("guard", new SimpleEffect(StatusEffectCategory.BENEFICIAL, 16440596)));
-	public static final StatusEffect POISON_RESISTANCE = add(new EffectCreator("poison_resistance", new SimpleEffect(StatusEffectCategory.BENEFICIAL, 7596722)));
 }
