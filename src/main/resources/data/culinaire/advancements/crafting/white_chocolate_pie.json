@@ -1,0 +1,32 @@
+{
+	"parent": "minecraft:recipes/root",
+	"rewards": {
+		"recipes": [
+			"culinaire:crafting/white_chocolate_pie"
+		]
+	},
+	"criteria": {
+		"has_chocolate_bottle": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"items": ["culinaire:white_chocolate_bottle"]
+					}
+				]
+			}
+		},
+		"has_the_recipe": {
+			"trigger": "minecraft:recipe_unlocked",
+			"conditions": {
+				"recipe": "culinaire:crafting/white_chocolate_pie"
+			}
+		}
+	},
+	"requirements": [
+		[
+			"has_chocolate_bottle",
+			"has_the_recipe"
+		]
+	]
+}
