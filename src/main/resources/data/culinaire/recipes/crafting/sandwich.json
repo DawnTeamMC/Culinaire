@@ -1,3 +1,93 @@
 {
-	"type": "culinaire:sandwich_making"
+	"type": "culinaire:crafting/sandwich",
+	"hunger_modifier_base": 0.5,
+	"hunger_modifier_boosted": 1.0,
+	"saturation_modifier_base": 0.2,
+	"saturation_modifier_boosted": 0.5,
+	"bread": {
+		"tag": "c:sandwich/bread"
+	},
+	"ingredient_blacklist": {
+		"tag": "c:sandwich/blacklist"
+	},
+	"result": "culinaire:sandwich",
+	"ingredient_associations": [
+		{
+			"ingredient_a": {
+				"item": "minecraft:apple"
+			},
+			"ingredient_b": {
+				"item": "culinaire:milk_chocolate_bar"
+			}
+		},
+		{
+			"ingredient_a": {
+				"item": "minecraft:cooked_chicken"
+			},
+			"ingredient_b": {
+				"item": "minecraft:honey_bottle"
+			}
+		},
+		{
+			"ingredient_a": {
+				"item": "minecraft:cooked_beef"
+			},
+			"ingredient_b": {
+				"item": "culinaire:cheese"
+			}
+		},
+		{
+			"ingredient_a": {
+				"item": "minecraft:golden_apple"
+			},
+			"ingredient_b": {
+				"item": "minecraft:dried_kelp"
+			}
+		},
+		{
+			"ingredient_a": {
+				"item": "culinaire:marshmallow"
+			},
+			"ingredient_b": [
+				{
+					"item": "culinaire:milk_chocolate_bar"
+				},
+				{
+					"item": "minecraft:honey_bottle"
+				}
+			]
+		},
+		{
+			"ingredient_a": {
+				"item": "minecraft:rabbit"
+			},
+			"ingredient_b": {
+				"item": "minecraft:beetroot"
+			}
+		},
+		{
+			"ingredient_a": {
+				"item": "minecraft:spider_eye"
+			},
+			"ingredient_b": {
+				"item": "culinaire:dark_chocolate_bar"
+			}
+		},
+		{
+			"ingredient_a": {
+				"item": "culinaire:tomato"
+			},
+			"ingredient_b": [
+				{
+					"item": "culinaire:cheese"
+				},
+				{
+					"item": "culinaire:lettuce"
+				},
+				{
+					"item": "minecraft:cooked_chicken"
+				}
+			]
+		}
+	]
 }

@@ -1,28 +1,18 @@
 package com.hugman.culinaire.objects.item;
 
-import com.hugman.culinaire.util.FoodUtil;
+import com.hugman.dawn.api.object.item.DynamicFood;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-import org.lwjgl.system.macosx.EnumerationMutationHandlerI;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.function.Function;
 
 public class SandwichItem extends Item implements DynamicFood {
 	public static final String SANDWICH_DATA = "SandwichData";

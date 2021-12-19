@@ -22,9 +22,6 @@ public class CulinaireTags {
 	}
 
 	public static class Items {
-		public static final Tag<Item> SANDWICH_BREAD = register("c", "sandwich/bread");
-		public static final Tag<Item> SANDWICH_BLACKLIST = register("c", "sandwich/blacklist");
-
 		private static Tag<Item> register(String name) {
 			return TagFactory.ITEM.create(Culinaire.MOD_DATA.id(name));
 		}

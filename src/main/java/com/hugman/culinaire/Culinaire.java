@@ -21,6 +21,7 @@ public class Culinaire implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		MOD_DATA.addOldName("ce_foodstuffs");
 		Reflection.initialize(FoodBundle.class);
 		Reflection.initialize(TeaBundle.class);
 		MOD_DATA.registerCreators();

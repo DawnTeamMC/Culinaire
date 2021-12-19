@@ -1,6 +1,6 @@
 package com.hugman.culinaire.util;
 
-import com.hugman.culinaire.objects.item.DynamicFood;
+import com.hugman.dawn.api.object.item.DynamicFood;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.ItemStack;
 

@@ -24,10 +24,6 @@ dependencies {
 
     modApi "com.github.DawnTeamMC:DawnAPI:${dawn_version}"
     modApi "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
-    modApi "squeek.appleskin:appleskin-fabric:mc1.18-${appleskin_version}:api"
-    modApi("squeek.appleskin:appleskin-fabric:mc1.18-${appleskin_version}") {
-        exclude module: 'modmenu'
-    }
 
     compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 }

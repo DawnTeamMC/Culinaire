@@ -1,15 +1,12 @@
 package com.hugman.culinaire.objects.recipe;
 
 import com.hugman.culinaire.init.FoodBundle;
-import com.hugman.culinaire.init.data.CulinaireTags;
 import com.hugman.culinaire.objects.item.SandwichItem;
 import com.hugman.culinaire.util.FoodUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
@@ -21,40 +18,38 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-import java.util.List;
 import java.util.Map;
 
-public class SandwichMakingRecipe extends SpecialCraftingRecipe {
-	private static final double MAX_HUNGER = 1.0f;
-	private static final double MIN_HUNGER = 0.5f;
-	private static final double MAX_SATURATION = 0.5f;
-	private static final double MIN_SATURATION = 0.2f;
+public class SandwichRecipe extends SpecialCraftingRecipe {
+	public final ItemStack resultStack;
+	public final Ingredient bread;
+	public final Ingredient ingredientBlacklist;
+	public final float hungerModifierBase;
+	public final float hungerModifierBoosted;
+	public final float saturationModifierBase;
+	public final float saturationModifierBoosted;
+	public final Map<Ingredient, Ingredient> ingredientAssociations;
 
-	private static final Ingredient VALID_BREAD = Ingredient.fromTag(CulinaireTags.Items.SANDWICH_BREAD);
-	private static final Ingredient INGREDIENT_BLACKLIST = Ingredient.fromTag(CulinaireTags.Items.SANDWICH_BLACKLIST);
-	private static final Map<Item, List<Item>> INGREDIENT_COMPLEMENTS = Map.ofEntries(
-			Map.entry(Items.APPLE, List.of(FoodBundle.MILK_CHOCOLATE_BAR)),
-			Map.entry(Items.COOKED_CHICKEN, List.of(Items.HONEY_BOTTLE)),
-			Map.entry(Items.COOKED_BEEF, List.of(FoodBundle.CHEESE)),
-			Map.entry(Items.GOLDEN_APPLE, List.of(Items.DRIED_KELP)),
-			Map.entry(FoodBundle.MARSHMALLOW, List.of(FoodBundle.MILK_CHOCOLATE_BAR, Items.HONEY_BOTTLE)),
-			Map.entry(Items.RABBIT, List.of(Items.BEETROOT)),
-			Map.entry(Items.SPIDER_EYE, List.of(FoodBundle.DARK_CHOCOLATE_BAR)),
-			Map.entry(FoodBundle.TOMATO, List.of(FoodBundle.CHEESE, FoodBundle.LETTUCE, Items.COOKED_CHICKEN))
-	);
-	
-	public SandwichMakingRecipe(Identifier identifier) {
+	public SandwichRecipe(Identifier identifier, ItemStack resultStack, Ingredient bread, Ingredient ingredientBlacklist, float hungerModifierBase, float hungerModifierBoosted, float saturationModifierBase, float saturationModifierBoosted, Map<Ingredient, Ingredient> ingredientAssociations) {
 		super(identifier);
+		this.resultStack = resultStack;
+		this.bread = bread;
+		this.ingredientBlacklist = ingredientBlacklist;
+		this.hungerModifierBase = hungerModifierBase;
+		this.hungerModifierBoosted = hungerModifierBoosted;
+		this.saturationModifierBase = saturationModifierBase;
+		this.saturationModifierBoosted = saturationModifierBoosted;
+		this.ingredientAssociations = ingredientAssociations;
 	}
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return FoodBundle.SANDWICH_MAKING;
+		return FoodBundle.SANDWICH_CRAFTING;
 	}
 
 	@Override
 	public ItemStack getOutput() {
-		return new ItemStack(FoodBundle.SANDWICH);
+		return resultStack;
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -77,14 +72,14 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 		ItemStack topMiddleStack = inv.getStack(1);
 		ItemStack bottomMiddleStack = inv.getStack(7);
 		if(!topMiddleStack.isEmpty() && !bottomMiddleStack.isEmpty()) {
-			if(VALID_BREAD.test(topMiddleStack) && VALID_BREAD.test(bottomMiddleStack)) {
+			if(bread.test(topMiddleStack) && bread.test(bottomMiddleStack)) {
 				hasBread = true;
 			}
 		}
 		for(int i = 3; i < 6; ++i) {
 			ItemStack itemStack = inv.getStack(i);
 			if(!itemStack.isEmpty()) {
-				if(itemStack.isFood() && !INGREDIENT_BLACKLIST.test(itemStack)) {
+				if(itemStack.isFood() && !ingredientBlacklist.test(itemStack)) {
 					hasOnlyIngredients = true;
 				}
 				else {
@@ -110,9 +105,9 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 		ItemStack[] food = new ItemStack[j];
 		System.arraycopy(slots, 0, food, 0, food.length);
 
-		ItemStack givenStack = new ItemStack(FoodBundle.SANDWICH);
+		ItemStack givenStack = resultStack.copy();
 		NbtCompound compoundTag = givenStack.getOrCreateSubNbt(SandwichItem.SANDWICH_DATA);
-		boolean[] complements = getComplements(food);
+		boolean[] associations = getAssociations(food);
 
 		// Calculations
 		float hunger = 0.0f;
@@ -120,10 +115,10 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 		MutableText ingredientList = (MutableText) Text.of("");
 		boolean hasGlint = false;
 		for(int i = 0; i < food.length; i++) {
-			hunger += FoodUtil.getHunger(food[i]) * (complements[i] ? MAX_HUNGER : MIN_HUNGER);
-			saturationModifier += FoodUtil.getSaturationPoints(food[i]) * (complements[i] ? MAX_SATURATION : MIN_SATURATION);
+			hunger += FoodUtil.getHunger(food[i]) * (associations[i] ? hungerModifierBoosted : hungerModifierBase);
+			saturationModifier += FoodUtil.getSaturationPoints(food[i]) * (associations[i] ? saturationModifierBoosted : saturationModifierBase);
 			if(i != 0) ingredientList.append(", ");
-			ingredientList.append(((MutableText)food[i].getName()).formatted(complements[i] ? Formatting.GREEN : Formatting.GRAY));
+			ingredientList.append(((MutableText)food[i].getName()).formatted(associations[i] ? Formatting.GREEN : Formatting.GRAY));
 			if(food[i].getItem().hasGlint(food[i])) hasGlint = true;
 		}
 
@@ -135,19 +130,21 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 		return givenStack;
 	}
 
-	private static boolean areComplements(ItemStack item1, ItemStack item2) {
+	private boolean areAssociated(ItemStack item1, ItemStack item2) {
 		boolean b = false;
-		if(INGREDIENT_COMPLEMENTS.get(item1.getItem()) != null) b = INGREDIENT_COMPLEMENTS.get(item1.getItem()).contains(item2.getItem());
-		if(INGREDIENT_COMPLEMENTS.get(item2.getItem()) != null) b |= INGREDIENT_COMPLEMENTS.get(item2.getItem()).contains(item1.getItem());
+		for(Ingredient ingredient : ingredientAssociations.keySet()) {
+			if(ingredient.test(item1)) b = ingredientAssociations.get(ingredient).test(item2);
+			if(ingredient.test(item2)) b |= ingredientAssociations.get(ingredient).test(item1);
+		}
 		return b;
 	}
 
-	private static boolean[] getComplements(ItemStack... items) {
+	private boolean[] getAssociations(ItemStack... items) {
 		if(items.length == 1) {
 			return new boolean[] {false};
 		}
 		else if(items.length == 2) {
-			boolean b = areComplements(items[0], items[1]);
+			boolean b = areAssociated(items[0], items[1]);
 			return new boolean[] {b, b};
 		}
 		else {
@@ -155,7 +152,7 @@ public class SandwichMakingRecipe extends SpecialCraftingRecipe {
 			for(int i = 0; i < items.length; i++) {
 				for(int j = i; j < items.length; j++) {
 					if(i != j) {
-						if(areComplements(items[i] , items[j])) {
+						if(areAssociated(items[i] , items[j])) {
 							tab[i] = true;
 							tab[j] = true;
 						}
