@@ -15,9 +15,4 @@ public abstract class CulinaireBundle extends Bundle {
 		Culinaire.MOD_DATA.addCreator(creator);
 		return creator;
 	}
-
-	protected static <V extends Bundle> V bundle(V bundle) {
-		Culinaire.MOD_DATA.addBundle(bundle);
-		return bundle;
-	}
 }
