@@ -1,13 +1,13 @@
 package com.hugman.culinaire.objects.item.tea;
 
-import net.fabricmc.fabric.api.tag.TagFactory;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
-import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 public class TeaType {
 	private final Strength strength;
@@ -34,8 +34,8 @@ public class TeaType {
 		return flavor;
 	}
 
-	public Tag<Item> getTag() {
-		return TagFactory.ITEM.create(new Identifier("c", "tea_ingredients/" + getFlavor().getName() + "/" + getStrength().getName()));
+	public TagKey<Item> getTag() {
+		return TagKey.of(Registry.ITEM_KEY, new Identifier("c", "tea_ingredients/" + getFlavor().getName() + "/" + getStrength().getName()));
 	}
 
 	public int getBrewTime() {
