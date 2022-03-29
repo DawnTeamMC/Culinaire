@@ -1,33 +1,24 @@
 package com.hugman.culinaire.init.data;
 
 import com.hugman.culinaire.Culinaire;
-import net.fabricmc.fabric.api.tag.TagFactory;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.tag.Tag;
-import net.minecraft.util.Identifier;
+import net.minecraft.tag.TagKey;
+import net.minecraft.util.registry.Registry;
 
 public class CulinaireTags {
 
 	public static class Blocks {
-		public static final Tag<Block> KETTLE_HOT_BLOCKS = register("kettle_hot_blocks");
+		public static final TagKey<Block> KETTLE_HOT_BLOCKS = register("kettle_hot_blocks");
 
-		private static Tag<Block> register(String name) {
-			return TagFactory.BLOCK.create(Culinaire.MOD_DATA.id(name));
-		}
-
-		private static Tag<Block> register(String namespace, String path) {
-			return TagFactory.BLOCK.create(new Identifier(namespace, path));
+		private static TagKey<Block> register(String name) {
+			return TagKey.of(Registry.BLOCK_KEY, Culinaire.MOD_DATA.id(name));
 		}
 	}
 
 	public static class Items {
-		private static Tag<Item> register(String name) {
-			return TagFactory.ITEM.create(Culinaire.MOD_DATA.id(name));
-		}
-
-		private static Tag<Item> register(String namespace, String path) {
-			return TagFactory.ITEM.create(new Identifier(namespace, path));
+		private static TagKey<Item> register(String name) {
+			return TagKey.of(Registry.ITEM_KEY, Culinaire.MOD_DATA.id(name));
 		}
 	}
 }

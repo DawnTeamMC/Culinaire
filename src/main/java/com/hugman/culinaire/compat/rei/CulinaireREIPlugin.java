@@ -49,8 +49,9 @@ public class CulinaireREIPlugin implements REIClientPlugin {
 			DefaultedList<Ingredient> inputs = DefaultedList.of();
 			inputs.add(TeaBagMakingRecipe.PAPER);
 			inputs.add(TeaBagMakingRecipe.STRING);
-			if(!teaType.getTag().values().isEmpty()) {
-				inputs.add(Ingredient.fromTag(teaType.getTag()));
+			Ingredient ingredient = Ingredient.fromTag(teaType.getTag());
+			if(!ingredient.isEmpty()) {
+				inputs.add(ingredient);
 				ItemStack output = TeaHelper.appendTeaType(new ItemStack(TeaBundle.TEA_BAG), teaType);
 				Identifier id = new Identifier("culinaire", teaType.getStrength().getName() + "_" + teaType.getFlavor().getName() + "_tea_bag");
 				registry.add(new ShapelessRecipe(id, "tea_bags", output, inputs));
