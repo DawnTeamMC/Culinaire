@@ -27,8 +27,8 @@ public class TeaBundle extends CulinaireBundle {
 	public static final SoundCreator TEA_BOTTLE_FILL_SOUND = creator(new SoundCreator("item.tea_bottle.fill"));
 
 	public static final Block KETTLE = add(new BlockCreator.Builder("kettle", KettleBlock::new, FabricBlockSettings.of(Material.METAL, MapColor.IRON_GRAY).requiresTool().strength(5.0F, 1200.0F).sounds(BlockSoundGroup.STONE)).itemGroup(ItemGroup.DECORATIONS).build());
-	public static final ScreenHandlerCreator<KettleScreenHandler> KETTLE_SCREEN_HANDLER = creator(new ScreenHandlerCreator<>("kettle", KettleScreenHandler::new));
-	public static final BlockEntityType<KettleBlockEntity> KETTLE_ENTITY = add(new BlockEntityCreator<>("kettle", FabricBlockEntityTypeBuilder.create(KettleBlockEntity::new, KETTLE)));
 	public static final StatCreator KETTLE_INTERACTION_STAT = creator(new StatCreator("interact_with_kettle"));
 	public static final SoundCreator KETTLE_BREW_SOUND = creator(new SoundCreator("block.kettle.brew"));
+	public static final ScreenHandlerCreator<KettleScreenHandler> KETTLE_SCREEN_HANDLER = creator(new ScreenHandlerCreator<>("kettle", KettleScreenHandler::new));
+	public static final BlockEntityType<KettleBlockEntity> KETTLE_ENTITY = add(new BlockEntityCreator<>("kettle", FabricBlockEntityTypeBuilder.create(KettleBlockEntity::new, KETTLE)));
 }

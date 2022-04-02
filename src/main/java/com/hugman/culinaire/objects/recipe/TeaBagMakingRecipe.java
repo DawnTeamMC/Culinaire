@@ -1,8 +1,8 @@
 package com.hugman.culinaire.objects.recipe;
 
 import com.hugman.culinaire.init.TeaBundle;
-import com.hugman.culinaire.objects.item.tea.TeaHelper;
-import com.hugman.culinaire.objects.item.tea.TeaType;
+import com.hugman.culinaire.objects.tea.TeaPotency;
+import com.hugman.culinaire.objects.tea.TeaType;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -54,22 +54,20 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
 					hasString = true;
 				}
 				else {
-					List<TeaType> ingredientTeaTypes = TeaHelper.getIngredientTypes(stack);
-					if(ingredientTeaTypes.isEmpty()) {
+					List<TeaType> teaTypes = TeaType.getTypesOf(stack.getItem());
+					if(teaTypes.isEmpty()) {
 						return false;
 					}
 					else {
-						for(TeaType teaType1 : ingredientTeaTypes) {
-							if(bagTeaTypes.stream().anyMatch(teaType2 -> teaType1.getFlavor() == teaType2.getFlavor())) {
-								TeaType teaType2 = bagTeaTypes.stream().filter(t -> t.getFlavor() == teaType1.getFlavor()).findFirst().get();
-								TeaType newTeaType = new TeaType(TeaType.Strength.byPotency(teaType1.getStrength().getPotency() + teaType2.getStrength().getPotency()), teaType1.getFlavor());
-								if(newTeaType.isCorrect()) {
-									bagTeaTypes.remove(teaType2);
-									bagTeaTypes.add(newTeaType);
-								}
-								else {
-									return false;
-								}
+						for(TeaType teaType1 : teaTypes) {
+							List<TeaType> sameTypes = bagTeaTypes.stream().filter(t -> t.flavor() == teaType1.flavor()).toList();
+							if(!sameTypes.isEmpty()) {
+								TeaType teaType2 = sameTypes.get(0);
+								TeaPotency potency = teaType1.flavor().getPotency(teaType1.potency().value() + teaType2.potency().value());
+								if(potency == null) return false;
+								TeaType newTeaType = new TeaType(teaType1.flavor(), potency);
+								bagTeaTypes.remove(teaType2);
+								bagTeaTypes.add(newTeaType);
 							}
 							else {
 								bagTeaTypes.add(teaType1);
@@ -79,11 +77,11 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
 				}
 			}
 		}
-		int totalStrength = 0;
+		int totalPotency = 0;
 		for(TeaType teaType : bagTeaTypes) {
-			totalStrength = totalStrength + teaType.getStrength().getPotency();
+			totalPotency = totalPotency + teaType.potency().value();
 		}
-		return hasPaper && hasString && totalStrength >= 1 && totalStrength <= 3 && bagTeaTypes.size() <= 2;
+		return hasPaper && hasString && totalPotency >= 1 && totalPotency <= 3 && bagTeaTypes.size() <= 2;
 	}
 
 	@Override
@@ -93,14 +91,16 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
 		for(int j = 0; j < inv.size(); ++j) {
 			ItemStack stack = inv.getStack(j);
 			if(!stack.isEmpty()) {
-				List<TeaType> ingredientTeaTypes = TeaHelper.getIngredientTypes(stack);
-				if(!ingredientTeaTypes.isEmpty()) {
-					for(TeaType teaType1 : ingredientTeaTypes) {
-						if(bagTeaTypes.stream().anyMatch(teaType2 -> teaType1.getFlavor() == teaType2.getFlavor())) {
-							TeaType teaType2 = bagTeaTypes.stream().filter(t -> t.getFlavor() == teaType1.getFlavor()).findFirst().get();
-							TeaType.Strength strength = TeaType.Strength.byPotency(teaType1.getStrength().getPotency() + teaType2.getStrength().getPotency());
+				List<TeaType> teaTypes = TeaType.getTypesOf(stack.getItem());
+				if(!teaTypes.isEmpty()) {
+					for(TeaType teaType1 : teaTypes) {
+						List<TeaType> sameTypes = bagTeaTypes.stream().filter(t -> t.flavor() == teaType1.flavor()).toList();
+						if(!sameTypes.isEmpty()) {
+							TeaType teaType2 = sameTypes.get(0);
+							TeaPotency potency = teaType1.flavor().getPotency(teaType1.potency().value() + teaType2.potency().value());
+							TeaType newTeaType = new TeaType(teaType1.flavor(), potency);
 							bagTeaTypes.remove(teaType2);
-							bagTeaTypes.add(new TeaType(strength, teaType1.getFlavor()));
+							bagTeaTypes.add(newTeaType);
 						}
 						else {
 							bagTeaTypes.add(teaType1);
@@ -109,7 +109,7 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
 				}
 			}
 		}
-		givenStack = TeaHelper.appendTeaTypes(givenStack, bagTeaTypes);
+		TeaType.addToStack(givenStack, bagTeaTypes);
 		return givenStack;
 	}
 }

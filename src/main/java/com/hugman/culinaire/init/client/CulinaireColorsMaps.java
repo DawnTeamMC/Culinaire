@@ -1,7 +1,7 @@
 package com.hugman.culinaire.init.client;
 
 import com.hugman.culinaire.init.TeaBundle;
-import com.hugman.culinaire.objects.item.tea.TeaHelper;
+import com.hugman.culinaire.objects.tea.TeaType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
@@ -13,6 +13,6 @@ public class CulinaireColorsMaps {
 	}
 
 	private static void registerItemColors() {
-		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> tintIndex > 0 ? -1 : TeaHelper.getColor(stack), TeaBundle.TEA_BOTTLE);
+		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> tintIndex > 0 ? -1 : TeaType.getColor(stack), TeaBundle.TEA_BOTTLE);
 	}
 }

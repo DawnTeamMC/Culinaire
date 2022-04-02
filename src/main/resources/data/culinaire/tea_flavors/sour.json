@@ -1,0 +1,35 @@
+{
+  "color": 7238946,
+  "potencies": [
+    {
+      "value": 1,
+      "name": "tea_type.culinaire.sour.weak",
+      "description": "tea_type.culinaire.sour.weak.description",
+      "effects": [
+        {
+          "type": "culinaire:clear_effect",
+          "mob_effect": "minecraft:poison"
+        }
+      ],
+      "ingredients": "#culinaire:tea_ingredients/sour/weak",
+      "brew_time": 400
+    },
+    {
+      "value": 2,
+      "name": "tea_type.culinaire.sour.normal",
+      "description": "tea_type.culinaire.sour.normal.description",
+      "effects": [
+        {
+          "type": "culinaire:clear_effect",
+          "mob_effect": "minecraft:poison"
+        },
+        {
+          "type": "culinaire:grant_effect",
+          "mob_effect": "minecraft:instant_health"
+        }
+      ],
+      "ingredients": "#culinaire:tea_ingredients/sour/normal",
+      "brew_time": 800
+    }
+  ]
+}

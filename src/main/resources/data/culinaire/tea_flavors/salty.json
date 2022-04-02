@@ -1,0 +1,33 @@
+{
+  "color": 10251038,
+  "potencies": [
+    {
+      "value": 1,
+      "name": "tea_type.culinaire.salty.weak",
+      "description": "tea_type.culinaire.salty.weak.description",
+      "effects": [
+        {
+          "type": "culinaire:grant_effect",
+          "mob_effect": "minecraft:speed",
+          "duration": 400
+        }
+      ],
+      "ingredients": "#culinaire:tea_ingredients/salty/weak",
+      "brew_time": 400
+    },
+    {
+      "value": 2,
+      "name": "tea_type.culinaire.salty.normal",
+      "description": "tea_type.culinaire.salty.normal.description",
+      "effects": [
+        {
+          "type": "culinaire:grant_effect",
+          "mob_effect": "minecraft:speed",
+          "duration": 700
+        }
+      ],
+      "ingredients": "#culinaire:tea_ingredients/salty/normal",
+      "brew_time": 800
+    }
+  ]
+}

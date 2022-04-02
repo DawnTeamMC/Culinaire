@@ -2,10 +2,9 @@ package com.hugman.culinaire.compat.rei;
 
 import com.hugman.culinaire.Culinaire;
 import com.hugman.culinaire.init.TeaBundle;
-import com.hugman.culinaire.objects.item.tea.TeaHelper;
-import com.hugman.culinaire.objects.item.tea.TeaType;
 import com.hugman.culinaire.objects.recipe.TeaBagMakingRecipe;
 import com.hugman.culinaire.objects.screen.KettleScreen;
+import com.hugman.culinaire.objects.tea.TeaType;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.REIRuntime;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
@@ -14,11 +13,15 @@ import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.client.registry.screen.ScreenRegistry;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.ShapelessRecipe;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.registry.RegistryEntry;
+
+import java.util.List;
 
 public class CulinaireREIPlugin implements REIClientPlugin {
 	public static final CategoryIdentifier<TeaBrewingDisplay> TEA_BREWING = CategoryIdentifier.of(Culinaire.MOD_DATA.id("plugins/tea_brewing"));
@@ -45,25 +48,28 @@ public class CulinaireREIPlugin implements REIClientPlugin {
 	}
 
 	private void registerTeaBagDisplays(DisplayRegistry registry) {
-		for(TeaType teaType : TeaHelper.getAllTypes()) {
+		for(TeaType teaType : TeaType.getAll()) {
 			DefaultedList<Ingredient> inputs = DefaultedList.of();
 			inputs.add(TeaBagMakingRecipe.PAPER);
 			inputs.add(TeaBagMakingRecipe.STRING);
-			Ingredient ingredient = Ingredient.fromTag(teaType.getTag());
-			if(!ingredient.isEmpty()) {
-				inputs.add(ingredient);
-				ItemStack output = TeaHelper.appendTeaType(new ItemStack(TeaBundle.TEA_BAG), teaType);
-				Identifier id = new Identifier("culinaire", teaType.getStrength().getName() + "_" + teaType.getFlavor().getName() + "_tea_bag");
+			List<Item> list = teaType.potency().ingredients().stream().map(RegistryEntry::value).toList();
+			if(!list.isEmpty()) {
+				list.forEach(item -> inputs.add(Ingredient.ofItems(item)));
+				ItemStack output = new ItemStack(TeaBundle.TEA_BAG);
+				teaType.addToStack(output);
+				Identifier id = Culinaire.MOD_DATA.id("tea_bag/" + teaType.flavor().getId().getPath() + "/" + teaType.potency().value());
 				registry.add(new ShapelessRecipe(id, "tea_bags", output, inputs));
 			}
 		}
 	}
 
 	private void registerTeaBottleDisplays(DisplayRegistry registry) {
-		for(TeaType teaType : TeaHelper.getAllTypes()) {
-			ItemStack input = TeaHelper.appendTeaType(new ItemStack(TeaBundle.TEA_BAG), teaType);
-			ItemStack output = TeaHelper.appendTeaType(new ItemStack(TeaBundle.TEA_BOTTLE), teaType);
-			registry.add(new TeaBrewingDisplay(input, output, teaType.getFlavor().getColor()));
+		for(TeaType teaType : TeaType.getAll()) {
+			ItemStack input = new ItemStack(TeaBundle.TEA_BAG);
+			ItemStack output = new ItemStack(TeaBundle.TEA_BOTTLE);
+			teaType.addToStack(input);
+			teaType.addToStack(output);
+			registry.add(new TeaBrewingDisplay(input, output, teaType.flavor().color()));
 		}
 	}
 
