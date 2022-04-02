@@ -1,0 +1,18 @@
+{
+  "color": 9332621,
+  "potencies": [
+    {
+      "value": 2,
+      "name": "tea_type.culinaire.gloopy",
+      "description": "tea_type.culinaire.gloopy.description",
+      "effects": [
+        {
+          "type": "culinaire:consume_item",
+          "item": "minecraft:chorus_fruit"
+        }
+      ],
+      "ingredients": "#culinaire:tea_ingredients/gloopy",
+      "brew_time": 400
+    }
+  ]
+}

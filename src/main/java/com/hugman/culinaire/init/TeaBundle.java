@@ -7,15 +7,12 @@ import com.hugman.culinaire.objects.item.TeaBottleItem;
 import com.hugman.culinaire.objects.recipe.TeaBagMakingRecipe;
 import com.hugman.culinaire.objects.screen.handler.KettleScreenHandler;
 import com.hugman.dawn.api.creator.*;
-import com.hugman.dawn.mod.object.effect.SimpleEffect;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
@@ -30,8 +27,8 @@ public class TeaBundle extends CulinaireBundle {
 	public static final SoundCreator TEA_BOTTLE_FILL_SOUND = creator(new SoundCreator("item.tea_bottle.fill"));
 
 	public static final Block KETTLE = add(new BlockCreator.Builder("kettle", KettleBlock::new, FabricBlockSettings.of(Material.METAL, MapColor.IRON_GRAY).requiresTool().strength(5.0F, 1200.0F).sounds(BlockSoundGroup.STONE)).itemGroup(ItemGroup.DECORATIONS).build());
-	public static final ScreenHandlerCreator<KettleScreenHandler> KETTLE_SCREEN_HANDLER = creator(new ScreenHandlerCreator<>("kettle", KettleScreenHandler::new));
-	public static final BlockEntityType<KettleBlockEntity> KETTLE_ENTITY = add(new BlockEntityCreator<>("kettle", FabricBlockEntityTypeBuilder.create(KettleBlockEntity::new, KETTLE)));
 	public static final StatCreator KETTLE_INTERACTION_STAT = creator(new StatCreator("interact_with_kettle"));
 	public static final SoundCreator KETTLE_BREW_SOUND = creator(new SoundCreator("block.kettle.brew"));
+	public static final ScreenHandlerCreator<KettleScreenHandler> KETTLE_SCREEN_HANDLER = creator(new ScreenHandlerCreator<>("kettle", KettleScreenHandler::new));
+	public static final BlockEntityType<KettleBlockEntity> KETTLE_ENTITY = add(new BlockEntityCreator<>("kettle", FabricBlockEntityTypeBuilder.create(KettleBlockEntity::new, KETTLE)));
 }

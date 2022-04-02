@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:melon_seeds",
+    "minecraft:sweet_berries",
+    "culinaire:chouquette"
+  ]
+}

@@ -1,7 +1,7 @@
 package com.hugman.culinaire.objects.item;
 
-import com.hugman.culinaire.objects.item.tea.TeaHelper;
-import com.hugman.culinaire.objects.item.tea.TeaType;
+import com.hugman.culinaire.init.CulinaireRegistries;
+import com.hugman.culinaire.objects.tea.TeaType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
@@ -23,20 +23,24 @@ public class TeaBagItem extends Item {
 	@Override
 	@Environment(EnvType.CLIENT)
 	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-		TeaHelper.appendTeaTooltip(tooltip, TeaHelper.getTeaTypesByCompound(stack.getNbt()));
+		TeaType.appendTooltip(tooltip, TeaType.fromStack(stack));
 	}
 
 	@Override
 	public void appendStacks(ItemGroup group, DefaultedList<ItemStack> stacks) {
 		if(group == ItemGroup.SEARCH) {
-			for(TeaType teaType : TeaHelper.getAllTypes()) {
-				stacks.add(TeaHelper.appendTeaType(new ItemStack(this), teaType));
+			for(TeaType teaType : TeaType.getAll()) {
+				ItemStack stack = new ItemStack(this);
+				teaType.addToStack(stack);
+				stacks.add(stack);
 			}
 		}
 		else if(this.isIn(group)) {
-			for(TeaType.Flavor flavor : TeaType.Flavor.values()) {
-				stacks.add(TeaHelper.appendTeaType(new ItemStack(this), new TeaType(TeaType.Strength.NORMAL, flavor)));
-			}
+			CulinaireRegistries.TEA_FLAVOR.stream().forEach(flavor -> {
+				ItemStack stack = new ItemStack(this);
+				TeaType.withMiddlePotency(flavor).addToStack(stack);
+				stacks.add(stack);
+			});
 		}
 	}
 }

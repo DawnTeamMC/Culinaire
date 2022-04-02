@@ -1,0 +1,19 @@
+{
+  "color": 16759902,
+  "potencies": [
+    {
+      "value": 2,
+      "name": "tea_type.culinaire.shining",
+      "description": "tea_type.culinaire.shining.description",
+      "effects": [
+        {
+          "type": "culinaire:grant_effect",
+          "mob_effect": "minecraft:glowing",
+          "duration": 800
+        }
+      ],
+      "ingredients": "#culinaire:tea_ingredients/shining",
+      "brew_time": 400
+    }
+  ]
+}

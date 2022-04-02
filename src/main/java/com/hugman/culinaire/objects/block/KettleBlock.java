@@ -2,8 +2,7 @@ package com.hugman.culinaire.objects.block;
 
 import com.hugman.culinaire.init.TeaBundle;
 import com.hugman.culinaire.objects.block.entity.KettleBlockEntity;
-import com.hugman.culinaire.objects.item.tea.TeaHelper;
-import com.hugman.culinaire.objects.item.tea.TeaType;
+import com.hugman.culinaire.objects.tea.TeaType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -179,7 +178,9 @@ public class KettleBlock extends BlockWithEntity {
 						List<TeaType> teaTypes = kettle.getTeaTypes();
 						if(kettle.removeFluid(1)) {
 							openScreen = false;
-							player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, TeaHelper.appendTeaTypes(new ItemStack(TeaBundle.TEA_BOTTLE), teaTypes)));
+							ItemStack newStack = new ItemStack(TeaBundle.TEA_BOTTLE);
+							TeaType.addToStack(newStack, teaTypes);
+							player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, newStack));
 							player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
 							world.playSound(null, pos, TeaBundle.TEA_BOTTLE_FILL_SOUND.getSound(), SoundCategory.BLOCKS, 1.0F, 1.0F);
 							world.emitGameEvent(null, GameEvent.FLUID_PICKUP, pos);

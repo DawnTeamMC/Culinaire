@@ -5,9 +5,8 @@ import com.hugman.culinaire.init.TeaBundle;
 import com.hugman.culinaire.init.data.CulinaireTags;
 import com.hugman.culinaire.objects.block.KettleBlock;
 import com.hugman.culinaire.objects.item.TeaBagItem;
-import com.hugman.culinaire.objects.item.tea.TeaHelper;
-import com.hugman.culinaire.objects.item.tea.TeaType;
 import com.hugman.culinaire.objects.screen.handler.KettleScreenHandler;
+import com.hugman.culinaire.objects.tea.TeaType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -62,7 +61,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 					case 2 -> KettleBlockEntity.this.fluidLevel;
 					case 3 -> KettleBlockEntity.this.fluid.ordinal();
 					case 4 -> KettleBlockEntity.this.isHot ? 1 : 0;
-					case 5 -> TeaHelper.getColor(KettleBlockEntity.this.teaTypes);
+					case 5 -> TeaType.getColor(KettleBlockEntity.this.teaTypes);
 					default -> 0;
 				};
 			}
@@ -160,7 +159,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 
 	private void brew(World world, ItemStack stack) {
 		this.fluid = Fluid.TEA;
-		this.teaTypes = TeaHelper.getTeaTypesByCompound(stack.getNbt());
+		this.teaTypes = TeaType.fromStack(stack);
 		stack.decrement(1);
 		if(stack.getItem().hasRecipeRemainder()) {
 			ItemStack remainderStack = new ItemStack(stack.getItem().getRecipeRemainder());
@@ -286,7 +285,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 	@Override
 	public boolean isValid(int slot, ItemStack stack) {
 		if(stack.getItem() instanceof TeaBagItem) {
-			return !TeaHelper.getTeaTypesByCompound(stack.getNbt()).isEmpty();
+			return !TeaType.fromStack(stack).isEmpty();
 		}
 		else {
 			return false;
@@ -298,7 +297,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 			return false;
 		}
 		else if(stack.getItem() instanceof TeaBagItem) {
-			return !TeaHelper.getTeaTypesByCompound(stack.getNbt()).isEmpty() && this.fluid == Fluid.WATER && this.fluidLevel >= 1 && this.isHot;
+			return !TeaType.fromStack(stack).isEmpty() && this.fluid == Fluid.WATER && this.fluidLevel >= 1 && this.isHot;
 		}
 		else {
 			return false;
@@ -306,9 +305,9 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 	}
 
 	public int getBrewTime(ItemStack stack) {
-		List<TeaType> teaTypeList = TeaHelper.getTeaTypesByCompound(stack.getNbt());
+		List<TeaType> teaTypeList = TeaType.fromStack(stack);
 		if(!teaTypeList.isEmpty()) {
-			return teaTypeList.stream().mapToInt(TeaType::getBrewTime).sum();
+			return teaTypeList.stream().mapToInt(value -> value.potency().brewTime()).sum();
 		}
 		return 0;
 	}
@@ -325,8 +324,8 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 		if(!teaTypeList.isEmpty()) {
 			for(int i = 0; i < teaTypeList.size(); ++i) {
 				NbtCompound typeTag = teaTypeList.getCompound(i);
-				TeaType teaType = new TeaType(typeTag.getString("Strength"), typeTag.getString("Flavor"));
-				if(teaType.isCorrect()) {
+				TeaType teaType = TeaType.fromNbt(typeTag);
+				if(teaType != null) {
 					teaTypes.add(teaType);
 				}
 			}
@@ -342,10 +341,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 		tag.putByte("FluidLevel", (byte) this.fluidLevel);
 		NbtList listTag = new NbtList();
 		for(TeaType teaType : teaTypes) {
-			NbtCompound typeTag = new NbtCompound();
-			typeTag.putString("Flavor", teaType.getFlavor().getName());
-			typeTag.putString("Strength", teaType.getStrength().getName());
-			listTag.add(typeTag);
+			listTag.add(teaType.toNbt());
 		}
 		tag.put("TeaTypes", listTag);
 	}
