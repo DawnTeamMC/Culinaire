@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    "#culinaire:sandwich/bread",
+    "culinaire:sandwich",
+    "minecraft:mushroom_stew",
+    "minecraft:rabbit_stew",
+    "minecraft:beetroot_soup",
+    "culinaire:apple_pie",
+    "culinaire:sweet_berry_pie",
+    "culinaire:dark_chocolate_pie",
+    "culinaire:milk_chocolate_pie",
+    "culinaire:white_chocolate_pie",
+    "culinaire:salad",
+    "culinaire:mashed_potatoes"
+  ]
+}
