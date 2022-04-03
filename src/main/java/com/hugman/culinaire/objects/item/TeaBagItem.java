@@ -1,6 +1,6 @@
 package com.hugman.culinaire.objects.item;
 
-import com.hugman.culinaire.init.CulinaireRegistries;
+import com.hugman.culinaire.objects.tea.TeaFlavorManager;
 import com.hugman.culinaire.objects.tea.TeaType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -36,7 +36,7 @@ public class TeaBagItem extends Item {
 			}
 		}
 		else if(this.isIn(group)) {
-			CulinaireRegistries.TEA_FLAVOR.stream().forEach(flavor -> {
+			TeaFlavorManager.getAll().forEach(flavor -> {
 				ItemStack stack = new ItemStack(this);
 				TeaType.withMiddlePotency(flavor).addToStack(stack);
 				stacks.add(stack);

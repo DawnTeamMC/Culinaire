@@ -1,7 +1,6 @@
 package com.hugman.culinaire.objects.tea;
 
 import com.hugman.culinaire.Culinaire;
-import com.hugman.culinaire.init.CulinaireRegistries;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.item.Item;
@@ -12,11 +11,14 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryEntryList;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public record TeaType(TeaFlavor flavor, TeaPotency potency) {
 	public static final String FLAVOR_NBT_KEY = "Flavor";
@@ -35,7 +37,7 @@ public record TeaType(TeaFlavor flavor, TeaPotency potency) {
 	 */
 	public static TeaType fromNbt(NbtCompound nbt) {
 		try {
-			TeaFlavor flavor = CulinaireRegistries.TEA_FLAVOR.get(Identifier.tryParse(nbt.getString(FLAVOR_NBT_KEY)));
+			TeaFlavor flavor = TeaFlavorManager.get(Identifier.tryParse(nbt.getString(FLAVOR_NBT_KEY)));
 			TeaPotency potency = Objects.requireNonNull(flavor).getPotency(nbt.getInt(POTENCY_NBT_KEY));
 			return new TeaType(flavor, potency);
 		} catch(NullPointerException e) {
@@ -99,11 +101,8 @@ public record TeaType(TeaFlavor flavor, TeaPotency potency) {
 	public static List<TeaType> getAll() {
 		List<TeaType> teaTypes = new ArrayList<>();
 
-		CulinaireRegistries.TEA_FLAVOR.stream().forEach(flavor -> {
-			flavor.potencies().forEach(potency -> {
-				teaTypes.add(new TeaType(flavor, potency));
-			});
-		});
+
+		TeaFlavorManager.getAll().forEach(flavor -> flavor.potencies().forEach(potency -> teaTypes.add(new TeaType(flavor, potency))));
 		return teaTypes;
 	}
 
@@ -152,8 +151,11 @@ public record TeaType(TeaFlavor flavor, TeaPotency potency) {
 	public static List<TeaType> getTypesOf(Item item) {
 		List<TeaType> teaTypes = new ArrayList<>();
 		for(TeaType teaType : TeaType.getAll()) {
-			if(teaType.potency().ingredients().contains(item.getRegistryEntry())) {
-				teaTypes.add(teaType);
+			Optional<RegistryEntryList.Named<Item>> optional = Registry.ITEM.getEntryList(teaType.potency.ingredients());
+			if(optional.isPresent()) {
+				if(optional.get().contains(item.getRegistryEntry())) {
+					teaTypes.add(teaType);
+				}
 			}
 		}
 		return teaTypes;
@@ -165,7 +167,8 @@ public record TeaType(TeaFlavor flavor, TeaPotency potency) {
 	public NbtCompound toNbt() {
 		NbtCompound typeTag = new NbtCompound();
 		try {
-			Identifier flavorId = Objects.requireNonNull(CulinaireRegistries.TEA_FLAVOR.getId(this.flavor));
+
+			Identifier flavorId = Objects.requireNonNull(TeaFlavorManager.getId((this.flavor)));
 			typeTag.putString(FLAVOR_NBT_KEY, flavorId.toString());
 			typeTag.putInt(POTENCY_NBT_KEY, this.potency.value());
 			return typeTag;

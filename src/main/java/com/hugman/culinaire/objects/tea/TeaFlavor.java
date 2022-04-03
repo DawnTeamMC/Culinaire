@@ -1,6 +1,5 @@
 package com.hugman.culinaire.objects.tea;
 
-import com.hugman.culinaire.init.CulinaireRegistries;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Identifier;
@@ -17,7 +16,7 @@ public record TeaFlavor(int color, List<TeaPotency> potencies) {
 	 * Returns the registry ID of this tea flavor.
 	 */
 	public Identifier getId() {
-		return CulinaireRegistries.TEA_FLAVOR.getId(this);
+		return TeaFlavorManager.getId(this);
 	}
 
 	public TeaPotency getPotency(int potency) {
