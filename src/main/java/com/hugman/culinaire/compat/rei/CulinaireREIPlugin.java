@@ -19,9 +19,12 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.ShapelessRecipe;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.util.registry.RegistryEntryList;
 
 import java.util.List;
+import java.util.Optional;
 
 public class CulinaireREIPlugin implements REIClientPlugin {
 	public static final CategoryIdentifier<TeaBrewingDisplay> TEA_BREWING = CategoryIdentifier.of(Culinaire.MOD_DATA.id("plugins/tea_brewing"));
@@ -52,13 +55,18 @@ public class CulinaireREIPlugin implements REIClientPlugin {
 			DefaultedList<Ingredient> inputs = DefaultedList.of();
 			inputs.add(TeaBagMakingRecipe.PAPER);
 			inputs.add(TeaBagMakingRecipe.STRING);
-			List<Item> list = teaType.potency().ingredients().stream().map(RegistryEntry::value).toList();
-			if(!list.isEmpty()) {
-				list.forEach(item -> inputs.add(Ingredient.ofItems(item)));
-				ItemStack output = new ItemStack(TeaBundle.TEA_BAG);
-				teaType.addToStack(output);
-				Identifier id = Culinaire.MOD_DATA.id("tea_bag/" + teaType.flavor().getId().getPath() + "/" + teaType.potency().value());
-				registry.add(new ShapelessRecipe(id, "tea_bags", output, inputs));
+
+			Optional<RegistryEntryList.Named<Item>> optional = Registry.ITEM.getEntryList(teaType.potency().ingredients());
+
+			if(optional.isPresent()) {
+				List<Item> list = optional.get().stream().map(RegistryEntry::value).toList();
+				if(!list.isEmpty()) {
+					list.forEach(item -> inputs.add(Ingredient.ofItems(item)));
+					ItemStack output = new ItemStack(TeaBundle.TEA_BAG);
+					teaType.addToStack(output);
+					Identifier id = Culinaire.MOD_DATA.id("tea_bag/" + teaType.flavor().getId().getPath() + "/" + teaType.potency().value());
+					registry.add(new ShapelessRecipe(id, "tea_bags", output, inputs));
+				}
 			}
 		}
 	}
