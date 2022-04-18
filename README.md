@@ -25,10 +25,21 @@ Each flavor of tea comes with a different effect, that can vary with the amount 
 You can also make cheese by pouring milk into a cauldron and waiting for it to finally coagulate.
 
 ## 📦 Download
-### Stable builds
 We use [CurseForge](https://www.curseforge.com/minecraft/mc-mods/culinaire) and [Modrinth](https://modrinth.com/mod/culinaire) to publish **stable builds** of Culinaire for Minecraft.
 
 You can download the latest stable builds from both pages without signing up for an account, although [downloading on CurseForge](https://www.curseforge.com/minecraft/mc-mods/culinaire) is currently preferred.
+
+### Required mods
+⚠ Culinaire **needs** the following mods to be installed:
+
+- Fabric API: [GitHub](https://github.com/FabricMC/fabric) / [CurseForge](https://www.curseforge.com/minecraft/mc-mods/fabric-api) / [Modrinth](https://modrinth.com/mod/fabric-api)
+- Dawn API: [GitHub](https://github.com/DawnTeamMC/DawnTeamMC) / [CurseForge](https://www.curseforge.com/minecraft/mc-mods/dawn) / [Modrinth](https://modrinth.com/mod/dawn)
+
+### Compatible mods
+Culinaire is compatible with the following mods:
+
+- AppleSkin: [GitHub](https://github.com/squeek502/AppleSkin) / [CurseForge](https://www.curseforge.com/minecraft/mc-mods/appleskin) / [Modrinth](https://modrinth.com/mod/appleskin)
+- Roughly Enough Items: [GitHub](https://github.com/shedaniel/RoughlyEnoughItems) / [CurseForge](https://www.curseforge.com/minecraft/mc-mods/roughly-enough-items)
 
 ## 🐛 Reporting bugs
 If you're running into bugs or other problems, feel free to open an issue on our [issue tracker](https://github.com/DawnTeamMC/Culinaire/issues).
