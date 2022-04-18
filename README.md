@@ -1,6 +1,6 @@
 [![Culinaire](https://raw.githubusercontent.com/DawnTeamMC/DawnTeamMC/master/culinaire/header.png)](https://dawnteammc.github.io/culinaire)
 
-# 🥪 Culinaire
+# 🍩 Culinaire
 [![Latest release](https://img.shields.io/github/release/DawnTeamMC/Culinaire.svg)](https://github.com/DawnTeamMC/Culinaire/releases/latest)
 [![CurseForge downloads](http://cf.way2muchnoise.eu/full_culinaire_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/culinaire)
 [![License (LGPL v3.0)](https://img.shields.io/badge/code%20license-LGPL%20v3.0-green.svg?style=flat-square)](https://www.gnu.org/licenses/lgpl-3.0.en.html)
