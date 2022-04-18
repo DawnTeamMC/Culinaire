@@ -9,8 +9,8 @@
 [![Discord user count](https://img.shields.io/discord/504608980799062036.svg?logoColor=FFFFFF&logo=discord&color=7289DA&style=flat-square)](https://discord.gg/8ksTVJu)
 [![Twitter followers](https://img.shields.io/twitter/follow/DawnTeamMC.svg?logo=twitter&label=twitter&style=flat-square)](https://twitter.com/DawnTeamMC)
 
-Culinaire is a mod for the latest version of Minecraft that will add a ton of features to the game related to food and cooking.  
-It also adds brand new crafting recipes such as tea brewing, sandwich making and milk coagulation.
+Culinaire is a mod for the latest version of Minecraft that adds a ton of features to the game related to food and cooking.  
+It also brings brand new crafting recipes such as tea brewing, sandwich making and milk coagulation.
 
 **You can visit the [official website for Culinaire for more information](https://dawnteammc.github.io/culinaire).**
 
