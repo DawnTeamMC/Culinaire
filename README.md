@@ -22,6 +22,8 @@ New pastry-related food also have been added, such as the French chouquettes, ma
 Players are also able to craft kettles and brew tea using a source of heat, water, a bottle and a tea bag.  
 Each flavor of tea comes with a different effect, that can vary with the amount of ingredients you put in the tea bag.
 
+You can also make cheese by pouring milk into a cauldron and waiting for it to finally coagulate.
+
 ## 📦 Download
 ### Stable builds
 We use [CurseForge](https://www.curseforge.com/minecraft/mc-mods/culinaire) and [Modrinth](https://modrinth.com/mod/culinaire) to publish **stable builds** of Culinaire for Minecraft.
