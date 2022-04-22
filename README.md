@@ -1,4 +1,4 @@
-[![Culinaire](https://raw.githubusercontent.com/DawnTeamMC/DawnTeamMC/master/culinaire/header.png)](https://dawnteammc.github.io/culinaire)
+[![Culinaire](https://dawnteammc.github.io/culinaire/images/header.png)](https://dawnteammc.github.io/culinaire)
 
 # 🍩 Culinaire
 [![Latest release](https://img.shields.io/github/release/DawnTeamMC/Culinaire.svg)](https://github.com/DawnTeamMC/Culinaire/releases/latest)
