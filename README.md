@@ -16,12 +16,16 @@ It also brings brand new crafting recipes such as tea brewing, sandwich making a
 
 ## 👾 Features
 ### Food items
+
+![](https://dawnteammc.github.io/culinaire/images/screenshots/items.png)
 Culinaire adds a ton of new food items to the game, such as vegetables with crops (tomatoes, lettuce) and composed meals (pies, salads, sandwiches).  
 New pastry-related food also have been added, such as the French chouquettes, marshmallows and more to come.
 
+![](https://dawnteammc.github.io/culinaire/images/screenshots/kettle.png)
 Players are also able to craft kettles and brew tea using a source of heat, water, a bottle and a tea bag.  
 Each flavor of tea comes with a different effect, that can vary with the amount of ingredients you put in the tea bag.
 
+![](https://dawnteammc.github.io/culinaire/images/screenshots/milk_cauldron.png)
 You can also make cheese by pouring milk into a cauldron and waiting for it to finally coagulate.
 
 ## 📦 Download
