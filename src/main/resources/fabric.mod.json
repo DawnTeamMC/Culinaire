@@ -14,7 +14,7 @@
 		"Wintrius"
 	],
 	"contact": {
-		"homepage": "https://www.curseforge.com/minecraft/mc-mods/culinaire",
+		"homepage": "https://dawnteammc.github.io/${mod_id}",
 		"sources": "https://github.com/DawnTeamMC/${github_name}",
 		"issues": "https://github.com/DawnTeamMC/${github_name}/issues"
 	},
@@ -62,5 +62,5 @@
 			"projectID": 390675
 		}
 	},
-	"license": "MIT"
+	"license": "LGPL v3.0"
 }
