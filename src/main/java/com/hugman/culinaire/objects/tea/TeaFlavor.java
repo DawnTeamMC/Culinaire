@@ -8,8 +8,8 @@ import java.util.List;
 
 public record TeaFlavor(int color, List<TeaPotency> potencies) {
 	public static final Codec<TeaFlavor> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			Codec.INT.fieldOf("color").forGetter(flavor -> flavor.color),
-			TeaPotency.CODEC.listOf().fieldOf("potencies").forGetter(flavor -> flavor.potencies)
+			Codec.INT.fieldOf("color").forGetter(TeaFlavor::color),
+			TeaPotency.CODEC.listOf().fieldOf("potencies").forGetter(TeaFlavor::potencies)
 	).apply(instance, TeaFlavor::new));
 
 	/**

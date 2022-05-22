@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 
 public record GrantEffectTeaEffect(StatusEffectApplier statusEffectApplier) implements TeaEffect {
 	public static final Codec<GrantEffectTeaEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			StatusEffectApplier.CODEC.forGetter(biome -> biome.statusEffectApplier)
+			StatusEffectApplier.CODEC.forGetter(GrantEffectTeaEffect::statusEffectApplier)
 	).apply(instance, GrantEffectTeaEffect::new));
 
 	@Override

@@ -11,6 +11,6 @@ public record TeaEffectType<E extends TeaEffect>(Codec<E> codec) {
 	public static final TeaEffectType<ClearEffectTeaEffect> CLEAR_EFFECT = register("clear_effect", ClearEffectTeaEffect.CODEC);
 
 	private static <E extends TeaEffect> TeaEffectType<E> register(String string, Codec<E> codec) {
-		return Registry.register(CulinaireRegistries.TEA_FLAVOR_EFFECT, Culinaire.MOD_DATA.id(string), new TeaEffectType<>(codec));
+		return Registry.register(CulinaireRegistries.TEA_EFFECT_TYPE, Culinaire.MOD_DATA.id(string), new TeaEffectType<>(codec));
 	}
 }
