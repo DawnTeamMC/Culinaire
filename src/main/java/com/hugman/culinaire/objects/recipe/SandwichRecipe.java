@@ -6,6 +6,7 @@ import com.hugman.culinaire.util.FoodUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.Ingredient;
@@ -21,7 +22,6 @@ import net.minecraft.world.World;
 import java.util.Map;
 
 public class SandwichRecipe extends SpecialCraftingRecipe {
-	public final ItemStack resultStack;
 	public final Ingredient bread;
 	public final Ingredient ingredientBlacklist;
 	public final float hungerModifierBase;
@@ -29,10 +29,10 @@ public class SandwichRecipe extends SpecialCraftingRecipe {
 	public final float saturationModifierBase;
 	public final float saturationModifierBoosted;
 	public final Map<Ingredient, Ingredient> ingredientAssociations;
+	public final ItemStack resultItem;
 
-	public SandwichRecipe(Identifier identifier, ItemStack resultStack, Ingredient bread, Ingredient ingredientBlacklist, float hungerModifierBase, float hungerModifierBoosted, float saturationModifierBase, float saturationModifierBoosted, Map<Ingredient, Ingredient> ingredientAssociations) {
+	public SandwichRecipe(Identifier identifier, Ingredient bread, Ingredient ingredientBlacklist, float hungerModifierBase, float hungerModifierBoosted, float saturationModifierBase, float saturationModifierBoosted, Map<Ingredient, Ingredient> ingredientAssociations, ItemStack resultItem) {
 		super(identifier);
-		this.resultStack = resultStack;
 		this.bread = bread;
 		this.ingredientBlacklist = ingredientBlacklist;
 		this.hungerModifierBase = hungerModifierBase;
@@ -40,6 +40,7 @@ public class SandwichRecipe extends SpecialCraftingRecipe {
 		this.saturationModifierBase = saturationModifierBase;
 		this.saturationModifierBoosted = saturationModifierBoosted;
 		this.ingredientAssociations = ingredientAssociations;
+		this.resultItem = resultItem;
 	}
 
 	@Override
@@ -49,7 +50,7 @@ public class SandwichRecipe extends SpecialCraftingRecipe {
 
 	@Override
 	public ItemStack getOutput() {
-		return resultStack;
+		return resultItem;
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -105,7 +106,7 @@ public class SandwichRecipe extends SpecialCraftingRecipe {
 		ItemStack[] food = new ItemStack[j];
 		System.arraycopy(slots, 0, food, 0, food.length);
 
-		ItemStack givenStack = resultStack.copy();
+		ItemStack givenStack = resultItem.copy();
 		NbtCompound compoundTag = givenStack.getOrCreateSubNbt(SandwichItem.SANDWICH_DATA);
 		boolean[] associations = getAssociations(food);
 

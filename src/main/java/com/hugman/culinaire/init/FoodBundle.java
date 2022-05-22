@@ -68,7 +68,7 @@ public class FoodBundle extends CulinaireBundle {
 	public static final Item GOLDEN_MARSHMALLOW_ON_A_STICK = add(new ItemCreator.Builder("golden_marshmallow_on_a_stick", MarshmallowOnAStickItem::new, new Item.Settings().group(ItemGroup.FOOD).food(Components.GOLDEN_MARSHMALLOW).maxCount(1).recipeRemainder(Items.STICK)).build());
 	public static final Item BURNT_MARSHMALLOW_ON_A_STICK = add(new ItemCreator.Builder("burnt_marshmallow_on_a_stick", MarshmallowOnAStickItem::new, new Item.Settings().group(ItemGroup.FOOD).food(Components.BURNT_MARSHMALLOW).maxCount(1).recipeRemainder(Items.STICK)).build());
 
-	public static final RecipeSerializer<SandwichRecipe> SANDWICH_CRAFTING = add(new RecipeSerializerCreator<>("crafting/sandwich", new SandwichRecipeSerializer()));
+	public static final SandwichRecipeSerializer SANDWICH_CRAFTING = add(new RecipeSerializerCreator<>("crafting/sandwich", new SandwichRecipeSerializer()));
 	public static final Item SANDWICH = add(new ItemCreator.Builder("sandwich", SandwichItem::new, new Item.Settings().group(ItemGroup.FOOD).food(Components.EMPTY_SANDWICH).maxCount(1)).compostingChance(1.0f).build());
 
 	public static final Item APPLE_PIE = add(new ItemCreator.Builder("apple_pie", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(Components.APPLE_PIE)).compostingChance(1.0f).build());
