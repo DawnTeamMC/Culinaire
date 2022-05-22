@@ -25,7 +25,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 public class CulinaireRegistries {
-	public static final SimpleRegistry<TeaEffectType> TEA_FLAVOR_EFFECT = FabricRegistryBuilder.createSimple(TeaEffectType.class, Culinaire.MOD_DATA.id("tea_flavor_effect")).attribute(RegistryAttribute.SYNCED).buildAndRegister();
+	public static final SimpleRegistry<TeaEffectType> TEA_EFFECT_TYPE = FabricRegistryBuilder.createSimple(TeaEffectType.class, Culinaire.MOD_DATA.id("tea_effect_type")).attribute(RegistryAttribute.SYNCED).buildAndRegister();
 
 	public static void register() {
 		Reflection.initialize(TeaEffectType.class);

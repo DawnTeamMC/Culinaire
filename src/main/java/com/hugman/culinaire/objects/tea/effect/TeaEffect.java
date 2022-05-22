@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public interface TeaEffect {
-	Codec<TeaEffect> TYPE_CODEC = CulinaireRegistries.TEA_FLAVOR_EFFECT.getCodec().dispatchStable(TeaEffect::getType, TeaEffectType::codec);
+	Codec<TeaEffect> TYPE_CODEC = CulinaireRegistries.TEA_EFFECT_TYPE.getCodec().dispatchStable(TeaEffect::getType, TeaEffectType::codec);
 
 	void apply(LivingEntity user, ItemStack stack, World world);
 

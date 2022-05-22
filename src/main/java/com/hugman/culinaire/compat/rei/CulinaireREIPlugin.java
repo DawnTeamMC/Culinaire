@@ -2,7 +2,7 @@ package com.hugman.culinaire.compat.rei;
 
 import com.hugman.culinaire.Culinaire;
 import com.hugman.culinaire.init.TeaBundle;
-import com.hugman.culinaire.objects.recipe.TeaBagMakingRecipe;
+import com.hugman.culinaire.objects.recipe.TeaRecipe;
 import com.hugman.culinaire.objects.screen.KettleScreen;
 import com.hugman.culinaire.objects.tea.TeaType;
 import me.shedaniel.math.Rectangle;
@@ -38,9 +38,7 @@ public class CulinaireREIPlugin implements REIClientPlugin {
 	@Override
 	public void registerCategories(CategoryRegistry registry) {
 		registry.add(new TeaBrewingCategory());
-
-		registry.removePlusButton(TEA_BREWING);
-
+		registry.setPlusButtonArea(TEA_BREWING, null);
 		registry.addWorkstations(CulinaireREIPlugin.TEA_BREWING, EntryStacks.of(TeaBundle.KETTLE));
 	}
 
@@ -53,8 +51,9 @@ public class CulinaireREIPlugin implements REIClientPlugin {
 	private void registerTeaBagDisplays(DisplayRegistry registry) {
 		for(TeaType teaType : TeaType.getAll()) {
 			DefaultedList<Ingredient> inputs = DefaultedList.of();
-			inputs.add(TeaBagMakingRecipe.PAPER);
-			inputs.add(TeaBagMakingRecipe.STRING);
+			// TODO
+			//inputs.add(TeaRecipe.paper);
+			//inputs.add(TeaRecipe.string);
 
 			Optional<RegistryEntryList.Named<Item>> optional = Registry.ITEM.getEntryList(teaType.potency().ingredients());
 
