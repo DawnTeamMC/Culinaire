@@ -1,8 +1,8 @@
 package com.hugman.culinaire.init.data;
 
 import com.hugman.culinaire.init.FoodBundle;
-import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
-import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
+import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
+import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTables;
 import net.minecraft.loot.condition.RandomChanceLootCondition;
 import net.minecraft.loot.condition.RandomChanceWithLootingLootCondition;
@@ -18,51 +18,44 @@ public class CulinaireLootTables {
 	private static final Identifier HUSK_ENTITY = new Identifier("minecraft", "entities/husk");
 
 	public static void addToVanillaTables() {
-		// Lettuce Seeds
-		LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
+		LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) -> {
+			// Lettuce Seeds
 			if(LootTables.SIMPLE_DUNGEON_CHEST.equals(id) || LootTables.ABANDONED_MINESHAFT_CHEST.equals(id) || LootTables.WOODLAND_MANSION_CHEST.equals(id)) {
-				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
+				LootPool.Builder pool = LootPool.builder()
 						.rolls(UniformLootNumberProvider.create(1.0F, 3.0F))
 						.conditionally(RandomChanceLootCondition.builder(0.3F))
 						.with(ItemEntry.builder(FoodBundle.LETTUCE_SEEDS).weight(10).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(2.0F, 4.0F))));
-				supplier.pool(poolBuilder);
+				tableBuilder.pool(pool);
 			}
-		});
-		// Tomato
-		LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
+
+			// Tomato
 			if(LootTables.PILLAGER_OUTPOST_CHEST.equals(id)) {
-				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
+				LootPool.Builder pool = LootPool.builder()
 						.rolls(UniformLootNumberProvider.create(2.0F, 3.0F))
 						.conditionally(RandomChanceLootCondition.builder(0.45F))
 						.with(ItemEntry.builder(FoodBundle.TOMATO).weight(5).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(2.0F, 5.0F))));
-				supplier.pool(poolBuilder);
+				tableBuilder.pool(pool);
 			}
-		});
-		LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
 			if(LootTables.SHIPWRECK_SUPPLY_CHEST.equals(id)) {
-				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
+				LootPool.Builder pool = LootPool.builder()
 						.rolls(UniformLootNumberProvider.create(1.0F, 3.0F))
 						.conditionally(RandomChanceLootCondition.builder(0.45F))
 						.with(ItemEntry.builder(FoodBundle.TOMATO).weight(7).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(2.0F, 6.0F))));
-				supplier.pool(poolBuilder);
+				tableBuilder.pool(pool);
 			}
-		});
-		LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
 			if(LootTables.VILLAGE_TAIGA_HOUSE_CHEST.equals(id) || LootTables.VILLAGE_SNOWY_HOUSE_CHEST.equals(id) || LootTables.VILLAGE_PLAINS_CHEST.equals(id)) {
-				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
+				LootPool.Builder pool = LootPool.builder()
 						.rolls(UniformLootNumberProvider.create(1.0F, 3.0F))
 						.conditionally(RandomChanceLootCondition.builder(0.25F))
 						.with(ItemEntry.builder(FoodBundle.TOMATO).weight(10).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F))));
-				supplier.pool(poolBuilder);
+				tableBuilder.pool(pool);
 			}
-		});
-		LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
 			if(ZOMBIE_ENTITY.equals(id) || ZOMBIE_VILLAGER_ENTITY.equals(id) || HUSK_ENTITY.equals(id)) {
-				FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
+				LootPool.Builder pool = LootPool.builder()
 						.rolls(ConstantLootNumberProvider.create(1))
 						.conditionally(RandomChanceWithLootingLootCondition.builder(0.025f, 0.01f))
 						.with(ItemEntry.builder(FoodBundle.TOMATO));
-				supplier.pool(poolBuilder);
+				tableBuilder.pool(pool);
 			}
 		});
 	}

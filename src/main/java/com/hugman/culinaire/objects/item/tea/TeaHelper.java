@@ -8,7 +8,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public class TeaHelper {
 	@Environment(EnvType.CLIENT)
 	public static void appendTeaTooltip(List<Text> tooltips, List<TeaType> teaTypes) {
 		for(TeaType teaType : teaTypes) {
-			tooltips.add(new TranslatableText("tea_type." + Culinaire.MOD_DATA.getModName() + "." + teaType.getFlavor().getName() + "." + teaType.getStrength().getName()).formatted(Formatting.GRAY));
+			tooltips.add(Text.translatable("tea_type." + Culinaire.MOD_DATA.getModName() + "." + teaType.getFlavor().getName() + "." + teaType.getStrength().getName()).formatted(Formatting.GRAY));
 		}
 	}
 

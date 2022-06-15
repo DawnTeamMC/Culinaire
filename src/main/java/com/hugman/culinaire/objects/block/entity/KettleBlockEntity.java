@@ -24,7 +24,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -136,7 +135,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 				return true;
 			}
 		}
-		return world.getDimension().isUltrawarm();
+		return world.getDimension().ultrawarm();
 	}
 
 	public static boolean isHotBlock(BlockState state) {
@@ -155,7 +154,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 
 	@Override
 	protected Text getContainerName() {
-		return new TranslatableText("container." + Culinaire.MOD_DATA.getModName() + ".kettle");
+		return Text.translatable("container." + Culinaire.MOD_DATA.getModName() + ".kettle");
 	}
 
 	private void brew(World world, ItemStack stack) {
