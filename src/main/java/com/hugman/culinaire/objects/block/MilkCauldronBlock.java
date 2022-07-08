@@ -11,10 +11,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 import java.util.Map;
-import java.util.Random;
 
 public class MilkCauldronBlock extends ThreeLeveledCauldronBlock {
 	public MilkCauldronBlock(Settings settings, Map<Item, CauldronBehavior> behaviorMap) {

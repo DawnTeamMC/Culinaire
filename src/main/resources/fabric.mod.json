@@ -29,7 +29,7 @@
 		"modmenu": [
 			"com.hugman.culinaire.config.CulinaireModMenuIntegration"
 		],
-		"rei": [
+		"rei_client": [
 			"com.hugman.culinaire.compat.rei.CulinaireREIPlugin"
 		]
 	},
@@ -37,9 +37,9 @@
 		"culinaire.mixins.json"
 	],
 	"depends": {
-		"minecraft": ">=1.18",
+		"minecraft": ">=1.19",
 		"fabric": "*",
-		"dawn": ">=3.3.0"
+		"dawn": ">=3.4.0"
 	},
 	"suggests": {
 		"roughlyenoughitems": "*",

@@ -12,7 +12,6 @@ import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
@@ -31,7 +30,7 @@ public class TeaBrewingCategory implements DisplayCategory<TeaBrewingDisplay> {
 
 	@Override
 	public Text getTitle() {
-		return new TranslatableText("rei_category.culinaire.tea_brewing");
+		return Text.translatable("rei_category.culinaire.tea_brewing");
 	}
 
 	@Override
