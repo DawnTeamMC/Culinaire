@@ -29,7 +29,7 @@
 		"modmenu": [
 			"com.hugman.culinaire.config.CulinaireModMenuIntegration"
 		],
-		"rei": [
+		"rei_client": [
 			"com.hugman.culinaire.compat.rei.CulinaireREIPlugin"
 		]
 	},
