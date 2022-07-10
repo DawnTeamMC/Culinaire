@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 
 import java.util.Map;
 
-public class SandwichRecipe extends SpecialCraftngRecipe {
+public class SandwichRecipe extends SpecialCraftingRecipe {
 	public final Ingredient bread;
 	public final Ingredient ingredientBlacklist;
 	public final float hungerModifierBase;
