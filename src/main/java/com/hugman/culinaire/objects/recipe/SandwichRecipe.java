@@ -53,7 +53,6 @@ public class SandwichRecipe extends SpecialCraftingRecipe {
 		return resultItem;
 	}
 
-	@Environment(EnvType.CLIENT)
 	@Override
 	public boolean fits(int width, int height) {
 		return width == 3 && height == 3;
