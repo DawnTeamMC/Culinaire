@@ -38,13 +38,9 @@ public class CulinaireREIPlugin implements REIClientPlugin {
 	@Override
 	public void registerCategories(CategoryRegistry registry) {
 		registry.add(new TeaBrewingCategory());
-<<<<<<< HEAD
 
 		registry.setPlusButtonArea(TEA_BREWING, bounds -> null);
 
-=======
-		registry.setPlusButtonArea(TEA_BREWING, null);
->>>>>>> 55c4229 (Tea recipe stuff)
 		registry.addWorkstations(CulinaireREIPlugin.TEA_BREWING, EntryStacks.of(TeaBundle.KETTLE));
 	}
 
