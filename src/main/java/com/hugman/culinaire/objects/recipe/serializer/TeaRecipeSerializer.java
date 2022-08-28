@@ -17,7 +17,6 @@ import net.minecraft.util.registry.Registry;
 public class TeaRecipeSerializer implements RecipeSerializer<TeaRecipe> {
 	@Override
 	public TeaRecipe read(Identifier id, JsonObject json) {
-
 		DefaultedList<Ingredient> defaultedList = RecipeSerializerUtil.ingredientListFromJson(json, "ingredients");
 		if (defaultedList.isEmpty()) {
 			throw new JsonParseException("No base ingredients for tea recipe");

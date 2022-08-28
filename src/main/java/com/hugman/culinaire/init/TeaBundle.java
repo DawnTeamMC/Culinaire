@@ -23,7 +23,7 @@ public class TeaBundle extends CulinaireBundle {
 	public static final TeaRecipeSerializer TEA_CRAFTING = add(new RecipeSerializerCreator<>("crafting/tea", new TeaRecipeSerializer()));
 
 	public static final Item TEA_BOTTLE = add(new ItemCreator.Builder("tea_bottle", TeaBottleItem::new, new Item.Settings().group(ItemGroup.FOOD).maxCount(1).recipeRemainder(Items.GLASS_BOTTLE)).build());
-	public static final SoundCreator TEA_BOTTLE_FILL_SOUND = creator(new SoundCreator("item.tea_bottle.fill"));
+	public static final SoundCreator TEA_BOTTLE_FILL_SOUND = creator(new SoundCreator("ingredients.tea_bottle.fill"));
 
 	public static final Block KETTLE = add(new BlockCreator.Builder("kettle", KettleBlock::new, FabricBlockSettings.of(Material.METAL, MapColor.IRON_GRAY).requiresTool().strength(5.0F, 1200.0F).sounds(BlockSoundGroup.STONE)).itemGroup(ItemGroup.DECORATIONS).build());
 	public static final StatCreator KETTLE_INTERACTION_STAT = creator(new StatCreator("interact_with_kettle"));

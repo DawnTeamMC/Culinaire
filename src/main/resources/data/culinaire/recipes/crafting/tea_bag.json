@@ -1,11 +1,11 @@
 {
-	"type": "culinaire:tea_bag_making",
-	"ingredients": [
-		{
-			"item": "minecraft:string"
-		},
-		{
-			"item": "minecraft:paper"
-		}
-	]
+  "type": "culinaire:crafting/tea",
+  "ingredients": [
+    {
+      "item": "minecraft:string"
+    },
+    {
+      "item": "minecraft:paper"
+    }
+  ]
 }

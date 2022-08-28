@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -47,7 +46,7 @@ public record TeaType(TeaFlavor flavor, TeaPotency potency) {
 	}
 
 	/**
-	 * Appends tea types to the item stack's NBT compound.
+	 * Appends tea types to the ingredients stack's NBT compound.
 	 */
 	public static void addToStack(ItemStack stack, List<TeaType> teaTypes) {
 		NbtCompound nbt = stack.getOrCreateNbt();
@@ -64,7 +63,7 @@ public record TeaType(TeaFlavor flavor, TeaPotency potency) {
 	}
 
 	/**
-	 * Returns the tea types from the item stack's NBT data.
+	 * Returns the tea types from the ingredients stack's NBT data.
 	 */
 	public static List<TeaType> fromStack(ItemStack stack) {
 		List<TeaType> list = new ArrayList<>();
@@ -91,10 +90,10 @@ public record TeaType(TeaFlavor flavor, TeaPotency potency) {
 	@Environment(EnvType.CLIENT)
 	public static void appendTooltip(List<Text> tooltips, List<TeaType> teaTypes) {
 		for(TeaType teaType : teaTypes) {
-			tooltips.add(new TranslatableText(teaType.potency().name()).formatted(Formatting.WHITE));
+			tooltips.add(Text.translatable(teaType.potency().name()).formatted(Formatting.WHITE));
 		}
 		for(TeaType teaType : teaTypes) {
-			tooltips.add(new TranslatableText(teaType.potency().description()).formatted(Formatting.GRAY));
+			tooltips.add(Text.translatable(teaType.potency().description()).formatted(Formatting.GRAY));
 		}
 	}
 
@@ -146,7 +145,7 @@ public record TeaType(TeaFlavor flavor, TeaPotency potency) {
 	}
 
 	/**
-	 * Returns the tea types that accept a given item as an ingredient.
+	 * Returns the tea types that accept a given ingredients as an ingredient.
 	 */
 	public static List<TeaType> getTypesOf(Item item) {
 		List<TeaType> teaTypes = new ArrayList<>();
@@ -179,7 +178,7 @@ public record TeaType(TeaFlavor flavor, TeaPotency potency) {
 	}
 
 	/**
-	 * Appends a tea type to the item stack's NBT compound.
+	 * Appends a tea type to the ingredients stack's NBT compound.
 	 */
 	public void addToStack(ItemStack stack) {
 		addToStack(stack, new ArrayList<>(Collections.singleton(this)));

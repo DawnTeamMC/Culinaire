@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 
 public record ConsumeItemTeaEffect(Item item) implements TeaEffect {
 	public static final Codec<ConsumeItemTeaEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			Registry.ITEM.getCodec().fieldOf("item").forGetter(ConsumeItemTeaEffect::item)
+			Registry.ITEM.getCodec().fieldOf("ingredients").forGetter(ConsumeItemTeaEffect::item)
 	).apply(instance, ConsumeItemTeaEffect::new));
 
 	@Override

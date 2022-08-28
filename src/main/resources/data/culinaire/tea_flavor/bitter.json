@@ -20,12 +20,10 @@
       "description": "tea_type.culinaire.bitter.normal.description",
       "effects": [
         {
-
           "type": "culinaire:clear_effect",
           "mob_effect": "minecraft:blindness"
         },
         {
-
           "type": "culinaire:grant_effect",
           "mob_effect": "minecraft:night_vision",
           "duration": 600
@@ -40,12 +38,10 @@
       "description": "tea_type.culinaire.bitter.strong.description",
       "effects": [
         {
-
           "type": "culinaire:clear_effect",
           "mob_effect": "minecraft:blindness"
         },
         {
-
           "type": "culinaire:grant_effect",
           "mob_effect": "minecraft:night_vision",
           "duration": 1000
