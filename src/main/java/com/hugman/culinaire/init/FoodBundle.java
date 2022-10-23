@@ -32,15 +32,15 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.sound.BlockSoundGroup;
 
 public class FoodBundle extends CulinaireBundle {
-	public static final Item MILK_BOTTLE = add(new ItemCreator.Builder("milk_bottle", MilkBottleItem::new, new Item.Settings().group(ItemGroup.FOOD).maxCount(Culinaire.CONFIG.features.milkBottlesMaxCount).recipeRemainder(Items.GLASS_BOTTLE)).build());
+	public static final Item MILK_BOTTLE = add(new ItemCreator.Builder("milk_bottle", MilkBottleItem::new, new Item.Settings().group(ItemGroup.FOOD).maxCount(Culinaire.CONFIG.features.milkBottlesMaxCount)).build());
 	public static final Block MILK_CAULDRON = add(new BlockCreator.Builder("milk_cauldron", s -> new MilkCauldronBlock(s, CulinaireCauldronBehaviors.MILK), FabricBlockSettings.of(Material.METAL, MapColor.STONE_GRAY).requiresTool().ticksRandomly().strength(2.0F).nonOpaque()).noItem().build());
 	public static final Block CHEESE_CAULDRON = add(new BlockCreator.Builder("cheese_cauldron", CheeseCauldronBlock::new, FabricBlockSettings.of(Material.METAL, MapColor.STONE_GRAY).requiresTool().strength(2.0F).nonOpaque()).noItem().build());
 	public static final Item CHEESE = add(new ItemCreator.Builder("cheese", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(Components.CHEESE)).compostingChance(0.5f).build());
 	public static final Block CHEESE_WHEEL = add(new BlockCreator.Builder("cheese_wheel", CheeseWheelBlock::new, FabricBlockSettings.of(Material.CAKE).strength(0.5F).sounds(BlockSoundGroup.WOOL)).itemGroup(ItemGroup.FOOD).build());
 
-	public static final Item DARK_CHOCOLATE_BOTTLE = add(new ItemCreator.Builder("dark_chocolate_bottle", ChocolateBottleItem::new, new Item.Settings().group(ItemGroup.FOOD).recipeRemainder(Items.GLASS_BOTTLE)).build());
-	public static final Item MILK_CHOCOLATE_BOTTLE = add(new ItemCreator.Builder("milk_chocolate_bottle", ChocolateBottleItem::new, new Item.Settings().group(ItemGroup.FOOD).recipeRemainder(Items.GLASS_BOTTLE)).build());
-	public static final Item WHITE_CHOCOLATE_BOTTLE = add(new ItemCreator.Builder("white_chocolate_bottle", ChocolateBottleItem::new, new Item.Settings().group(ItemGroup.FOOD).recipeRemainder(Items.GLASS_BOTTLE)).build());
+	public static final Item DARK_CHOCOLATE_BOTTLE = add(new ItemCreator.Builder("dark_chocolate_bottle", ChocolateBottleItem::new, new Item.Settings().group(ItemGroup.FOOD)).build());
+	public static final Item MILK_CHOCOLATE_BOTTLE = add(new ItemCreator.Builder("milk_chocolate_bottle", ChocolateBottleItem::new, new Item.Settings().group(ItemGroup.FOOD)).build());
+	public static final Item WHITE_CHOCOLATE_BOTTLE = add(new ItemCreator.Builder("white_chocolate_bottle", ChocolateBottleItem::new, new Item.Settings().group(ItemGroup.FOOD)).build());
 
 	public static final Item DARK_CHOCOLATE_BAR = add(new ItemCreator.Builder("dark_chocolate_bar", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(Components.CHOCOLATE_BAR)).build());
 	public static final Item MILK_CHOCOLATE_BAR = add(new ItemCreator.Builder("milk_chocolate_bar", Item::new, new Item.Settings().group(ItemGroup.FOOD).food(Components.CHOCOLATE_BAR)).build());

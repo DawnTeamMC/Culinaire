@@ -3,7 +3,8 @@
 	"group": "culinaire:chocolate_bars",
 	"ingredients": [
 		{
-			"item": "culinaire:dark_chocolate_bottle"
+			"item": "culinaire:dark_chocolate_bottle",
+			"remainder": "minecraft:glass_bottle"
 		}
 	],
 	"result": {
