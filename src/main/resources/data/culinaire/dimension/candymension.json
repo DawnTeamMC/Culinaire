@@ -1,0 +1,11 @@
+{
+  "type": "culinaire:candymension",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "culinaire:candymension",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "minecraft:plains"
+    }
+  }
+}
