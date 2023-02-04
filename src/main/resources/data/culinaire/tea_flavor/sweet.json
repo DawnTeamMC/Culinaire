@@ -1,0 +1,47 @@
+{
+  "color": 9523743,
+  "potencies": [
+    {
+      "value": 1,
+      "name": "tea_type.culinaire.sweet.weak",
+      "description": "tea_type.culinaire.sweet.weak.description",
+      "effects": [
+        {
+          "type": "culinaire:grant_effect",
+          "mob_effect": "minecraft:saturation",
+          "duration": 900
+        }
+      ],
+      "ingredients": "#culinaire:tea_ingredients/sweet/weak",
+      "brew_time": 400
+    },
+    {
+      "value": 2,
+      "name": "tea_type.culinaire.sweet.normal",
+      "description": "tea_type.culinaire.sweet.normal.description",
+      "effects": [
+        {
+          "type": "culinaire:grant_effect",
+          "mob_effect": "minecraft:saturation",
+          "duration": 1800
+        }
+      ],
+      "ingredients": "#culinaire:tea_ingredients/sweet/normal",
+      "brew_time": 800
+    },
+    {
+      "value": 3,
+      "name": "tea_type.culinaire.sweet.strong",
+      "description": "tea_type.culinaire.sweet.strong.description",
+      "effects": [
+        {
+          "type": "culinaire:grant_effect",
+          "mob_effect": "minecraft:saturation",
+          "duration": 2880
+        }
+      ],
+      "ingredients": "#culinaire:tea_ingredients/sweet/strong",
+      "brew_time": 1200
+    }
+  ]
+}

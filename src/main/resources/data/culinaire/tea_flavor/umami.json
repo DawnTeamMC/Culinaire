@@ -1,0 +1,33 @@
+{
+  "color": 10059295,
+  "potencies": [
+    {
+      "value": 1,
+      "name": "tea_type.culinaire.umami.weak",
+      "description": "tea_type.culinaire.umami.weak.description",
+      "effects": [
+        {
+          "type": "culinaire:grant_effect",
+          "mob_effect": "minecraft:resistance",
+          "duration": 400
+        }
+      ],
+      "ingredients": "#culinaire:tea_ingredients/umami/weak",
+      "brew_time": 400
+    },
+    {
+      "value": 2,
+      "name": "tea_type.culinaire.umami.normal",
+      "description": "tea_type.culinaire.umami.normal.description",
+      "effects": [
+        {
+          "type": "culinaire:grant_effect",
+          "mob_effect": "minecraft:resistance",
+          "duration": 700
+        }
+      ],
+      "ingredients": "#culinaire:tea_ingredients/umami/normal",
+      "brew_time": 800
+    }
+  ]
+}

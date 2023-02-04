@@ -1,0 +1,54 @@
+{
+  "color": 5057061,
+  "potencies": [
+    {
+      "value": 1,
+      "name": "tea_type.culinaire.bitter.weak",
+      "description": "tea_type.culinaire.bitter.weak.description",
+      "effects": [
+        {
+          "type": "culinaire:clear_effect",
+          "mob_effect": "minecraft:blindness"
+        }
+      ],
+      "ingredients": "#culinaire:tea_ingredients/bitter/weak",
+      "brew_time": 200
+    },
+    {
+      "value": 2,
+      "name": "tea_type.culinaire.bitter.normal",
+      "description": "tea_type.culinaire.bitter.normal.description",
+      "effects": [
+        {
+          "type": "culinaire:clear_effect",
+          "mob_effect": "minecraft:blindness"
+        },
+        {
+          "type": "culinaire:grant_effect",
+          "mob_effect": "minecraft:night_vision",
+          "duration": 600
+        }
+      ],
+      "ingredients": "#culinaire:tea_ingredients/bitter/normal",
+      "brew_time": 400
+    },
+    {
+      "value": 3,
+      "name": "tea_type.culinaire.bitter.strong",
+      "description": "tea_type.culinaire.bitter.strong.description",
+      "effects": [
+        {
+          "type": "culinaire:clear_effect",
+          "mob_effect": "minecraft:blindness"
+        },
+        {
+          "type": "culinaire:grant_effect",
+          "mob_effect": "minecraft:night_vision",
+          "duration": 1000
+        }
+      ],
+      "ingredients": "#culinaire:tea_ingredients/bitter/strong",
+      "brew_time": 700
+    }
+  ]
+}
