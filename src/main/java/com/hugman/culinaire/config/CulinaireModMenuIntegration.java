@@ -9,7 +9,7 @@ import net.minecraft.client.gui.screen.Screen;
 
 @Environment(EnvType.CLIENT)
 public class CulinaireModMenuIntegration implements ModMenuApi {
-	public ConfigScreenFactory<?> getModConfigScreenFactory() {
-		return (parent) -> (Screen) AutoConfig.getConfigScreen(CulinaireConfig.class, parent).get();
-	}
+    public ConfigScreenFactory<?> getModConfigScreenFactory() {
+        return (parent) -> (Screen) AutoConfig.getConfigScreen(CulinaireConfig.class, parent).get();
+    }
 }

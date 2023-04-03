@@ -16,31 +16,31 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(MilkBucketItem.class)
 public class MilkBucketMixin {
-	@Inject(method = "finishUsing", at = @At(value = "HEAD"), cancellable = true)
-	public void culinaire$finishUsing(ItemStack stack, World world, LivingEntity user, CallbackInfoReturnable<ItemStack> info) {
-		if(!Culinaire.CONFIG.features.canDrinkMilkBucket) {
-			info.setReturnValue(stack);
-		}
-	}
+    @Inject(method = "finishUsing", at = @At(value = "HEAD"), cancellable = true)
+    public void culinaire$finishUsing(ItemStack stack, World world, LivingEntity user, CallbackInfoReturnable<ItemStack> info) {
+        if (!Culinaire.CONFIG.features.canDrinkMilkBucket) {
+            info.setReturnValue(stack);
+        }
+    }
 
-	@Inject(method = "getMaxUseTime", at = @At(value = "HEAD"), cancellable = true)
-	public void culinaire$getMaxUseTime(ItemStack stack, CallbackInfoReturnable<Integer> info) {
-		if(!Culinaire.CONFIG.features.canDrinkMilkBucket) {
-			info.setReturnValue(0);
-		}
-	}
+    @Inject(method = "getMaxUseTime", at = @At(value = "HEAD"), cancellable = true)
+    public void culinaire$getMaxUseTime(ItemStack stack, CallbackInfoReturnable<Integer> info) {
+        if (!Culinaire.CONFIG.features.canDrinkMilkBucket) {
+            info.setReturnValue(0);
+        }
+    }
 
-	@Inject(method = "getUseAction", at = @At(value = "HEAD"), cancellable = true)
-	public void culinaire$getUseAction(ItemStack stack, CallbackInfoReturnable<UseAction> info) {
-		if(!Culinaire.CONFIG.features.canDrinkMilkBucket) {
-			info.setReturnValue(UseAction.NONE);
-		}
-	}
+    @Inject(method = "getUseAction", at = @At(value = "HEAD"), cancellable = true)
+    public void culinaire$getUseAction(ItemStack stack, CallbackInfoReturnable<UseAction> info) {
+        if (!Culinaire.CONFIG.features.canDrinkMilkBucket) {
+            info.setReturnValue(UseAction.NONE);
+        }
+    }
 
-	@Inject(method = "use", at = @At(value = "HEAD"), cancellable = true)
-	public void culinaire$use(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> info) {
-		if(!Culinaire.CONFIG.features.canDrinkMilkBucket) {
-			info.setReturnValue(TypedActionResult.pass(user.getStackInHand(hand)));
-		}
-	}
+    @Inject(method = "use", at = @At(value = "HEAD"), cancellable = true)
+    public void culinaire$use(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> info) {
+        if (!Culinaire.CONFIG.features.canDrinkMilkBucket) {
+            info.setReturnValue(TypedActionResult.pass(user.getStackInHand(hand)));
+        }
+    }
 }

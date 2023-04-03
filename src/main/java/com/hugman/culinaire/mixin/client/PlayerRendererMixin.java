@@ -1,6 +1,6 @@
 package com.hugman.culinaire.mixin.client;
 
-import com.hugman.culinaire.objects.item.MarshmallowOnAStickItem;
+import com.hugman.culinaire.item.MarshmallowOnAStickItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -18,20 +18,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntityRenderer.class)
 public class PlayerRendererMixin {
-	@Inject(method = "getArmPose", at = @At(value = "HEAD"), cancellable = true)
-	private static void culinaire$getArmPose(AbstractClientPlayerEntity abstractClientPlayerEntity, Hand hand, CallbackInfoReturnable<BipedEntityModel.ArmPose> info) {
-		ItemStack itemStack = abstractClientPlayerEntity.getStackInHand(hand);
-		if(!itemStack.isEmpty() && abstractClientPlayerEntity.isSneaking()) {
-			if(!abstractClientPlayerEntity.handSwinging && itemStack.getItem() instanceof MarshmallowOnAStickItem) {
-				HitResult hitResult = abstractClientPlayerEntity.raycast(1.5D, 0.0F, true);
-				if(hitResult.getType() == HitResult.Type.BLOCK) {
-					BlockHitResult blockHitResult = (BlockHitResult) hitResult;
-					BlockState state = abstractClientPlayerEntity.getEntityWorld().getBlockState(blockHitResult.getBlockPos());
-					if(CampfireBlock.isLitCampfire(state) && blockHitResult.getSide() != Direction.DOWN) {
-						info.setReturnValue(BipedEntityModel.ArmPose.CROSSBOW_HOLD);
-					}
-				}
-			}
-		}
-	}
+    @Inject(method = "getArmPose", at = @At(value = "HEAD"), cancellable = true)
+    private static void culinaire$getArmPose(AbstractClientPlayerEntity abstractClientPlayerEntity, Hand hand, CallbackInfoReturnable<BipedEntityModel.ArmPose> info) {
+        ItemStack itemStack = abstractClientPlayerEntity.getStackInHand(hand);
+        if (!itemStack.isEmpty() && abstractClientPlayerEntity.isSneaking()) {
+            if (!abstractClientPlayerEntity.handSwinging && itemStack.getItem() instanceof MarshmallowOnAStickItem) {
+                HitResult hitResult = abstractClientPlayerEntity.raycast(1.5D, 0.0F, true);
+                if (hitResult.getType() == HitResult.Type.BLOCK) {
+                    BlockHitResult blockHitResult = (BlockHitResult) hitResult;
+                    BlockState state = abstractClientPlayerEntity.getEntityWorld().getBlockState(blockHitResult.getBlockPos());
+                    if (CampfireBlock.isLitCampfire(state) && blockHitResult.getSide() != Direction.DOWN) {
+                        info.setReturnValue(BipedEntityModel.ArmPose.CROSSBOW_HOLD);
+                    }
+                }
+            }
+        }
+    }
 }
