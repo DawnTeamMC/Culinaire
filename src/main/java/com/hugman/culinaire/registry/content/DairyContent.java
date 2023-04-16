@@ -9,12 +9,14 @@ import com.hugman.culinaire.item.MilkBottleItem;
 import fr.hugman.dawn.Registrar;
 import fr.hugman.dawn.block.DawnBlockSettings;
 import fr.hugman.dawn.item.DawnItemSettings;
+import fr.hugman.dawn.item.ItemGroupHelper;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroups;
 import net.minecraft.item.Items;
 import net.minecraft.sound.BlockSoundGroup;
 
@@ -36,6 +38,6 @@ public class DairyContent {
         r.add("cheese_wheel", CHEESE_WHEEL);
         r.add("cheese_cauldron", CHEESE_CAULDRON);
 
-        // TODO: Add item group
+        ItemGroupHelper.append(ItemGroups.FOOD_AND_DRINK, entries -> entries.addAfter(Items.MILK_BUCKET, MILK_BOTTLE, CHEESE, CHEESE_WHEEL));
     }
 }

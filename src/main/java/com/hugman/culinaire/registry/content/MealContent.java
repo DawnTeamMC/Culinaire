@@ -4,9 +4,8 @@ import com.hugman.culinaire.item.SandwichItem;
 import com.hugman.culinaire.recipe.serializer.SandwichRecipeSerializer;
 import fr.hugman.dawn.Registrar;
 import fr.hugman.dawn.item.DawnItemSettings;
-import net.minecraft.item.FoodComponent;
-import net.minecraft.item.Item;
-import net.minecraft.item.StewItem;
+import fr.hugman.dawn.item.ItemGroupHelper;
+import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 
@@ -27,5 +26,8 @@ public class MealContent {
 
         Registry.register(Registries.RECIPE_SERIALIZER, r.id("crafting/sandwich"), SANDWICH_CRAFTING); //TODO: add a method for recipe serializers to Dawn API
         r.add("sandwich", SANDWICH);
+
+        ItemGroupHelper.append(ItemGroups.FOOD_AND_DRINK, entries -> entries.addBefore(Items.MUSHROOM_STEW, SALAD, MASHED_POTATOES));
+        //TODO: add sandwich to food and drink group
     }
 }

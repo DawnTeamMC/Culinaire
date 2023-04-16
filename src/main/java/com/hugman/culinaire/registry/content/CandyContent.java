@@ -6,14 +6,17 @@ import com.hugman.culinaire.item.MarshmallowOnAStickItem;
 import fr.hugman.dawn.Registrar;
 import fr.hugman.dawn.block.ThreeLeveledCauldronBlock;
 import fr.hugman.dawn.item.DawnItemSettings;
+import fr.hugman.dawn.item.ItemGroupHelper;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroups;
 import net.minecraft.item.Items;
 
 public class CandyContent {
@@ -70,6 +73,12 @@ public class CandyContent {
         r.add("golden_marshmallow_on_a_stick", GOLDEN_MARSHMALLOW_ON_A_STICK);
         r.add("burnt_marshmallow_on_a_stick", BURNT_MARSHMALLOW_ON_A_STICK);
 
-        // TODO: Add item group
+        ItemGroupHelper.append(ItemGroups.FOOD_AND_DRINK, entries -> entries.addBefore(Items.COOKIE,
+                DARK_CHOCOLATE_BOTTLE, MILK_CHOCOLATE_BOTTLE, WHITE_CHOCOLATE_BOTTLE,
+                DARK_CHOCOLATE_BAR, MILK_CHOCOLATE_BAR, WHITE_CHOCOLATE_BAR,
+                DARK_CHOCOLATE_PIE, MILK_CHOCOLATE_PIE, WHITE_CHOCOLATE_PIE,
+                MARSHMALLOW, MARSHMALLOW_ON_A_STICK, TOASTY_MARSHMALLOW_ON_A_STICK, GOLDEN_MARSHMALLOW_ON_A_STICK, BURNT_MARSHMALLOW_ON_A_STICK
+        ));
+
     }
 }
