@@ -4,6 +4,7 @@ import com.hugman.culinaire.item.SandwichItem;
 import com.hugman.culinaire.registry.content.MealContent;
 import com.hugman.culinaire.util.FoodUtil;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.Ingredient;
@@ -58,7 +59,7 @@ public class SandwichRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public boolean matches(CraftingInventory inv, World world) {
+    public boolean matches(RecipeInputInventory inv, World world) {
         boolean hasBread = false;
         boolean hasOnlyIngredients = false;
         int[] emptySlots = new int[]{0, 2, 6, 8};
@@ -89,7 +90,7 @@ public class SandwichRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack craft(CraftingInventory inv, DynamicRegistryManager drm) {
+    public ItemStack craft(RecipeInputInventory inv, DynamicRegistryManager registryManager) {
         // Get food items
         ItemStack[] slots = new ItemStack[3];
         int j = 0;
