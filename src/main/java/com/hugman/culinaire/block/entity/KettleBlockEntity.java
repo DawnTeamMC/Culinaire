@@ -108,7 +108,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
             } else if (!canBrew) {
                 kettle.brewTime = 0;
                 kettle.markDirty();
-            } else if (!ItemStack.areNbtEqual(kettle.stackBrewing, stack)) {
+            } else if (!ItemStack.areItemsEqual(kettle.stackBrewing, stack)) {
                 kettle.brewTime = 0;
                 kettle.markDirty();
             }

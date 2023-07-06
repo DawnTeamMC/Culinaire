@@ -24,7 +24,7 @@ public class CowEntityMixin {
             player.playSound(SoundEvents.ENTITY_COW_MILK, 1.0F, 1.0F);
             ItemStack itemStack2 = ItemUsage.exchangeStack(itemStack, player, DairyContent.MILK_BOTTLE.getDefaultStack());
             player.setStackInHand(hand, itemStack2);
-            info.setReturnValue(ActionResult.success(cowEntity.world.isClient));
+            info.setReturnValue(ActionResult.success(cowEntity.getWorld().isClient));
         }
     }
 }

@@ -4,6 +4,7 @@ import com.hugman.culinaire.registry.content.TeaContent;
 import com.hugman.culinaire.tea.TeaHelper;
 import com.hugman.culinaire.tea.TeaType;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
@@ -36,7 +37,7 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public boolean matches(CraftingInventory inv, World world) {
+    public boolean matches(RecipeInputInventory inv, World world) {
         boolean hasPaper = false;
         boolean hasString = false;
         List<TeaType> bagTeaTypes = new ArrayList<>();
@@ -84,7 +85,7 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack craft(CraftingInventory inv, DynamicRegistryManager drm) {
+    public ItemStack craft(RecipeInputInventory inv, DynamicRegistryManager drm) {
         ItemStack givenStack = new ItemStack(TeaContent.TEA_BAG);
         List<TeaType> bagTeaTypes = new ArrayList<>();
         for (int j = 0; j < inv.size(); ++j) {
