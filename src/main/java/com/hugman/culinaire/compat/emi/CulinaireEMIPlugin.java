@@ -17,8 +17,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 
-import java.util.function.Function;
-
 public class CulinaireEMIPlugin implements EmiPlugin {
     public static final EmiRecipeCategory TEA_BREWING_CATEGORY =
             new EmiRecipeCategory(Culinaire.id("plugins/tea_brewing"), EmiStack.of(TeaContent.KETTLE)) {
@@ -36,9 +34,8 @@ public class CulinaireEMIPlugin implements EmiPlugin {
         registerTeaBagDisplays(registry);
         registerTeaBottleDisplays(registry);
 
-        Function<Comparison, Comparison> compareNbt = c -> c.copy().nbt(true).build();
-        registry.setDefaultComparison(EmiStack.of(TeaContent.TEA_BAG), compareNbt);
-        registry.setDefaultComparison(EmiStack.of(TeaContent.TEA_BOTTLE), compareNbt);
+        registry.setDefaultComparison(EmiStack.of(TeaContent.TEA_BAG), Comparison.compareNbt());
+        registry.setDefaultComparison(EmiStack.of(TeaContent.TEA_BOTTLE), Comparison.compareNbt());
 
         registry.addRecipeHandler(TeaContent.KETTLE_SCREEN_HANDLER, new BrewingRecipeHandler());
     }
