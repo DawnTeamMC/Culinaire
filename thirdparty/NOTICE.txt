@@ -17,3 +17,36 @@ The complete text for each software license can be found in the directory "third
   * License: MIT (SPDX: MIT)
   * Original Source:
     * https://github.com/shedaniel/RoughlyEnoughItems
+
+This project also contains assets from the following third-party members:
+* Plantkillable
+  * All files from the following directories:
+    * src/main/resources/assets/culinaire/textures/block/cauldron
+    * src/main/resources/assets/culinaire/textures/block/cheese_wheel
+    * src/main/resources/assets/culinaire/textures/block/kettle
+    * src/main/resources/assets/culinaire/textures/block/lettuce
+    * src/main/resources/assets/culinaire/textures/block/tomatoes
+    * src/main/resources/assets/culinaire/textures/item/marshmallow_on_a_stick
+  * And the following files:
+    * src/main/resources/assets/culinaire/textures/item/apple_pie.png
+    * src/main/resources/assets/culinaire/textures/item/cheese.png
+    * src/main/resources/assets/culinaire/textures/item/cheese_wheel.png
+    * src/main/resources/assets/culinaire/textures/item/kettle.png
+    * src/main/resources/assets/culinaire/textures/item/lettuce.png
+    * src/main/resources/assets/culinaire/textures/item/lettuce_seeds.png
+    * src/main/resources/assets/culinaire/textures/item/marshmallow.png
+    * src/main/resources/assets/culinaire/textures/item/mashed_potatoes.png
+    * src/main/resources/assets/culinaire/textures/item/salad.png
+    * src/main/resources/assets/culinaire/textures/item/sandwich.png
+    * src/main/resources/assets/culinaire/textures/item/sweet_berry_pie.png
+    * src/main/resources/assets/culinaire/textures/item/tea_bag.png
+    * src/main/resources/assets/culinaire/textures/item/tomato.png
+    * src/main/resources/assets/culinaire/textures/item/tomato.png
+    * src/main/resources/assets/culinaire/textures/mob_effect/foresight.png
+    * src/main/resources/assets/culinaire/textures/mob_effect/fulfillment.png
+    * src/main/resources/assets/culinaire/textures/mob_effect/guard.png
+    * src/main/resources/assets/culinaire/textures/mob_effect/poison_resistance.png
+* cydian
+  * All files from the following directories:
+    * src/main/resources/assets/culinaire/sounds/block/kettle
+    * src/main/resources/assets/culinaire/sounds/item/tea_bottle/fill
