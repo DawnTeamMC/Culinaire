@@ -75,3 +75,8 @@ Some money you donate may be used to pay for new features, such as music or art,
 - Plantkillable & Wintrius - concept for all the content (before Culinaire v2.0)
 - Plantkillable - textures for all the content (before Culinaire v2.0)
 - cydian - concept of tea system (before Culinaire v2.0)
+
+## 📜 License
+
+Except where otherwise stated (see [third-party license notices](thirdparty/NOTICE.txt)), the content of this repository is provided
+under the [Polyform Shield 1.0.0](LICENSE.md) license by [Hugman](https://github.com/Hugman76).
