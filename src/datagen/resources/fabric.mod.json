@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "name": "Culinaire Data Generation",
+  "id": "culinaire-datagen",
+  "version": "1.0.0",
+  "authors": [
+    "Hugman"
+  ],
+  "environment": "client",
+  "entrypoints": {
+    "fabric-datagen": [
+      "fr.hugman.culinaire.data.CulinaireDataGenerator"
+    ]
+  }
+}

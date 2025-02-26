@@ -42,10 +42,6 @@ This project also contains assets from the following third-party members:
     * src/main/resources/assets/culinaire/textures/item/tea_bag.png
     * src/main/resources/assets/culinaire/textures/item/tomato.png
     * src/main/resources/assets/culinaire/textures/item/tomato.png
-    * src/main/resources/assets/culinaire/textures/mob_effect/foresight.png
-    * src/main/resources/assets/culinaire/textures/mob_effect/fulfillment.png
-    * src/main/resources/assets/culinaire/textures/mob_effect/guard.png
-    * src/main/resources/assets/culinaire/textures/mob_effect/poison_resistance.png
 * cydian
   * All files from the following directories:
     * src/main/resources/assets/culinaire/sounds/block/kettle

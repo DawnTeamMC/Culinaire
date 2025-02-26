@@ -1,21 +1,90 @@
 plugins {
-    id 'fabric-loom' version '1.2-SNAPSHOT'
+    id 'fabric-loom' version '1.9+'
+    id 'org.moddedmc.wiki.toolkit' version '0.2.7'
 }
 
-apply from: 'https://dawnteammc.github.io/resources/gradle_scripts/fabric-mod/java-17.gradle'
+group = "com.github.hugman"
+
+base {
+    archivesName = project.mod_id
+}
 
 repositories {
-    maven { url 'https://jitpack.io' }                  // Required for Dawn API
-
-    maven { url 'https://maven.shedaniel.me/' }         // Required for Cloth Config and Roughly Enough Items
-    maven { url 'https://maven.terraformersmc.com/' }   // Required for Mod Menu
-    maven { url 'https://maven.ryanliptak.com/' }       // Required for AppleSkin
+    maven { url 'https://maven.shedaniel.me/' } // Required for Roughly Enough Items
 }
 
 dependencies {
-    modApi "com.github.DawnTeamMC:DawnAPI:${dawn_version}"
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    modApi "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    modApi ("me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
 
     compileOnly "com.google.code.findbugs:jsr305:3.0.2"
+
+    // Version list: https://maven.su5ed.dev/#/releases/org/sinytra/item-asset-export-fabric
+    modRuntimeOnly "org.sinytra:item-asset-export-fabric:1.1.0+1.21.4"
+}
+
+loom {
+    splitEnvironmentSourceSets()
+
+    mods {
+        "culinaire" {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
+}
+
+fabricApi {
+    configureDataGeneration() {
+        modId = "culinaire-datagen"
+        createSourceSet = true
+        client = true
+    }
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+    it.options.release = 21
+}
+
+java {
+    withSourcesJar()
+
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+jar {
+    from("LICENSE") {
+        rename { "${it}_${project.archivesBaseName}" }
+    }
+}
+
+// for JitPack
+configurations.configureEach {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
+wiki {
+    docs {
+        culinaire {
+            root = file('docs')
+            exportedAssetNamespaces = ['culinaire']
+        }
+    }
 }

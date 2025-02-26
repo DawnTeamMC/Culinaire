@@ -21,26 +21,21 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.hugman.culinaire.Culinaire"
+			"fr.hugman.culinaire.Culinaire"
 		],
 		"client": [
-			"com.hugman.culinaire.CulinaireClient"
-		],
-		"modmenu": [
-			"com.hugman.culinaire.config.CulinaireModMenuIntegration"
+			"fr.hugman.culinaire.client.CulinaireClient"
 		],
 		"rei_client": [
-			"com.hugman.culinaire.compat.rei.CulinaireREIPlugin"
+			"fr.hugman.culinaire.compat.rei.CulinaireREIPlugin"
 		]
 	},
 	"mixins": [
 		"culinaire.mixins.json"
 	],
 	"depends": {
-		"minecraft": "1.20.x",
-		"dawn": ">=5.0.0",
-		"fabric": "*",
-		"cloth-config": "*"
+		"minecraft": "^1.21.4",
+		"fabric": "*"
 	},
 	"suggests": {
 		"roughlyenoughitems": "*",
@@ -55,7 +50,7 @@
 				"modmenu.modrinth": "https://modrinth.com/mod/culinaire",
 				"modmenu.github_releases": "https://github.com/DawnTeamMC/Culinaire/releases/",
 				"modmenu.crowdin": "https://crowdin.com/project/dawnteam",
-				"modmenu.wiki": "https://github.com/DawnTeamMC/Culinaire/wiki/"
+				"modmenu.wiki": "https://dawnteammc.github.io/culinaire"
 			}
 		},
 		"modupdater": {
@@ -70,8 +65,7 @@
 				"quilt"
 			],
 			"dependencies": [
-				"roughlyenoughitems(optional){curseforge:roughly-enough-items}{modrinth:rei}",
-				"cloth-config(embedded)"
+				"roughlyenoughitems(optional){curseforge:roughly-enough-items}{modrinth:rei}"
 			]
 		}
 	},
