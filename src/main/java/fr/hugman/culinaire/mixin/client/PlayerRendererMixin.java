@@ -1,6 +1,6 @@
 package fr.hugman.culinaire.mixin.client;
 
-import fr.hugman.culinaire.item.MarshmallowOnAStickItem;
+import fr.hugman.culinaire.item.BurnableItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -22,7 +22,7 @@ public class PlayerRendererMixin {
     private static void culinaire$getArmPose(AbstractClientPlayerEntity abstractClientPlayerEntity, Hand hand, CallbackInfoReturnable<BipedEntityModel.ArmPose> info) {
         ItemStack itemStack = abstractClientPlayerEntity.getStackInHand(hand);
         if (!itemStack.isEmpty() && abstractClientPlayerEntity.isSneaking()) {
-            if (!abstractClientPlayerEntity.handSwinging && itemStack.getItem() instanceof MarshmallowOnAStickItem) {
+            if (!abstractClientPlayerEntity.handSwinging && itemStack.getItem() instanceof BurnableItem) {
                 HitResult hitResult = abstractClientPlayerEntity.raycast(1.5D, 0.0F, true);
                 if (hitResult.getType() == HitResult.Type.BLOCK) {
                     BlockHitResult blockHitResult = (BlockHitResult) hitResult;

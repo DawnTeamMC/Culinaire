@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.component.type.ConsumableComponents;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -42,10 +43,10 @@ public class CulinaireItems {
     public static final Item WHITE_CHOCOLATE_PIE = register("white_chocolate_pie", new Item.Settings().food(CulinaireFoodComponents.CHOCOLATE_PIE));
 
     public static final Item MARSHMALLOW = register("marshmallow", new Item.Settings().food(CulinaireFoodComponents.MARSHMALLOW, CulinaireConsumableComponents.SNACK_FOOD));
-    public static final Item MARSHMALLOW_ON_A_STICK = register("marshmallow_on_a_stick", MarshmallowOnAStickItem::new, ItemSettings.foodOnStick(CulinaireFoodComponents.MARSHMALLOW, CulinaireConsumableComponents.SNACK_FOOD));
-    public static final Item TOASTY_MARSHMALLOW_ON_A_STICK = register("toasty_marshmallow_on_a_stick", MarshmallowOnAStickItem::new, ItemSettings.foodOnStick(CulinaireFoodComponents.TOASTY_MARSHMALLOW, CulinaireConsumableComponents.SNACK_FOOD));
-    public static final Item GOLDEN_MARSHMALLOW_ON_A_STICK = register("golden_marshmallow_on_a_stick", MarshmallowOnAStickItem::new, ItemSettings.foodOnStick(CulinaireFoodComponents.GOLDEN_MARSHMALLOW, CulinaireConsumableComponents.SNACK_FOOD));
-    public static final Item BURNT_MARSHMALLOW_ON_A_STICK = register("burnt_marshmallow_on_a_stick", MarshmallowOnAStickItem::new, ItemSettings.foodOnStick(CulinaireFoodComponents.BURNT_MARSHMALLOW, CulinaireConsumableComponents.BURNT_SNACK_FOOD));
+    public static final Item BURNT_MARSHMALLOW_ON_A_STICK = register("burnt_marshmallow_on_a_stick", BurnableItem::new, ItemSettings.burnableFoodOnStick(CulinaireFoodComponents.BURNT_MARSHMALLOW, CulinaireConsumableComponents.BURNT_SNACK_FOOD, 60, Items.STICK));
+    public static final Item GOLDEN_MARSHMALLOW_ON_A_STICK = register("golden_marshmallow_on_a_stick", BurnableItem::new, ItemSettings.burnableFoodOnStick(CulinaireFoodComponents.GOLDEN_MARSHMALLOW, CulinaireConsumableComponents.SNACK_FOOD, 20, BURNT_MARSHMALLOW_ON_A_STICK));
+    public static final Item TOASTY_MARSHMALLOW_ON_A_STICK = register("toasty_marshmallow_on_a_stick", BurnableItem::new, ItemSettings.burnableFoodOnStick(CulinaireFoodComponents.TOASTY_MARSHMALLOW, CulinaireConsumableComponents.SNACK_FOOD, 75, GOLDEN_MARSHMALLOW_ON_A_STICK));
+    public static final Item MARSHMALLOW_ON_A_STICK = register("marshmallow_on_a_stick", BurnableItem::new, ItemSettings.burnableFoodOnStick(CulinaireFoodComponents.MARSHMALLOW, CulinaireConsumableComponents.SNACK_FOOD, 150, TOASTY_MARSHMALLOW_ON_A_STICK));
 
     // PASTRIES
     public static final Item CROISSANT = register("croissant", new Item.Settings().food(CulinaireFoodComponents.CROISSANT, CulinaireConsumableComponents.SNACK_FOOD));

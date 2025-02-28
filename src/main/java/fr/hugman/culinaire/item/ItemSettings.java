@@ -1,5 +1,7 @@
 package fr.hugman.culinaire.item;
 
+import fr.hugman.culinaire.component.BurnableComponent;
+import fr.hugman.culinaire.component.CulinaireComponentTypes;
 import net.minecraft.component.type.ConsumableComponent;
 import net.minecraft.component.type.ConsumableComponents;
 import net.minecraft.component.type.FoodComponent;
@@ -31,12 +33,19 @@ public final class ItemSettings {
         return foodOnStick().food(foodComponent, consumableComponent);
     }
 
+
     public static Item.Settings foodOnStick(FoodComponent foodComponent) {
         return foodOnStick().food(foodComponent);
     }
 
     private static Item.Settings foodOnStick() {
         return new Item.Settings().maxCount(1).useRemainder(Items.STICK);
+    }
+
+    public static Item.Settings burnableFoodOnStick(FoodComponent foodComponent, ConsumableComponent consumableComponent, int burningTime, Item burnsInto) {
+        return foodOnStick(foodComponent, consumableComponent)
+                .component(CulinaireComponentTypes.BURNABLE, new BurnableComponent(burningTime, burnsInto.getRegistryEntry()))
+                .component(CulinaireComponentTypes.BURN, 0);
     }
 
     public static Item.Settings stew(FoodComponent foodComponent) {
