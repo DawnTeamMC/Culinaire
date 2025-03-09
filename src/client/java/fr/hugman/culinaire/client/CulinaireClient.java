@@ -11,6 +11,6 @@ public class CulinaireClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         CulinaireBlockRenderLayers.register();
-        CulinaireScreens.init();
+        CulinaireScreens.register();
     }
 }

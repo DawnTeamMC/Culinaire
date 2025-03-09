@@ -10,13 +10,10 @@ import me.shedaniel.rei.api.client.gui.widgets.Widgets;
 import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.text.Text;
 
 import java.util.List;
 
-@Environment(EnvType.CLIENT)
 public class TeaBrewingCategory implements DisplayCategory<TeaBrewingDisplay> {
     @Override
     public CategoryIdentifier<? extends TeaBrewingDisplay> getCategoryIdentifier() {

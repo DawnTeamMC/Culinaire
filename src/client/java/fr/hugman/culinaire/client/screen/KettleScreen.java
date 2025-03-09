@@ -3,8 +3,6 @@ package fr.hugman.culinaire.client.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import fr.hugman.culinaire.Culinaire;
 import fr.hugman.culinaire.screen.KettleScreenHandler;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.RenderLayer;
@@ -12,7 +10,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-@Environment(EnvType.CLIENT)
 public class KettleScreen extends HandledScreen<KettleScreenHandler> {
     private static final Identifier TEXTURE = Culinaire.id("textures/gui/container/kettle.png");
 

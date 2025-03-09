@@ -1,78 +1,78 @@
 {
-	"schemaVersion": 1,
-	"name": "Culinaire",
-	"id": "culinaire",
-	"version": "${version}",
-	"icon": "assets/culinaire/textures/logo.png",
-	"authors": [
-		"Hugman",
-		"YanisBft"
-	],
-	"contributors": [
-		"Plantkillable",
-		"Cydian",
-		"Wintrius"
-	],
-	"contact": {
-		"homepage": "https://dawnteammc.github.io/culinaire",
-		"sources": "https://github.com/DawnTeamMC/Culinaire",
-		"issues": "https://github.com/DawnTeamMC/Culinaire/issues"
-	},
-	"environment": "*",
-	"entrypoints": {
-		"main": [
-			"fr.hugman.culinaire.Culinaire"
-		],
-		"client": [
-			"fr.hugman.culinaire.client.CulinaireClient"
-		],
-		"rei_client": [
-          	"fr.hugman.culinaire.client.compat.rei.CulinaireREIPlugin"
-		]
-	},
-	"mixins": [
-		"culinaire.mixins.json",
-		{
-			"config": "culinaire.client.mixins.json",
-			"environment": "client"
-		}
-	],
-	"accessWidener": "culinaire.accesswidener",
-	"depends": {
-		"minecraft": "^1.21.4",
-		"fabric": "*"
-	},
-	"suggests": {
-		"roughlyenoughitems": "*",
-		"appleskin": "*"
-	},
-	"custom": {
-		"modmenu": {
-			"links": {
-				"modmenu.twitter": "https://twitter.com/DawnTeamMC",
-				"modmenu.discord": "https://discord.gg/8ksTVJu",
-				"modmenu.curseforge": "https://www.curseforge.com/minecraft/mc-mods/culinaire",
-				"modmenu.modrinth": "https://modrinth.com/mod/culinaire",
-				"modmenu.github_releases": "https://github.com/DawnTeamMC/Culinaire/releases/",
-				"modmenu.crowdin": "https://crowdin.com/project/dawnteam",
-				"modmenu.wiki": "https://dawnteammc.github.io/culinaire"
-			}
-		},
-		"modupdater": {
-			"strategy": "curseforge",
-			"projectID": 390675
-		},
-		"mc-publish": {
-			"curseforge": 390675,
-			"modrinth": "MO1ODvmm",
-			"loaders": [
-				"fabric",
-				"quilt"
-			],
-			"dependencies": [
-				"roughlyenoughitems(optional){curseforge:roughly-enough-items}{modrinth:rei}"
-			]
-		}
-	},
-	"license": "PolyForm Shield License 1.0.0"
+  "schemaVersion": 1,
+  "name": "Culinaire",
+  "id": "culinaire",
+  "version": "${version}",
+  "icon": "assets/culinaire/textures/logo.png",
+  "authors": [
+    "Hugman",
+    "YanisBft"
+  ],
+  "contributors": [
+    "Plantkillable",
+    "Cydian",
+    "Wintrius"
+  ],
+  "contact": {
+    "homepage": "https://dawnteammc.github.io/culinaire",
+    "sources": "https://github.com/DawnTeamMC/Culinaire",
+    "issues": "https://github.com/DawnTeamMC/Culinaire/issues"
+  },
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "fr.hugman.culinaire.Culinaire"
+    ],
+    "client": [
+      "fr.hugman.culinaire.client.CulinaireClient"
+    ],
+    "rei_client": [
+      "fr.hugman.culinaire.client.compat.rei.CulinaireREIPlugin"
+    ]
+  },
+  "mixins": [
+    "culinaire.mixins.json",
+    {
+      "config": "culinaire.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "accessWidener": "culinaire.accesswidener",
+  "depends": {
+    "minecraft": "^1.21.4",
+    "fabric": "*"
+  },
+  "suggests": {
+    "roughlyenoughitems": "*",
+    "appleskin": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.twitter": "https://twitter.com/DawnTeamMC",
+        "modmenu.discord": "https://discord.gg/8ksTVJu",
+        "modmenu.curseforge": "https://www.curseforge.com/minecraft/mc-mods/culinaire",
+        "modmenu.modrinth": "https://modrinth.com/mod/culinaire",
+        "modmenu.github_releases": "https://github.com/DawnTeamMC/Culinaire/releases/",
+        "modmenu.crowdin": "https://crowdin.com/project/dawnteam",
+        "modmenu.wiki": "https://dawnteammc.github.io/culinaire"
+      }
+    },
+    "modupdater": {
+      "strategy": "curseforge",
+      "projectID": 390675
+    },
+    "mc-publish": {
+      "curseforge": 390675,
+      "modrinth": "MO1ODvmm",
+      "loaders": [
+        "fabric",
+        "quilt"
+      ],
+      "dependencies": [
+        "roughlyenoughitems(optional){curseforge:roughly-enough-items}{modrinth:rei}"
+      ]
+    }
+  },
+  "license": "PolyForm Shield License 1.0.0"
 }
