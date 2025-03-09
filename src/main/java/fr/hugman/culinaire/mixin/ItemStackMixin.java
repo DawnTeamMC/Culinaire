@@ -26,15 +26,17 @@ public class ItemStackMixin {
             ))
     private void culinaire$appendTooltips(Item.TooltipContext context, PlayerEntity player, TooltipType type, CallbackInfoReturnable<List<Text>> cir) {
         ItemStack stack = (ItemStack) (Object) this;
+        /* FIXME
         List<Text> tooltip = cir.getReturnValue();
         Consumer<Text> consumer = tooltip::add;
 
-        // Append your custom tooltip here
         stack.appendTooltip(CulinaireComponentTypes.SANDWICH_CONTENTS, context, consumer, type);
 
         var teaContents = stack.get(CulinaireComponentTypes.TEA_CONTENTS);
         if (teaContents != null) {
             TeaHelper.appendTeaTooltip(consumer, teaContents);
         }
+
+         */
     }
 }

@@ -44,10 +44,7 @@
 	"item.culinaire.milk_chocolate_pie": "Milk Chocolate Pie",
 	"item.culinaire.white_chocolate_pie": "White Chocolate Pie",
 
-	"effect.culinaire.foresight": "Foresight",
-	"effect.culinaire.fulfillment": "Fulfillment",
-	"effect.culinaire.guard": "Guard",
-	"effect.culinaire.poison_resistance": "Poison Resistance",
+	"item_group.culinaire.culinaire": "Culinaire",
 
 	"container.culinaire.kettle": "Kettle",
 
