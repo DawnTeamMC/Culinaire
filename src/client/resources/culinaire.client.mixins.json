@@ -1,10 +1,9 @@
 {
   "required": true,
-  "package": "fr.hugman.culinaire.mixin",
+  "package": "fr.hugman.culinaire.client.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [
-    "CowEntityMixin",
-    "ItemStackMixin"
+  "client": [
+    "PlayerRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

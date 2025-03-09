@@ -1,4 +1,4 @@
-package fr.hugman.culinaire.compat.rei;
+package fr.hugman.culinaire.client.compat.rei;
 
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.Display;
@@ -43,5 +43,15 @@ public class TeaBrewingDisplay implements Display {
     @Override
     public CategoryIdentifier<?> getCategoryIdentifier() {
         return CulinaireREIPlugin.TEA_BREWING;
+    }
+
+    @Override
+    public Optional<Identifier> getDisplayLocation() {
+        return Optional.empty();
+    }
+
+    @Override
+    public @Nullable DisplaySerializer<? extends Display> getSerializer() {
+        return null;
     }
 }

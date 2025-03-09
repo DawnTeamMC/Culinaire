@@ -1,6 +1,6 @@
 package fr.hugman.culinaire.block;
 
-import fr.hugman.culinaire.registry.content.VegetableContent;
+import fr.hugman.culinaire.item.CulinaireItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.*;
@@ -18,8 +18,8 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
+import net.minecraft.world.tick.ScheduledTickView;
 
 public class TomatoesBlock extends CropBlock {
     public static final IntProperty AGE = Properties.AGE_3;
@@ -64,7 +64,7 @@ public class TomatoesBlock extends CropBlock {
     }
 
     @Override
-    public boolean isFertilizable(WorldView world, BlockPos pos, BlockState state, boolean isClient) {
+    public boolean isFertilizable(WorldView world, BlockPos pos, BlockState state) {
         DoubleBlockHalf doubleBlockHalf = state.get(HALF);
         BlockPos otherHalfPos = doubleBlockHalf == DoubleBlockHalf.LOWER ? pos.up() : pos.down();
         int age = this.getAge(state) + 1;
@@ -108,7 +108,7 @@ public class TomatoesBlock extends CropBlock {
     @Override
     @Environment(EnvType.CLIENT)
     protected ItemConvertible getSeedsItem() {
-        return VegetableContent.TOMATO;
+        return CulinaireItems.TOMATO;
     }
 
     @Override
@@ -164,12 +164,12 @@ public class TomatoesBlock extends CropBlock {
     }
 
     @Override
-    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
+    protected BlockState getStateForNeighborUpdate(BlockState state, WorldView world, ScheduledTickView tickView, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, Random random) {
         DoubleBlockHalf doubleBlockHalf = state.get(HALF);
-        if (direction.getAxis() == Direction.Axis.Y && doubleBlockHalf == DoubleBlockHalf.LOWER == (direction == Direction.UP) && (!newState.isOf(this) || newState.get(HALF) == doubleBlockHalf)) {
+        if (direction.getAxis() == Direction.Axis.Y && doubleBlockHalf == DoubleBlockHalf.LOWER == (direction == Direction.UP) && (!neighborState.isOf(this) || neighborState.get(HALF) == doubleBlockHalf)) {
             return Blocks.AIR.getDefaultState();
         } else {
-            return doubleBlockHalf == DoubleBlockHalf.LOWER && direction == Direction.DOWN && !state.canPlaceAt(world, pos) ? Blocks.AIR.getDefaultState() : super.getStateForNeighborUpdate(state, direction, newState, world, pos, posFrom);
+            return doubleBlockHalf == DoubleBlockHalf.LOWER && direction == Direction.DOWN && !state.canPlaceAt(world, pos) ? Blocks.AIR.getDefaultState() : super.getStateForNeighborUpdate(state, world, tickView, pos, direction, neighborPos, neighborState, random);
         }
     }
 }

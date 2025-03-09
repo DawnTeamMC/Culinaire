@@ -1,7 +1,6 @@
 package fr.hugman.culinaire.block;
 
-import fr.hugman.culinaire.registry.content.DairyContent;
-import fr.hugman.dawn.block.ThreeLeveledCauldronBlock;
+import fr.hugman.culinaire.item.CulinaireItems;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
@@ -13,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -24,7 +22,7 @@ import net.minecraft.world.World;
 
 public class CheeseCauldronBlock extends ThreeLeveledCauldronBlock {
     public CheeseCauldronBlock(Settings settings) {
-        super(CauldronBehavior.createMap(), settings);
+        super(settings, CauldronBehavior.createMap("culinaire:cheese"));
     }
 
     @Override
@@ -33,19 +31,18 @@ public class CheeseCauldronBlock extends ThreeLeveledCauldronBlock {
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        ActionResult result = super.onUse(state, world, pos, player, hand, hit);
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        ActionResult result = super.onUse(state, world, pos, player, hit);
         if (result.isAccepted()) {
             return result;
         } else if (!world.isClient) {
             int level = state.get(this.getLevelProperty());
             player.incrementStat(Stats.USE_CAULDRON);
-            player.incrementStat(Stats.USED.getOrCreateStat(player.getStackInHand(hand).getItem()));
             float f = 0.7F;
             double x = (world.random.nextFloat() * f) + 0.15D;
             double y = (world.random.nextFloat() * f) + 0.66D;
             double z = (world.random.nextFloat() * f) + 0.15D;
-            ItemEntity itemEntity = new ItemEntity(world, (double) pos.getX() + x, (double) pos.getY() + y, (double) pos.getZ() + z, new ItemStack(DairyContent.CHEESE));
+            ItemEntity itemEntity = new ItemEntity(world, (double) pos.getX() + x, (double) pos.getY() + y, (double) pos.getZ() + z, new ItemStack(CulinaireItems.CHEESE));
             itemEntity.setToDefaultPickupDelay();
             world.spawnEntity(itemEntity);
             if (level > 1) {
@@ -54,7 +51,7 @@ public class CheeseCauldronBlock extends ThreeLeveledCauldronBlock {
                 world.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
             }
         }
-        return ActionResult.success(world.isClient);
+        return ActionResult.SUCCESS;
     }
 
     @Override

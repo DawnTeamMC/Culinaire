@@ -1,4 +1,4 @@
-package fr.hugman.culinaire.mixin.client;
+package fr.hugman.culinaire.client.mixin;
 
 import fr.hugman.culinaire.item.BurnableItem;
 import net.minecraft.block.BlockState;

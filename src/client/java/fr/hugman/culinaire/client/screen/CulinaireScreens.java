@@ -1,13 +1,13 @@
 package fr.hugman.culinaire.client.screen;
 
-import fr.hugman.culinaire.registry.content.TeaContent;
-import fr.hugman.culinaire.screen.KettleScreen;
+import fr.hugman.culinaire.screen.CulinaireScreenHandlerTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.gui.screen.ingame.HandledScreens;
 
 @Environment(EnvType.CLIENT)
 public class CulinaireScreens {
     public static void init() {
-        ScreenRegistry.register(TeaContent.KETTLE_SCREEN_HANDLER, KettleScreen::new);
+        HandledScreens.register(CulinaireScreenHandlerTypes.KETTLE, KettleScreen::new);
     }
 }

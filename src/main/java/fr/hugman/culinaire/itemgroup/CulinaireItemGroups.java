@@ -1,6 +1,6 @@
 package fr.hugman.culinaire.itemgroup;
 
-import fr.hugman.culinaire.block.CulinaireBlocks;
+import fr.hugman.culinaire.item.CulinaireItems;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;

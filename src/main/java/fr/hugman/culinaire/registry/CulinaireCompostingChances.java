@@ -1,8 +1,6 @@
 package fr.hugman.culinaire.registry;
 
 import fr.hugman.culinaire.item.CulinaireItems;
-import fr.hugman.promenade.block.PromenadeBlocks;
-import fr.hugman.promenade.item.PromenadeItems;
 import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
 
 public class CulinaireCompostingChances {
@@ -20,5 +18,7 @@ public class CulinaireCompostingChances {
 
         CompostingChanceRegistry.INSTANCE.add(CulinaireItems.APPLE_PIE, 1.0f);
         CompostingChanceRegistry.INSTANCE.add(CulinaireItems.SWEET_BERRY_PIE, 1.0f);
+
+        CompostingChanceRegistry.INSTANCE.add(CulinaireItems.SANDWICH, 1.0f);
     }
 }

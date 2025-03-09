@@ -27,12 +27,17 @@
 			"fr.hugman.culinaire.client.CulinaireClient"
 		],
 		"rei_client": [
-			"fr.hugman.culinaire.compat.rei.CulinaireREIPlugin"
+          	"fr.hugman.culinaire.client.compat.rei.CulinaireREIPlugin"
 		]
 	},
 	"mixins": [
-		"culinaire.mixins.json"
+		"culinaire.mixins.json",
+		{
+			"config": "culinaire.client.mixins.json",
+			"environment": "client"
+		}
 	],
+	"accessWidener": "culinaire.accesswidener",
 	"depends": {
 		"minecraft": "^1.21.4",
 		"fabric": "*"

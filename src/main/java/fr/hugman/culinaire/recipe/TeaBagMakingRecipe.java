@@ -1,17 +1,17 @@
 package fr.hugman.culinaire.recipe;
 
-import fr.hugman.culinaire.registry.content.TeaContent;
+import fr.hugman.culinaire.component.CulinaireComponentTypes;
+import fr.hugman.culinaire.item.CulinaireItems;
 import fr.hugman.culinaire.tea.TeaHelper;
 import fr.hugman.culinaire.tea.TeaType;
-import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.util.Identifier;
+import net.minecraft.recipe.input.CraftingRecipeInput;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -21,27 +21,17 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
     public static final Ingredient PAPER = Ingredient.ofItems(Items.PAPER);
     public static final Ingredient STRING = Ingredient.ofItems(Items.STRING);
 
-    public TeaBagMakingRecipe(Identifier id, CraftingRecipeCategory category) {
-        super(id, category);
+    public TeaBagMakingRecipe(CraftingRecipeCategory category) {
+        super(category);
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
-        return TeaContent.TEA_BAG_MAKING;
-    }
-
-    @Override
-    public boolean fits(int width, int height) {
-        return width * height >= 3;
-    }
-
-    @Override
-    public boolean matches(RecipeInputInventory inv, World world) {
+    public boolean matches(CraftingRecipeInput input, World world) {
         boolean hasPaper = false;
         boolean hasString = false;
         List<TeaType> bagTeaTypes = new ArrayList<>();
-        for (int j = 0; j < inv.size(); ++j) {
-            ItemStack stack = inv.getStack(j);
+        for (int j = 0; j < input.size(); ++j) {
+            ItemStack stack = input.getStackInSlot(j);
             if (!stack.isEmpty()) {
                 if (PAPER.test(stack)) {
                     if (hasPaper) {
@@ -54,7 +44,7 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
                     }
                     hasString = true;
                 } else {
-                    List<TeaType> ingredientTeaTypes = TeaHelper.getIngredientTypes(stack);
+                    List<TeaType> ingredientTeaTypes = TeaHelper.getIngredientTypes(world.getRegistryManager(), stack);
                     if (ingredientTeaTypes.isEmpty()) {
                         return false;
                     } else {
@@ -84,13 +74,13 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack craft(RecipeInputInventory inv, DynamicRegistryManager drm) {
-        ItemStack givenStack = new ItemStack(TeaContent.TEA_BAG);
+    public ItemStack craft(CraftingRecipeInput input, RegistryWrapper.WrapperLookup registries) {
+        ItemStack givenStack = new ItemStack(CulinaireItems.TEA_BAG);
         List<TeaType> bagTeaTypes = new ArrayList<>();
-        for (int j = 0; j < inv.size(); ++j) {
-            ItemStack stack = inv.getStack(j);
+        for (int j = 0; j < input.size(); ++j) {
+            ItemStack stack = input.getStackInSlot(j);
             if (!stack.isEmpty()) {
-                List<TeaType> ingredientTeaTypes = TeaHelper.getIngredientTypes(stack);
+                List<TeaType> ingredientTeaTypes = TeaHelper.getIngredientTypes(registries, stack);
                 if (!ingredientTeaTypes.isEmpty()) {
                     for (TeaType teaType1 : ingredientTeaTypes) {
                         if (bagTeaTypes.stream().anyMatch(teaType2 -> teaType1.getFlavor() == teaType2.getFlavor())) {
@@ -105,7 +95,12 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
                 }
             }
         }
-        givenStack = TeaHelper.appendTeaTypes(givenStack, bagTeaTypes);
+        givenStack.set(CulinaireComponentTypes.TEA_CONTENTS, bagTeaTypes);
         return givenStack;
+    }
+
+    @Override
+    public RecipeSerializer<? extends SpecialCraftingRecipe> getSerializer() {
+        return CulinaireRecipeSerializers.TEA_BAG_MAKING;
     }
 }

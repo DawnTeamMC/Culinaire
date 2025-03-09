@@ -34,7 +34,7 @@ public class BurnableItem extends Item {
     }
 
     public void incrementBurningTime(LivingEntity livingEntity, ItemStack stack) {
-        if(stack.contains(CulinaireComponentTypes.BURNABLE)) {
+        if (stack.contains(CulinaireComponentTypes.BURNABLE)) {
             int burnTime = stack.getOrDefault(CulinaireComponentTypes.BURN, 0);
             var burnable = stack.get(CulinaireComponentTypes.BURNABLE);
             if (++burnTime >= burnable.burningTime()) {

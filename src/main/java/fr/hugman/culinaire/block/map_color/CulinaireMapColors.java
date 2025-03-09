@@ -1,4 +1,4 @@
 package fr.hugman.culinaire.block.map_color;
 
-public class CulinaireMapColors {
+public final class CulinaireMapColors {
 }

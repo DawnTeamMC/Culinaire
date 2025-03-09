@@ -9,6 +9,10 @@ import net.minecraft.sound.SoundEvent;
 import java.util.Optional;
 
 public class CulinaireSoundEvents {
+    // TEA
+    public static final SoundEvent KETTLE_BREW = of("block.kettle.brew");
+    public static final SoundEvent TEA_BOTTLE_FILL = SoundEvent.of(Culinaire.id("item.tea_bottle.fill"));
+
     private static RegistryEntry.Reference<SoundEvent> ofRef(String path) {
         var id = Culinaire.id(path);
         return Registry.registerReference(Registries.SOUND_EVENT, id, new SoundEvent(id, Optional.empty()));

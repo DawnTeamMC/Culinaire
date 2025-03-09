@@ -1,9 +1,11 @@
-package fr.hugman.culinaire.compat.rei;
+package fr.hugman.culinaire.client.compat.rei;
 
 import fr.hugman.culinaire.Culinaire;
+import fr.hugman.culinaire.block.CulinaireBlocks;
+import fr.hugman.culinaire.client.screen.KettleScreen;
+import fr.hugman.culinaire.component.CulinaireComponentTypes;
+import fr.hugman.culinaire.item.CulinaireItems;
 import fr.hugman.culinaire.recipe.TeaBagMakingRecipe;
-import fr.hugman.culinaire.registry.content.TeaContent;
-import fr.hugman.culinaire.screen.KettleScreen;
 import fr.hugman.culinaire.tea.TeaHelper;
 import fr.hugman.culinaire.tea.TeaType;
 import me.shedaniel.math.Rectangle;
@@ -14,13 +16,16 @@ import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.client.registry.screen.ScreenRegistry;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.ShapelessRecipe;
-import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 
+import java.util.List;
+
+@Environment(EnvType.CLIENT)
 public class CulinaireREIPlugin implements REIClientPlugin {
     public static final CategoryIdentifier<TeaBrewingDisplay> TEA_BREWING = CategoryIdentifier.of(Culinaire.id("plugins/tea_brewing"));
     private static final Identifier DISPLAY_TEXTURE = Culinaire.id("textures/gui/rei/display.png");
@@ -36,7 +41,7 @@ public class CulinaireREIPlugin implements REIClientPlugin {
 
         registry.setPlusButtonArea(TEA_BREWING, bounds -> null);
 
-        registry.addWorkstations(CulinaireREIPlugin.TEA_BREWING, EntryStacks.of(TeaContent.KETTLE));
+        registry.addWorkstations(CulinaireREIPlugin.TEA_BREWING, EntryStacks.of(CulinaireBlocks.KETTLE));
     }
 
     @Override
@@ -50,20 +55,25 @@ public class CulinaireREIPlugin implements REIClientPlugin {
             DefaultedList<Ingredient> inputs = DefaultedList.of();
             inputs.add(TeaBagMakingRecipe.PAPER);
             inputs.add(TeaBagMakingRecipe.STRING);
-            Ingredient ingredient = Ingredient.fromTag(teaType.getTag());
+            // FIXME
+            /* Ingredient ingredient = Ingredient.fromTag(teaType.getTagKey());
             if (!ingredient.isEmpty()) {
                 inputs.add(ingredient);
-                ItemStack output = TeaHelper.appendTeaType(new ItemStack(TeaContent.TEA_BAG), teaType);
-                Identifier id = new Identifier("culinaire", teaType.getStrength().getName() + "_" + teaType.getFlavor().getName() + "_tea_bag");
-                registry.add(new ShapelessRecipe(id, "tea_bags", CraftingRecipeCategory.MISC, output, inputs));
+                var stack = new ItemStack(CulinaireItems.TEA_BAG);
+                stack.set(CulinaireComponentTypes.TEA_CONTENTS, List.of(teaType));
+                registry.add(new ShapelessRecipe("tea_bags", CraftingRecipeCategory.MISC, stack, inputs));
             }
+
+             */
         }
     }
 
     private void registerTeaBottleDisplays(DisplayRegistry registry) {
         for (TeaType teaType : TeaHelper.getAllTypes()) {
-            ItemStack input = TeaHelper.appendTeaType(new ItemStack(TeaContent.TEA_BAG), teaType);
-            ItemStack output = TeaHelper.appendTeaType(new ItemStack(TeaContent.TEA_BOTTLE), teaType);
+            var input = new ItemStack(CulinaireItems.TEA_BAG);
+            var output = new ItemStack(CulinaireItems.TEA_BOTTLE);
+            input.set(CulinaireComponentTypes.TEA_CONTENTS, List.of(teaType));
+            output.set(CulinaireComponentTypes.TEA_CONTENTS, List.of(teaType));
             registry.add(new TeaBrewingDisplay(input, output, teaType.getFlavor().getColor()));
         }
     }

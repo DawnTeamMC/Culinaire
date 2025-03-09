@@ -1,24 +1,26 @@
 package fr.hugman.culinaire.tea;
 
-import fr.hugman.culinaire.Culinaire;
+import fr.hugman.culinaire.component.CulinaireComponentTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.registry.RegistryEntryLookup;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class TeaHelper {
-    @Environment(EnvType.CLIENT)
-    public static void appendTeaTooltip(List<Text> tooltips, List<TeaType> teaTypes) {
+    public static void appendTeaTooltip(Consumer<Text> consumer, List<TeaType> teaTypes) {
         for (TeaType teaType : teaTypes) {
-            tooltips.add(Text.translatable("tea_type." + Culinaire.MOD_ID + "." + teaType.getFlavor().getName() + "." + teaType.getStrength().getName()).formatted(Formatting.GRAY));
+            consumer.accept(teaType.getName().copy().formatted(Formatting.GRAY));
         }
     }
 
@@ -27,22 +29,14 @@ public class TeaHelper {
     }
 
     public static ItemStack appendTeaTypes(ItemStack stack, List<TeaType> teaTypes) {
-        NbtList NbtList = new NbtList();
-        for (TeaType teaType : teaTypes) {
-            NbtCompound typeTag = new NbtCompound();
-            typeTag.putString("Flavor", teaType.getFlavor().getName());
-            typeTag.putString("Strength", teaType.getStrength().getName());
-            NbtList.add(typeTag);
-        }
-        NbtCompound nbtCompound = stack.getOrCreateNbt();
-        nbtCompound.put("TeaTypes", NbtList);
+        stack.set(CulinaireComponentTypes.TEA_CONTENTS, teaTypes);
         return stack;
     }
 
-    public static List<TeaType> getIngredientTypes(ItemStack stack) {
+    public static List<TeaType> getIngredientTypes(RegistryEntryLookup.RegistryLookup lookup, ItemStack stack) {
         List<TeaType> teaTypes = new ArrayList<>();
         for (TeaType teaType : getAllTypes()) {
-            if (Ingredient.fromTag(teaType.getTag()).test(stack)) {
+            if (Ingredient.fromTag(lookup.getOrThrow(RegistryKeys.ITEM).getOrThrow(teaType.getTagKey())).test(stack)) {
                 teaTypes.add(teaType);
             }
         }
@@ -78,10 +72,6 @@ public class TeaHelper {
         return list;
     }
 
-    public static int getColor(ItemStack stack) {
-        return getColor(getTeaTypesByCompound(stack.getNbt()));
-    }
-
     public static int getColor(List<TeaType> teaTypes) {
         if (teaTypes.isEmpty()) {
             return 15112486;
@@ -95,7 +85,7 @@ public class TeaHelper {
                 int l = teaType.getStrength().getPotency() + 1;
                 f += (float) (l * (k >> 16 & 255)) / 255.0F;
                 g += (float) (l * (k >> 8 & 255)) / 255.0F;
-                h += (float) (l * (k >> 0 & 255)) / 255.0F;
+                h += (float) (l * (k & 255)) / 255.0F;
                 j += l;
             }
             if (j == 0) {

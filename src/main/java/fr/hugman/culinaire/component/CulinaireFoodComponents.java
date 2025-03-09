@@ -2,7 +2,7 @@ package fr.hugman.culinaire.component;
 
 import net.minecraft.component.type.FoodComponent;
 
-public class CulinaireFoodComponents {
+public final class CulinaireFoodComponents {
     public static final FoodComponent LETTUCE = simple(2, 0.2F);
     public static final FoodComponent TOMATO = simple(3, 0.5F);
 
@@ -25,6 +25,8 @@ public class CulinaireFoodComponents {
 
     public static final FoodComponent SALAD = simple(10, 0.4F);
     public static final FoodComponent MASHED_POTATOES = simple(9, 0.6F);
+
+    public static final FoodComponent SANDWICH = simple(5, 0.7F);
 
     public static FoodComponent simple(int nutrition, float saturation) {
         return new FoodComponent.Builder().nutrition(nutrition).saturationModifier(saturation).build();

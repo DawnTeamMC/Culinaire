@@ -1,28 +1,35 @@
 package fr.hugman.culinaire.block;
 
+import com.mojang.serialization.MapCodec;
+import fr.hugman.culinaire.block.entity.CulinaireBlockEntityTypes;
 import fr.hugman.culinaire.block.entity.KettleBlockEntity;
-import fr.hugman.culinaire.registry.content.TeaContent;
-import fr.hugman.culinaire.tea.TeaHelper;
+import fr.hugman.culinaire.component.CulinaireComponentTypes;
+import fr.hugman.culinaire.item.CulinaireItems;
+import fr.hugman.culinaire.sound.CulinaireSoundEvents;
+import fr.hugman.culinaire.stat.CulinaireStats;
 import fr.hugman.culinaire.tea.TeaType;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsage;
 import net.minecraft.item.Items;
-import net.minecraft.potion.PotionUtil;
 import net.minecraft.potion.Potions;
+import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.stat.Stat;
 import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
@@ -38,7 +45,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class KettleBlock extends BlockWithEntity {
-    public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING = Properties.HORIZONTAL_FACING;
 
     public static final VoxelShape TOP = Block.createCuboidShape(2.0D, 10.0D, 2.0D, 14.0D, 12.0D, 14.0D);
     public static final VoxelShape BODY = Block.createCuboidShape(3.0D, 1.0D, 3.0D, 13.0D, 10.0D, 13.0D);
@@ -63,6 +70,11 @@ public class KettleBlock extends BlockWithEntity {
     public KettleBlock(Settings settings) {
         super(settings);
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
+    }
+
+    @Override
+    protected MapCodec<? extends BlockWithEntity> getCodec() {
+        return null; //TODO
     }
 
     @Override
@@ -97,10 +109,10 @@ public class KettleBlock extends BlockWithEntity {
 
     private VoxelShape getShape(BlockState state) {
         return switch (state.get(FACING)) {
-            default -> NORTH_SHAPE;
             case EAST -> EAST_SHAPE;
             case SOUTH -> SOUTH_SHAPE;
             case WEST -> WEST_SHAPE;
+            default -> NORTH_SHAPE;
         };
     }
 
@@ -112,23 +124,12 @@ public class KettleBlock extends BlockWithEntity {
 
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return world.isClient ? null : checkType(type, TeaContent.KETTLE_ENTITY, KettleBlockEntity::serverTick);
+        return world.isClient ? null : validateTicker(type, CulinaireBlockEntityTypes.KETTLE, KettleBlockEntity::serverTick);
     }
-
 
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         return this.getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing());
-    }
-
-    @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
-        if (itemStack.hasCustomName()) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof KettleBlockEntity kettleEntity) {
-                kettleEntity.setCustomName(itemStack.getName());
-            }
-        }
     }
 
     @Override
@@ -143,47 +144,56 @@ public class KettleBlock extends BlockWithEntity {
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        ItemStack stack = player.getStackInHand(hand);
-        if (!world.isClient) {
-            boolean openScreen = true;
-            BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof KettleBlockEntity kettle) {
-                if (!stack.isEmpty()) {
-                    if (stack.getItem() == Items.WATER_BUCKET && kettle.getFluid() != KettleBlockEntity.Fluid.TEA) {
-                        if (kettle.addWater(3)) {
-                            openScreen = false;
-                            player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.BUCKET)));
-                            player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
-                            world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                            world.emitGameEvent(null, GameEvent.FLUID_PLACE, pos);
-                        }
-                    } else if (stack.getItem() == Items.POTION && PotionUtil.getPotion(stack) == Potions.WATER && kettle.getFluid() != KettleBlockEntity.Fluid.TEA) {
-                        if (kettle.addWater(1)) {
-                            openScreen = false;
-                            player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
-                            player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
-                            world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                            world.emitGameEvent(null, GameEvent.FLUID_PLACE, pos);
-                        }
-                    } else if (stack.getItem() == Items.GLASS_BOTTLE && kettle.getFluid() == KettleBlockEntity.Fluid.TEA) {
-                        List<TeaType> teaTypes = kettle.getTeaTypes();
-                        if (kettle.removeFluid(1)) {
-                            openScreen = false;
-                            player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, TeaHelper.appendTeaTypes(new ItemStack(TeaContent.TEA_BOTTLE), teaTypes)));
-                            player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
-                            world.playSound(null, pos, TeaContent.TEA_BOTTLE_FILL_SOUND, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                            world.emitGameEvent(null, GameEvent.FLUID_PICKUP, pos);
-                        }
-                    }
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        if (world instanceof ServerWorld) {
+            NamedScreenHandlerFactory namedScreenHandlerFactory = this.createScreenHandlerFactory(state, world, pos);
+            if (namedScreenHandlerFactory != null) {
+                player.openHandledScreen(namedScreenHandlerFactory);
+                player.incrementStat(this.getOpenStat());
+            }
+        }
+
+        return ActionResult.SUCCESS;
+    }
+
+    protected Stat<Identifier> getOpenStat() {
+        return Stats.CUSTOM.getOrCreateStat(CulinaireStats.INTERACT_WITH_KETTLE);
+    }
+
+    @Override
+    protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        if (world.getBlockEntity(pos) instanceof KettleBlockEntity kettle && !stack.isEmpty()) {
+            PotionContentsComponent potionContentsComponent = stack.get(DataComponentTypes.POTION_CONTENTS);
+            if (stack.getItem() == Items.WATER_BUCKET && kettle.getFluid() != KettleBlockEntity.Fluid.TEA) {
+                if (kettle.addWater(3)) {
+                    player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.BUCKET)));
+                    player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
+                    world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    world.emitGameEvent(null, GameEvent.FLUID_PLACE, pos);
+                    return ActionResult.SUCCESS;
                 }
-                if (openScreen) {
-                    player.openHandledScreen((KettleBlockEntity) blockEntity);
+            } else if (stack.getItem() == Items.POTION && potionContentsComponent != null && potionContentsComponent.matches(Potions.WATER) && kettle.getFluid() != KettleBlockEntity.Fluid.TEA) {
+                if (kettle.addWater(1)) {
+                    player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
+                    player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
+                    world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    world.emitGameEvent(null, GameEvent.FLUID_PLACE, pos);
+                    return ActionResult.SUCCESS;
+                }
+            } else if (stack.getItem() == Items.GLASS_BOTTLE && kettle.getFluid() == KettleBlockEntity.Fluid.TEA) {
+                List<TeaType> teaTypes = kettle.getTeaTypes();
+                if (kettle.removeFluid(1)) {
+                    var newStack = new ItemStack(CulinaireItems.TEA_BOTTLE);
+                    newStack.set(CulinaireComponentTypes.TEA_CONTENTS, teaTypes);
+                    player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, newStack));
+                    player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
+                    world.playSound(null, pos, CulinaireSoundEvents.TEA_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    world.emitGameEvent(null, GameEvent.FLUID_PICKUP, pos);
+                    return ActionResult.SUCCESS;
                 }
             }
-            player.incrementStat(TeaContent.KETTLE_INTERACTION_STAT);
         }
-        return ActionResult.success(world.isClient);
+        return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
     }
 
     @Override
@@ -197,7 +207,7 @@ public class KettleBlock extends BlockWithEntity {
     }
 
     @Override
-    public boolean canPathfindThrough(BlockState state, BlockView world, BlockPos pos, NavigationType type) {
+    protected boolean canPathfindThrough(BlockState state, NavigationType type) {
         return false;
     }
 }

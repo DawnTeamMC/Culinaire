@@ -1,6 +1,6 @@
-package fr.hugman.culinaire.screen.handler;
+package fr.hugman.culinaire.screen;
 
-import fr.hugman.culinaire.registry.content.TeaContent;
+import fr.hugman.culinaire.item.CulinaireItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,7 +22,7 @@ public class KettleScreenHandler extends ScreenHandler {
     }
 
     public KettleScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, PropertyDelegate propertyDelegate) {
-        super(TeaContent.KETTLE_SCREEN_HANDLER, syncId);
+        super(CulinaireScreenHandlerTypes.KETTLE, syncId);
         checkSize(inventory, 1);
         checkDataCount(propertyDelegate, 6);
         this.inventory = inventory;
@@ -116,7 +116,7 @@ public class KettleScreenHandler extends ScreenHandler {
         }
 
         public static boolean matches(ItemStack stack) {
-            return stack.getItem() == TeaContent.TEA_BAG;
+            return stack.getItem() == CulinaireItems.TEA_BAG;
         }
 
         public boolean canInsert(ItemStack stack) {
@@ -124,7 +124,7 @@ public class KettleScreenHandler extends ScreenHandler {
         }
 
         public int getMaxItemCount() {
-            return TeaContent.TEA_BAG.getMaxCount();
+            return CulinaireItems.TEA_BAG.getMaxCount();
         }
 
     }

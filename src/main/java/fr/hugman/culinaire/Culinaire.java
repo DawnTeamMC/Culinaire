@@ -3,16 +3,16 @@ package fr.hugman.culinaire;
 import com.google.common.reflect.Reflection;
 import fr.hugman.culinaire.block.CulinaireBlocks;
 import fr.hugman.culinaire.block.CulinaireCauldronBehaviors;
-import fr.hugman.culinaire.entity.CulinaireEntityTypes;
+import fr.hugman.culinaire.component.CulinaireComponentModifiers;
 import fr.hugman.culinaire.item.CulinaireItems;
 import fr.hugman.culinaire.itemgroup.CulinaireItemGroupAdditions;
 import fr.hugman.culinaire.itemgroup.CulinaireItemGroups;
 import fr.hugman.culinaire.loot.CulinaireLootTables;
-import com.hugman.culinaire.registry.content.*;
+import fr.hugman.culinaire.recipe.CulinaireRecipeSerializers;
 import fr.hugman.culinaire.registry.CulinaireCompostingChances;
 import fr.hugman.culinaire.registry.CulinaireFlammables;
 import fr.hugman.culinaire.registry.CulinaireRegistries;
-import fr.hugman.dawn.Registrar;
+import fr.hugman.culinaire.sound.CulinaireSoundEvents;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
@@ -25,7 +25,7 @@ public class Culinaire implements ModInitializer {
     @Override
     public void onInitialize() {
         CulinaireRegistries.register();
-        
+
         Reflection.initialize(CulinaireSoundEvents.class);
 
         Reflection.initialize(CulinaireBlocks.class);
@@ -35,11 +35,15 @@ public class Culinaire implements ModInitializer {
         Reflection.initialize(CulinaireItems.class);
 
         Reflection.initialize(CulinaireItemGroups.class);
-        CulinaireItemGroupAdditions.appendItemGroups();
+        CulinaireItemGroupAdditions.registerEvents();
         CulinaireCompostingChances.register();
         CulinaireCauldronBehaviors.register();
 
+        Reflection.initialize(CulinaireRecipeSerializers.class);
+
         CulinaireLootTables.addToVanillaTables();
+
+        CulinaireComponentModifiers.registerEvents();
     }
 
     public static Identifier id(String path) {

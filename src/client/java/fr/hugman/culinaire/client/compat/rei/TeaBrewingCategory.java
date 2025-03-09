@@ -1,8 +1,7 @@
-package fr.hugman.culinaire.compat.rei;
+package fr.hugman.culinaire.client.compat.rei;
 
 import com.google.common.collect.Lists;
-import fr.hugman.culinaire.registry.content.TeaContent;
-import com.mojang.blaze3d.systems.RenderSystem;
+import fr.hugman.culinaire.block.CulinaireBlocks;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
@@ -11,13 +10,14 @@ import me.shedaniel.rei.api.client.gui.widgets.Widgets;
 import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
 
+@Environment(EnvType.CLIENT)
 public class TeaBrewingCategory implements DisplayCategory<TeaBrewingDisplay> {
-
     @Override
     public CategoryIdentifier<? extends TeaBrewingDisplay> getCategoryIdentifier() {
         return CulinaireREIPlugin.TEA_BREWING;
@@ -25,7 +25,7 @@ public class TeaBrewingCategory implements DisplayCategory<TeaBrewingDisplay> {
 
     @Override
     public Renderer getIcon() {
-        return EntryStacks.of(TeaContent.KETTLE);
+        return EntryStacks.of(CulinaireBlocks.KETTLE);
     }
 
     @Override
@@ -38,6 +38,8 @@ public class TeaBrewingCategory implements DisplayCategory<TeaBrewingDisplay> {
         Point startPoint = new Point(bounds.getCenterX() - 24, bounds.getCenterY() - 30);
         List<Widget> widgets = Lists.newArrayList();
         widgets.add(Widgets.createRecipeBase(bounds));
+        /*
+        FIXME
         widgets.add(Widgets.createDrawableWidget((context, mouseX, mouseY, delta) -> {
             var texture = CulinaireREIPlugin.getDisplayTexture();
 
@@ -61,6 +63,7 @@ public class TeaBrewingCategory implements DisplayCategory<TeaBrewingDisplay> {
             int height = MathHelper.ceil(System.currentTimeMillis() / 250d % 26d);
             context.drawTexture(texture, startPoint.x + 35, startPoint.y + 1, 70, 25, 7, height);
         }));
+         */
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 16, startPoint.y + 1)).entries(display.getInputEntries().get(0)).disableBackground().markInput());
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 53, startPoint.y + 32)).entries(display.getOutputEntries().get(0)).disableBackground().markOutput());
         return widgets;

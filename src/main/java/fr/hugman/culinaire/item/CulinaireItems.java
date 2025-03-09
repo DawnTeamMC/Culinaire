@@ -2,10 +2,12 @@ package fr.hugman.culinaire.item;
 
 import fr.hugman.culinaire.Culinaire;
 import fr.hugman.culinaire.block.CulinaireBlocks;
+import fr.hugman.culinaire.component.CulinaireComponentTypes;
 import fr.hugman.culinaire.component.CulinaireConsumableComponents;
 import fr.hugman.culinaire.component.CulinaireFoodComponents;
 import fr.hugman.culinaire.config.CulinaireConfig;
 import net.minecraft.block.Block;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ConsumableComponents;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -15,6 +17,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -48,6 +51,10 @@ public class CulinaireItems {
     public static final Item TOASTY_MARSHMALLOW_ON_A_STICK = register("toasty_marshmallow_on_a_stick", BurnableItem::new, ItemSettings.burnableFoodOnStick(CulinaireFoodComponents.TOASTY_MARSHMALLOW, CulinaireConsumableComponents.SNACK_FOOD, 75, GOLDEN_MARSHMALLOW_ON_A_STICK));
     public static final Item MARSHMALLOW_ON_A_STICK = register("marshmallow_on_a_stick", BurnableItem::new, ItemSettings.burnableFoodOnStick(CulinaireFoodComponents.MARSHMALLOW, CulinaireConsumableComponents.SNACK_FOOD, 150, TOASTY_MARSHMALLOW_ON_A_STICK));
 
+    // TEA
+    public static final Item TEA_BAG = register("tea_bag", new Item.Settings().component(CulinaireComponentTypes.TEA_CONTENTS, List.of()).maxCount(16));
+    public static final Item TEA_BOTTLE = register("tea_bottle", new Item.Settings().component(CulinaireComponentTypes.TEA_CONTENTS, List.of()).maxCount(1).recipeRemainder(Items.GLASS_BOTTLE).useRemainder(Items.GLASS_BOTTLE).component(DataComponentTypes.CONSUMABLE, CulinaireConsumableComponents.TEA));
+
     // PASTRIES
     public static final Item CROISSANT = register("croissant", new Item.Settings().food(CulinaireFoodComponents.CROISSANT, CulinaireConsumableComponents.SNACK_FOOD));
     public static final Item CHOUQUETTE = register("chouquette", new Item.Settings().food(CulinaireFoodComponents.CHOUQUETTE, CulinaireConsumableComponents.SNACK_FOOD));
@@ -55,9 +62,13 @@ public class CulinaireItems {
     public static final Item APPLE_PIE = register("apple_pie", new Item.Settings().food(CulinaireFoodComponents.APPLE_PIE));
     public static final Item SWEET_BERRY_PIE = register("sweet_berry_pie", new Item.Settings().food(CulinaireFoodComponents.SWEET_BERRY_PIE));
 
+    // SANDWICHES
+    public static final Item SANDWICH = register("sandwich", new Item.Settings().food(CulinaireFoodComponents.SANDWICH).maxCount(1));
+
     // MEALS
     public static final Item SALAD = register("salad", ItemSettings.stew(CulinaireFoodComponents.SALAD));
     public static final Item MASHED_POTATOES = register("mashed_potatoes", ItemSettings.stew(CulinaireFoodComponents.MASHED_POTATOES));
+
 
     private static Function<Item.Settings, Item> blockItemWithUniqueName(Block block) {
         return settings -> new BlockItem(block, settings.useItemPrefixedTranslationKey());
