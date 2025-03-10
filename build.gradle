@@ -8,7 +8,7 @@ repositories {
     maven { url 'https://jitpack.io' }                  // Required for Dawn API
 
     maven { url 'https://maven.shedaniel.me/' }         // Required for Cloth Config and Roughly Enough Items
-    maven { url 'https://maven.terraformersmc.com/' }   // Required for Mod Menu
+    maven { url 'https://maven.terraformersmc.com/' }   // Required for Mod Menu and EMI
     maven { url 'https://maven.ryanliptak.com/' }       // Required for AppleSkin
 }
 
@@ -16,6 +16,8 @@ dependencies {
     modApi "com.github.DawnTeamMC:DawnAPI:${dawn_version}"
 
     modApi "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
+    modCompileOnly "dev.emi:emi-fabric:${emi_version}:api"
+    modLocalRuntime "dev.emi:emi-fabric:${emi_version}"
 
     compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 }

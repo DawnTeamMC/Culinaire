@@ -31,6 +31,9 @@
 		],
 		"rei_client": [
 			"com.hugman.culinaire.compat.rei.CulinaireREIPlugin"
+		],
+		"emi": [
+			"com.hugman.culinaire.compat.emi.CulinaireEMIPlugin"
 		]
 	},
 	"mixins": [
