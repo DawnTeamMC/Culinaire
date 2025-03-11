@@ -181,7 +181,7 @@ public class TeaType {
 
         public static Strength byName(String name) {
             for (Strength strength : Strength.values()) {
-                if (strength.getName().equals(name)) {
+                if (strength.asString().equals(name)) {
                     return strength;
                 }
             }
