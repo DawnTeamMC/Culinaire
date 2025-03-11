@@ -6,8 +6,11 @@ import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.BlockStateModelGenerator;
 import net.minecraft.client.data.ItemModelGenerator;
+import net.minecraft.client.data.ModelIds;
 import net.minecraft.client.data.Models;
+import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.util.Identifier;
 
 public class CulinaireModelProvider extends FabricModelProvider {
     public CulinaireModelProvider(FabricDataOutput output) {
@@ -47,7 +50,7 @@ public class CulinaireModelProvider extends FabricModelProvider {
         gen.register(CulinaireItems.BURNT_MARSHMALLOW_ON_A_STICK, Models.GENERATED);
 
         gen.register(CulinaireItems.TEA_BAG, Models.GENERATED);
-        gen.registerPotion(CulinaireItems.TEA_BOTTLE);
+        registerPotionVanillaGlass(gen, CulinaireItems.TEA_BOTTLE);
 
         gen.register(CulinaireItems.CROISSANT, Models.GENERATED);
         gen.register(CulinaireItems.CHOUQUETTE, Models.GENERATED);
@@ -58,5 +61,10 @@ public class CulinaireModelProvider extends FabricModelProvider {
 
         gen.register(CulinaireItems.SALAD, Models.GENERATED);
         gen.register(CulinaireItems.MASHED_POTATOES, Models.GENERATED);
+    }
+
+    public final void registerPotionVanillaGlass(ItemModelGenerator gen, Item item) {
+        Identifier identifier = gen.uploadTwoLayers(item, ModelIds.getMinecraftNamespacedItem("potion_overlay"), ModelIds.getItemModelId(Items.POTION));
+        gen.registerPotionTinted(item, identifier);
     }
 }
