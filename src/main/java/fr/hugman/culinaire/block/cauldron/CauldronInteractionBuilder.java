@@ -70,7 +70,7 @@ public class CauldronInteractionBuilder {
 
     /**
      * Sets the item that will result from the interaction.
-     * <p>Note: This is a shortcut method for {@link #stack}.</p>
+     * <p>Note: This is a shortcut method for {@link #stack(ItemStack)}.</p>
      *
      * @param item an item
      * @return this builder for chaining
@@ -93,7 +93,7 @@ public class CauldronInteractionBuilder {
 
     /**
      * Makes the cauldron try to stay the same after the interaction.
-     * <p>Note: This is a shortcut method for {@link #cauldron}.</p>
+     * <p>Note: This is a shortcut method for {@link #cauldron(Block)}.</p>
      *
      * @return this builder for chaining
      */
@@ -149,9 +149,15 @@ public class CauldronInteractionBuilder {
                 if (!world.isClient) {
                     BlockState returnedState = CauldronUtil.modifyCauldron(state, cauldron, newLevel);
 
-                    player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, this.stack.copy()));
+                    Item item = stack.getItem();
+                    if(this.stack == null || this.stack.isEmpty()) {
+                        stack.decrementUnlessCreative(1, player);
+                    }
+                    else {
+                        player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, this.stack.copy()));
+                    }
                     player.incrementStat(CauldronUtil.isFull(returnedState) ? Stats.FILL_CAULDRON : Stats.USE_CAULDRON);
-                    player.incrementStat(Stats.USED.getOrCreateStat(this.stack.getItem()));
+                    player.incrementStat(Stats.USED.getOrCreateStat(item));
                     world.setBlockState(pos, returnedState);
                     world.emitGameEvent(null, newLevel < 0 ? GameEvent.FLUID_PICKUP : GameEvent.FLUID_PLACE, pos);
                     if (sound != null) world.playSound(null, pos, sound, SoundCategory.BLOCKS, 1.0F, 1.0F);
