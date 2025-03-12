@@ -116,6 +116,7 @@ public class KettleScreenHandler extends ScreenHandler {
         }
 
         public static boolean matches(ItemStack stack) {
+            //TODO: change to a tag
             return stack.getItem() == CulinaireItems.TEA_BAG;
         }
 
