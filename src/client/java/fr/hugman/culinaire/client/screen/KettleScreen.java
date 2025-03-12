@@ -1,6 +1,5 @@
 package fr.hugman.culinaire.client.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import fr.hugman.culinaire.Culinaire;
 import fr.hugman.culinaire.screen.KettleScreenHandler;
 import net.minecraft.client.gui.DrawContext;
@@ -9,9 +8,14 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.ColorHelper;
 
 public class KettleScreen extends HandledScreen<KettleScreenHandler> {
     private static final Identifier TEXTURE = Culinaire.id("textures/gui/container/kettle.png");
+    private static final Identifier EMPTY_FLUID_TEXTURE = Culinaire.id("container/kettle/empty_fluid");
+    private static final Identifier FLUID_TEXTURE = Culinaire.id("textures/gui/sprites/container/kettle/fluid.png");
+    private static final Identifier BREW_PROGRESS_TEXTURE = Culinaire.id("container/kettle/brew_progress");
+    private static final Identifier FIRE_TEXTURE = Culinaire.id("container/kettle/fire");
 
     public KettleScreen(KettleScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -42,11 +46,11 @@ public class KettleScreen extends HandledScreen<KettleScreenHandler> {
         if (brewTime > 0) {
             int brewBarHeight = (int) (27.0F * (1.0F - (float) brewTime / totalBrewTime));
             if (brewBarHeight > 0) {
-                context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, i + 99, j + 17, 222, 0, 7, brewBarHeight, 256, 256);
+                context.drawGuiTexture(RenderLayer::getGuiTextured, BREW_PROGRESS_TEXTURE, 7, 27, 0, 0, i + 99, j + 17, 7, brewBarHeight);
             }
         }
         if (fluid == 0) {
-            context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, i + 65, j + 48, 176, 0, 46, 16, 256, 256);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, EMPTY_FLUID_TEXTURE, i + 65, j + 48, 46, 16);
         } else {
             if (fluidLevel > 0) {
                 int teaColor;
@@ -55,17 +59,13 @@ public class KettleScreen extends HandledScreen<KettleScreenHandler> {
                 } else {
                     teaColor = 3694022;
                 }
-                float red = (float) (teaColor >> 16 & 255) / 255.0F;
-                float green = (float) (teaColor >> 8 & 255) / 255.0F;
-                float blue = (float) (teaColor & 255) / 255.0F;
-                RenderSystem.setShaderColor(red, green, blue, 1.0F);
                 int fluidHeight = (int) (12.0F * (float) fluidLevel / 3.0F) + 4;
-                context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, i + 65, j + 64 - fluidHeight, 176, 16, 46, fluidHeight, 256, 256);
+                // cannot use drawGuiTexture here: method that can cut does not have a color attribute
+                context.drawTexture(RenderLayer::getGuiTextured, FLUID_TEXTURE, i + 65, j + 64 - fluidHeight, 0, 0, 46, fluidHeight, 46, 16, ColorHelper.fullAlpha(teaColor));
             }
         }
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         if (isHot) {
-            context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, i + 76, j + 68, 176, 32, 24, 9, 256, 256);
+            context.drawGuiTexture(RenderLayer::getGuiTextured, FIRE_TEXTURE, i + 76, j + 68, 24, 9);
         }
     }
 }
