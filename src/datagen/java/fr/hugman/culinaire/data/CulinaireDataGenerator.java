@@ -2,6 +2,7 @@ package fr.hugman.culinaire.data;
 
 import fr.hugman.culinaire.Culinaire;
 import fr.hugman.culinaire.data.provider.CulinaireBlockLootTableProvider;
+import fr.hugman.culinaire.data.provider.CulinaireBlockTagProvider;
 import fr.hugman.culinaire.data.provider.CulinaireModelProvider;
 import fr.hugman.culinaire.data.provider.CulinaireRecipeGenerator;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
@@ -19,6 +20,9 @@ public class CulinaireDataGenerator implements DataGeneratorEntrypoint {
 
         // - Loot tables
         pack.addProvider(CulinaireBlockLootTableProvider::new);
+
+        // - Tags
+        pack.addProvider(CulinaireBlockTagProvider::new);
 
         // - Recipes
         pack.addProvider(CulinaireRecipeGenerator::create);
