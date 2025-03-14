@@ -5,7 +5,6 @@ import fr.hugman.culinaire.block.CulinaireBlocks;
 import fr.hugman.culinaire.client.screen.KettleScreen;
 import fr.hugman.culinaire.component.CulinaireComponentTypes;
 import fr.hugman.culinaire.item.CulinaireItems;
-import fr.hugman.culinaire.recipe.TeaBagMakingRecipe;
 import fr.hugman.culinaire.tea.TeaHelper;
 import fr.hugman.culinaire.tea.TeaType;
 import me.shedaniel.math.Rectangle;
@@ -50,10 +49,11 @@ public class CulinaireREIPlugin implements REIClientPlugin {
     private void registerTeaBagDisplays(DisplayRegistry registry) {
         for (TeaType teaType : TeaHelper.getAllTypes()) {
             DefaultedList<Ingredient> inputs = DefaultedList.of();
-            inputs.add(TeaBagMakingRecipe.PAPER);
-            inputs.add(TeaBagMakingRecipe.STRING);
             // FIXME
-            /* Ingredient ingredient = Ingredient.fromTag(teaType.getTagKey());
+            /*
+            inputs.add(TeaBagRecipe.PAPER);
+            inputs.add(TeaBagRecipe.STRING);
+            Ingredient ingredient = Ingredient.fromTag(teaType.getTagKey());
             if (!ingredient.isEmpty()) {
                 inputs.add(ingredient);
                 var stack = new ItemStack(CulinaireItems.TEA_BAG);

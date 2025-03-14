@@ -1,11 +1,13 @@
 package fr.hugman.culinaire.recipe;
 
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import fr.hugman.culinaire.component.CulinaireComponentTypes;
-import fr.hugman.culinaire.item.CulinaireItems;
 import fr.hugman.culinaire.tea.TeaHelper;
 import fr.hugman.culinaire.tea.TeaType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
@@ -17,12 +19,16 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
-    public static final Ingredient PAPER = Ingredient.ofItems(Items.PAPER);
-    public static final Ingredient STRING = Ingredient.ofItems(Items.STRING);
+public class TeaBagRecipe extends SpecialCraftingRecipe {
+    private final Ingredient paper;
+    private final Ingredient string;
+    private final ItemStack result;
 
-    public TeaBagMakingRecipe(CraftingRecipeCategory category) {
+    public TeaBagRecipe(CraftingRecipeCategory category, Ingredient paper, Ingredient string, ItemStack result) {
         super(category);
+        this.paper = paper;
+        this.string = string;
+        this.result = result;
     }
 
     @Override
@@ -33,12 +39,12 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
         for (int j = 0; j < input.size(); ++j) {
             ItemStack stack = input.getStackInSlot(j);
             if (!stack.isEmpty()) {
-                if (PAPER.test(stack)) {
+                if (this.paper.test(stack)) {
                     if (hasPaper) {
                         return false;
                     }
                     hasPaper = true;
-                } else if (STRING.test(stack)) {
+                } else if (this.string.test(stack)) {
                     if (hasString) {
                         return false;
                     }
@@ -75,7 +81,7 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
 
     @Override
     public ItemStack craft(CraftingRecipeInput input, RegistryWrapper.WrapperLookup registries) {
-        ItemStack givenStack = new ItemStack(CulinaireItems.TEA_BAG);
+        ItemStack givenStack = this.result.copy();
         List<TeaType> bagTeaTypes = new ArrayList<>();
         for (int j = 0; j < input.size(); ++j) {
             ItemStack stack = input.getStackInSlot(j);
@@ -101,6 +107,34 @@ public class TeaBagMakingRecipe extends SpecialCraftingRecipe {
 
     @Override
     public RecipeSerializer<? extends SpecialCraftingRecipe> getSerializer() {
-        return CulinaireRecipeSerializers.TEA_BAG_MAKING;
+        return CulinaireRecipeSerializers.TEA_BAG;
+    }
+
+    public static class Serializer implements RecipeSerializer<TeaBagRecipe> {
+        private static final MapCodec<TeaBagRecipe> CODEC = RecordCodecBuilder.mapCodec(
+                instance -> instance.group(
+                        CraftingRecipeCategory.CODEC.fieldOf("category").forGetter(SpecialCraftingRecipe::getCategory),
+                        Ingredient.CODEC.fieldOf("paper").forGetter(recipe -> recipe.paper),
+                        Ingredient.CODEC.fieldOf("string").forGetter(recipe -> recipe.string),
+                        ItemStack.CODEC.fieldOf("result").forGetter(recipe -> recipe.result)
+                ).apply(instance, TeaBagRecipe::new)
+        );
+        private static final PacketCodec<RegistryByteBuf, TeaBagRecipe> PACKET_CODEC = PacketCodec.tuple(
+                CraftingRecipeCategory.PACKET_CODEC, SpecialCraftingRecipe::getCategory,
+                Ingredient.PACKET_CODEC, recipe -> recipe.paper,
+                Ingredient.PACKET_CODEC, recipe -> recipe.string,
+                ItemStack.PACKET_CODEC, recipe -> recipe.result,
+                TeaBagRecipe::new
+        );
+
+        @Override
+        public MapCodec<TeaBagRecipe> codec() {
+            return CODEC;
+        }
+
+        @Override
+        public PacketCodec<RegistryByteBuf, TeaBagRecipe> packetCodec() {
+            return PACKET_CODEC;
+        }
     }
 }

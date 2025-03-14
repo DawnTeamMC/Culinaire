@@ -50,7 +50,7 @@ public class SandwichRecipe extends SpecialCraftingRecipe {
 
     @Override
     public RecipeSerializer<? extends SandwichRecipe> getSerializer() {
-        return CulinaireRecipeSerializers.SANDWICH_CRAFTING;
+        return CulinaireRecipeSerializers.SANDWICH;
     }
 
     @Override

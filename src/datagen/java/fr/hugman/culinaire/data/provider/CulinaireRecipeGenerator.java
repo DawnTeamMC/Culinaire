@@ -1,14 +1,20 @@
 package fr.hugman.culinaire.data.provider;
 
 import fr.hugman.culinaire.block.CulinaireBlocks;
+import fr.hugman.culinaire.data.recipe.SandwichRecipeJsonBuilder;
+import fr.hugman.culinaire.data.recipe.TeaBagRecipeJsonBuilder;
 import fr.hugman.culinaire.item.CulinaireItems;
+import fr.hugman.culinaire.tag.CulinaireItemTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.minecraft.block.Blocks;
 import net.minecraft.data.recipe.RecipeExporter;
 import net.minecraft.data.recipe.RecipeGenerator;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.book.RecipeCategory;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 
 import java.util.concurrent.CompletableFuture;
@@ -96,6 +102,9 @@ public class CulinaireRecipeGenerator extends RecipeGenerator {
                 .pattern("###")
                 .criterion(hasItem(CulinaireItems.CHEESE), this.conditionsFromItem(CulinaireItems.CHEESE))
                 .offerTo(this.exporter);
+
+        // TEA
+        this.offerTeaBagRecipe(Items.PAPER, Items.STRING, CulinaireItems.TEA_BAG);
         this.createShaped(RecipeCategory.FOOD, CulinaireBlocks.KETTLE)
                 .input('T', Items.IRON_TRAPDOOR)
                 .input('#', Items.IRON_INGOT)
@@ -128,6 +137,9 @@ public class CulinaireRecipeGenerator extends RecipeGenerator {
                 .criterion(hasItem(Items.SWEET_BERRIES), this.conditionsFromItem(Items.SWEET_BERRIES))
                 .offerTo(this.exporter);
 
+        // SANDWICHES
+        this.offerSandwichRecipe();
+
         // MEALS
         this.createShapeless(RecipeCategory.FOOD, CulinaireItems.SALAD)
                 .input(CulinaireItems.LETTUCE)
@@ -141,6 +153,38 @@ public class CulinaireRecipeGenerator extends RecipeGenerator {
                 .input(Items.BAKED_POTATO)
                 .input(Items.BOWL)
                 .criterion(hasItem(Items.BAKED_POTATO), this.conditionsFromItem(Items.BAKED_POTATO))
+                .offerTo(this.exporter);
+    }
+
+    public void offerTeaBagRecipe(Item paper, Item string, Item teaBag) {
+        TeaBagRecipeJsonBuilder.create(RecipeCategory.FOOD, Ingredient.ofItem(paper), Ingredient.ofItem(string), new ItemStack(teaBag))
+                .criterion(hasItem(paper), this.conditionsFromItem(paper))
+                .offerTo(this.exporter);
+    }
+
+
+    public void offerSandwichRecipe() {
+        SandwichRecipeJsonBuilder.create(
+                        registries.getOrThrow(RegistryKeys.ITEM),
+                        RecipeCategory.FOOD,
+                        0.5f,
+                        1.0f,
+                        0.2f,
+                        0.5f,
+                        new ItemStack(CulinaireItems.SANDWICH)
+                )
+                .bread(CulinaireItemTags.SANDWICH_BREAD)
+                .blacklist(CulinaireItemTags.SANDWICH_INGREDIENT_BLACKLIST)
+                .association(Items.APPLE, CulinaireItems.MILK_CHOCOLATE_BAR)
+                .association(Items.COOKED_CHICKEN, Items.HONEY_BOTTLE)
+                .association(Items.COOKED_BEEF, CulinaireItems.CHEESE)
+                .association(Items.GOLDEN_APPLE, Items.DRIED_KELP)
+                .association(CulinaireItems.MARSHMALLOW, CulinaireItems.MILK_CHOCOLATE_BAR, Items.HONEY_BOTTLE)
+                .association(Items.RABBIT, Items.BEETROOT)
+                .association(Items.SPIDER_EYE, CulinaireItems.DARK_CHOCOLATE_BAR)
+                .association(CulinaireItems.TOMATO, CulinaireItems.CHEESE, CulinaireItems.LETTUCE)
+                .criterion("has_bread", this.conditionsFromTag(CulinaireItemTags.SANDWICH_BREAD))
+
                 .offerTo(this.exporter);
     }
 
