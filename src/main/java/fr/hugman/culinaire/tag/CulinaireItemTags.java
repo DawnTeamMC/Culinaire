@@ -13,6 +13,9 @@ public class CulinaireItemTags {
     public static final TagKey<Item> SANDWICH_BREAD = of("sandwich_bread");
     public static final TagKey<Item> SANDWICH_INGREDIENT_BLACKLIST = of("sandwich_ingredient_blacklist");
 
+    public static final TagKey<Item> GREEN_TEA_INGREDIENTS = of("tea_ingredients/green");
+    public static final TagKey<Item> WHITE_TEA_INGREDIENTS = of("tea_ingredients/white");
+
     private static TagKey<Item> of(String path) {
         return TagKey.of(RegistryKeys.ITEM, Culinaire.id(path));
     }

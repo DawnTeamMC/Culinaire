@@ -6,6 +6,7 @@ import fr.hugman.culinaire.block.CulinaireCauldronBehaviors;
 import fr.hugman.culinaire.block.entity.CulinaireBlockEntityTypes;
 import fr.hugman.culinaire.component.CulinaireComponentModifiers;
 import fr.hugman.culinaire.component.CulinaireComponentTypes;
+import fr.hugman.culinaire.entity.effect.CulinaireEffects;
 import fr.hugman.culinaire.item.CulinaireItems;
 import fr.hugman.culinaire.itemgroup.CulinaireItemGroupAdditions;
 import fr.hugman.culinaire.itemgroup.CulinaireItemGroups;
@@ -53,6 +54,8 @@ public class Culinaire implements ModInitializer {
         CulinaireComponentModifiers.registerEvents();
 
         Reflection.initialize(CulinaireScreenHandlerTypes.class);
+
+        Reflection.initialize(CulinaireEffects.class);
 
         Reflection.initialize(CulinaireStats.class);
     }

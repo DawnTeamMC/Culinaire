@@ -7,7 +7,7 @@ import fr.hugman.culinaire.component.CulinaireComponentTypes;
 import fr.hugman.culinaire.item.CulinaireItems;
 import fr.hugman.culinaire.sound.CulinaireSoundEvents;
 import fr.hugman.culinaire.stat.CulinaireStats;
-import fr.hugman.culinaire.tea.TeaType;
+import fr.hugman.culinaire.tea.TeaHelper;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -15,6 +15,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.ai.pathing.NavigationType;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
@@ -42,7 +43,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 
 import javax.annotation.Nullable;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Optional;
 
 public class KettleBlock extends BlockWithEntity {
     public static final EnumProperty<Direction> FACING = Properties.HORIZONTAL_FACING;
@@ -181,10 +183,30 @@ public class KettleBlock extends BlockWithEntity {
                     return ActionResult.SUCCESS;
                 }
             } else if (stack.getItem() == Items.GLASS_BOTTLE && kettle.getFluid() == KettleBlockEntity.Fluid.TEA) {
-                List<TeaType> teaTypes = kettle.getTeaTypes();
+                var teaTypes = kettle.getTeaTypes();
                 if (kettle.removeFluid(1)) {
                     var newStack = new ItemStack(CulinaireItems.TEA_BOTTLE);
-                    newStack.set(CulinaireComponentTypes.TEA_CONTENTS, teaTypes);
+
+                    var effectList = new ArrayList<StatusEffectInstance>();
+
+                    for (var entry : teaTypes.getTeaTypeEntries()) {
+                        var effect = entry.getKey().value().effect();
+                        effectList.add(new StatusEffectInstance(
+                                effect.getEffectType(),
+                                effect.mapDuration(i -> i * entry.getIntValue()),
+                                effect.getAmplifier(),
+                                effect.isAmbient(),
+                                effect.shouldShowParticles()
+                        ));
+                    }
+                    newStack.set(CulinaireComponentTypes.TEA_TYPES, teaTypes);
+                    newStack.set(DataComponentTypes.POTION_CONTENTS, new PotionContentsComponent(
+                            Optional.empty(),
+                            Optional.of(TeaHelper.getColor(teaTypes)),
+                            effectList,
+                            Optional.empty()
+                    ));
+
                     player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, newStack));
                     player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
                     world.playSound(null, pos, CulinaireSoundEvents.TEA_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);

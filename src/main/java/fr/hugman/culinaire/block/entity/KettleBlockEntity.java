@@ -3,11 +3,11 @@ package fr.hugman.culinaire.block.entity;
 import fr.hugman.culinaire.Culinaire;
 import fr.hugman.culinaire.block.KettleBlock;
 import fr.hugman.culinaire.component.CulinaireComponentTypes;
+import fr.hugman.culinaire.component.TeaTypesComponent;
 import fr.hugman.culinaire.screen.KettleScreenHandler;
 import fr.hugman.culinaire.sound.CulinaireSoundEvents;
 import fr.hugman.culinaire.tag.CulinaireBlockTags;
 import fr.hugman.culinaire.tea.TeaHelper;
-import fr.hugman.culinaire.tea.TeaType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,8 +32,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public class KettleBlockEntity extends LockableContainerBlockEntity implements SidedInventory {
@@ -45,7 +43,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
     private int totalBrewTime;
     private int fluidLevel;
     private Fluid fluid;
-    private List<TeaType> teaTypes;
+    private TeaTypesComponent teaTypes;
     private boolean isHot;
 
     public KettleBlockEntity(BlockPos pos, BlockState state) {
@@ -53,7 +51,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
         this.inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
         this.stackBrewing = ItemStack.EMPTY;
         this.fluid = Fluid.EMPTY;
-        this.teaTypes = new ArrayList<>();
+        this.teaTypes = TeaTypesComponent.DEFAULT;
         this.propertyDelegate = new PropertyDelegate() {
             public int get(int index) {
                 return switch (index) {
@@ -167,7 +165,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 
     private void brew(World world, ItemStack stack) {
         this.fluid = Fluid.TEA;
-        this.teaTypes = stack.get(CulinaireComponentTypes.TEA_CONTENTS);
+        this.teaTypes = stack.get(CulinaireComponentTypes.TEA_TYPES);
         stack.decrement(1);
         var remainder = stack.getRecipeRemainder();
         if (!world.isClient && !remainder.isEmpty()) {
@@ -263,14 +261,14 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
             this.fluidLevel = fLevel;
             if (fLevel == 0) {
                 this.fluid = Fluid.EMPTY;
-                this.teaTypes = new ArrayList<>();
+                this.teaTypes = TeaTypesComponent.DEFAULT;
             }
             return true;
         }
         return false;
     }
 
-    public List<TeaType> getTeaTypes() {
+    public TeaTypesComponent getTeaTypes() {
         return this.teaTypes;
     }
 
@@ -285,8 +283,8 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 
     @Override
     public boolean isValid(int slot, ItemStack stack) {
-        if (stack.contains(CulinaireComponentTypes.TEA_CONTENTS)) {
-            return !stack.get(CulinaireComponentTypes.TEA_CONTENTS).isEmpty();
+        if (stack.contains(CulinaireComponentTypes.TEA_TYPES)) {
+            return !stack.get(CulinaireComponentTypes.TEA_TYPES).isEmpty();
         } else {
             return false;
         }
@@ -295,17 +293,17 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
     public boolean canBrew(ItemStack stack) {
         if (stack.isEmpty()) {
             return false;
-        } else if (stack.contains(CulinaireComponentTypes.TEA_CONTENTS)) {
-            return !stack.get(CulinaireComponentTypes.TEA_CONTENTS).isEmpty() && this.fluid == Fluid.WATER && this.fluidLevel >= 1 && this.isHot;
+        } else if (stack.contains(CulinaireComponentTypes.TEA_TYPES)) {
+            return !stack.get(CulinaireComponentTypes.TEA_TYPES).isEmpty() && this.fluid == Fluid.WATER && this.fluidLevel >= 1 && this.isHot;
         } else {
             return false;
         }
     }
 
     public int getBrewTime(ItemStack stack) {
-        List<TeaType> teaTypeList = stack.get(CulinaireComponentTypes.TEA_CONTENTS);
-        if (!teaTypeList.isEmpty()) {
-            return teaTypeList.stream().mapToInt(TeaType::getBrewTime).sum();
+        TeaTypesComponent component = stack.get(CulinaireComponentTypes.TEA_TYPES);
+        if (!component.isEmpty()) {
+            return component.getTeaTypes().stream().mapToInt(teaType -> teaType.value().brewTime()).sum();
         }
         return 0;
     }
@@ -315,15 +313,15 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
         super.readNbt(nbt, registries);
         this.inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
         Inventories.readNbt(nbt, this.inventory, registries);
-        this.brewTime = nbt.getShort("BrewTime");
-        this.fluid = Fluid.byString(nbt.getString("Fluid"));
-        this.fluidLevel = nbt.getByte("FluidLevel");
+        this.brewTime = nbt.getShort("brew_time");
+        this.fluid = Fluid.byString(nbt.getString("fluid"));
+        this.fluidLevel = nbt.getByte("fluid_level");
 
         if (nbt.contains("tea_types")) {
-            TeaType.LIST_CODEC
+            TeaTypesComponent.CODEC
                     .parse(registries.getOps(NbtOps.INSTANCE), nbt.get("tea_types"))
                     .resultOrPartial(error -> Culinaire.LOGGER.warn("Failed to load tea types: {}", error))
-                    .ifPresent(components -> this.teaTypes = components);
+                    .ifPresent(component -> this.teaTypes = component);
         }
     }
 
@@ -331,12 +329,12 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
         super.writeNbt(nbt, registries);
         Inventories.writeNbt(nbt, this.inventory, registries);
-        nbt.putShort("BrewTime", (short) this.brewTime);
-        nbt.putString("Fluid", this.fluid.toString());
-        nbt.putByte("FluidLevel", (byte) this.fluidLevel);
+        nbt.putShort("brew_time", (short) this.brewTime);
+        nbt.putString("fluid", this.fluid.toString());
+        nbt.putByte("fluid_level", (byte) this.fluidLevel);
 
         if (!teaTypes.isEmpty()) {
-            TeaType.LIST_CODEC
+            TeaTypesComponent.CODEC
                     .encodeStart(registries.getOps(NbtOps.INSTANCE), this.teaTypes)
                     .resultOrPartial(snbt -> Culinaire.LOGGER.warn("Failed to save tea types: {}", snbt))
                     .ifPresent(element -> nbt.put("tea_types", element));

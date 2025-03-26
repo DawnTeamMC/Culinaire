@@ -5,6 +5,7 @@ import fr.hugman.culinaire.block.CulinaireBlocks;
 import fr.hugman.culinaire.component.CulinaireComponentTypes;
 import fr.hugman.culinaire.component.CulinaireConsumableComponents;
 import fr.hugman.culinaire.component.CulinaireFoodComponents;
+import fr.hugman.culinaire.component.TeaTypesComponent;
 import fr.hugman.culinaire.config.CulinaireConfig;
 import net.minecraft.block.Block;
 import net.minecraft.component.DataComponentTypes;
@@ -17,7 +18,6 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 
-import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -52,8 +52,8 @@ public class CulinaireItems {
     public static final Item MARSHMALLOW_ON_A_STICK = register("marshmallow_on_a_stick", BurnableItem::new, ItemSettings.burnableFoodOnStick(CulinaireFoodComponents.MARSHMALLOW, CulinaireConsumableComponents.SNACK_FOOD, 150, TOASTY_MARSHMALLOW_ON_A_STICK));
 
     // TEA
-    public static final Item TEA_BAG = register("tea_bag", new Item.Settings().component(CulinaireComponentTypes.TEA_CONTENTS, List.of()).maxCount(16));
-    public static final Item TEA_BOTTLE = register("tea_bottle", new Item.Settings().component(CulinaireComponentTypes.TEA_CONTENTS, List.of()).maxCount(1).recipeRemainder(Items.GLASS_BOTTLE).useRemainder(Items.GLASS_BOTTLE).component(DataComponentTypes.CONSUMABLE, CulinaireConsumableComponents.TEA));
+    public static final Item TEA_BAG = register("tea_bag", new Item.Settings().component(CulinaireComponentTypes.TEA_TYPES, TeaTypesComponent.DEFAULT).maxCount(16));
+    public static final Item TEA_BOTTLE = register("tea_bottle", new Item.Settings().component(CulinaireComponentTypes.TEA_TYPES, TeaTypesComponent.DEFAULT).maxCount(1).recipeRemainder(Items.GLASS_BOTTLE).useRemainder(Items.GLASS_BOTTLE).component(DataComponentTypes.CONSUMABLE, CulinaireConsumableComponents.TEA));
 
     // PASTRIES
     public static final Item CROISSANT = register("croissant", new Item.Settings().food(CulinaireFoodComponents.CROISSANT, CulinaireConsumableComponents.SNACK_FOOD));

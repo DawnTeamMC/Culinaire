@@ -42,5 +42,8 @@ public class CulinaireItemTagProvider extends FabricTagProvider.ItemTagProvider 
                 .addTag(SANDWICHES)
                 .addTag(BOWL_FOOD)
                 .addTag(PIES);
+
+        getOrCreateTagBuilder(GREEN_TEA_INGREDIENTS).add(Items.SHORT_GRASS, Items.TALL_GRASS, Items.SEAGRASS);
+        getOrCreateTagBuilder(WHITE_TEA_INGREDIENTS).add(Items.OXEYE_DAISY);
     }
 }

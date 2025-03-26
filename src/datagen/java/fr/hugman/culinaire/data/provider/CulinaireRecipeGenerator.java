@@ -5,11 +5,11 @@ import fr.hugman.culinaire.data.recipe.SandwichRecipeJsonBuilder;
 import fr.hugman.culinaire.data.recipe.TeaBagRecipeJsonBuilder;
 import fr.hugman.culinaire.item.CulinaireItems;
 import fr.hugman.culinaire.tag.CulinaireItemTags;
+import fr.hugman.culinaire.tea.TeaTypes;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.data.recipe.RecipeExporter;
 import net.minecraft.data.recipe.RecipeGenerator;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
@@ -104,7 +104,7 @@ public class CulinaireRecipeGenerator extends RecipeGenerator {
                 .offerTo(this.exporter);
 
         // TEA
-        this.offerTeaBagRecipe(Items.PAPER, Items.STRING, CulinaireItems.TEA_BAG);
+        this.offerTeaBagRecipe();
         this.createShaped(RecipeCategory.FOOD, CulinaireBlocks.KETTLE)
                 .input('T', Items.IRON_TRAPDOOR)
                 .input('#', Items.IRON_INGOT)
@@ -156,9 +156,11 @@ public class CulinaireRecipeGenerator extends RecipeGenerator {
                 .offerTo(this.exporter);
     }
 
-    public void offerTeaBagRecipe(Item paper, Item string, Item teaBag) {
-        TeaBagRecipeJsonBuilder.create(RecipeCategory.FOOD, Ingredient.ofItem(paper), Ingredient.ofItem(string), new ItemStack(teaBag))
-                .criterion(hasItem(paper), this.conditionsFromItem(paper))
+    public void offerTeaBagRecipe() {
+        TeaBagRecipeJsonBuilder.create(registries, RecipeCategory.FOOD, Ingredient.ofItem(Items.PAPER), Ingredient.ofItem(Items.STRING), new ItemStack(CulinaireItems.TEA_BAG))
+                .criterion(hasItem(Items.PAPER), this.conditionsFromItem(Items.PAPER))
+                .ingredient(TeaTypes.GREEN, CulinaireItemTags.GREEN_TEA_INGREDIENTS)
+                .ingredient(TeaTypes.WHITE, CulinaireItemTags.WHITE_TEA_INGREDIENTS)
                 .offerTo(this.exporter);
     }
 
