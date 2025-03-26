@@ -127,6 +127,5 @@ public class KettleScreenHandler extends ScreenHandler {
         public int getMaxItemCount() {
             return CulinaireItems.TEA_BAG.getMaxCount();
         }
-
     }
 }

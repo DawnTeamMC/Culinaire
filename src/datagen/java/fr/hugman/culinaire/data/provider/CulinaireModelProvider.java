@@ -1,13 +1,11 @@
 package fr.hugman.culinaire.data.provider;
 
 import fr.hugman.culinaire.block.CulinaireBlocks;
+import fr.hugman.culinaire.client.render.item.tint.TeaTintSource;
 import fr.hugman.culinaire.item.CulinaireItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.client.data.BlockStateModelGenerator;
-import net.minecraft.client.data.ItemModelGenerator;
-import net.minecraft.client.data.ModelIds;
-import net.minecraft.client.data.Models;
+import net.minecraft.client.data.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
@@ -50,7 +48,7 @@ public class CulinaireModelProvider extends FabricModelProvider {
         gen.register(CulinaireItems.BURNT_MARSHMALLOW_ON_A_STICK, Models.GENERATED);
 
         gen.register(CulinaireItems.TEA_BAG, Models.GENERATED);
-        registerPotionVanillaGlass(gen, CulinaireItems.TEA_BOTTLE);
+        registerTeaBottle(gen, CulinaireItems.TEA_BOTTLE);
 
         gen.register(CulinaireItems.CROISSANT, Models.GENERATED);
         gen.register(CulinaireItems.CHOUQUETTE, Models.GENERATED);
@@ -63,8 +61,8 @@ public class CulinaireModelProvider extends FabricModelProvider {
         gen.register(CulinaireItems.MASHED_POTATOES, Models.GENERATED);
     }
 
-    public final void registerPotionVanillaGlass(ItemModelGenerator gen, Item item) {
+    public final void registerTeaBottle(ItemModelGenerator gen, Item item) {
         Identifier identifier = gen.uploadTwoLayers(item, ModelIds.getMinecraftNamespacedItem("potion_overlay"), ModelIds.getItemModelId(Items.POTION));
-        gen.registerPotionTinted(item, identifier);
+        gen.output.accept(item, ItemModels.tinted(identifier, new TeaTintSource()));
     }
 }

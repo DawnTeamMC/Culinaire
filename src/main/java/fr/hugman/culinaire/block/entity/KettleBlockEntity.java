@@ -7,7 +7,6 @@ import fr.hugman.culinaire.component.TeaTypesComponent;
 import fr.hugman.culinaire.screen.KettleScreenHandler;
 import fr.hugman.culinaire.sound.CulinaireSoundEvents;
 import fr.hugman.culinaire.tag.CulinaireBlockTags;
-import fr.hugman.culinaire.tea.TeaHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -60,7 +59,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
                     case 2 -> KettleBlockEntity.this.fluidLevel;
                     case 3 -> KettleBlockEntity.this.fluid.ordinal();
                     case 4 -> KettleBlockEntity.this.isHot ? 1 : 0;
-                    case 5 -> TeaHelper.getColor(KettleBlockEntity.this.teaTypes);
+                    case 5 -> KettleBlockEntity.this.teaTypes.getColor(-13083194);
                     default -> 0;
                 };
             }
@@ -303,7 +302,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
     public int getBrewTime(ItemStack stack) {
         TeaTypesComponent component = stack.get(CulinaireComponentTypes.TEA_TYPES);
         if (!component.isEmpty()) {
-            return component.getTeaTypes().stream().mapToInt(teaType -> teaType.value().brewTime()).sum();
+            return component.getBrewTime();
         }
         return 0;
     }

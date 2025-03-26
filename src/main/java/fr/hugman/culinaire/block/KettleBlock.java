@@ -7,7 +7,6 @@ import fr.hugman.culinaire.component.CulinaireComponentTypes;
 import fr.hugman.culinaire.item.CulinaireItems;
 import fr.hugman.culinaire.sound.CulinaireSoundEvents;
 import fr.hugman.culinaire.stat.CulinaireStats;
-import fr.hugman.culinaire.tea.TeaHelper;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -200,12 +199,6 @@ public class KettleBlock extends BlockWithEntity {
                         ));
                     }
                     newStack.set(CulinaireComponentTypes.TEA_TYPES, teaTypes);
-                    newStack.set(DataComponentTypes.POTION_CONTENTS, new PotionContentsComponent(
-                            Optional.empty(),
-                            Optional.of(TeaHelper.getColor(teaTypes)),
-                            effectList,
-                            Optional.empty()
-                    ));
 
                     player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, newStack));
                     player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));

@@ -52,8 +52,8 @@ public class CulinaireItems {
     public static final Item MARSHMALLOW_ON_A_STICK = register("marshmallow_on_a_stick", BurnableItem::new, ItemSettings.burnableFoodOnStick(CulinaireFoodComponents.MARSHMALLOW, CulinaireConsumableComponents.SNACK_FOOD, 150, TOASTY_MARSHMALLOW_ON_A_STICK));
 
     // TEA
-    public static final Item TEA_BAG = register("tea_bag", new Item.Settings().component(CulinaireComponentTypes.TEA_TYPES, TeaTypesComponent.DEFAULT).maxCount(16));
-    public static final Item TEA_BOTTLE = register("tea_bottle", new Item.Settings().component(CulinaireComponentTypes.TEA_TYPES, TeaTypesComponent.DEFAULT).maxCount(1).recipeRemainder(Items.GLASS_BOTTLE).useRemainder(Items.GLASS_BOTTLE).component(DataComponentTypes.CONSUMABLE, CulinaireConsumableComponents.TEA));
+    public static final Item TEA_BAG = register("tea_bag", TeaItem::new, new Item.Settings().component(CulinaireComponentTypes.TEA_TYPES, TeaTypesComponent.DEFAULT).maxCount(16));
+    public static final Item TEA_BOTTLE = register("tea_bottle", TeaBottleItem::new, new Item.Settings().component(CulinaireComponentTypes.TEA_TYPES, TeaTypesComponent.DEFAULT).maxCount(1).recipeRemainder(Items.GLASS_BOTTLE).useRemainder(Items.GLASS_BOTTLE).component(DataComponentTypes.CONSUMABLE, CulinaireConsumableComponents.TEA));
 
     // PASTRIES
     public static final Item CROISSANT = register("croissant", new Item.Settings().food(CulinaireFoodComponents.CROISSANT, CulinaireConsumableComponents.SNACK_FOOD));

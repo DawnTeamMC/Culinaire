@@ -161,6 +161,8 @@ public class CulinaireRecipeGenerator extends RecipeGenerator {
                 .criterion(hasItem(Items.PAPER), this.conditionsFromItem(Items.PAPER))
                 .ingredient(TeaTypes.GREEN, CulinaireItemTags.GREEN_TEA_INGREDIENTS)
                 .ingredient(TeaTypes.WHITE, CulinaireItemTags.WHITE_TEA_INGREDIENTS)
+                //TODO: other tea types
+                .ingredient(TeaTypes.ENDER, Items.POPPED_CHORUS_FRUIT) //TODO: tag
                 .offerTo(this.exporter);
     }
 

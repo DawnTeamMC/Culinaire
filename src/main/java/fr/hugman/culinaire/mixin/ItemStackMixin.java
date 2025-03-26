@@ -1,7 +1,5 @@
 package fr.hugman.culinaire.mixin;
 
-import fr.hugman.culinaire.component.CulinaireComponentTypes;
-import fr.hugman.culinaire.tea.TeaHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 @Mixin(ItemStack.class)
 public class ItemStackMixin {

@@ -56,8 +56,9 @@ public class KettleScreen extends HandledScreen<KettleScreenHandler> {
                 int teaColor;
                 if (fluid == 2) {
                     teaColor = this.handler.getTeaColor();
+                    //FIXME the color is not correct for some reason
                 } else {
-                    teaColor = 3694022;
+                    teaColor = -13083194;
                 }
                 int fluidHeight = (int) (12.0F * (float) fluidLevel / 3.0F) + 4;
                 // cannot use drawGuiTexture here: method that can cut does not have a color attribute

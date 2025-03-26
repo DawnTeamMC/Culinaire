@@ -1,5 +1,7 @@
 package fr.hugman.culinaire.component;
 
+import com.google.common.collect.Lists;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import fr.hugman.culinaire.registry.CulinaireRegistryKeys;
@@ -7,7 +9,18 @@ import fr.hugman.culinaire.tag.CulinaireTeaTypeTags;
 import fr.hugman.culinaire.tea.TeaType;
 import it.unimi.dsi.fastutil.objects.Object2IntMap.Entry;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import net.minecraft.component.type.AttributeModifiersComponent;
+import net.minecraft.component.type.Consumable;
+import net.minecraft.component.type.ConsumableComponent;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffectUtil;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipAppender;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.network.RegistryByteBuf;
@@ -19,18 +32,26 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.screen.ScreenTexts;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+import net.minecraft.util.math.ColorHelper;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
-public final class TeaTypesComponent implements TooltipAppender {
+public final class TeaTypesComponent implements TooltipAppender, Consumable {
     public static final TeaTypesComponent DEFAULT = new TeaTypesComponent(new Object2IntOpenHashMap<>(), true);
+
+    private static final Text NONE_TEXT = Text.translatable("effect.none").formatted(Formatting.GRAY);
     private static final Codec<Integer> TEA_TYPE_LEVEL_CODEC = Codec.intRange(1, 255);
     private static final Codec<Object2IntOpenHashMap<RegistryEntry<TeaType>>> INLINE_CODEC = Codec.unboundedMap(
                     TeaType.ENTRY_CODEC, TEA_TYPE_LEVEL_CODEC
@@ -43,6 +64,7 @@ public final class TeaTypesComponent implements TooltipAppender {
                     )
                     .apply(instance, TeaTypesComponent::new)
     );
+
     public static final Codec<TeaTypesComponent> CODEC = Codec.withAlternative(BASE_CODEC, INLINE_CODEC, map -> new TeaTypesComponent(map, true));
     public static final PacketCodec<RegistryByteBuf, TeaTypesComponent> PACKET_CODEC = PacketCodec.tuple(
             PacketCodecs.map(Object2IntOpenHashMap::new, TeaType.ENTRY_PACKET_CODEC, PacketCodecs.VAR_INT), component -> component.teaTypes,
@@ -51,6 +73,7 @@ public final class TeaTypesComponent implements TooltipAppender {
     );
     final Object2IntOpenHashMap<RegistryEntry<TeaType>> teaTypes;
     final boolean showInTooltip;
+    private Iterable<StatusEffectInstance> effects;
 
     public TeaTypesComponent(Object2IntOpenHashMap<RegistryEntry<TeaType>> teaTypes, boolean showInTooltip) {
         this.teaTypes = teaTypes;
@@ -64,8 +87,64 @@ public final class TeaTypesComponent implements TooltipAppender {
         }
     }
 
-    public int getLevel(RegistryEntry<TeaType> teaType) {
-        return this.teaTypes.getInt(teaType);
+    public Text getName(String prefix) {
+        return Text.literal("WIP tea name");
+        //TODO: mixed tea or name of the tea if there's only one abudant type
+        //String string = (String) this.customName.or(() -> this.potion.map(potionEntry -> ((Potion) potionEntry.value()).getBaseName())).orElse("empty");
+        //return Text.translatable(prefix + string);
+    }
+
+    private static <T> RegistryEntryList<T> getTooltipOrderList(
+            @Nullable RegistryWrapper.WrapperLookup registries, RegistryKey<Registry<T>> registryRef, TagKey<T> tooltipOrderTag
+    ) {
+        if (registries != null) {
+            Optional<RegistryEntryList.Named<T>> optional = registries.getOrThrow(registryRef).getOptional(tooltipOrderTag);
+            if (optional.isPresent()) {
+                return optional.get();
+            }
+        }
+
+        return RegistryEntryList.of();
+    }
+
+    public int getBrewTime() {
+        return teaTypes.object2IntEntrySet().stream().mapToInt(teaType -> teaType.getKey().value().brewTime()).sum();
+    }
+
+    public int getColor(int defaultColor) {
+        int i = 0;
+        int j = 0;
+        int k = 0;
+        int l = 0;
+
+        for (var teaType : getTeaTypeEntries()) {
+            int m = teaType.getKey().value().color();
+            int n = teaType.getIntValue() + 1;
+            i += n * ColorHelper.getRed(m);
+            j += n * ColorHelper.getGreen(m);
+            k += n * ColorHelper.getBlue(m);
+            l += n;
+        }
+
+        return l == 0 ? defaultColor : ColorHelper.getArgb(i / l, j / l, k / l);
+    }
+
+    public Set<Entry<RegistryEntry<TeaType>>> getTeaTypeEntries() {
+        return Collections.unmodifiableSet(this.teaTypes.object2IntEntrySet());
+    }
+
+    public Iterable<StatusEffectInstance> getEffects() {
+        return teaTypes.object2IntEntrySet().stream()
+                .map(entry -> {
+                    var effect = entry.getKey().value().effect();
+                    return new StatusEffectInstance(
+                            effect.getEffectType(),
+                            effect.mapDuration(i -> i * entry.getIntValue()),
+                            effect.getAmplifier(),
+                            effect.isAmbient(),
+                            effect.shouldShowParticles()
+                    );
+                })::iterator;
     }
 
     @Override
@@ -89,36 +168,83 @@ public final class TeaTypesComponent implements TooltipAppender {
                     //tooltip.accept(Enchantment.getName((RegistryEntry<TeaType>)entry.getKey(), entry.getIntValue()));
                 }
             }
-        }
-    }
 
-    private static <T> RegistryEntryList<T> getTooltipOrderList(
-            @Nullable RegistryWrapper.WrapperLookup registries, RegistryKey<Registry<T>> registryRef, TagKey<T> tooltipOrderTag
-    ) {
-        if (registries != null) {
-            Optional<RegistryEntryList.Named<T>> optional = registries.getOrThrow(registryRef).getOptional(tooltipOrderTag);
-            if (optional.isPresent()) {
-                return optional.get();
+
+            List<Pair<RegistryEntry<EntityAttribute>, EntityAttributeModifier>> list = Lists.<Pair<RegistryEntry<EntityAttribute>, EntityAttributeModifier>>newArrayList();
+            boolean bl = true;
+
+            for (StatusEffectInstance statusEffectInstance : this.getEffects()) {
+                bl = false;
+                MutableText mutableText = Text.translatable(statusEffectInstance.getTranslationKey());
+                RegistryEntry<StatusEffect> registryEntry = statusEffectInstance.getEffectType();
+                registryEntry.value().forEachAttributeModifier(statusEffectInstance.getAmplifier(), (attribute, modifier) -> list.add(new Pair<>(attribute, modifier)));
+                if (statusEffectInstance.getAmplifier() > 0) {
+                    mutableText = Text.translatable("potion.withAmplifier", mutableText, Text.translatable("potion.potency." + statusEffectInstance.getAmplifier()));
+                }
+
+                if (!statusEffectInstance.isDurationBelow(20)) {
+                    mutableText = Text.translatable("potion.withDuration", mutableText, StatusEffectUtil.getDurationText(statusEffectInstance, 1.0f, context.getUpdateTickRate()));
+                }
+
+                tooltip.accept(mutableText.formatted(registryEntry.value().getCategory().getFormatting()));
+            }
+
+            if (bl) {
+                tooltip.accept(NONE_TEXT);
+            }
+
+            if (!list.isEmpty()) {
+                tooltip.accept(ScreenTexts.EMPTY);
+                tooltip.accept(Text.translatable("potion.whenDrank").formatted(Formatting.DARK_PURPLE));
+
+                for (Pair<RegistryEntry<EntityAttribute>, EntityAttributeModifier> pair : list) {
+                    EntityAttributeModifier entityAttributeModifier = pair.getSecond();
+                    double d = entityAttributeModifier.value();
+                    double e;
+                    if (entityAttributeModifier.operation() != EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE
+                            && entityAttributeModifier.operation() != EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL) {
+                        e = entityAttributeModifier.value();
+                    } else {
+                        e = entityAttributeModifier.value() * 100.0;
+                    }
+
+                    if (d > 0.0) {
+                        tooltip.accept(
+                                Text.translatable(
+                                                "attribute.modifier.plus." + entityAttributeModifier.operation().getId(),
+                                                AttributeModifiersComponent.DECIMAL_FORMAT.format(e),
+                                                Text.translatable(pair.getFirst().value().getTranslationKey())
+                                        )
+                                        .formatted(Formatting.BLUE)
+                        );
+                    } else if (d < 0.0) {
+                        e *= -1.0;
+                        tooltip.accept(
+                                Text.translatable(
+                                                "attribute.modifier.take." + entityAttributeModifier.operation().getId(),
+                                                AttributeModifiersComponent.DECIMAL_FORMAT.format(e),
+                                                Text.translatable(pair.getFirst().value().getTranslationKey())
+                                        )
+                                        .formatted(Formatting.RED)
+                        );
+                    }
+                }
             }
         }
-
-        return RegistryEntryList.of();
     }
 
-    public TeaTypesComponent withShowInTooltip(boolean showInTooltip) {
-        return new TeaTypesComponent(this.teaTypes, showInTooltip);
-    }
-
-    public Set<RegistryEntry<TeaType>> getTeaTypes() {
-        return Collections.unmodifiableSet(this.teaTypes.keySet());
-    }
-
-    public Set<Entry<RegistryEntry<TeaType>>> getTeaTypeEntries() {
-        return Collections.unmodifiableSet(this.teaTypes.object2IntEntrySet());
-    }
-
-    public int getSize() {
-        return this.teaTypes.size();
+    @Override
+    public void onConsume(World world, LivingEntity user, ItemStack stack, ConsumableComponent consumable) {
+        if (user.getWorld() instanceof ServerWorld serverWorld) {
+            PlayerEntity playerEntity2 = user instanceof PlayerEntity playerEntity ? playerEntity : null;
+            this.getEffects().forEach(effect -> {
+                if (effect.getEffectType().value().isInstant()) {
+                    effect.getEffectType().value().applyInstantEffect(serverWorld, playerEntity2, playerEntity2, user, effect.getAmplifier(), 1.0);
+                } else {
+                    user.addStatusEffect(effect);
+                }
+            });
+        }
     }
 
     public boolean isEmpty() {
@@ -142,45 +268,5 @@ public final class TeaTypesComponent implements TooltipAppender {
 
     public String toString() {
         return "TeaTypes{teaTypes=" + this.teaTypes + ", showInTooltip=" + this.showInTooltip + "}";
-    }
-
-    public static class Builder {
-        private final Object2IntOpenHashMap<RegistryEntry<TeaType>> teaTypes = new Object2IntOpenHashMap<>();
-        private final boolean showInTooltip;
-
-        public Builder(TeaTypesComponent teaTypesComponent) {
-            this.teaTypes.putAll(teaTypesComponent.teaTypes);
-            this.showInTooltip = teaTypesComponent.showInTooltip;
-        }
-
-        public void set(RegistryEntry<TeaType> teaType, int level) {
-            if (level <= 0) {
-                this.teaTypes.removeInt(teaType);
-            } else {
-                this.teaTypes.put(teaType, Math.min(level, 255));
-            }
-        }
-
-        public void add(RegistryEntry<TeaType> teaType, int level) {
-            if (level > 0) {
-                this.teaTypes.merge(teaType, Math.min(level, 255), Integer::max);
-            }
-        }
-
-        public void remove(Predicate<RegistryEntry<TeaType>> predicate) {
-            this.teaTypes.keySet().removeIf(predicate);
-        }
-
-        public int getLevel(RegistryEntry<TeaType> teaType) {
-            return this.teaTypes.getOrDefault(teaType, 0);
-        }
-
-        public Set<RegistryEntry<TeaType>> getTeaTypes() {
-            return this.teaTypes.keySet();
-        }
-
-        public TeaTypesComponent build() {
-            return new TeaTypesComponent(this.teaTypes, this.showInTooltip);
-        }
     }
 }
