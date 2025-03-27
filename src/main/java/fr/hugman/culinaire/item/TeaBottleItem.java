@@ -4,10 +4,8 @@ import fr.hugman.culinaire.component.CulinaireComponentTypes;
 import fr.hugman.culinaire.component.TeaTypesComponent;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.PotionContentsComponent;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.potion.Potions;
 import net.minecraft.text.Text;
 
 import java.util.List;
@@ -22,12 +20,6 @@ public class TeaBottleItem extends TeaItem {
         ItemStack itemStack = super.getDefaultStack();
         itemStack.set(CulinaireComponentTypes.TEA_TYPES, TeaTypesComponent.DEFAULT);
         return itemStack;
-    }
-
-    @Override
-    public Text getName(ItemStack stack) {
-        TeaTypesComponent teaTypesComponent = stack.get(CulinaireComponentTypes.TEA_TYPES);
-        return teaTypesComponent != null ? teaTypesComponent.getName(this.translationKey + ".effect.") : super.getName(stack);
     }
 
     @Override

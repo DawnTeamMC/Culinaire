@@ -23,7 +23,7 @@ public class CulinaireTeaTypeTagProvider extends FabricTagProvider<TeaType> {
                 TeaTypes.WHITE,
                 TeaTypes.BLACK,
                 TeaTypes.OOLONG,
-                TeaTypes.PU_ERH,
+                TeaTypes.PU_ER,
                 TeaTypes.ENDER
         );
     }

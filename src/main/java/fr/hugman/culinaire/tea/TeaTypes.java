@@ -9,7 +9,7 @@ public class TeaTypes {
     public static final RegistryKey<TeaType> WHITE = of("white");
     public static final RegistryKey<TeaType> BLACK = of("black");
     public static final RegistryKey<TeaType> OOLONG = of("oolong");
-    public static final RegistryKey<TeaType> PU_ERH = of("pu_erh");
+    public static final RegistryKey<TeaType> PU_ER = of("pu_er");
     public static final RegistryKey<TeaType> ENDER = of("ender");
 
     public static RegistryKey<TeaType> of(String path) {

@@ -73,7 +73,6 @@ public final class TeaTypesComponent implements TooltipAppender, Consumable {
     );
     final Object2IntOpenHashMap<RegistryEntry<TeaType>> teaTypes;
     final boolean showInTooltip;
-    private Iterable<StatusEffectInstance> effects;
 
     public TeaTypesComponent(Object2IntOpenHashMap<RegistryEntry<TeaType>> teaTypes, boolean showInTooltip) {
         this.teaTypes = teaTypes;
@@ -87,11 +86,17 @@ public final class TeaTypesComponent implements TooltipAppender, Consumable {
         }
     }
 
-    public Text getName(String prefix) {
-        return Text.literal("WIP tea name");
-        //TODO: mixed tea or name of the tea if there's only one abudant type
-        //String string = (String) this.customName.or(() -> this.potion.map(potionEntry -> ((Potion) potionEntry.value()).getBaseName())).orElse("empty");
-        //return Text.translatable(prefix + string);
+    public Optional<Text> getName(RegistryEntry<Item> item) {
+        return getAbundantType().flatMap(entry -> entry.value().getItemNameOverride(item));
+    }
+
+    /**
+     * If there's only one tea type, returns it.
+     */
+    public Optional<RegistryEntry<TeaType>> getAbundantType() {
+        return this.teaTypes.object2IntEntrySet().size() == 1
+                ? Optional.of(this.teaTypes.object2IntEntrySet().iterator().next().getKey())
+                : Optional.empty();
     }
 
     private static <T> RegistryEntryList<T> getTooltipOrderList(
@@ -156,19 +161,16 @@ public final class TeaTypesComponent implements TooltipAppender, Consumable {
             for (RegistryEntry<TeaType> registryEntry : registryEntryList) {
                 int i = this.teaTypes.getInt(registryEntry);
                 if (i > 0) {
-                    //TODO
-                    //tooltip.accept(Enchantment.getName(registryEntry, i));
+                    tooltip.accept(registryEntry.value().getName(i));
                 }
             }
 
             for (Entry<RegistryEntry<TeaType>> entry : this.teaTypes.object2IntEntrySet()) {
                 RegistryEntry<TeaType> registryEntry2 = entry.getKey();
                 if (!registryEntryList.contains(registryEntry2)) {
-                    //TODO
-                    //tooltip.accept(Enchantment.getName((RegistryEntry<TeaType>)entry.getKey(), entry.getIntValue()));
+                    tooltip.accept(entry.getKey().value().getName(entry.getIntValue()));
                 }
             }
-
 
             List<Pair<RegistryEntry<EntityAttribute>, EntityAttributeModifier>> list = Lists.<Pair<RegistryEntry<EntityAttribute>, EntityAttributeModifier>>newArrayList();
             boolean bl = true;
