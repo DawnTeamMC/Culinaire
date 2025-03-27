@@ -36,12 +36,12 @@ public class CulinaireTeaTypeProvider extends FabricDynamicRegistryProvider {
     }
 
     public static void register(Registerable<TeaType> registerable) {
-        of(registerable, TeaTypes.GREEN, 0x60bf79, new StatusEffectInstance(StatusEffects.ABSORPTION, 20 * 30, 2));
-        of(registerable, TeaTypes.WHITE, 0xfcf5d9, new StatusEffectInstance(CulinaireEffects.HIGH_STEPS, 20 * 30, 3));
-        of(registerable, TeaTypes.BLACK, 0x45190c, new StatusEffectInstance(CulinaireEffects.HIGH_STEPS, 20 * 30, 3)); //TODO
-        of(registerable, TeaTypes.OOLONG, 0xb88e1c, new StatusEffectInstance(CulinaireEffects.HIGH_STEPS, 20 * 30, 3)); //TODO
-        of(registerable, TeaTypes.PU_ER, 0xa6500f, new StatusEffectInstance(CulinaireEffects.HIGH_STEPS, 20 * 30, 3)); //TODO
-        of(registerable, TeaTypes.ENDER, 0x71369e, new StatusEffectInstance(CulinaireEffects.HIGH_STEPS, 20 * 30, 3)); //TODO
+        of(registerable, TeaTypes.GREEN, 0x60bf79, new StatusEffectInstance(StatusEffects.LUCK, 20 * 15, 2));
+        of(registerable, TeaTypes.WHITE, 0xfcf5d9, new StatusEffectInstance(CulinaireEffects.STEPPING, 20 * 30, 2));
+        of(registerable, TeaTypes.BLACK, 0x45190c, new StatusEffectInstance(StatusEffects.ABSORPTION, 20 * 15, 2));
+        of(registerable, TeaTypes.OOLONG, 0xb88e1c, new StatusEffectInstance(CulinaireEffects.AGILITY, 20 * 8, 2));
+        of(registerable, TeaTypes.PU_ER, 0xa6500f, new StatusEffectInstance(CulinaireEffects.KNOCKING, 20 * 8, 1));
+        of(registerable, TeaTypes.ENDER, 0x71369e, new StatusEffectInstance(CulinaireEffects.SPACIAL_HICCUP, 20 * 20, 2));
     }
 
     private static void of(Registerable<TeaType> registry, RegistryKey<TeaType> key, int color, StatusEffectInstance effectInstance) {

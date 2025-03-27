@@ -1,13 +1,16 @@
 package fr.hugman.culinaire.itemgroup;
 
+import fr.hugman.culinaire.component.CulinaireComponentTypes;
+import fr.hugman.culinaire.component.TeaTypesComponent;
 import fr.hugman.culinaire.item.CulinaireItems;
+import fr.hugman.culinaire.registry.CulinaireRegistryKeys;
+import fr.hugman.culinaire.tea.TeaType;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.*;
-import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryWrapper;
 
-import java.util.Collections;
-import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import static fr.hugman.culinaire.block.CulinaireBlocks.CHEESE_WHEEL;
 import static fr.hugman.culinaire.block.CulinaireBlocks.KETTLE;
@@ -34,6 +37,14 @@ public class CulinaireItemGroupAdditions {
             entries.addAfter(Items.BREAD, CROISSANT, CHOUQUETTE);
 
             entries.addBefore(Items.PUMPKIN_PIE, APPLE_PIE, SWEET_BERRY_PIE);
+
+            entries.getContext().lookup()
+                    .getOptional(CulinaireRegistryKeys.TEA_TYPE)
+                    .ifPresent(
+                            registryWrapper -> entries.addAfter(Items.HONEY_BOTTLE,
+                                    Stream.concat(getTeaStacks(TEA_BAG, registryWrapper), getTeaStacks(TEA_BOTTLE, registryWrapper)).toArray(ItemStack[]::new)
+                            )
+                    );
         });
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.NATURAL).register(entries -> entries.addBefore(Items.BEETROOT_SEEDS, LETTUCE_SEEDS));
@@ -42,27 +53,14 @@ public class CulinaireItemGroupAdditions {
 
     }
 
-    public static void appendSpawnEgg(Item spawnEgg) {
-        var itemGroup = Registries.ITEM_GROUP.get(ItemGroups.SPAWN_EGGS);
-        String path = Registries.ITEM.getId(spawnEgg).getPath();
-
-        if (itemGroup == null) {
-            return;
-        }
-
-        Predicate<ItemStack> predicate = stack1 -> {
-            String path1 = Registries.ITEM.getId(stack1.getItem()).getPath();
-            for (ItemStack stack2 : itemGroup.getDisplayStacks()) {
-                String path2 = Registries.ITEM.getId(stack2.getItem()).getPath();
-                if (path1.matches(".*_spawn_egg") && path2.matches(".*_spawn_egg")) {
-                    // check if path is lexicographically between path1 and path2
-                    if (path.compareTo(path1) > 0 && path.compareTo(path2) < 0) {
-                        return true;
-                    }
+    private static Stream<ItemStack> getTeaStacks(Item item, RegistryWrapper.Impl<TeaType> registryWrapper) {
+        return registryWrapper.streamEntries().map(
+                teaTypeEntry -> {
+                    ItemStack itemStack = new ItemStack(item);
+                    itemStack.set(CulinaireComponentTypes.TEA_TYPES, TeaTypesComponent.builder().add(teaTypeEntry, 1).build());
+                    return itemStack;
                 }
-            }
-            return false;
-        };
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.SPAWN_EGGS).register(e -> e.addAfter(predicate, Collections.singleton(new ItemStack(spawnEgg)), ItemGroup.StackVisibility.PARENT_AND_SEARCH_TABS));
+        );
+        //TODO: sort by tag order
     }
 }

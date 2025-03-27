@@ -78,6 +78,11 @@
   "tea_type.level.9": "IX",
   "tea_type.level.10": "X",
 
+  "effect.culinaire.stepping": "Stepping",
+  "effect.culinaire.agility": "Agility",
+  "effect.culinaire.knocking": "Knocking",
+  "effect.culinaire.spatial_hiccup": "Spatial Hiccup",
+
   "subtitles.culinaire.block.kettle.brew": "Kettle whistles",
   "subtitles.culinaire.item.tea_bottle.fill": "Tea Bottle fills",
 

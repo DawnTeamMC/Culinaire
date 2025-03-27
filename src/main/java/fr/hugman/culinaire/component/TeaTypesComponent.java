@@ -42,7 +42,6 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -90,13 +89,12 @@ public final class TeaTypesComponent implements TooltipAppender, Consumable {
         return getAbundantType().flatMap(entry -> entry.value().getItemNameOverride(item));
     }
 
-    /**
-     * If there's only one tea type, returns it.
-     */
     public Optional<RegistryEntry<TeaType>> getAbundantType() {
-        return this.teaTypes.object2IntEntrySet().size() == 1
-                ? Optional.of(this.teaTypes.object2IntEntrySet().iterator().next().getKey())
-                : Optional.empty();
+        return hasAbundantType() ? Optional.of(this.teaTypes.object2IntEntrySet().iterator().next().getKey()) : Optional.empty();
+    }
+
+    public boolean hasAbundantType() {
+        return this.teaTypes.object2IntEntrySet().size() == 1;
     }
 
     private static <T> RegistryEntryList<T> getTooltipOrderList(
@@ -155,24 +153,26 @@ public final class TeaTypesComponent implements TooltipAppender, Consumable {
     @Override
     public void appendTooltip(Item.TooltipContext context, Consumer<Text> tooltip, TooltipType type) {
         if (this.showInTooltip) {
-            RegistryWrapper.WrapperLookup wrapperLookup = context.getRegistryLookup();
-            RegistryEntryList<TeaType> registryEntryList = getTooltipOrderList(wrapperLookup, CulinaireRegistryKeys.TEA_TYPE, CulinaireTeaTypeTags.TOOLTIP_ORDER);
+            if(!hasAbundantType()) {
+                RegistryWrapper.WrapperLookup wrapperLookup = context.getRegistryLookup();
+                RegistryEntryList<TeaType> teaTypeEntries = getTooltipOrderList(wrapperLookup, CulinaireRegistryKeys.TEA_TYPE, CulinaireTeaTypeTags.TOOLTIP_ORDER);
 
-            for (RegistryEntry<TeaType> registryEntry : registryEntryList) {
-                int i = this.teaTypes.getInt(registryEntry);
-                if (i > 0) {
-                    tooltip.accept(registryEntry.value().getName(i));
+                for (RegistryEntry<TeaType> registryEntry : teaTypeEntries) {
+                    int i = this.teaTypes.getInt(registryEntry);
+                    if (i > 0) {
+                        tooltip.accept(registryEntry.value().getName());
+                    }
+                }
+
+                for (Entry<RegistryEntry<TeaType>> entry : this.teaTypes.object2IntEntrySet()) {
+                    RegistryEntry<TeaType> registryEntry2 = entry.getKey();
+                    if (!teaTypeEntries.contains(registryEntry2)) {
+                        tooltip.accept(entry.getKey().value().getName());
+                    }
                 }
             }
 
-            for (Entry<RegistryEntry<TeaType>> entry : this.teaTypes.object2IntEntrySet()) {
-                RegistryEntry<TeaType> registryEntry2 = entry.getKey();
-                if (!registryEntryList.contains(registryEntry2)) {
-                    tooltip.accept(entry.getKey().value().getName(entry.getIntValue()));
-                }
-            }
-
-            List<Pair<RegistryEntry<EntityAttribute>, EntityAttributeModifier>> list = Lists.<Pair<RegistryEntry<EntityAttribute>, EntityAttributeModifier>>newArrayList();
+            var list = Lists.<Pair<RegistryEntry<EntityAttribute>, EntityAttributeModifier>>newArrayList();
             boolean bl = true;
 
             for (StatusEffectInstance statusEffectInstance : this.getEffects()) {
@@ -269,6 +269,28 @@ public final class TeaTypesComponent implements TooltipAppender, Consumable {
     }
 
     public String toString() {
-        return "TeaTypes{teaTypes=" + this.teaTypes + ", showInTooltip=" + this.showInTooltip + "}";
+        return "TeaTypes{teaTypeEntries=" + this.teaTypes + ", showInTooltip=" + this.showInTooltip + "}";
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private final Object2IntOpenHashMap<RegistryEntry<TeaType>> teaTypes = new Object2IntOpenHashMap<>();
+
+        public Builder() {
+        }
+
+        public Builder add(RegistryEntry<TeaType> teaType, int level) {
+            if (level > 0) {
+                this.teaTypes.merge(teaType, Math.min(level, 255), Integer::max);
+            }
+            return this;
+        }
+
+        public TeaTypesComponent build() {
+            return new TeaTypesComponent(this.teaTypes, true);
+        }
     }
 }
