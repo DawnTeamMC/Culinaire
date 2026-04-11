@@ -3,7 +3,7 @@
   "package": "fr.hugman.culinaire.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "CowEntityMixin",
+    "AbstractCowEntityMixin",
     "ItemStackMixin"
   ],
   "injectors": {

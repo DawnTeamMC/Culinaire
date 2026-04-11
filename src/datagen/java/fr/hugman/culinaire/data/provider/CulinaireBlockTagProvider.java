@@ -19,18 +19,19 @@ public class CulinaireBlockTagProvider extends FabricTagProvider.BlockTagProvide
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
         // Culinaire
-        getOrCreateTagBuilder(KETTLE_HOT_BLOCKS)
+
+        valueLookupBuilder(KETTLE_HOT_BLOCKS)
                 .forceAddTag(BlockTags.CAMPFIRES)
                 .forceAddTag(BlockTags.FIRE)
                 .add(Blocks.MAGMA_BLOCK, Blocks.LAVA, Blocks.LAVA_CAULDRON);
 
         // Vanilla
-        getOrCreateTagBuilder(BlockTags.CAULDRONS).add(MILK_CAULDRON, CHEESE_CAULDRON, DARK_CHOCOLATE_CAULDRON, MILK_CHOCOLATE_CAULDRON, WHITE_CHOCOLATE_CAULDRON);
+        valueLookupBuilder(BlockTags.CAULDRONS).add(MILK_CAULDRON, CHEESE_CAULDRON, DARK_CHOCOLATE_CAULDRON, MILK_CHOCOLATE_CAULDRON, WHITE_CHOCOLATE_CAULDRON);
 
-        getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE).add(KETTLE);
-        getOrCreateTagBuilder(BlockTags.CROPS).add(TOMATOES, LETTUCE);
-        getOrCreateTagBuilder(BlockTags.MAINTAINS_FARMLAND).add(TOMATOES, LETTUCE);
+        valueLookupBuilder(BlockTags.PICKAXE_MINEABLE).add(KETTLE);
+        valueLookupBuilder(BlockTags.CROPS).add(TOMATOES, LETTUCE);
+        valueLookupBuilder(BlockTags.MAINTAINS_FARMLAND).add(TOMATOES, LETTUCE);
 
-        getOrCreateTagBuilder(BlockTags.AXE_MINEABLE).add(TOMATOES, LETTUCE);
+        valueLookupBuilder(BlockTags.AXE_MINEABLE).add(TOMATOES, LETTUCE);
     }
 }

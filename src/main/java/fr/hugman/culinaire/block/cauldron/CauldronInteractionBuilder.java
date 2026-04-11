@@ -146,7 +146,7 @@ public class CauldronInteractionBuilder {
             if (predicate.test(state)) {
                 if (cauldron == null) cauldron = state.getBlock();
                 int newLevel = !overwriteLevel ? CauldronUtil.getLevel(state) + level : level;
-                if (!world.isClient) {
+                if (!world.isClient()) {
                     BlockState returnedState = CauldronUtil.modifyCauldron(state, cauldron, newLevel);
 
                     Item item = stack.getItem();

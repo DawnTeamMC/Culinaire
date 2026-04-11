@@ -18,7 +18,7 @@ public class CulinaireTeaTypeTagProvider extends FabricTagProvider<TeaType> {
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
         // Culinaire
-        getOrCreateTagBuilder(CulinaireTeaTypeTags.TOOLTIP_ORDER).add(
+        builder(CulinaireTeaTypeTags.TOOLTIP_ORDER).add(
                 TeaTypes.GREEN,
                 TeaTypes.WHITE,
                 TeaTypes.BLACK,

@@ -35,7 +35,7 @@ public class TeleportRandomlyStatusEffect extends StatusEffect {
                 entity.stopRiding();
             }
 
-            Vec3d vec3d = entity.getPos();
+            Vec3d vec3d = entity.getEntityPos();
             if (entity.teleport(d, e, f, true)) {
                 world.emitGameEvent(GameEvent.TELEPORT, vec3d, GameEvent.Emitter.of(entity));
                 SoundCategory soundCategory;

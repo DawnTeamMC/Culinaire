@@ -19,7 +19,7 @@ public class CulinaireItemTagProvider extends FabricTagProvider.ItemTagProvider 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
         // Culinaire
-        getOrCreateTagBuilder(BOWL_FOOD).add(
+        valueLookupBuilder(BOWL_FOOD).add(
                 Items.MUSHROOM_STEW,
                 Items.SUSPICIOUS_STEW,
                 Items.RABBIT_STEW,
@@ -27,7 +27,7 @@ public class CulinaireItemTagProvider extends FabricTagProvider.ItemTagProvider 
                 CulinaireItems.SALAD,
                 CulinaireItems.MASHED_POTATOES
         );
-        getOrCreateTagBuilder(PIES).add(
+        valueLookupBuilder(PIES).add(
                 CulinaireItems.APPLE_PIE,
                 CulinaireItems.SWEET_BERRY_PIE,
                 CulinaireItems.DARK_CHOCOLATE_PIE,
@@ -35,15 +35,15 @@ public class CulinaireItemTagProvider extends FabricTagProvider.ItemTagProvider 
                 CulinaireItems.WHITE_CHOCOLATE_PIE
         );
 
-        getOrCreateTagBuilder(SANDWICHES).add(SANDWICH);
-        getOrCreateTagBuilder(SANDWICH_BREAD).add(Items.BREAD);
-        getOrCreateTagBuilder(SANDWICH_INGREDIENT_BLACKLIST)
+        valueLookupBuilder(SANDWICHES).add(SANDWICH);
+        valueLookupBuilder(SANDWICH_BREAD).add(Items.BREAD);
+        valueLookupBuilder(SANDWICH_INGREDIENT_BLACKLIST)
                 .addTag(SANDWICH_BREAD)
                 .addTag(SANDWICHES)
                 .addTag(BOWL_FOOD)
                 .addTag(PIES);
 
-        getOrCreateTagBuilder(GREEN_TEA_INGREDIENTS).add(Items.SHORT_GRASS, Items.TALL_GRASS, Items.SEAGRASS);
-        getOrCreateTagBuilder(WHITE_TEA_INGREDIENTS).add(Items.OXEYE_DAISY);
+        valueLookupBuilder(GREEN_TEA_INGREDIENTS).add(Items.SHORT_GRASS, Items.TALL_GRASS, Items.SEAGRASS);
+        valueLookupBuilder(WHITE_TEA_INGREDIENTS).add(Items.OXEYE_DAISY);
     }
 }

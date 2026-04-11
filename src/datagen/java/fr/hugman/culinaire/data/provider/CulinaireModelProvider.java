@@ -42,10 +42,10 @@ public class CulinaireModelProvider extends FabricModelProvider {
         gen.register(CulinaireItems.WHITE_CHOCOLATE_PIE, Models.GENERATED);
 
         gen.register(CulinaireItems.MARSHMALLOW, Models.GENERATED);
-        gen.register(CulinaireItems.MARSHMALLOW_ON_A_STICK, Models.GENERATED);
-        gen.register(CulinaireItems.TOASTY_MARSHMALLOW_ON_A_STICK, Models.GENERATED);
-        gen.register(CulinaireItems.GOLDEN_MARSHMALLOW_ON_A_STICK, Models.GENERATED);
-        gen.register(CulinaireItems.BURNT_MARSHMALLOW_ON_A_STICK, Models.GENERATED);
+        gen.register(CulinaireItems.MARSHMALLOW_ON_A_STICK, Models.HANDHELD);
+        gen.register(CulinaireItems.TOASTY_MARSHMALLOW_ON_A_STICK, Models.HANDHELD);
+        gen.register(CulinaireItems.GOLDEN_MARSHMALLOW_ON_A_STICK, Models.HANDHELD);
+        gen.register(CulinaireItems.BURNT_MARSHMALLOW_ON_A_STICK, Models.HANDHELD);
 
         gen.register(CulinaireItems.TEA_BAG, Models.GENERATED);
         registerTeaBottle(gen, CulinaireItems.TEA_BOTTLE);

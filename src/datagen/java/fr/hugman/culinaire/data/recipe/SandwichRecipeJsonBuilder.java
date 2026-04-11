@@ -69,7 +69,7 @@ public class SandwichRecipeJsonBuilder {
     }
 
     public SandwichRecipeJsonBuilder bread(TagKey<Item> tagKey) {
-        this.bread = Ingredient.fromTag(this.registryLookup.getOrThrow(tagKey));
+        this.bread = Ingredient.ofTag(this.registryLookup.getOrThrow(tagKey));
         return this;
     }
 
@@ -79,7 +79,7 @@ public class SandwichRecipeJsonBuilder {
     }
 
     public SandwichRecipeJsonBuilder blacklist(TagKey<Item> tagKey) {
-        this.ingredientBlacklist = Ingredient.fromTag(this.registryLookup.getOrThrow(tagKey));
+        this.ingredientBlacklist = Ingredient.ofTag(this.registryLookup.getOrThrow(tagKey));
         return this;
     }
 

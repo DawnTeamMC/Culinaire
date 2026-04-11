@@ -3,7 +3,9 @@ package fr.hugman.culinaire.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.cauldron.CauldronBehavior;
+import net.minecraft.entity.CollisionEvent;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCollisionHandler;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -23,9 +25,9 @@ public class MilkCauldronBlock extends ThreeLeveledCauldronBlock {
     }
 
     @Override
-    public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-        if (world instanceof ServerWorld serverWorld && entity instanceof LivingEntity livingEntity && this.isEntityTouchingFluid(state, pos, entity)) {
-            if (entity.canModifyAt(serverWorld, pos) && livingEntity.clearStatusEffects()) {
+    protected void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity, EntityCollisionHandler handler, boolean bl) {
+        if (world instanceof ServerWorld serverWorld) {
+            if (entity.canModifyAt(serverWorld, pos) && entity instanceof LivingEntity living && living .clearStatusEffects()) {
                 world.setBlockState(pos, changeLevel(state, -1));
             }
         }

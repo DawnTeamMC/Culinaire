@@ -58,7 +58,7 @@ public class TeaBagRecipeJsonBuilder {
     }
 
     public TeaBagRecipeJsonBuilder ingredient(RegistryKey<TeaType> teaType, TagKey<Item> tag) {
-        this.teaTypeIngredients.put(this.teaTypes.getOrThrow(teaType), Ingredient.fromTag(this.items.getOrThrow(tag)));
+        this.teaTypeIngredients.put(this.teaTypes.getOrThrow(teaType), Ingredient.ofTag(this.items.getOrThrow(tag)));
         return this;
     }
 

@@ -2,15 +2,11 @@ package fr.hugman.culinaire.itemgroup;
 
 import fr.hugman.culinaire.Culinaire;
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.NbtComponent;
-import net.minecraft.entity.decoration.painting.PaintingEntity;
 import net.minecraft.entity.decoration.painting.PaintingVariant;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemStackSet;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.registry.*;
 import net.minecraft.registry.entry.RegistryEntry;
 
@@ -40,7 +36,6 @@ public final class CulinaireItemGroup {
                 .ifPresent(
                         registryWrapper -> addPaintings(
                                 entries,
-                                displayContext.lookup(),
                                 registryWrapper,
                                 CulinaireItemGroup::isCulinaire,
                                 ItemGroup.StackVisibility.PARENT_AND_SEARCH_TABS
@@ -65,25 +60,14 @@ public final class CulinaireItemGroup {
 
     private static void addPaintings(
             ItemGroup.Entries entries,
-            RegistryWrapper.WrapperLookup registries,
             RegistryWrapper.Impl<PaintingVariant> registryWrapper,
             Predicate<RegistryEntry<PaintingVariant>> filter,
             ItemGroup.StackVisibility stackVisibility
     ) {
-        RegistryOps<NbtElement> registryOps = registries.getOps(NbtOps.INSTANCE);
-        registryWrapper.streamEntries()
-                .filter(filter)
-                .sorted(PAINTING_VARIANT_COMPARATOR)
-                .forEach(
-                        paintingVariantEntry -> {
-                            NbtComponent nbtComponent = NbtComponent.DEFAULT
-                                    .with(registryOps, PaintingEntity.VARIANT_MAP_CODEC, paintingVariantEntry)
-                                    .getOrThrow()
-                                    .apply(nbt -> nbt.putString("id", "minecraft:painting"));
-                            ItemStack itemStack = new ItemStack(Items.PAINTING);
-                            itemStack.set(DataComponentTypes.ENTITY_DATA, nbtComponent);
-                            entries.add(itemStack, stackVisibility);
-                        }
-                );
+        registryWrapper.streamEntries().filter(filter).sorted(PAINTING_VARIANT_COMPARATOR).forEach(reference -> {
+            ItemStack itemStack = new ItemStack(Items.PAINTING);
+            itemStack.set(DataComponentTypes.PAINTING_VARIANT, reference);
+            entries.add(itemStack, stackVisibility);
+        });
     }
 }

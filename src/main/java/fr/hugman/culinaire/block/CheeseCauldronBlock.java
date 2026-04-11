@@ -35,7 +35,7 @@ public class CheeseCauldronBlock extends ThreeLeveledCauldronBlock {
         ActionResult result = super.onUse(state, world, pos, player, hit);
         if (result.isAccepted()) {
             return result;
-        } else if (!world.isClient) {
+        } else if (!world.isClient()) {
             int level = state.get(this.getLevelProperty());
             player.incrementStat(Stats.USE_CAULDRON);
             float f = 0.7F;

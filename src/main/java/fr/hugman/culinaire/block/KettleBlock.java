@@ -125,7 +125,7 @@ public class KettleBlock extends BlockWithEntity {
 
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return world.isClient ? null : validateTicker(type, CulinaireBlockEntityTypes.KETTLE, KettleBlockEntity::serverTick);
+        return world.isClient() ? null : validateTicker(type, CulinaireBlockEntityTypes.KETTLE, KettleBlockEntity::serverTick);
     }
 
     @Override
@@ -134,14 +134,8 @@ public class KettleBlock extends BlockWithEntity {
     }
 
     @Override
-    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-        if (!state.isOf(newState.getBlock())) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof KettleBlockEntity) {
-                ItemScatterer.spawn(world, pos, (KettleBlockEntity) blockEntity);
-            }
-            super.onStateReplaced(state, world, pos, newState, moved);
-        }
+    protected void onStateReplaced(BlockState state, ServerWorld world, BlockPos pos, boolean moved) {
+        ItemScatterer.onStateReplaced(state, world, pos);
     }
 
     @Override
@@ -217,7 +211,7 @@ public class KettleBlock extends BlockWithEntity {
     }
 
     @Override
-    public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
+    protected int getComparatorOutput(BlockState state, World world, BlockPos pos, Direction direction) {
         return ScreenHandler.calculateComparatorOutput(world.getBlockEntity(pos));
     }
 

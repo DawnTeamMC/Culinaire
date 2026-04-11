@@ -9,6 +9,7 @@ import fr.hugman.culinaire.tag.CulinaireTeaTypeTags;
 import fr.hugman.culinaire.tea.TeaType;
 import it.unimi.dsi.fastutil.objects.Object2IntMap.Entry;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import net.minecraft.component.ComponentsAccess;
 import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.component.type.Consumable;
 import net.minecraft.component.type.ConsumableComponent;
@@ -151,7 +152,7 @@ public final class TeaTypesComponent implements TooltipAppender, Consumable {
     }
 
     @Override
-    public void appendTooltip(Item.TooltipContext context, Consumer<Text> tooltip, TooltipType type) {
+    public void appendTooltip(Item.TooltipContext context, Consumer<Text> tooltip, TooltipType type, ComponentsAccess components) {
         if (this.showInTooltip) {
             if(!hasAbundantType()) {
                 RegistryWrapper.WrapperLookup wrapperLookup = context.getRegistryLookup();
@@ -237,7 +238,7 @@ public final class TeaTypesComponent implements TooltipAppender, Consumable {
 
     @Override
     public void onConsume(World world, LivingEntity user, ItemStack stack, ConsumableComponent consumable) {
-        if (user.getWorld() instanceof ServerWorld serverWorld) {
+        if (user.getEntityWorld() instanceof ServerWorld serverWorld) {
             PlayerEntity playerEntity2 = user instanceof PlayerEntity playerEntity ? playerEntity : null;
             this.getEffects().forEach(effect -> {
                 if (effect.getEffectType().value().isInstant()) {

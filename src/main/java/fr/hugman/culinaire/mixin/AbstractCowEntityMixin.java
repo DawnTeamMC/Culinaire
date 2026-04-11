@@ -1,6 +1,7 @@
 package fr.hugman.culinaire.mixin;
 
 import fr.hugman.culinaire.item.CulinaireItems;
+import net.minecraft.entity.passive.AbstractCowEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -14,8 +15,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(CowEntity.class)
-public class CowEntityMixin {
+@Mixin(AbstractCowEntity.class)
+public class AbstractCowEntityMixin {
     @Inject(method = "interactMob", at = @At(value = "HEAD"), cancellable = true)
     public void culinaire$interactMob(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> info) {
         CowEntity cowEntity = (CowEntity) (Object) this;

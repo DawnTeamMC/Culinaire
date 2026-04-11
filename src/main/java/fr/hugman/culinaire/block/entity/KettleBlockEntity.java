@@ -23,12 +23,15 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.property.Properties;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.text.Text;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 
 import javax.annotation.Nullable;
 import java.util.Locale;
@@ -125,12 +128,13 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
     }
 
     private static boolean isSurroundedByHotBlocks(World world, BlockPos pos) {
+        //TODO: environmental attribute?
         for (Direction direction : Direction.values()) {
             if (isHotBlock(world.getBlockState(pos.offset(direction)))) {
                 return true;
             }
         }
-        return world.getDimension().ultrawarm();
+        return world.getEnvironmentAttributes().getAttributeValue(EnvironmentAttributes.WATER_EVAPORATES_GAMEPLAY, pos);
     }
 
     public static boolean isHotBlock(BlockState state) {
@@ -167,7 +171,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
         this.teaTypes = stack.get(CulinaireComponentTypes.TEA_TYPES);
         stack.decrement(1);
         var remainder = stack.getRecipeRemainder();
-        if (!world.isClient && !remainder.isEmpty()) {
+        if (!world.isClient() && !remainder.isEmpty()) {
             ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), remainder);
         }
         world.playSound(null, pos, CulinaireSoundEvents.KETTLE_BREW, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -308,37 +312,28 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
     }
 
     @Override
-    protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
-        super.readNbt(nbt, registries);
+    protected void readData(ReadView view) {
+        super.readData(view);
         this.inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
-        Inventories.readNbt(nbt, this.inventory, registries);
-        this.brewTime = nbt.getShort("brew_time");
-        this.fluid = Fluid.byString(nbt.getString("fluid"));
-        this.fluidLevel = nbt.getByte("fluid_level");
+        Inventories.readData(view, this.inventory);
+        this.brewTime = view.getShort("brew_time", (short)0);
+        this.fluid = view.getOptionalString("fluid").map(Fluid::byString).orElse(Fluid.EMPTY);
+        this.fluidLevel = view.getByte("fluid_level", (byte)0);
 
-        if (nbt.contains("tea_types")) {
-            TeaTypesComponent.CODEC
-                    .parse(registries.getOps(NbtOps.INSTANCE), nbt.get("tea_types"))
-                    .resultOrPartial(error -> Culinaire.LOGGER.warn("Failed to load tea types: {}", error))
-                    .ifPresent(component -> this.teaTypes = component);
-        }
+        this.teaTypes = view.read("tea_types", TeaTypesComponent.CODEC).orElse(TeaTypesComponent.DEFAULT);
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
-        super.writeNbt(nbt, registries);
-        Inventories.writeNbt(nbt, this.inventory, registries);
-        nbt.putShort("brew_time", (short) this.brewTime);
-        nbt.putString("fluid", this.fluid.toString());
-        nbt.putByte("fluid_level", (byte) this.fluidLevel);
-
-        if (!teaTypes.isEmpty()) {
-            TeaTypesComponent.CODEC
-                    .encodeStart(registries.getOps(NbtOps.INSTANCE), this.teaTypes)
-                    .resultOrPartial(snbt -> Culinaire.LOGGER.warn("Failed to save tea types: {}", snbt))
-                    .ifPresent(element -> nbt.put("tea_types", element));
-        }
+    protected void writeData(WriteView view) {
+        super.writeData(view);
+        Inventories.writeData(view, this.inventory);
+        view.putShort("brew_time", (short) this.brewTime);
+        view.putString("fluid", this.fluid.toString());
+        view.putByte("fluid_level", (byte) this.fluidLevel);
+        view.put("tea_types", TeaTypesComponent.CODEC, this.teaTypes);
     }
+
+    //Todo: implement readComponents + addComponents
 
     public enum Fluid {
         EMPTY, WATER, TEA;

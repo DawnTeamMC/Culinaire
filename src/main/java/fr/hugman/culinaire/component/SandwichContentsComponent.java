@@ -2,6 +2,7 @@ package fr.hugman.culinaire.component;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.component.ComponentsAccess;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipAppender;
@@ -31,7 +32,7 @@ public record SandwichContentsComponent(
     );
 
     @Override
-    public void appendTooltip(Item.TooltipContext context, Consumer<Text> tooltip, TooltipType type) {
+    public void appendTooltip(Item.TooltipContext context, Consumer<Text> tooltip, TooltipType type, ComponentsAccess components) {
         for (Entry entry : entries) {
             tooltip.accept(((MutableText) entry.stack().getName()).formatted(entry.boosted ? Formatting.GREEN : Formatting.GRAY));
         }
