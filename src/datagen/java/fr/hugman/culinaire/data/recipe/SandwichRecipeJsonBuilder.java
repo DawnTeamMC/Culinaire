@@ -113,7 +113,7 @@ public class SandwichRecipeJsonBuilder {
                 .rewards(AdvancementRewards.Builder.recipe(recipeKey))
                 .criteriaMerger(AdvancementRequirements.CriterionMerger.OR);
         this.criteria.forEach(builder::criterion);
-        SandwichRecipe teaBagRecipe = new SandwichRecipe(
+        SandwichRecipe sandwichRecipe = new SandwichRecipe(
                 CraftingRecipeJsonBuilder.toCraftingCategory(this.category),
                 this.bread,
                 this.ingredientBlacklist,
@@ -124,7 +124,7 @@ public class SandwichRecipeJsonBuilder {
                 this.ingredientAssociations,
                 this.result
         );
-        exporter.accept(recipeKey, teaBagRecipe, builder.build(recipeKey.getValue().withPrefixedPath("recipes/" + this.category.getName() + "/")));
+        exporter.accept(recipeKey, sandwichRecipe, builder.build(recipeKey.getValue().withPrefixedPath("recipes/" + this.category.getName() + "/")));
     }
 
     private void validate(RegistryKey<Recipe<?>> recipeKey) {

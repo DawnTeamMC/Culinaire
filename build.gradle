@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.10+'
+    id 'fabric-loom' version "${loom_version}"
     id 'org.moddedmc.wiki.toolkit' version '0.2.7'
 }
 
@@ -18,7 +18,7 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
     modApi ("me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}") {
         exclude(group: "net.fabricmc.fabric-api")
