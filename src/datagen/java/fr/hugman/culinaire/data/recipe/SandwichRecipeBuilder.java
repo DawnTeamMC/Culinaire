@@ -19,10 +19,11 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 
-public class SandwichRecipeJsonBuilder {
+public class SandwichRecipeBuilder {
     private final HolderGetter<Item> registryLookup;
     private final RecipeCategory category;
     private Ingredient bread;
@@ -32,11 +33,11 @@ public class SandwichRecipeJsonBuilder {
     private final float saturationModifierBase;
     private final float saturationModifierBoosted;
     private final Map<Ingredient, Ingredient> ingredientAssociations;
-    private final ItemStack result;
+    private final ItemStackTemplate result;
 
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
-    public SandwichRecipeJsonBuilder(
+    public SandwichRecipeBuilder(
             HolderGetter<Item> registryLookup, RecipeCategory category,
             Ingredient bread,
             Ingredient ingredientBlacklist,
@@ -45,7 +46,7 @@ public class SandwichRecipeJsonBuilder {
             float saturationModifierBase,
             float saturationModifierBoosted,
             Map<Ingredient, Ingredient> ingredientAssociations,
-            ItemStack result
+            ItemStackTemplate result
     ) {
         this.registryLookup = registryLookup;
         this.category = category;
@@ -59,50 +60,50 @@ public class SandwichRecipeJsonBuilder {
         this.result = result;
     }
 
-    public static SandwichRecipeJsonBuilder create(HolderGetter<Item> registryLookup, RecipeCategory category, Ingredient bread, Ingredient ingredientBlacklist, float nutritionModifierBase, float nutritionModifierBoosted, float saturationModifierBase, float saturationModifierBoosted, ItemStack result) {
-        return new SandwichRecipeJsonBuilder(registryLookup, category, bread, ingredientBlacklist, nutritionModifierBase, nutritionModifierBoosted, saturationModifierBase, saturationModifierBoosted, new HashMap<>(), result);
+    public static SandwichRecipeBuilder create(HolderGetter<Item> registryLookup, RecipeCategory category, Ingredient bread, Ingredient ingredientBlacklist, float nutritionModifierBase, float nutritionModifierBoosted, float saturationModifierBase, float saturationModifierBoosted, ItemStackTemplate result) {
+        return new SandwichRecipeBuilder(registryLookup, category, bread, ingredientBlacklist, nutritionModifierBase, nutritionModifierBoosted, saturationModifierBase, saturationModifierBoosted, new HashMap<>(), result);
     }
 
-    public static SandwichRecipeJsonBuilder create(HolderGetter<Item> registryLookup, RecipeCategory category, float nutritionModifierBase, float nutritionModifierBoosted, float saturationModifierBase, float saturationModifierBoosted, ItemStack result) {
-        return new SandwichRecipeJsonBuilder(registryLookup, category, null, null, nutritionModifierBase, nutritionModifierBoosted, saturationModifierBase, saturationModifierBoosted, new HashMap<>(), result);
+    public static SandwichRecipeBuilder create(HolderGetter<Item> registryLookup, RecipeCategory category, float nutritionModifierBase, float nutritionModifierBoosted, float saturationModifierBase, float saturationModifierBoosted, ItemStackTemplate result) {
+        return new SandwichRecipeBuilder(registryLookup, category, null, null, nutritionModifierBase, nutritionModifierBoosted, saturationModifierBase, saturationModifierBoosted, new HashMap<>(), result);
     }
 
-    public SandwichRecipeJsonBuilder bread(TagKey<Item> tagKey) {
+    public SandwichRecipeBuilder bread(TagKey<Item> tagKey) {
         this.bread = Ingredient.of(this.registryLookup.getOrThrow(tagKey));
         return this;
     }
 
-    public SandwichRecipeJsonBuilder bread(Item... items) {
+    public SandwichRecipeBuilder bread(Item... items) {
         this.bread = Ingredient.of(items);
         return this;
     }
 
-    public SandwichRecipeJsonBuilder blacklist(TagKey<Item> tagKey) {
+    public SandwichRecipeBuilder blacklist(TagKey<Item> tagKey) {
         this.ingredientBlacklist = Ingredient.of(this.registryLookup.getOrThrow(tagKey));
         return this;
     }
 
-    public SandwichRecipeJsonBuilder blacklist(Item... items) {
+    public SandwichRecipeBuilder blacklist(Item... items) {
         this.ingredientBlacklist = Ingredient.of(items);
         return this;
     }
 
-    public SandwichRecipeJsonBuilder criterion(String name, Criterion<?> criterion) {
+    public SandwichRecipeBuilder criterion(String name, Criterion<?> criterion) {
         this.criteria.put(name, criterion);
         return this;
     }
 
-    public SandwichRecipeJsonBuilder association(Ingredient ingredient, Ingredient others) {
+    public SandwichRecipeBuilder association(Ingredient ingredient, Ingredient others) {
         this.ingredientAssociations.put(ingredient, others);
         return this;
     }
 
-    public SandwichRecipeJsonBuilder association(Item ingredient, Item... others) {
+    public SandwichRecipeBuilder association(Item ingredient, Item... others) {
         return this.association(Ingredient.of(ingredient), Ingredient.of(others));
     }
 
     public void save(RecipeOutput exporter) {
-        this.save(exporter, ResourceKey.create(Registries.RECIPE, BuiltInRegistries.ITEM.getKey(this.result.getItem())));
+        this.save(exporter, RecipeBuilder.getDefaultRecipeId(this.result));
     }
 
     public void save(RecipeOutput exporter, ResourceKey<Recipe<?>> recipeKey) {
@@ -113,7 +114,7 @@ public class SandwichRecipeJsonBuilder {
                 .requirements(AdvancementRequirements.Strategy.OR);
         this.criteria.forEach(builder::addCriterion);
         SandwichRecipe sandwichRecipe = new SandwichRecipe(
-                RecipeBuilder.determineBookCategory(this.category),
+                RecipeBuilder.determineCraftingBookCategory(this.category),
                 this.bread,
                 this.ingredientBlacklist,
                 this.nutritionModifierBase,

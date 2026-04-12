@@ -1,12 +1,12 @@
 package fr.hugman.culinaire.data.provider;
 
 import fr.hugman.culinaire.block.CulinaireBlocks;
-import fr.hugman.culinaire.data.recipe.SandwichRecipeJsonBuilder;
-import fr.hugman.culinaire.data.recipe.TeaBagRecipeJsonBuilder;
+import fr.hugman.culinaire.data.recipe.SandwichRecipeBuilder;
+import fr.hugman.culinaire.data.recipe.TeaBagRecipeBuilder;
 import fr.hugman.culinaire.item.CulinaireItems;
 import fr.hugman.culinaire.tag.CulinaireItemTags;
 import fr.hugman.culinaire.tea.TeaTypes;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -14,6 +14,7 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import java.util.concurrent.CompletableFuture;
@@ -156,7 +157,7 @@ public class CulinaireRecipeGenerator extends RecipeProvider {
     }
 
     public void offerTeaBagRecipe() {
-        TeaBagRecipeJsonBuilder.create(registries, RecipeCategory.FOOD, Ingredient.of(Items.PAPER), Ingredient.of(Items.STRING), new ItemStack(CulinaireItems.TEA_BAG))
+        TeaBagRecipeBuilder.create(registries, RecipeCategory.FOOD, Ingredient.of(Items.PAPER), Ingredient.of(Items.STRING), new ItemStackTemplate(CulinaireItems.TEA_BAG))
                 .criterion(getHasName(Items.PAPER), this.has(Items.PAPER))
                 .ingredient(TeaTypes.GREEN, CulinaireItemTags.GREEN_TEA_INGREDIENTS)
                 .ingredient(TeaTypes.WHITE, CulinaireItemTags.WHITE_TEA_INGREDIENTS)
@@ -167,14 +168,14 @@ public class CulinaireRecipeGenerator extends RecipeProvider {
 
 
     public void offerSandwichRecipe() {
-        SandwichRecipeJsonBuilder.create(
+        SandwichRecipeBuilder.create(
                         registries.lookupOrThrow(Registries.ITEM),
                         RecipeCategory.FOOD,
                         0.5f,
                         1.0f,
                         0.2f,
                         0.5f,
-                        new ItemStack(CulinaireItems.SANDWICH)
+                        new ItemStackTemplate(CulinaireItems.SANDWICH)
                 )
                 .bread(CulinaireItemTags.SANDWICH_BREAD)
                 .blacklist(CulinaireItemTags.SANDWICH_INGREDIENT_BLACKLIST)
@@ -190,8 +191,8 @@ public class CulinaireRecipeGenerator extends RecipeProvider {
                 .save(this.output);
     }
 
-    public static FabricRecipeProvider create(FabricDataOutput fabricDataOutput, CompletableFuture<HolderLookup.Provider> completableFuture) {
-        return new FabricRecipeProvider(fabricDataOutput, completableFuture) {
+    public static FabricRecipeProvider create(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> completableFuture) {
+        return new FabricRecipeProvider(output, completableFuture) {
             @Override
             protected RecipeProvider createRecipeProvider(HolderLookup.Provider wrapperLookup, RecipeOutput recipeExporter) {
                 return new CulinaireRecipeGenerator(wrapperLookup, recipeExporter);

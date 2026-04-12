@@ -14,8 +14,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class MilkCauldronBlock extends ThreeLeveledCauldronBlock {
-    public MilkCauldronBlock(Properties settings, CauldronInteraction.InteractionMap behaviorMap) {
-        super(settings, behaviorMap);
+    public MilkCauldronBlock(Properties settings, CauldronInteraction.Dispatcher interactions) {
+        super(settings, interactions);
     }
 
     @Override

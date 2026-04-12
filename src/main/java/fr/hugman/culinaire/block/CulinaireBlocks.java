@@ -21,15 +21,15 @@ public class CulinaireBlocks {
     public static final Block TOMATOES = registerNoItem("tomatoes", TomatoesBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollision().randomTicks().instabreak().sound(SoundType.CROP).pushReaction(PushReaction.DESTROY));
 
     // DIARIES
-    public static final Block MILK_CAULDRON = registerNoItem("milk_cauldron", s -> new MilkCauldronBlock(s, CulinaireCauldronBehaviors.MILK), BlockBehaviour.Properties.ofLegacyCopy(Blocks.CAULDRON).randomTicks());
+    public static final Block MILK_CAULDRON = registerNoItem("milk_cauldron", s -> new MilkCauldronBlock(s, CulinaireCauldronInteractions.MILK), BlockBehaviour.Properties.ofLegacyCopy(Blocks.CAULDRON).randomTicks());
 
     public static final Block CHEESE_WHEEL = register("cheese_wheel", CheeseWheelBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.CAKE));
     public static final Block CHEESE_CAULDRON = registerNoItem("cheese_cauldron", CheeseCauldronBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON));
 
     // CANDIES
-    public static final Block DARK_CHOCOLATE_CAULDRON = registerNoItem("dark_chocolate_cauldron", s -> new ThreeLeveledCauldronBlock(s, CulinaireCauldronBehaviors.DARK_CHOCOLATE), BlockBehaviour.Properties.ofLegacyCopy(Blocks.CAULDRON));
-    public static final Block MILK_CHOCOLATE_CAULDRON = registerNoItem("milk_chocolate_cauldron", s -> new ThreeLeveledCauldronBlock(s, CulinaireCauldronBehaviors.MILK_CHOCOLATE), BlockBehaviour.Properties.ofLegacyCopy(Blocks.CAULDRON));
-    public static final Block WHITE_CHOCOLATE_CAULDRON = registerNoItem("white_chocolate_cauldron", s -> new ThreeLeveledCauldronBlock(s, CulinaireCauldronBehaviors.WHITE_CHOCOLATE), BlockBehaviour.Properties.ofLegacyCopy(Blocks.CAULDRON));
+    public static final Block DARK_CHOCOLATE_CAULDRON = registerNoItem("dark_chocolate_cauldron", s -> new ThreeLeveledCauldronBlock(s, CulinaireCauldronInteractions.DARK_CHOCOLATE), BlockBehaviour.Properties.ofLegacyCopy(Blocks.CAULDRON));
+    public static final Block MILK_CHOCOLATE_CAULDRON = registerNoItem("milk_chocolate_cauldron", s -> new ThreeLeveledCauldronBlock(s, CulinaireCauldronInteractions.MILK_CHOCOLATE), BlockBehaviour.Properties.ofLegacyCopy(Blocks.CAULDRON));
+    public static final Block WHITE_CHOCOLATE_CAULDRON = registerNoItem("white_chocolate_cauldron", s -> new ThreeLeveledCauldronBlock(s, CulinaireCauldronInteractions.WHITE_CHOCOLATE), BlockBehaviour.Properties.ofLegacyCopy(Blocks.CAULDRON));
 
     // TEA
     public static final Block KETTLE = register("kettle", KettleBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.METAL).requiresCorrectToolForDrops().strength(5.0F, 1200.0F).sound(SoundType.STONE).pushReaction(PushReaction.BLOCK));

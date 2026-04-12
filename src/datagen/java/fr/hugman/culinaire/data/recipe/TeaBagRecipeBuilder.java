@@ -20,12 +20,13 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class TeaBagRecipeJsonBuilder {
+public class TeaBagRecipeBuilder {
     private final HolderGetter<Item> items;
     private final HolderGetter<TeaType> teaTypes;
 
@@ -33,11 +34,11 @@ public class TeaBagRecipeJsonBuilder {
     private final Ingredient paper;
     private final Ingredient string;
     private final Map<Holder<TeaType>, Ingredient> teaTypeIngredients = new LinkedHashMap<>();
-    private final ItemStack result;
+    private final ItemStackTemplate result;
 
     private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
-    public TeaBagRecipeJsonBuilder(HolderGetter<Item> items, HolderGetter<TeaType> teaTypes, RecipeCategory category, Ingredient paper, Ingredient string, ItemStack result) {
+    public TeaBagRecipeBuilder(HolderGetter<Item> items, HolderGetter<TeaType> teaTypes, RecipeCategory category, Ingredient paper, Ingredient string, ItemStackTemplate result) {
         this.items = items;
         this.teaTypes = teaTypes;
         this.category = category;
@@ -46,27 +47,27 @@ public class TeaBagRecipeJsonBuilder {
         this.result = result;
     }
 
-    public static TeaBagRecipeJsonBuilder create(HolderLookup.Provider registries, RecipeCategory category, Ingredient paper, Ingredient string, ItemStack result) {
-        return new TeaBagRecipeJsonBuilder(registries.lookupOrThrow(Registries.ITEM), registries.lookupOrThrow(CulinaireRegistryKeys.TEA_TYPE), category, paper, string, result);
+    public static TeaBagRecipeBuilder create(HolderLookup.Provider registries, RecipeCategory category, Ingredient paper, Ingredient string, ItemStackTemplate result) {
+        return new TeaBagRecipeBuilder(registries.lookupOrThrow(Registries.ITEM), registries.lookupOrThrow(CulinaireRegistryKeys.TEA_TYPE), category, paper, string, result);
     }
 
-    public TeaBagRecipeJsonBuilder criterion(String name, Criterion<?> criterion) {
+    public TeaBagRecipeBuilder criterion(String name, Criterion<?> criterion) {
         this.criteria.put(name, criterion);
         return this;
     }
 
-    public TeaBagRecipeJsonBuilder ingredient(ResourceKey<TeaType> teaType, Item... items) {
+    public TeaBagRecipeBuilder ingredient(ResourceKey<TeaType> teaType, Item... items) {
         this.teaTypeIngredients.put(this.teaTypes.getOrThrow(teaType), Ingredient.of(items));
         return this;
     }
 
-    public TeaBagRecipeJsonBuilder ingredient(ResourceKey<TeaType> teaType, TagKey<Item> tag) {
+    public TeaBagRecipeBuilder ingredient(ResourceKey<TeaType> teaType, TagKey<Item> tag) {
         this.teaTypeIngredients.put(this.teaTypes.getOrThrow(teaType), Ingredient.of(this.items.getOrThrow(tag)));
         return this;
     }
 
     public void save(RecipeOutput exporter) {
-        this.save(exporter, ResourceKey.create(Registries.RECIPE, BuiltInRegistries.ITEM.getKey(this.result.getItem())));
+        this.save(exporter, RecipeBuilder.getDefaultRecipeId(this.result));
     }
 
     public void save(RecipeOutput exporter, ResourceKey<Recipe<?>> recipeKey) {
@@ -77,7 +78,7 @@ public class TeaBagRecipeJsonBuilder {
                 .requirements(AdvancementRequirements.Strategy.OR);
         this.criteria.forEach(builder::addCriterion);
         TeaBagRecipe teaBagRecipe = new TeaBagRecipe(
-                RecipeBuilder.determineBookCategory(this.category),
+                RecipeBuilder.determineCraftingBookCategory(this.category),
                 this.paper,
                 this.string,
                 this.teaTypeIngredients,

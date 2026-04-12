@@ -111,7 +111,7 @@ public class KettleBlockEntity extends BaseContainerBlockEntity implements World
                 kettle.setChanged();
             }
             float brewProgress = (float) (kettle.totalBrewTime - kettle.brewTime) / kettle.totalBrewTime;
-            if (world.random.nextFloat() < brewProgress) produceSteam(world, pos, state);
+            if (world.getRandom().nextFloat() < brewProgress) produceSteam(world, pos, state);
         } else if (canBrew) {
             kettle.totalBrewTime = kettle.getBrewTime(stack);
             kettle.brewTime = kettle.totalBrewTime;
@@ -167,9 +167,9 @@ public class KettleBlockEntity extends BaseContainerBlockEntity implements World
         this.fluid = Fluid.TEA;
         this.teaTypes = stack.get(CulinaireComponentTypes.TEA_TYPES);
         stack.shrink(1);
-        var remainder = stack.getRecipeRemainder();
-        if (!world.isClientSide() && !remainder.isEmpty()) {
-            Containers.dropItemStack(world, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), remainder);
+        var remainder = stack.getCraftingRemainder();
+        if (!world.isClientSide() && remainder != null) {
+            Containers.dropItemStack(world, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), remainder.create());
         }
         world.playSound(null, worldPosition, CulinaireSoundEvents.KETTLE_BREW, SoundSource.BLOCKS, 1.0F, 1.0F);
         this.inventory.set(0, stack);

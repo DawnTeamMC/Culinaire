@@ -15,8 +15,8 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 public class ThreeLeveledCauldronBlock extends AbstractLeveledCauldronBlock {
     public static final IntegerProperty LEVEL = BlockStateProperties.LEVEL_CAULDRON;
 
-    public ThreeLeveledCauldronBlock(Properties settings, CauldronInteraction.InteractionMap behaviorMap) {
-        super(settings, behaviorMap, 3);
+    public ThreeLeveledCauldronBlock(Properties settings, CauldronInteraction.Dispatcher interactions) {
+        super(settings, interactions, 3);
     }
 
     @Override

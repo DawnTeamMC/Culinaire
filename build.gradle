@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version "${loom_version}"
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
     id 'org.moddedmc.wiki.toolkit' version '0.2.7'
 }
 
@@ -15,19 +15,20 @@ repositories {
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.officialMojangMappings()
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-    modApi ("me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}") {
+    /*
+    api ("me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
+     */
 
     compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 
     // Version list: https://maven.su5ed.dev/#/releases/org/sinytra/wiki-exporter-fabric
-    modRuntimeOnly "org.sinytra:wiki-exporter-fabric:2.2.1+1.21.11"
+    // modRuntimeOnly "org.sinytra:wiki-exporter-fabric:2.2.1+1.21.11"
 }
 
 loom {

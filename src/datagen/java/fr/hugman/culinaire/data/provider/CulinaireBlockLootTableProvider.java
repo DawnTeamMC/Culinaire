@@ -3,8 +3,8 @@ package fr.hugman.culinaire.data.provider;
 import fr.hugman.culinaire.block.CulinaireBlocks;
 import fr.hugman.culinaire.block.TomatoesBlock;
 import fr.hugman.culinaire.item.CulinaireItems;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootSubProvider;
 import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -23,8 +23,8 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePrope
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import java.util.concurrent.CompletableFuture;
 
-public class CulinaireBlockLootTableProvider extends FabricBlockLootTableProvider {
-    public CulinaireBlockLootTableProvider(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
+public class CulinaireBlockLootTableProvider extends FabricBlockLootSubProvider {
+    public CulinaireBlockLootTableProvider(FabricPackOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(dataOutput, registryLookup);
     }
 
@@ -56,8 +56,6 @@ public class CulinaireBlockLootTableProvider extends FabricBlockLootTableProvide
 
         // TEA
         this.dropSelf(CulinaireBlocks.KETTLE);
-
-        this.map.forEach((id, lootTable) -> lootTable.setRandomSequence(id.identifier()));
     }
 
     public LootTable.Builder createCropDrops(Block crop, Item product, LootItemCondition.Builder condition1, LootItemCondition.Builder condition2) {

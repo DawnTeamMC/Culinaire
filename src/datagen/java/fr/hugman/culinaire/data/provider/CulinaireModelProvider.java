@@ -4,19 +4,21 @@ import fr.hugman.culinaire.block.CulinaireBlocks;
 import fr.hugman.culinaire.client.render.item.tint.TeaTintSource;
 import fr.hugman.culinaire.item.CulinaireItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.client.data.*;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 
 public class CulinaireModelProvider extends FabricModelProvider {
-    public CulinaireModelProvider(FabricDataOutput output) {
+    public CulinaireModelProvider(FabricPackOutput output) {
         super(output);
     }
 
@@ -67,7 +69,7 @@ public class CulinaireModelProvider extends FabricModelProvider {
     }
 
     public final void registerTeaBottle(ItemModelGenerators gen, Item item) {
-        Identifier identifier = gen.generateLayeredItem(item, ModelLocationUtils.decorateItemModelLocation("potion_overlay"), ModelLocationUtils.getModelLocation(Items.POTION));
+        Identifier identifier = gen.generateLayeredItem(item, new Material(Identifier.withDefaultNamespace("item/potion_overlay")), TextureMapping.getItemTexture(Items.POTION));
         gen.itemModelOutput.accept(item, ItemModelUtils.tintedModel(identifier, new TeaTintSource()));
     }
 }

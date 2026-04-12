@@ -5,7 +5,7 @@ import fr.hugman.culinaire.item.CulinaireItems;
 import fr.hugman.culinaire.registry.CulinaireRegistryKeys;
 import fr.hugman.culinaire.tea.TeaType;
 import fr.hugman.culinaire.tea.TeaTypes;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -15,12 +15,13 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item;
+
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 //TODO: a generic class for other devs
 public class CulinaireTeaTypeProvider extends FabricDynamicRegistryProvider {
-    public CulinaireTeaTypeProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+    public CulinaireTeaTypeProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 

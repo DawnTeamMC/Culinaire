@@ -3,6 +3,7 @@ package fr.hugman.culinaire.block;
 import fr.hugman.culinaire.item.CulinaireItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.core.cauldron.CauldronInteractions;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -22,7 +23,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class CheeseCauldronBlock extends ThreeLeveledCauldronBlock {
     public CheeseCauldronBlock(Properties settings) {
-        super(settings, CauldronInteraction.newInteractionMap("culinaire:cheese"));
+        super(settings, CauldronInteractions.newDispatcher("culinaire:cheese"));
     }
 
     @Override
@@ -39,9 +40,9 @@ public class CheeseCauldronBlock extends ThreeLeveledCauldronBlock {
             int level = state.getValue(this.getLevelProperty());
             player.awardStat(Stats.USE_CAULDRON);
             float f = 0.7F;
-            double x = (world.random.nextFloat() * f) + 0.15D;
-            double y = (world.random.nextFloat() * f) + 0.66D;
-            double z = (world.random.nextFloat() * f) + 0.15D;
+            double x = (world.getRandom().nextFloat() * f) + 0.15D;
+            double y = (world.getRandom().nextFloat() * f) + 0.66D;
+            double z = (world.getRandom().nextFloat() * f) + 0.15D;
             ItemEntity itemEntity = new ItemEntity(world, (double) pos.getX() + x, (double) pos.getY() + y, (double) pos.getZ() + z, new ItemStack(CulinaireItems.CHEESE));
             itemEntity.setDefaultPickUpDelay();
             world.addFreshEntity(itemEntity);

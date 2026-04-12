@@ -21,10 +21,10 @@ public abstract class AbstractLeveledCauldronBlock extends AbstractCauldronBlock
 
     public AbstractLeveledCauldronBlock(
             Properties settings,
-            CauldronInteraction.InteractionMap behaviorMap,
+            CauldronInteraction.Dispatcher interactions,
             int maxLevel
     ) {
-        super(settings, behaviorMap);
+        super(settings, interactions);
         this.maxLevel = maxLevel;
         this.levelProperty = maxLevel == 3 ? BlockStateProperties.LEVEL_CAULDRON : IntegerProperty.create("level", 1, maxLevel);
         this.registerDefaultState(this.stateDefinition.any().setValue(this.levelProperty, 1));

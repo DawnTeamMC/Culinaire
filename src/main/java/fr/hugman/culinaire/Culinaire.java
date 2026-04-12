@@ -2,17 +2,17 @@ package fr.hugman.culinaire;
 
 import com.google.common.reflect.Reflection;
 import fr.hugman.culinaire.block.CulinaireBlocks;
-import fr.hugman.culinaire.block.CulinaireCauldronBehaviors;
+import fr.hugman.culinaire.block.CulinaireCauldronInteractions;
 import fr.hugman.culinaire.block.entity.CulinaireBlockEntityTypes;
 import fr.hugman.culinaire.component.CulinaireComponentModifiers;
 import fr.hugman.culinaire.component.CulinaireComponentTypes;
 import fr.hugman.culinaire.entity.effect.CulinaireEffects;
 import fr.hugman.culinaire.item.CulinaireItems;
-import fr.hugman.culinaire.itemgroup.CulinaireItemGroupAdditions;
+import fr.hugman.culinaire.itemgroup.CulinaireCreativeModeTabAdditions;
 import fr.hugman.culinaire.itemgroup.CulinaireItemGroups;
 import fr.hugman.culinaire.loot.CulinaireLootTables;
 import fr.hugman.culinaire.recipe.CulinaireRecipeSerializers;
-import fr.hugman.culinaire.registry.CulinaireCompostingChances;
+import fr.hugman.culinaire.registry.CulinaireCompostables;
 import fr.hugman.culinaire.registry.CulinaireFlammables;
 import fr.hugman.culinaire.registry.CulinaireRegistries;
 import fr.hugman.culinaire.screen.CulinaireScreenHandlerTypes;
@@ -43,9 +43,9 @@ public class Culinaire implements ModInitializer {
         Reflection.initialize(CulinaireItems.class);
 
         Reflection.initialize(CulinaireItemGroups.class);
-        CulinaireItemGroupAdditions.registerEvents();
-        CulinaireCompostingChances.register();
-        CulinaireCauldronBehaviors.register();
+        CulinaireCreativeModeTabAdditions.registerEvents();
+        CulinaireCompostables.register();
+        CulinaireCauldronInteractions.register();
 
         Reflection.initialize(CulinaireRecipeSerializers.class);
 

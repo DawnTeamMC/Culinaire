@@ -2,6 +2,7 @@ package fr.hugman.culinaire.block.cauldron;
 
 import fr.hugman.culinaire.block.AbstractLeveledCauldronBlock;
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.core.cauldron.CauldronInteractions;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -53,21 +54,21 @@ public final class CauldronUtil {
         }
     }
 
-    public static void addBottleInteractions(CauldronInteraction.InteractionMap map, Block cauldron, Item bottle) {
-        CauldronInteraction pourBottleBehavior = CauldronInteractionBuilder.create().cauldron(cauldron).addLevel(1).item(Items.GLASS_BOTTLE).sound(SoundEvents.BOTTLE_EMPTY).build();
+    public static void addBottleInteractions(CauldronInteraction.Dispatcher map, Block cauldron, Item bottle) {
+        CauldronInteraction pourBottleBehavior = CauldronInteractionBuilder.create().cauldron(cauldron).addLevel(1).result(Items.GLASS_BOTTLE).sound(SoundEvents.BOTTLE_EMPTY).build();
 
-        CauldronInteraction.EMPTY.map().put(bottle, pourBottleBehavior); // Pour bottle into empty cauldron
-        map.map().put(bottle, pourBottleBehavior); // Pour bottle into same cauldron
+        CauldronInteractions.EMPTY.put(bottle, pourBottleBehavior); // Pour bottle into empty cauldron
+        map.put(bottle, pourBottleBehavior); // Pour bottle into same cauldron
 
-        map.map().put(Items.GLASS_BOTTLE, CauldronInteractionBuilder.create().addLevel(-1).item(bottle).sound(SoundEvents.BOTTLE_FILL).build()); // Fill bottle from cauldron
+        map.put(Items.GLASS_BOTTLE, CauldronInteractionBuilder.create().addLevel(-1).result(bottle).sound(SoundEvents.BOTTLE_FILL).build()); // Fill bottle from cauldron
     }
 
-    public static void addBucketInteractions(CauldronInteraction.InteractionMap map, Block cauldron, Item bucket) {
-        CauldronInteraction pourBucketBehavior = CauldronInteractionBuilder.create().cauldron(cauldron).addLevel(3).item(Items.BUCKET).sound(SoundEvents.BUCKET_EMPTY).build();
+    public static void addBucketInteractions(CauldronInteraction.Dispatcher map, Block cauldron, Item bucket) {
+        CauldronInteraction pourBucketBehavior = CauldronInteractionBuilder.create().cauldron(cauldron).addLevel(3).result(Items.BUCKET).sound(SoundEvents.BUCKET_EMPTY).build();
 
-        CauldronInteraction.EMPTY.map().put(bucket, pourBucketBehavior); // Pour bucket into any empty cauldron
-        map.map().put(bucket, pourBucketBehavior); // Pour bucket into same cauldron
+        CauldronInteractions.EMPTY.put(bucket, pourBucketBehavior); // Pour bucket into any empty cauldron
+        map.put(bucket, pourBucketBehavior); // Pour bucket into same cauldron
 
-        map.map().put(Items.BUCKET, CauldronInteractionBuilder.create().addLevel(-3).item(bucket).sound(SoundEvents.BUCKET_FILL).build()); // Fill bucket from cauldron
+        map.put(Items.BUCKET, CauldronInteractionBuilder.create().addLevel(-3).result(bucket).sound(SoundEvents.BUCKET_FILL).build()); // Fill bucket from cauldron
     }
 }

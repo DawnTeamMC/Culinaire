@@ -1,13 +1,14 @@
 package fr.hugman.culinaire.block.cauldron;
 
 import java.util.function.Predicate;
+
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -15,15 +16,15 @@ import net.minecraft.world.level.gameevent.GameEvent;
 
 public class CauldronInteractionBuilder {
     private Predicate<BlockState> predicate;
-    private ItemStack stack;
+    private ItemStackTemplate result;
     private Block cauldron;
     private int level;
     private boolean overwriteLevel;
     private SoundEvent sound;
 
-    private CauldronInteractionBuilder(Predicate<BlockState> predicate, ItemStack stack, Block cauldron, int level, boolean overwriteLevel, SoundEvent sound) {
+    private CauldronInteractionBuilder(Predicate<BlockState> predicate, ItemStackTemplate result, Block cauldron, int level, boolean overwriteLevel, SoundEvent sound) {
         this.predicate = predicate;
-        this.stack = stack;
+        this.result = result;
         this.cauldron = cauldron;
         this.level = level;
         this.overwriteLevel = overwriteLevel;
@@ -59,24 +60,23 @@ public class CauldronInteractionBuilder {
     /**
      * Sets the item stack that will result from the interaction.
      *
-     * @param newStack an item stack
+     * @param stack an item stack
      * @return this builder for chaining
      */
-    public CauldronInteractionBuilder stack(ItemStack newStack) {
-        this.stack = newStack;
+    public CauldronInteractionBuilder result(ItemStackTemplate stack) {
+        this.result = stack;
         return this;
     }
 
     /**
      * Sets the item that will result from the interaction.
-     * <p>Note: This is a shortcut method for {@link #stack(ItemStack)}.</p>
+     * <p>Note: This is a shortcut method for {@link #result(ItemStackTemplate)}.</p>
      *
      * @param item an item
      * @return this builder for chaining
      */
-    public CauldronInteractionBuilder item(Item item) {
-        this.stack = item.getDefaultInstance();
-        return this;
+    public CauldronInteractionBuilder result(Item item) {
+        return result(new ItemStackTemplate(item));
     }
 
     /**
@@ -149,11 +149,11 @@ public class CauldronInteractionBuilder {
                     BlockState returnedState = CauldronUtil.modifyCauldron(state, cauldron, newLevel);
 
                     Item item = stack.getItem();
-                    if(this.stack == null || this.stack.isEmpty()) {
+                    if(this.result == null) {
                         stack.consume(1, player);
                     }
                     else {
-                        player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, this.stack.copy()));
+                        player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, this.result.create()));
                     }
                     player.awardStat(CauldronUtil.isFull(returnedState) ? Stats.FILL_CAULDRON : Stats.USE_CAULDRON);
                     player.awardStat(Stats.ITEM_USED.get(item));
@@ -173,6 +173,6 @@ public class CauldronInteractionBuilder {
      * @return the new builder
      */
     public CauldronInteractionBuilder copy() {
-        return new CauldronInteractionBuilder(this.predicate, this.stack, this.cauldron, this.level, this.overwriteLevel, this.sound);
+        return new CauldronInteractionBuilder(this.predicate, this.result, this.cauldron, this.level, this.overwriteLevel, this.sound);
     }
 }

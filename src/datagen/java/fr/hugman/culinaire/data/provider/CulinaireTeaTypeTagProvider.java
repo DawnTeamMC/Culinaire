@@ -4,13 +4,14 @@ import fr.hugman.culinaire.registry.CulinaireRegistryKeys;
 import fr.hugman.culinaire.tag.CulinaireTeaTypeTags;
 import fr.hugman.culinaire.tea.TeaType;
 import fr.hugman.culinaire.tea.TeaTypes;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
+
 import java.util.concurrent.CompletableFuture;
 
-public class CulinaireTeaTypeTagProvider extends FabricTagProvider<TeaType> {
-    public CulinaireTeaTypeTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+public class CulinaireTeaTypeTagProvider extends FabricTagsProvider<TeaType> {
+    public CulinaireTeaTypeTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, CulinaireRegistryKeys.TEA_TYPE, registriesFuture);
     }
 

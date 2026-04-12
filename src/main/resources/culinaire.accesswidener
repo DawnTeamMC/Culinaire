@@ -1,3 +1,5 @@
-accessWidener	v1	named
+accessWidener	v1	official
 accessible	method	net/minecraft/world/effect/MobEffect	<init>	(Lnet/minecraft/world/effect/MobEffectCategory;I)V
 accessible	method	net/minecraft/world/effect/MobEffect	<init>	(Lnet/minecraft/world/effect/MobEffectCategory;ILnet/minecraft/core/particles/ParticleOptions;)V
+accessible method net/minecraft/core/cauldron/CauldronInteraction$Dispatcher put (Lnet/minecraft/world/item/Item;Lnet/minecraft/core/cauldron/CauldronInteraction;)V
+accessible method net/minecraft/core/cauldron/CauldronInteractions newDispatcher (Ljava/lang/String;)Lnet/minecraft/core/cauldron/CauldronInteraction$Dispatcher;

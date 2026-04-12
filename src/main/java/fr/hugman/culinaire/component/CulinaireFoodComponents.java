@@ -33,6 +33,6 @@ public final class CulinaireFoodComponents {
     }
 
     public static FoodProperties alwaysEdible(int nutrition, float saturation) {
-        return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(saturation).build();
+        return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(saturation).alwaysEdible().build();
     }
 }

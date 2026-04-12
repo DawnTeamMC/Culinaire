@@ -1,17 +1,18 @@
 package fr.hugman.culinaire.data.provider;
 
 import fr.hugman.culinaire.item.CulinaireItems;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.Items;
+
 import java.util.concurrent.CompletableFuture;
 
 import static fr.hugman.culinaire.item.CulinaireItems.SANDWICH;
 import static fr.hugman.culinaire.tag.CulinaireItemTags.*;
 
-public class CulinaireItemTagProvider extends FabricTagProvider.ItemTagProvider {
-    public CulinaireItemTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+public class CulinaireItemTagProvider extends FabricTagsProvider.ItemTagsProvider {
+    public CulinaireItemTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
