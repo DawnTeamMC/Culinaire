@@ -7,39 +7,36 @@ import fr.hugman.culinaire.component.TeaTypesComponent;
 import fr.hugman.culinaire.screen.KettleScreenHandler;
 import fr.hugman.culinaire.sound.CulinaireSoundEvents;
 import fr.hugman.culinaire.tag.CulinaireBlockTags;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.LockableContainerBlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.SidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.screen.PropertyDelegate;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.state.property.Properties;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.text.Text;
-import net.minecraft.util.ItemScatterer;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.Containers;
+import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.attribute.EnvironmentAttributes;
-
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import javax.annotation.Nullable;
 import java.util.Locale;
 
-public class KettleBlockEntity extends LockableContainerBlockEntity implements SidedInventory {
+public class KettleBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer {
     private static final int[] TOP_SLOTS = new int[]{0};
-    protected final PropertyDelegate propertyDelegate;
-    private DefaultedList<ItemStack> inventory;
+    protected final ContainerData propertyDelegate;
+    private NonNullList<ItemStack> inventory;
     private ItemStack stackBrewing;
     private int brewTime;
     private int totalBrewTime;
@@ -50,11 +47,11 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 
     public KettleBlockEntity(BlockPos pos, BlockState state) {
         super(CulinaireBlockEntityTypes.KETTLE, pos, state);
-        this.inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
+        this.inventory = NonNullList.withSize(1, ItemStack.EMPTY);
         this.stackBrewing = ItemStack.EMPTY;
         this.fluid = Fluid.EMPTY;
         this.teaTypes = TeaTypesComponent.DEFAULT;
-        this.propertyDelegate = new PropertyDelegate() {
+        this.propertyDelegate = new ContainerData() {
             public int get(int index) {
                 return switch (index) {
                     case 0 -> KettleBlockEntity.this.brewTime;
@@ -90,13 +87,13 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
 
             }
 
-            public int size() {
+            public int getCount() {
                 return 6;
             }
         };
     }
 
-    public static void serverTick(World world, BlockPos pos, BlockState state, KettleBlockEntity kettle) {
+    public static void serverTick(Level world, BlockPos pos, BlockState state, KettleBlockEntity kettle) {
         ItemStack stack = kettle.inventory.get(0);
         kettle.isHot = isSurroundedByHotBlocks(world, pos);
         boolean canBrew = kettle.canBrew(stack);
@@ -105,13 +102,13 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
             boolean isFinishedBrewing = kettle.brewTime == 0;
             if (canBrew && isFinishedBrewing) {
                 kettle.brew(world, stack);
-                kettle.markDirty();
+                kettle.setChanged();
             } else if (!canBrew) {
                 kettle.brewTime = 0;
-                kettle.markDirty();
-            } else if (!ItemStack.areItemsEqual(kettle.stackBrewing, stack)) {
+                kettle.setChanged();
+            } else if (!ItemStack.isSameItem(kettle.stackBrewing, stack)) {
                 kettle.brewTime = 0;
-                kettle.markDirty();
+                kettle.setChanged();
             }
             float brewProgress = (float) (kettle.totalBrewTime - kettle.brewTime) / kettle.totalBrewTime;
             if (world.random.nextFloat() < brewProgress) produceSteam(world, pos, state);
@@ -119,72 +116,72 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
             kettle.totalBrewTime = kettle.getBrewTime(stack);
             kettle.brewTime = kettle.totalBrewTime;
             kettle.stackBrewing = stack;
-            kettle.markDirty();
+            kettle.setChanged();
         }
         if (kettle.fluid != Fluid.EMPTY && kettle.fluidLevel == 0) {
             kettle.fluid = Fluid.EMPTY;
-            kettle.markDirty();
+            kettle.setChanged();
         }
     }
 
-    private static boolean isSurroundedByHotBlocks(World world, BlockPos pos) {
+    private static boolean isSurroundedByHotBlocks(Level world, BlockPos pos) {
         //TODO: environmental attribute?
         for (Direction direction : Direction.values()) {
-            if (isHotBlock(world.getBlockState(pos.offset(direction)))) {
+            if (isHotBlock(world.getBlockState(pos.relative(direction)))) {
                 return true;
             }
         }
-        return world.getEnvironmentAttributes().getAttributeValue(EnvironmentAttributes.WATER_EVAPORATES_GAMEPLAY, pos);
+        return world.environmentAttributes().getValue(EnvironmentAttributes.WATER_EVAPORATES, pos);
     }
 
     public static boolean isHotBlock(BlockState state) {
-        return state.isIn(CulinaireBlockTags.KETTLE_HOT_BLOCKS) && (!state.contains(Properties.LIT) || state.get(Properties.LIT));
+        return state.is(CulinaireBlockTags.KETTLE_HOT_BLOCKS) && (!state.hasProperty(BlockStateProperties.LIT) || state.getValue(BlockStateProperties.LIT));
     }
 
-    public static void produceSteam(World world, BlockPos pos, BlockState state) {
-        Direction direction = state.get(KettleBlock.FACING);
+    public static void produceSteam(Level world, BlockPos pos, BlockState state) {
+        Direction direction = state.getValue(KettleBlock.FACING);
         double offsetX = (double) pos.getX() + 0.5D;
         double offsetY = (double) pos.getY() + 0.5D;
         double offsetZ = (double) pos.getZ() + 0.5D;
-        if (world instanceof ServerWorld serverWorld) {
-            serverWorld.spawnParticles(ParticleTypes.SMOKE, offsetX + direction.getOffsetX() * 0.48D, offsetY, offsetZ + direction.getOffsetZ() * 0.48D, 1, direction.getOffsetX() * 0.05, 0.0D, direction.getOffsetZ() * 0.05, 0.01D);
+        if (world instanceof ServerLevel serverWorld) {
+            serverWorld.sendParticles(ParticleTypes.SMOKE, offsetX + direction.getStepX() * 0.48D, offsetY, offsetZ + direction.getStepZ() * 0.48D, 1, direction.getStepX() * 0.05, 0.0D, direction.getStepZ() * 0.05, 0.01D);
         }
     }
 
     @Override
-    protected Text getContainerName() {
-        return Text.translatable("container." + Culinaire.MOD_ID + ".kettle");
+    protected Component getDefaultName() {
+        return Component.translatable("container." + Culinaire.MOD_ID + ".kettle");
     }
 
     @Override
-    protected DefaultedList<ItemStack> getHeldStacks() {
+    protected NonNullList<ItemStack> getItems() {
         return this.inventory;
     }
 
     @Override
-    protected void setHeldStacks(DefaultedList<ItemStack> inventory) {
+    protected void setItems(NonNullList<ItemStack> inventory) {
         this.inventory = inventory;
     }
 
-    private void brew(World world, ItemStack stack) {
+    private void brew(Level world, ItemStack stack) {
         this.fluid = Fluid.TEA;
         this.teaTypes = stack.get(CulinaireComponentTypes.TEA_TYPES);
-        stack.decrement(1);
+        stack.shrink(1);
         var remainder = stack.getRecipeRemainder();
-        if (!world.isClient() && !remainder.isEmpty()) {
-            ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), remainder);
+        if (!world.isClientSide() && !remainder.isEmpty()) {
+            Containers.dropItemStack(world, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), remainder);
         }
-        world.playSound(null, pos, CulinaireSoundEvents.KETTLE_BREW, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        world.playSound(null, worldPosition, CulinaireSoundEvents.KETTLE_BREW, SoundSource.BLOCKS, 1.0F, 1.0F);
         this.inventory.set(0, stack);
     }
 
     @Override
-    protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
+    protected AbstractContainerMenu createMenu(int syncId, Inventory playerInventory) {
         return new KettleScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
     }
 
     @Override
-    public int size() {
+    public int getContainerSize() {
         return this.inventory.size();
     }
 
@@ -199,7 +196,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
     }
 
     @Override
-    public int[] getAvailableSlots(Direction side) {
+    public int[] getSlotsForFace(Direction side) {
         if (side == Direction.UP) {
             return TOP_SLOTS;
         } else {
@@ -208,39 +205,39 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
     }
 
     @Override
-    public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
-        return this.isValid(slot, stack);
+    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction dir) {
+        return this.canPlaceItem(slot, stack);
     }
 
     @Override
-    public boolean canExtract(int slot, ItemStack stack, Direction dir) {
+    public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction dir) {
         return false;
     }
 
     @Override
-    public ItemStack getStack(int slot) {
+    public ItemStack getItem(int slot) {
         return slot >= 0 && slot < this.inventory.size() ? this.inventory.get(slot) : ItemStack.EMPTY;
     }
 
     @Override
-    public void setStack(int slot, ItemStack stack) {
+    public void setItem(int slot, ItemStack stack) {
         if (slot >= 0 && slot < this.inventory.size()) {
             this.inventory.set(slot, stack);
         }
     }
 
     @Override
-    public ItemStack removeStack(int slot, int amount) {
-        return Inventories.splitStack(this.inventory, slot, amount);
+    public ItemStack removeItem(int slot, int amount) {
+        return ContainerHelper.removeItem(this.inventory, slot, amount);
     }
 
     @Override
-    public ItemStack removeStack(int slot) {
-        return Inventories.removeStack(this.inventory, slot);
+    public ItemStack removeItemNoUpdate(int slot) {
+        return ContainerHelper.takeItem(this.inventory, slot);
     }
 
     @Override
-    public void clear() {
+    public void clearContent() {
         this.inventory.clear();
     }
 
@@ -276,17 +273,17 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
     }
 
     @Override
-    public boolean canPlayerUse(PlayerEntity player) {
-        if (this.world.getBlockEntity(this.pos) != this) {
+    public boolean stillValid(Player player) {
+        if (this.level.getBlockEntity(this.worldPosition) != this) {
             return false;
         } else {
-            return player.squaredDistanceTo((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
+            return player.distanceToSqr((double) this.worldPosition.getX() + 0.5D, (double) this.worldPosition.getY() + 0.5D, (double) this.worldPosition.getZ() + 0.5D) <= 64.0D;
         }
     }
 
     @Override
-    public boolean isValid(int slot, ItemStack stack) {
-        if (stack.contains(CulinaireComponentTypes.TEA_TYPES)) {
+    public boolean canPlaceItem(int slot, ItemStack stack) {
+        if (stack.has(CulinaireComponentTypes.TEA_TYPES)) {
             return !stack.get(CulinaireComponentTypes.TEA_TYPES).isEmpty();
         } else {
             return false;
@@ -296,7 +293,7 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
     public boolean canBrew(ItemStack stack) {
         if (stack.isEmpty()) {
             return false;
-        } else if (stack.contains(CulinaireComponentTypes.TEA_TYPES)) {
+        } else if (stack.has(CulinaireComponentTypes.TEA_TYPES)) {
             return !stack.get(CulinaireComponentTypes.TEA_TYPES).isEmpty() && this.fluid == Fluid.WATER && this.fluidLevel >= 1 && this.isHot;
         } else {
             return false;
@@ -312,25 +309,25 @@ public class KettleBlockEntity extends LockableContainerBlockEntity implements S
     }
 
     @Override
-    protected void readData(ReadView view) {
-        super.readData(view);
-        this.inventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
-        Inventories.readData(view, this.inventory);
-        this.brewTime = view.getShort("brew_time", (short)0);
-        this.fluid = view.getOptionalString("fluid").map(Fluid::byString).orElse(Fluid.EMPTY);
-        this.fluidLevel = view.getByte("fluid_level", (byte)0);
+    protected void loadAdditional(ValueInput view) {
+        super.loadAdditional(view);
+        this.inventory = NonNullList.withSize(1, ItemStack.EMPTY);
+        ContainerHelper.loadAllItems(view, this.inventory);
+        this.brewTime = view.getShortOr("brew_time", (short)0);
+        this.fluid = view.getString("fluid").map(Fluid::byString).orElse(Fluid.EMPTY);
+        this.fluidLevel = view.getByteOr("fluid_level", (byte)0);
 
         this.teaTypes = view.read("tea_types", TeaTypesComponent.CODEC).orElse(TeaTypesComponent.DEFAULT);
     }
 
     @Override
-    protected void writeData(WriteView view) {
-        super.writeData(view);
-        Inventories.writeData(view, this.inventory);
+    protected void saveAdditional(ValueOutput view) {
+        super.saveAdditional(view);
+        ContainerHelper.saveAllItems(view, this.inventory);
         view.putShort("brew_time", (short) this.brewTime);
         view.putString("fluid", this.fluid.toString());
         view.putByte("fluid_level", (byte) this.fluidLevel);
-        view.put("tea_types", TeaTypesComponent.CODEC, this.teaTypes);
+        view.store("tea_types", TeaTypesComponent.CODEC, this.teaTypes);
     }
 
     //Todo: implement readComponents + addComponents

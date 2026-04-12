@@ -1,9 +1,9 @@
 package fr.hugman.culinaire.tag;
 
 import fr.hugman.culinaire.Culinaire;
-import net.minecraft.item.Item;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 
 public class CulinaireItemTags {
     public static final TagKey<Item> PIES = of("pies");
@@ -17,6 +17,6 @@ public class CulinaireItemTags {
     public static final TagKey<Item> WHITE_TEA_INGREDIENTS = of("tea_ingredients/white");
 
     private static TagKey<Item> of(String path) {
-        return TagKey.of(RegistryKeys.ITEM, Culinaire.id(path));
+        return TagKey.create(Registries.ITEM, Culinaire.id(path));
     }
 }

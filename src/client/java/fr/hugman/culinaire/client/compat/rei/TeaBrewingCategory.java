@@ -10,8 +10,7 @@ import me.shedaniel.rei.api.client.gui.widgets.Widgets;
 import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.minecraft.text.Text;
-
+import net.minecraft.network.chat.Component;
 import java.util.List;
 
 public class TeaBrewingCategory implements DisplayCategory<TeaBrewingDisplay> {
@@ -26,8 +25,8 @@ public class TeaBrewingCategory implements DisplayCategory<TeaBrewingDisplay> {
     }
 
     @Override
-    public Text getTitle() {
-        return Text.translatable("rei_category.culinaire.tea_brewing");
+    public Component getTitle() {
+        return Component.translatable("rei_category.culinaire.tea_brewing");
     }
 
     @Override

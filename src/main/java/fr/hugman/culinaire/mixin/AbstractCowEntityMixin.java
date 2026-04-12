@@ -1,31 +1,31 @@
 package fr.hugman.culinaire.mixin;
 
 import fr.hugman.culinaire.item.CulinaireItems;
-import net.minecraft.entity.passive.AbstractCowEntity;
-import net.minecraft.entity.passive.CowEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsage;
-import net.minecraft.item.Items;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.animal.cow.AbstractCow;
+import net.minecraft.world.entity.animal.cow.Cow;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
+import net.minecraft.world.item.Items;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(AbstractCowEntity.class)
+@Mixin(AbstractCow.class)
 public class AbstractCowEntityMixin {
-    @Inject(method = "interactMob", at = @At(value = "HEAD"), cancellable = true)
-    public void culinaire$interactMob(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> info) {
-        CowEntity cowEntity = (CowEntity) (Object) this;
-        ItemStack itemStack = player.getStackInHand(hand);
+    @Inject(method = "mobInteract", at = @At(value = "HEAD"), cancellable = true)
+    public void culinaire$interactMob(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> info) {
+        Cow cowEntity = (Cow) (Object) this;
+        ItemStack itemStack = player.getItemInHand(hand);
         if (itemStack.getItem() == Items.GLASS_BOTTLE && !cowEntity.isBaby()) {
-            player.playSound(SoundEvents.ENTITY_COW_MILK, 1.0F, 1.0F);
-            ItemStack itemStack2 = ItemUsage.exchangeStack(itemStack, player, CulinaireItems.MILK_BOTTLE.getDefaultStack());
-            player.setStackInHand(hand, itemStack2);
-            info.setReturnValue(ActionResult.SUCCESS);
+            player.playSound(SoundEvents.COW_MILK, 1.0F, 1.0F);
+            ItemStack itemStack2 = ItemUtils.createFilledResult(itemStack, player, CulinaireItems.MILK_BOTTLE.getDefaultInstance());
+            player.setItemInHand(hand, itemStack2);
+            info.setReturnValue(InteractionResult.SUCCESS);
         }
     }
 }

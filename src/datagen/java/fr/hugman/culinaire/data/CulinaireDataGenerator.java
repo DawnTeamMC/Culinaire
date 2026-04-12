@@ -5,7 +5,7 @@ import fr.hugman.culinaire.data.provider.*;
 import fr.hugman.culinaire.registry.CulinaireRegistryKeys;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.minecraft.registry.RegistryBuilder;
+import net.minecraft.core.RegistrySetBuilder;
 import org.jetbrains.annotations.Nullable;
 
 public class CulinaireDataGenerator implements DataGeneratorEntrypoint {
@@ -33,8 +33,8 @@ public class CulinaireDataGenerator implements DataGeneratorEntrypoint {
     }
 
     @Override
-    public void buildRegistry(RegistryBuilder registryBuilder) {
-        registryBuilder.addRegistry(CulinaireRegistryKeys.TEA_TYPE, CulinaireTeaTypeProvider::register);
+    public void buildRegistry(RegistrySetBuilder registryBuilder) {
+        registryBuilder.add(CulinaireRegistryKeys.TEA_TYPE, CulinaireTeaTypeProvider::register);
     }
 
     @Override

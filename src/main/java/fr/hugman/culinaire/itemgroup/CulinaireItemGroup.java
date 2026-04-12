@@ -1,73 +1,75 @@
 package fr.hugman.culinaire.itemgroup;
 
 import fr.hugman.culinaire.Culinaire;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.entity.decoration.painting.PaintingVariant;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemStackSet;
-import net.minecraft.item.Items;
-import net.minecraft.registry.*;
-import net.minecraft.registry.entry.RegistryEntry;
-
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.decoration.painting.PaintingVariant;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackLinkedSet;
+import net.minecraft.world.item.Items;
 import java.util.Comparator;
 import java.util.Set;
 import java.util.function.Predicate;
 
 public final class CulinaireItemGroup {
-    public static void fill(ItemGroup.DisplayContext displayContext, ItemGroup.Entries entries) {
-        Set<ItemStack> set = ItemStackSet.create();
+    public static void fill(CreativeModeTab.ItemDisplayParameters displayContext, CreativeModeTab.Output entries) {
+        Set<ItemStack> set = ItemStackLinkedSet.createTypeAndComponentsSet();
 
-        for (ItemGroup itemGroup : Registries.ITEM_GROUP) {
-            if (itemGroup.getType() != ItemGroup.Type.SEARCH) {
-                for (var stack : itemGroup.getSearchTabStacks()) {
-                    if (isCulinaire(Registries.ITEM.getEntry(stack.getItem()))) {
+        for (CreativeModeTab itemGroup : BuiltInRegistries.CREATIVE_MODE_TAB) {
+            if (itemGroup.getType() != CreativeModeTab.Type.SEARCH) {
+                for (var stack : itemGroup.getSearchTabDisplayItems()) {
+                    if (isCulinaire(BuiltInRegistries.ITEM.wrapAsHolder(stack.getItem()))) {
                         set.add(stack);
                     }
                 }
             }
         }
 
-        entries.addAll(set);
+        entries.acceptAll(set);
 
         // Paintings
-        displayContext.lookup()
-                .getOptional(RegistryKeys.PAINTING_VARIANT)
+        displayContext.holders()
+                .lookup(Registries.PAINTING_VARIANT)
                 .ifPresent(
                         registryWrapper -> addPaintings(
                                 entries,
                                 registryWrapper,
                                 CulinaireItemGroup::isCulinaire,
-                                ItemGroup.StackVisibility.PARENT_AND_SEARCH_TABS
+                                CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS
                         )
                 );
     }
 
-    private static boolean isCulinaire(RegistryEntry<?> entry) {
-        return isCulinaire(entry.getKey().orElseThrow());
+    private static boolean isCulinaire(Holder<?> entry) {
+        return isCulinaire(entry.unwrapKey().orElseThrow());
     }
 
 
-    private static boolean isCulinaire(RegistryKey<?> key) {
-        return key.getValue().getNamespace().equals(Culinaire.MOD_ID);
+    private static boolean isCulinaire(ResourceKey<?> key) {
+        return key.identifier().getNamespace().equals(Culinaire.MOD_ID);
     }
 
     // FROM Vanilla ItemGroups
 
-    private static final Comparator<RegistryEntry<PaintingVariant>> PAINTING_VARIANT_COMPARATOR = Comparator.comparing(
-            RegistryEntry::value, Comparator.comparingInt(PaintingVariant::getArea).thenComparing(PaintingVariant::width)
+    private static final Comparator<Holder<PaintingVariant>> PAINTING_VARIANT_COMPARATOR = Comparator.comparing(
+            Holder::value, Comparator.comparingInt(PaintingVariant::area).thenComparing(PaintingVariant::width)
     );
 
     private static void addPaintings(
-            ItemGroup.Entries entries,
-            RegistryWrapper.Impl<PaintingVariant> registryWrapper,
-            Predicate<RegistryEntry<PaintingVariant>> filter,
-            ItemGroup.StackVisibility stackVisibility
+            CreativeModeTab.Output entries,
+            HolderLookup.RegistryLookup<PaintingVariant> registryWrapper,
+            Predicate<Holder<PaintingVariant>> filter,
+            CreativeModeTab.TabVisibility stackVisibility
     ) {
-        registryWrapper.streamEntries().filter(filter).sorted(PAINTING_VARIANT_COMPARATOR).forEach(reference -> {
+        registryWrapper.listElements().filter(filter).sorted(PAINTING_VARIANT_COMPARATOR).forEach(reference -> {
             ItemStack itemStack = new ItemStack(Items.PAINTING);
-            itemStack.set(DataComponentTypes.PAINTING_VARIANT, reference);
-            entries.add(itemStack, stackVisibility);
+            itemStack.set(DataComponents.PAINTING_VARIANT, reference);
+            entries.accept(itemStack, stackVisibility);
         });
     }
 }

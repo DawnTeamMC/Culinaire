@@ -1,21 +1,20 @@
 package fr.hugman.culinaire.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.cauldron.CauldronBehavior;
-import net.minecraft.entity.CollisionEvent;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCollisionHandler;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class MilkCauldronBlock extends ThreeLeveledCauldronBlock {
-    public MilkCauldronBlock(Settings settings, CauldronBehavior.CauldronBehaviorMap behaviorMap) {
+    public MilkCauldronBlock(Properties settings, CauldronInteraction.InteractionMap behaviorMap) {
         super(settings, behaviorMap);
     }
 
@@ -25,25 +24,25 @@ public class MilkCauldronBlock extends ThreeLeveledCauldronBlock {
     }
 
     @Override
-    protected void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity, EntityCollisionHandler handler, boolean bl) {
-        if (world instanceof ServerWorld serverWorld) {
-            if (entity.canModifyAt(serverWorld, pos) && entity instanceof LivingEntity living && living .clearStatusEffects()) {
-                world.setBlockState(pos, changeLevel(state, -1));
+    protected void entityInside(BlockState state, Level world, BlockPos pos, Entity entity, InsideBlockEffectApplier handler, boolean bl) {
+        if (world instanceof ServerLevel serverWorld) {
+            if (entity.mayInteract(serverWorld, pos) && entity instanceof LivingEntity living && living .removeAllEffects()) {
+                world.setBlockAndUpdate(pos, changeLevel(state, -1));
             }
         }
     }
 
     @Override
-    public boolean hasRandomTicks(BlockState state) {
-        return super.hasRandomTicks(state);
+    public boolean isRandomlyTicking(BlockState state) {
+        return super.isRandomlyTicking(state);
     }
 
     @Override
-    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
         // Formula: 1/(x/(68.27/60))
         // x = 30 (days)
         if (random.nextFloat() < 0.0379278F) {
-            world.setBlockState(pos, CulinaireBlocks.CHEESE_CAULDRON.getDefaultState().with(CheeseCauldronBlock.LEVEL, getLevel(state)), Block.NOTIFY_LISTENERS);
+            world.setBlock(pos, CulinaireBlocks.CHEESE_CAULDRON.defaultBlockState().setValue(CheeseCauldronBlock.LEVEL, getLevel(state)), Block.UPDATE_CLIENTS);
         }
     }
 }

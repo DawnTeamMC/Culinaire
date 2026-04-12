@@ -3,21 +3,20 @@ package fr.hugman.culinaire.data.provider;
 import fr.hugman.culinaire.item.CulinaireItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.minecraft.item.Items;
-import net.minecraft.registry.RegistryWrapper;
-
+import net.minecraft.core.HolderLookup;
+import net.minecraft.world.item.Items;
 import java.util.concurrent.CompletableFuture;
 
 import static fr.hugman.culinaire.item.CulinaireItems.SANDWICH;
 import static fr.hugman.culinaire.tag.CulinaireItemTags.*;
 
 public class CulinaireItemTagProvider extends FabricTagProvider.ItemTagProvider {
-    public CulinaireItemTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+    public CulinaireItemTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
     @Override
-    protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+    protected void addTags(HolderLookup.Provider wrapperLookup) {
         // Culinaire
         valueLookupBuilder(BOWL_FOOD).add(
                 Items.MUSHROOM_STEW,

@@ -6,17 +6,16 @@ import fr.hugman.culinaire.tea.TeaType;
 import fr.hugman.culinaire.tea.TeaTypes;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.minecraft.registry.RegistryWrapper;
-
+import net.minecraft.core.HolderLookup;
 import java.util.concurrent.CompletableFuture;
 
 public class CulinaireTeaTypeTagProvider extends FabricTagProvider<TeaType> {
-    public CulinaireTeaTypeTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+    public CulinaireTeaTypeTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, CulinaireRegistryKeys.TEA_TYPE, registriesFuture);
     }
 
     @Override
-    protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+    protected void addTags(HolderLookup.Provider wrapperLookup) {
         // Culinaire
         builder(CulinaireTeaTypeTags.TOOLTIP_ORDER).add(
                 TeaTypes.GREEN,

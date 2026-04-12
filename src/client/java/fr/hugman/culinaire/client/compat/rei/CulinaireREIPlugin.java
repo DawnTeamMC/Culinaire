@@ -11,7 +11,7 @@ import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.client.registry.screen.ScreenRegistry;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 
 public class CulinaireREIPlugin implements REIClientPlugin {
     public static final CategoryIdentifier<TeaBrewingDisplay> TEA_BREWING = CategoryIdentifier.of(Culinaire.id("plugins/tea_brewing"));

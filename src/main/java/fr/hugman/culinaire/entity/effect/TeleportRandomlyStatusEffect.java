@@ -1,69 +1,69 @@
 package fr.hugman.culinaire.entity.effect;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectCategory;
-import net.minecraft.entity.passive.FoxEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.event.GameEvent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.fox.Fox;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.Vec3;
 
-public class TeleportRandomlyStatusEffect extends StatusEffect {
-    protected TeleportRandomlyStatusEffect(StatusEffectCategory category, int color) {
+public class TeleportRandomlyStatusEffect extends MobEffect {
+    protected TeleportRandomlyStatusEffect(MobEffectCategory category, int color) {
         super(category, color);
     }
 
     @Override
-    public boolean applyUpdateEffect(ServerWorld world, LivingEntity entity, int amplifier) {
+    public boolean applyEffectTick(ServerLevel world, LivingEntity entity, int amplifier) {
         int diameter = Math.max(128, 16 + 8 * amplifier);
         boolean bl = false;
 
         for (int i = 0; i < 16; i++) {
             double d = entity.getX() + (entity.getRandom().nextDouble() - 0.5) * diameter;
-            double e = MathHelper.clamp(
+            double e = Mth.clamp(
                     entity.getY() + (entity.getRandom().nextDouble() - 0.5) * diameter,
-                    world.getBottomY(),
-                    world.getBottomY() + world.getLogicalHeight() - 1
+                    world.getMinY(),
+                    world.getMinY() + world.getLogicalHeight() - 1
             );
             double f = entity.getZ() + (entity.getRandom().nextDouble() - 0.5) * diameter;
-            if (entity.hasVehicle()) {
+            if (entity.isPassenger()) {
                 entity.stopRiding();
             }
 
-            Vec3d vec3d = entity.getEntityPos();
-            if (entity.teleport(d, e, f, true)) {
-                world.emitGameEvent(GameEvent.TELEPORT, vec3d, GameEvent.Emitter.of(entity));
-                SoundCategory soundCategory;
+            Vec3 vec3d = entity.position();
+            if (entity.randomTeleport(d, e, f, true)) {
+                world.gameEvent(GameEvent.TELEPORT, vec3d, GameEvent.Context.of(entity));
+                SoundSource soundCategory;
                 SoundEvent soundEvent;
-                if (entity instanceof FoxEntity) {
-                    soundEvent = SoundEvents.ENTITY_FOX_TELEPORT;
-                    soundCategory = SoundCategory.NEUTRAL;
+                if (entity instanceof Fox) {
+                    soundEvent = SoundEvents.FOX_TELEPORT;
+                    soundCategory = SoundSource.NEUTRAL;
                 } else {
-                    soundEvent = SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT;
-                    soundCategory = SoundCategory.PLAYERS;
+                    soundEvent = SoundEvents.CHORUS_FRUIT_TELEPORT;
+                    soundCategory = SoundSource.PLAYERS;
                 }
 
                 world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), soundEvent, soundCategory);
-                entity.onLanding();
+                entity.resetFallDistance();
                 bl = true;
                 break;
             }
         }
 
-        if (bl && entity instanceof PlayerEntity playerEntity) {
-            playerEntity.clearCurrentExplosion();
+        if (bl && entity instanceof Player playerEntity) {
+            playerEntity.resetCurrentImpulseContext();
         }
 
         return bl;
     }
 
     @Override
-    public boolean canApplyUpdateEffect(int duration, int amplifier) {
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
         int i = Math.max(15, 300 - (60 * amplifier));
         return i > 0 ? duration % i == 0 : true;
     }

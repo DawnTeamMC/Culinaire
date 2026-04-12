@@ -1,14 +1,14 @@
 package fr.hugman.culinaire.itemgroup;
 
 import fr.hugman.culinaire.Culinaire;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.CreativeModeTab;
 
 public class CulinaireItemGroupKeys {
-    public static final RegistryKey<ItemGroup> CULINAIRE = of("culinaire");
+    public static final ResourceKey<CreativeModeTab> CULINAIRE = of("culinaire");
 
-    private static RegistryKey<ItemGroup> of(String path) {
-        return RegistryKey.of(RegistryKeys.ITEM_GROUP, Culinaire.id(path));
+    private static ResourceKey<CreativeModeTab> of(String path) {
+        return ResourceKey.create(Registries.CREATIVE_MODE_TAB, Culinaire.id(path));
     }
 }

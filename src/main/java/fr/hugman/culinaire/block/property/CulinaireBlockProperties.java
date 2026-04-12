@@ -1,7 +1,7 @@
 package fr.hugman.culinaire.block.property;
 
-import net.minecraft.state.property.IntProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 public final class CulinaireBlockProperties {
-    public static final IntProperty BITES_5 = IntProperty.of("bites", 0, 5);
+    public static final IntegerProperty BITES_5 = IntegerProperty.create("bites", 0, 5);
 }

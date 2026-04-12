@@ -6,20 +6,18 @@ import fr.hugman.culinaire.component.CulinaireComponentTypes;
 import fr.hugman.culinaire.component.TeaTypesComponent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.item.tint.TintSource;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.PotionContentsComponent;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.dynamic.Codecs;
-import net.minecraft.util.math.ColorHelper;
+import net.minecraft.client.color.item.ItemTintSource;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
-public record TeaTintSource(int defaultColor) implements TintSource {
+public record TeaTintSource(int defaultColor) implements ItemTintSource {
 	public static final MapCodec<TeaTintSource> CODEC = RecordCodecBuilder.mapCodec(
-		instance -> instance.group(Codecs.RGB.fieldOf("default").forGetter(TeaTintSource::defaultColor)).apply(instance, TeaTintSource::new)
+		instance -> instance.group(ExtraCodecs.RGB_COLOR_CODEC.fieldOf("default").forGetter(TeaTintSource::defaultColor)).apply(instance, TeaTintSource::new)
 	);
 
 	public TeaTintSource() {
@@ -27,15 +25,15 @@ public record TeaTintSource(int defaultColor) implements TintSource {
 	}
 
 	@Override
-	public int getTint(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity user) {
+	public int calculate(ItemStack stack, @Nullable ClientLevel world, @Nullable LivingEntity user) {
 		TeaTypesComponent component = stack.get(CulinaireComponentTypes.TEA_TYPES);
 		return component != null
-			? ColorHelper.fullAlpha(component.getColor(this.defaultColor))
-			: ColorHelper.fullAlpha(this.defaultColor);
+			? ARGB.opaque(component.getColor(this.defaultColor))
+			: ARGB.opaque(this.defaultColor);
 	}
 
 	@Override
-	public MapCodec<TeaTintSource> getCodec() {
+	public MapCodec<TeaTintSource> type() {
 		return CODEC;
 	}
 }

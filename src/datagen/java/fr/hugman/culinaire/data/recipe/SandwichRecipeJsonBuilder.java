@@ -1,30 +1,29 @@
 package fr.hugman.culinaire.data.recipe;
 
 import fr.hugman.culinaire.recipe.SandwichRecipe;
-import net.minecraft.advancement.Advancement;
-import net.minecraft.advancement.AdvancementCriterion;
-import net.minecraft.advancement.AdvancementRequirements;
-import net.minecraft.advancement.AdvancementRewards;
-import net.minecraft.advancement.criterion.RecipeUnlockedCriterion;
-import net.minecraft.data.recipe.CraftingRecipeJsonBuilder;
-import net.minecraft.data.recipe.RecipeExporter;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.book.RecipeCategory;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
-
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementRequirements;
+import net.minecraft.advancements.AdvancementRewards;
+import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 
 public class SandwichRecipeJsonBuilder {
-    private final RegistryEntryLookup<Item> registryLookup;
+    private final HolderGetter<Item> registryLookup;
     private final RecipeCategory category;
     private Ingredient bread;
     private Ingredient ingredientBlacklist;
@@ -35,10 +34,10 @@ public class SandwichRecipeJsonBuilder {
     private final Map<Ingredient, Ingredient> ingredientAssociations;
     private final ItemStack result;
 
-    private final Map<String, AdvancementCriterion<?>> criteria = new LinkedHashMap<>();
+    private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
     public SandwichRecipeJsonBuilder(
-            RegistryEntryLookup<Item> registryLookup, RecipeCategory category,
+            HolderGetter<Item> registryLookup, RecipeCategory category,
             Ingredient bread,
             Ingredient ingredientBlacklist,
             float nutritionModifierBase,
@@ -60,35 +59,35 @@ public class SandwichRecipeJsonBuilder {
         this.result = result;
     }
 
-    public static SandwichRecipeJsonBuilder create(RegistryEntryLookup<Item> registryLookup, RecipeCategory category, Ingredient bread, Ingredient ingredientBlacklist, float nutritionModifierBase, float nutritionModifierBoosted, float saturationModifierBase, float saturationModifierBoosted, ItemStack result) {
+    public static SandwichRecipeJsonBuilder create(HolderGetter<Item> registryLookup, RecipeCategory category, Ingredient bread, Ingredient ingredientBlacklist, float nutritionModifierBase, float nutritionModifierBoosted, float saturationModifierBase, float saturationModifierBoosted, ItemStack result) {
         return new SandwichRecipeJsonBuilder(registryLookup, category, bread, ingredientBlacklist, nutritionModifierBase, nutritionModifierBoosted, saturationModifierBase, saturationModifierBoosted, new HashMap<>(), result);
     }
 
-    public static SandwichRecipeJsonBuilder create(RegistryEntryLookup<Item> registryLookup, RecipeCategory category, float nutritionModifierBase, float nutritionModifierBoosted, float saturationModifierBase, float saturationModifierBoosted, ItemStack result) {
+    public static SandwichRecipeJsonBuilder create(HolderGetter<Item> registryLookup, RecipeCategory category, float nutritionModifierBase, float nutritionModifierBoosted, float saturationModifierBase, float saturationModifierBoosted, ItemStack result) {
         return new SandwichRecipeJsonBuilder(registryLookup, category, null, null, nutritionModifierBase, nutritionModifierBoosted, saturationModifierBase, saturationModifierBoosted, new HashMap<>(), result);
     }
 
     public SandwichRecipeJsonBuilder bread(TagKey<Item> tagKey) {
-        this.bread = Ingredient.ofTag(this.registryLookup.getOrThrow(tagKey));
+        this.bread = Ingredient.of(this.registryLookup.getOrThrow(tagKey));
         return this;
     }
 
     public SandwichRecipeJsonBuilder bread(Item... items) {
-        this.bread = Ingredient.ofItems(items);
+        this.bread = Ingredient.of(items);
         return this;
     }
 
     public SandwichRecipeJsonBuilder blacklist(TagKey<Item> tagKey) {
-        this.ingredientBlacklist = Ingredient.ofTag(this.registryLookup.getOrThrow(tagKey));
+        this.ingredientBlacklist = Ingredient.of(this.registryLookup.getOrThrow(tagKey));
         return this;
     }
 
     public SandwichRecipeJsonBuilder blacklist(Item... items) {
-        this.ingredientBlacklist = Ingredient.ofItems(items);
+        this.ingredientBlacklist = Ingredient.of(items);
         return this;
     }
 
-    public SandwichRecipeJsonBuilder criterion(String name, AdvancementCriterion<?> criterion) {
+    public SandwichRecipeJsonBuilder criterion(String name, Criterion<?> criterion) {
         this.criteria.put(name, criterion);
         return this;
     }
@@ -99,22 +98,22 @@ public class SandwichRecipeJsonBuilder {
     }
 
     public SandwichRecipeJsonBuilder association(Item ingredient, Item... others) {
-        return this.association(Ingredient.ofItems(ingredient), Ingredient.ofItems(others));
+        return this.association(Ingredient.of(ingredient), Ingredient.of(others));
     }
 
-    public void offerTo(RecipeExporter exporter) {
-        this.offerTo(exporter, RegistryKey.of(RegistryKeys.RECIPE, Registries.ITEM.getId(this.result.getItem())));
+    public void save(RecipeOutput exporter) {
+        this.save(exporter, ResourceKey.create(Registries.RECIPE, BuiltInRegistries.ITEM.getKey(this.result.getItem())));
     }
 
-    public void offerTo(RecipeExporter exporter, RegistryKey<Recipe<?>> recipeKey) {
+    public void save(RecipeOutput exporter, ResourceKey<Recipe<?>> recipeKey) {
         this.validate(recipeKey);
-        Advancement.Builder builder = exporter.getAdvancementBuilder()
-                .criterion("has_the_recipe", RecipeUnlockedCriterion.create(recipeKey))
+        Advancement.Builder builder = exporter.advancement()
+                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeKey))
                 .rewards(AdvancementRewards.Builder.recipe(recipeKey))
-                .criteriaMerger(AdvancementRequirements.CriterionMerger.OR);
-        this.criteria.forEach(builder::criterion);
+                .requirements(AdvancementRequirements.Strategy.OR);
+        this.criteria.forEach(builder::addCriterion);
         SandwichRecipe sandwichRecipe = new SandwichRecipe(
-                CraftingRecipeJsonBuilder.toCraftingCategory(this.category),
+                RecipeBuilder.determineBookCategory(this.category),
                 this.bread,
                 this.ingredientBlacklist,
                 this.nutritionModifierBase,
@@ -124,15 +123,15 @@ public class SandwichRecipeJsonBuilder {
                 this.ingredientAssociations,
                 this.result
         );
-        exporter.accept(recipeKey, sandwichRecipe, builder.build(recipeKey.getValue().withPrefixedPath("recipes/" + this.category.getName() + "/")));
+        exporter.accept(recipeKey, sandwichRecipe, builder.build(recipeKey.identifier().withPrefix("recipes/" + this.category.getFolderName() + "/")));
     }
 
-    private void validate(RegistryKey<Recipe<?>> recipeKey) {
+    private void validate(ResourceKey<Recipe<?>> recipeKey) {
         if (this.bread == null) {
-            throw new IllegalStateException("No bread for recipe " + recipeKey.getValue());
+            throw new IllegalStateException("No bread for recipe " + recipeKey.identifier());
         }
         if (this.criteria.isEmpty()) {
-            throw new IllegalStateException("No way of obtaining recipe " + recipeKey.getValue());
+            throw new IllegalStateException("No way of obtaining recipe " + recipeKey.identifier());
         }
     }
 }

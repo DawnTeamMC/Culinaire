@@ -1,20 +1,20 @@
 package fr.hugman.culinaire.component;
 
-import net.minecraft.component.type.ConsumableComponent;
-import net.minecraft.component.type.ConsumableComponents;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.consume.ApplyEffectsConsumeEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.item.component.Consumable;
+import net.minecraft.world.item.component.Consumables;
+import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
 
 public final class CulinaireConsumableComponents {
-    public static final ConsumableComponent SNACK_FOOD = ConsumableComponents.food().consumeSeconds(0.8F).build();
-    public static final ConsumableComponent BURNT_SNACK_FOOD = ConsumableComponents.food()
-            .consumeEffect(new ApplyEffectsConsumeEffect(new StatusEffectInstance(StatusEffects.HUNGER, 200, 0), 0.2F))
+    public static final Consumable SNACK_FOOD = Consumables.defaultFood().consumeSeconds(0.8F).build();
+    public static final Consumable BURNT_SNACK_FOOD = Consumables.defaultFood()
+            .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MobEffects.HUNGER, 200, 0), 0.2F))
             .build();
 
-    public static final ConsumableComponent TEA = ConsumableComponents.drink().consumeSeconds(2.0F).build();
+    public static final Consumable TEA = Consumables.defaultDrink().consumeSeconds(2.0F).build();
 
-    public static ConsumableComponent foodWithEffect(StatusEffectInstance effect, float probability) {
-        return ConsumableComponents.food().consumeEffect(new ApplyEffectsConsumeEffect(effect, probability)).build();
+    public static Consumable foodWithEffect(MobEffectInstance effect, float probability) {
+        return Consumables.defaultFood().onConsume(new ApplyStatusEffectsConsumeEffect(effect, probability)).build();
     }
 }

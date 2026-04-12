@@ -8,28 +8,27 @@ import fr.hugman.culinaire.component.TeaTypesComponent;
 import fr.hugman.culinaire.tea.TeaType;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.SpecialCraftingRecipe;
-import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.recipe.input.CraftingRecipeInput;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.world.World;
-
 import java.util.Map;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.Level;
 
-public class TeaBagRecipe extends SpecialCraftingRecipe {
+public class TeaBagRecipe extends CustomRecipe {
     private final Ingredient paper;
     private final Ingredient string;
-    private final Map<RegistryEntry<TeaType>, Ingredient> teaTypeIngredients;
+    private final Map<Holder<TeaType>, Ingredient> teaTypeIngredients;
     private final ItemStack result;
 
-    public TeaBagRecipe(CraftingRecipeCategory category, Ingredient paper, Ingredient string, Map<RegistryEntry<TeaType>, Ingredient> teaTypeIngredients, ItemStack result) {
+    public TeaBagRecipe(CraftingBookCategory category, Ingredient paper, Ingredient string, Map<Holder<TeaType>, Ingredient> teaTypeIngredients, ItemStack result) {
         super(category);
         this.paper = paper;
         this.string = string;
@@ -38,12 +37,12 @@ public class TeaBagRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public boolean matches(CraftingRecipeInput input, World world) {
+    public boolean matches(CraftingInput input, Level world) {
         boolean hasPaper = false;
         boolean hasString = false;
         boolean hasAnIngredient = false;
         for (int j = 0; j < input.size(); ++j) {
-            ItemStack stack = input.getStackInSlot(j);
+            ItemStack stack = input.getItem(j);
             if (!stack.isEmpty()) {
                 if (this.paper.test(stack)) {
                     if (hasPaper) {
@@ -68,14 +67,14 @@ public class TeaBagRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack craft(CraftingRecipeInput input, RegistryWrapper.WrapperLookup registries) {
+    public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
         ItemStack givenStack = this.result.copy();
-        Object2IntOpenHashMap<RegistryEntry<TeaType>> teaTypeLevels = new Object2IntOpenHashMap<>();
+        Object2IntOpenHashMap<Holder<TeaType>> teaTypeLevels = new Object2IntOpenHashMap<>();
         for (int j = 0; j < input.size(); ++j) {
-            ItemStack stack = input.getStackInSlot(j);
+            ItemStack stack = input.getItem(j);
             if (!stack.isEmpty()) {
-                for (Map.Entry<RegistryEntry<TeaType>, Ingredient> entry : this.teaTypeIngredients.entrySet()) {
-                    RegistryEntry<TeaType> teaTypeEntry = entry.getKey();
+                for (Map.Entry<Holder<TeaType>, Ingredient> entry : this.teaTypeIngredients.entrySet()) {
+                    Holder<TeaType> teaTypeEntry = entry.getKey();
                     if (entry.getValue().test(stack)) {
                         teaTypeLevels.put(teaTypeEntry, teaTypeLevels.getOrDefault(teaTypeEntry, 0) + 1);
                     }
@@ -87,26 +86,26 @@ public class TeaBagRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public RecipeSerializer<? extends SpecialCraftingRecipe> getSerializer() {
+    public RecipeSerializer<? extends CustomRecipe> getSerializer() {
         return CulinaireRecipeSerializers.TEA_BAG;
     }
 
     public static class Serializer implements RecipeSerializer<TeaBagRecipe> {
         private static final MapCodec<TeaBagRecipe> CODEC = RecordCodecBuilder.mapCodec(
                 instance -> instance.group(
-                        CraftingRecipeCategory.CODEC.fieldOf("category").forGetter(SpecialCraftingRecipe::getCategory),
+                        CraftingBookCategory.CODEC.fieldOf("category").forGetter(CustomRecipe::category),
                         Ingredient.CODEC.fieldOf("paper").forGetter(recipe -> recipe.paper),
                         Ingredient.CODEC.fieldOf("string").forGetter(recipe -> recipe.string),
                         Codec.unboundedMap(TeaType.ENTRY_CODEC, Ingredient.CODEC).fieldOf("tea_types_ingredients").forGetter(recipe -> recipe.teaTypeIngredients),
                         ItemStack.CODEC.fieldOf("result").forGetter(recipe -> recipe.result)
                 ).apply(instance, TeaBagRecipe::new)
         );
-        private static final PacketCodec<RegistryByteBuf, TeaBagRecipe> PACKET_CODEC = PacketCodec.tuple(
-                CraftingRecipeCategory.PACKET_CODEC, SpecialCraftingRecipe::getCategory,
-                Ingredient.PACKET_CODEC, recipe -> recipe.paper,
-                Ingredient.PACKET_CODEC, recipe -> recipe.string,
-                PacketCodecs.map(Object2ObjectOpenHashMap::new, TeaType.ENTRY_PACKET_CODEC, Ingredient.PACKET_CODEC), recipe -> recipe.teaTypeIngredients,
-                ItemStack.PACKET_CODEC, recipe -> recipe.result,
+        private static final StreamCodec<RegistryFriendlyByteBuf, TeaBagRecipe> PACKET_CODEC = StreamCodec.composite(
+                CraftingBookCategory.STREAM_CODEC, CustomRecipe::category,
+                Ingredient.CONTENTS_STREAM_CODEC, recipe -> recipe.paper,
+                Ingredient.CONTENTS_STREAM_CODEC, recipe -> recipe.string,
+                ByteBufCodecs.map(Object2ObjectOpenHashMap::new, TeaType.ENTRY_PACKET_CODEC, Ingredient.CONTENTS_STREAM_CODEC), recipe -> recipe.teaTypeIngredients,
+                ItemStack.STREAM_CODEC, recipe -> recipe.result,
                 TeaBagRecipe::new
         );
 
@@ -116,7 +115,7 @@ public class TeaBagRecipe extends SpecialCraftingRecipe {
         }
 
         @Override
-        public PacketCodec<RegistryByteBuf, TeaBagRecipe> packetCodec() {
+        public StreamCodec<RegistryFriendlyByteBuf, TeaBagRecipe> streamCodec() {
             return PACKET_CODEC;
         }
     }

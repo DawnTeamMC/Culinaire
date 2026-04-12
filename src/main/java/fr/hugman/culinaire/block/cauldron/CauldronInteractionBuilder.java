@@ -1,18 +1,17 @@
 package fr.hugman.culinaire.block.cauldron;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.cauldron.CauldronBehavior;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsage;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.stat.Stats;
-import net.minecraft.util.ActionResult;
-import net.minecraft.world.event.GameEvent;
-
 import java.util.function.Predicate;
+import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 
 public class CauldronInteractionBuilder {
     private Predicate<BlockState> predicate;
@@ -76,7 +75,7 @@ public class CauldronInteractionBuilder {
      * @return this builder for chaining
      */
     public CauldronInteractionBuilder item(Item item) {
-        this.stack = item.getDefaultStack();
+        this.stack = item.getDefaultInstance();
         return this;
     }
 
@@ -141,30 +140,30 @@ public class CauldronInteractionBuilder {
     /**
      * Creates a cauldron interaction from the properties of this builder.
      */
-    public CauldronBehavior build() {
+    public CauldronInteraction build() {
         return (state, world, pos, player, hand, stack) -> {
             if (predicate.test(state)) {
                 if (cauldron == null) cauldron = state.getBlock();
                 int newLevel = !overwriteLevel ? CauldronUtil.getLevel(state) + level : level;
-                if (!world.isClient()) {
+                if (!world.isClientSide()) {
                     BlockState returnedState = CauldronUtil.modifyCauldron(state, cauldron, newLevel);
 
                     Item item = stack.getItem();
                     if(this.stack == null || this.stack.isEmpty()) {
-                        stack.decrementUnlessCreative(1, player);
+                        stack.consume(1, player);
                     }
                     else {
-                        player.setStackInHand(hand, ItemUsage.exchangeStack(stack, player, this.stack.copy()));
+                        player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, this.stack.copy()));
                     }
-                    player.incrementStat(CauldronUtil.isFull(returnedState) ? Stats.FILL_CAULDRON : Stats.USE_CAULDRON);
-                    player.incrementStat(Stats.USED.getOrCreateStat(item));
-                    world.setBlockState(pos, returnedState);
-                    world.emitGameEvent(null, newLevel < 0 ? GameEvent.FLUID_PICKUP : GameEvent.FLUID_PLACE, pos);
-                    if (sound != null) world.playSound(null, pos, sound, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    player.awardStat(CauldronUtil.isFull(returnedState) ? Stats.FILL_CAULDRON : Stats.USE_CAULDRON);
+                    player.awardStat(Stats.ITEM_USED.get(item));
+                    world.setBlockAndUpdate(pos, returnedState);
+                    world.gameEvent(null, newLevel < 0 ? GameEvent.FLUID_PICKUP : GameEvent.FLUID_PLACE, pos);
+                    if (sound != null) world.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F, 1.0F);
                 }
-                return ActionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
-            return ActionResult.PASS;
+            return InteractionResult.PASS;
         };
     }
 

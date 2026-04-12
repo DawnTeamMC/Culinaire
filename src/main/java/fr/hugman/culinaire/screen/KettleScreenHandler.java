@@ -3,32 +3,32 @@ package fr.hugman.culinaire.screen;
 import fr.hugman.culinaire.item.CulinaireItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ArrayPropertyDelegate;
-import net.minecraft.screen.PropertyDelegate;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.slot.Slot;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
-public class KettleScreenHandler extends ScreenHandler {
-    private final Inventory inventory;
-    private final PropertyDelegate propertyDelegate;
+public class KettleScreenHandler extends AbstractContainerMenu {
+    private final Container inventory;
+    private final ContainerData propertyDelegate;
 
-    public KettleScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new SimpleInventory(1), new ArrayPropertyDelegate(6));
+    public KettleScreenHandler(int syncId, Inventory playerInventory) {
+        this(syncId, playerInventory, new SimpleContainer(1), new SimpleContainerData(6));
     }
 
-    public KettleScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, PropertyDelegate propertyDelegate) {
+    public KettleScreenHandler(int syncId, Inventory playerInventory, Container inventory, ContainerData propertyDelegate) {
         super(CulinaireScreenHandlerTypes.KETTLE, syncId);
-        checkSize(inventory, 1);
-        checkDataCount(propertyDelegate, 6);
+        checkContainerSize(inventory, 1);
+        checkContainerDataCount(propertyDelegate, 6);
         this.inventory = inventory;
         this.propertyDelegate = propertyDelegate;
         this.addSlot(new TeaBagSlot(inventory, 0, 80, 17));
-        this.addProperties(propertyDelegate);
+        this.addDataSlots(propertyDelegate);
         int k;
         for (k = 0; k < 3; ++k) {
             for (int j = 0; j < 9; ++j) {
@@ -41,41 +41,41 @@ public class KettleScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public boolean canUse(PlayerEntity player) {
-        return this.inventory.canPlayerUse(player);
+    public boolean stillValid(Player player) {
+        return this.inventory.stillValid(player);
     }
 
     @Override
-    public ItemStack quickMove(PlayerEntity player, int index) {
+    public ItemStack quickMoveStack(Player player, int index) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
-        if (slot.hasStack()) {
-            ItemStack itemStack2 = slot.getStack();
+        if (slot.hasItem()) {
+            ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.copy();
             if (index != 0) {
                 if (TeaBagSlot.matches(itemStack2)) {
-                    if (!this.insertItem(itemStack2, 0, 1, false)) {
+                    if (!this.moveItemStackTo(itemStack2, 0, 1, false)) {
                         return ItemStack.EMPTY;
                     }
                 } else if (index < 27) {
-                    if (!this.insertItem(itemStack2, 27, 36, false)) {
+                    if (!this.moveItemStackTo(itemStack2, 27, 36, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (index < 36 && !this.insertItem(itemStack2, 1, 27, false)) {
+                } else if (index < 36 && !this.moveItemStackTo(itemStack2, 1, 27, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.insertItem(itemStack2, 1, 27, false)) {
+            } else if (!this.moveItemStackTo(itemStack2, 1, 27, false)) {
                 return ItemStack.EMPTY;
             }
             if (itemStack2.isEmpty()) {
-                slot.setStack(ItemStack.EMPTY);
+                slot.setByPlayer(ItemStack.EMPTY);
             } else {
-                slot.markDirty();
+                slot.setChanged();
             }
             if (itemStack2.getCount() == itemStack.getCount()) {
                 return ItemStack.EMPTY;
             }
-            slot.onTakeItem(player, itemStack2);
+            slot.onTake(player, itemStack2);
         }
         return itemStack;
     }
@@ -111,7 +111,7 @@ public class KettleScreenHandler extends ScreenHandler {
     }
 
     static class TeaBagSlot extends Slot {
-        public TeaBagSlot(Inventory inventory, int i, int j, int k) {
+        public TeaBagSlot(Container inventory, int i, int j, int k) {
             super(inventory, i, j, k);
         }
 
@@ -120,12 +120,12 @@ public class KettleScreenHandler extends ScreenHandler {
             return stack.getItem() == CulinaireItems.TEA_BAG;
         }
 
-        public boolean canInsert(ItemStack stack) {
+        public boolean mayPlace(ItemStack stack) {
             return matches(stack);
         }
 
-        public int getMaxItemCount() {
-            return CulinaireItems.TEA_BAG.getMaxCount();
+        public int getMaxStackSize() {
+            return CulinaireItems.TEA_BAG.getDefaultMaxStackSize();
         }
     }
 }

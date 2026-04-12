@@ -7,26 +7,25 @@ import fr.hugman.culinaire.codec.SuperPacketCodec;
 import fr.hugman.culinaire.component.CulinaireComponentTypes;
 import fr.hugman.culinaire.component.SandwichContentsComponent;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.FoodComponent;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.SpecialCraftingRecipe;
-import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.recipe.input.CraftingRecipeInput;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.Mth;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.Level;
 
-public class SandwichRecipe extends SpecialCraftingRecipe {
+public class SandwichRecipe extends CustomRecipe {
     public final Ingredient bread;
     public final Ingredient ingredientBlacklist;
     public final float nutritionModifierBase;
@@ -36,7 +35,7 @@ public class SandwichRecipe extends SpecialCraftingRecipe {
     public final Map<Ingredient, Ingredient> ingredientAssociations;
     public final ItemStack resultItem;
 
-    public SandwichRecipe(CraftingRecipeCategory category, Ingredient bread, Ingredient ingredientBlacklist, float nutritionModifierBase, float nutritionModifierBoosted, float saturationModifierBase, float saturationModifierBoosted, Map<Ingredient, Ingredient> ingredientAssociations, ItemStack resultItem) {
+    public SandwichRecipe(CraftingBookCategory category, Ingredient bread, Ingredient ingredientBlacklist, float nutritionModifierBase, float nutritionModifierBoosted, float saturationModifierBase, float saturationModifierBoosted, Map<Ingredient, Ingredient> ingredientAssociations, ItemStack resultItem) {
         super(category);
         this.bread = bread;
         this.ingredientBlacklist = ingredientBlacklist;
@@ -54,27 +53,27 @@ public class SandwichRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public boolean matches(CraftingRecipeInput input, World world) {
+    public boolean matches(CraftingInput input, Level world) {
         boolean hasBread = false;
         boolean hasOnlyIngredients = false;
         int[] emptySlots = new int[]{0, 2, 6, 8};
         for (int emptySlot : emptySlots) {
-            ItemStack itemStack = input.getStackInSlot(emptySlot);
+            ItemStack itemStack = input.getItem(emptySlot);
             if (!itemStack.isEmpty()) {
                 return false;
             }
         }
-        ItemStack topMiddleStack = input.getStackInSlot(1);
-        ItemStack bottomMiddleStack = input.getStackInSlot(7);
+        ItemStack topMiddleStack = input.getItem(1);
+        ItemStack bottomMiddleStack = input.getItem(7);
         if (!topMiddleStack.isEmpty() && !bottomMiddleStack.isEmpty()) {
             if (bread.test(topMiddleStack) && bread.test(bottomMiddleStack)) {
                 hasBread = true;
             }
         }
         for (int i = 3; i < 6; ++i) {
-            ItemStack itemStack = input.getStackInSlot(i);
+            ItemStack itemStack = input.getItem(i);
             if (!itemStack.isEmpty()) {
-                if (itemStack.contains(DataComponentTypes.FOOD) && !ingredientBlacklist.test(itemStack)) {
+                if (itemStack.has(DataComponents.FOOD) && !ingredientBlacklist.test(itemStack)) {
                     hasOnlyIngredients = true;
                 } else {
                     return false;
@@ -85,12 +84,12 @@ public class SandwichRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack craft(CraftingRecipeInput input, RegistryWrapper.WrapperLookup registries) {
+    public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
         // Get food items
         ItemStack[] slots = new ItemStack[3];
         int j = 0;
         for (int i = 3; i <= 5; i++) {
-            ItemStack stack = input.getStackInSlot(i);
+            ItemStack stack = input.getItem(i);
             if (!stack.isEmpty()) {
                 slots[j] = stack;
                 j++;
@@ -109,22 +108,22 @@ public class SandwichRecipe extends SpecialCraftingRecipe {
         List<SandwichContentsComponent.Entry> content = new ArrayList<>();
 
         for (int i = 0; i < food.length; i++) {
-            if (food[i].contains(DataComponentTypes.FOOD)) {
-                var foodComponent = food[i].get(DataComponentTypes.FOOD);
+            if (food[i].has(DataComponents.FOOD)) {
+                var foodComponent = food[i].get(DataComponents.FOOD);
                 nutrition += foodComponent.nutrition() * (associations[i] ? nutritionModifierBoosted : nutritionModifierBase);
                 saturationModifier += foodComponent.saturation() * (associations[i] ? saturationModifierBoosted : saturationModifierBase);
             }
 
             content.add(new SandwichContentsComponent.Entry(food[i].copy(), associations[i]));
-            if (food[i].getItem().hasGlint(food[i]) || Boolean.TRUE.equals(food[i].get(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE)))
+            if (food[i].getItem().isFoil(food[i]) || Boolean.TRUE.equals(food[i].get(DataComponents.ENCHANTMENT_GLINT_OVERRIDE)))
                 hasGlint = true;
 
             //TODO: collect effects
         }
 
         givenStack.set(CulinaireComponentTypes.SANDWICH_CONTENTS, new SandwichContentsComponent(content));
-        givenStack.set(DataComponentTypes.FOOD, new FoodComponent(MathHelper.floor(nutrition), saturationModifier, false));
-        givenStack.set(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, hasGlint);
+        givenStack.set(DataComponents.FOOD, new FoodProperties(Mth.floor(nutrition), saturationModifier, false));
+        givenStack.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, hasGlint);
 
         return givenStack;
     }
@@ -163,7 +162,7 @@ public class SandwichRecipe extends SpecialCraftingRecipe {
     public static class Serializer implements RecipeSerializer<SandwichRecipe> {
         private static final MapCodec<SandwichRecipe> CODEC = RecordCodecBuilder.mapCodec(
                 instance -> instance.group(
-                        CraftingRecipeCategory.CODEC.fieldOf("category").forGetter(SpecialCraftingRecipe::getCategory),
+                        CraftingBookCategory.CODEC.fieldOf("category").forGetter(CustomRecipe::category),
                         Ingredient.CODEC.fieldOf("bread").forGetter(recipe -> recipe.bread),
                         Ingredient.CODEC.fieldOf("ingredient_blacklist").forGetter(recipe -> recipe.ingredientBlacklist),
                         Codec.FLOAT.fieldOf("hunger_modifier_base").forGetter(recipe -> recipe.nutritionModifierBase),
@@ -174,16 +173,16 @@ public class SandwichRecipe extends SpecialCraftingRecipe {
                         ItemStack.CODEC.fieldOf("result").forGetter(recipe -> recipe.resultItem)
                 ).apply(instance, SandwichRecipe::new)
         );
-        private static final PacketCodec<RegistryByteBuf, SandwichRecipe> PACKET_CODEC = SuperPacketCodec.tuple(
-                CraftingRecipeCategory.PACKET_CODEC, SpecialCraftingRecipe::getCategory,
-                Ingredient.PACKET_CODEC, recipe -> recipe.bread,
-                Ingredient.PACKET_CODEC, recipe -> recipe.ingredientBlacklist,
-                PacketCodecs.FLOAT, recipe -> recipe.nutritionModifierBase,
-                PacketCodecs.FLOAT, recipe -> recipe.nutritionModifierBoosted,
-                PacketCodecs.FLOAT, recipe -> recipe.saturationModifierBase,
-                PacketCodecs.FLOAT, recipe -> recipe.saturationModifierBoosted,
-                PacketCodecs.map(Object2ObjectOpenHashMap::new, Ingredient.PACKET_CODEC, Ingredient.PACKET_CODEC), recipe -> recipe.ingredientAssociations,
-                ItemStack.PACKET_CODEC, recipe -> recipe.resultItem,
+        private static final StreamCodec<RegistryFriendlyByteBuf, SandwichRecipe> PACKET_CODEC = SuperPacketCodec.tuple(
+                CraftingBookCategory.STREAM_CODEC, CustomRecipe::category,
+                Ingredient.CONTENTS_STREAM_CODEC, recipe -> recipe.bread,
+                Ingredient.CONTENTS_STREAM_CODEC, recipe -> recipe.ingredientBlacklist,
+                ByteBufCodecs.FLOAT, recipe -> recipe.nutritionModifierBase,
+                ByteBufCodecs.FLOAT, recipe -> recipe.nutritionModifierBoosted,
+                ByteBufCodecs.FLOAT, recipe -> recipe.saturationModifierBase,
+                ByteBufCodecs.FLOAT, recipe -> recipe.saturationModifierBoosted,
+                ByteBufCodecs.map(Object2ObjectOpenHashMap::new, Ingredient.CONTENTS_STREAM_CODEC, Ingredient.CONTENTS_STREAM_CODEC), recipe -> recipe.ingredientAssociations,
+                ItemStack.STREAM_CODEC, recipe -> recipe.resultItem,
                 SandwichRecipe::new
         );
 
@@ -193,7 +192,7 @@ public class SandwichRecipe extends SpecialCraftingRecipe {
         }
 
         @Override
-        public PacketCodec<RegistryByteBuf, SandwichRecipe> packetCodec() {
+        public StreamCodec<RegistryFriendlyByteBuf, SandwichRecipe> streamCodec() {
             return PACKET_CODEC;
         }
     }

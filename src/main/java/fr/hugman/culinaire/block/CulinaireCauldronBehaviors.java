@@ -3,15 +3,15 @@ package fr.hugman.culinaire.block;
 import fr.hugman.culinaire.block.cauldron.CauldronInteractionBuilder;
 import fr.hugman.culinaire.block.cauldron.CauldronUtil;
 import fr.hugman.culinaire.item.CulinaireItems;
-import net.minecraft.block.cauldron.CauldronBehavior;
-import net.minecraft.item.Items;
-import net.minecraft.sound.SoundEvents;
+import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.item.Items;
 
 public class CulinaireCauldronBehaviors {
-    public static CauldronBehavior.CauldronBehaviorMap MILK = CauldronBehavior.createMap("culinaire:milk");
-    public static CauldronBehavior.CauldronBehaviorMap DARK_CHOCOLATE = CauldronBehavior.createMap("culinaire:dark_chocolate");
-    public static CauldronBehavior.CauldronBehaviorMap MILK_CHOCOLATE = CauldronBehavior.createMap("culinaire:milk_chocolate");
-    public static CauldronBehavior.CauldronBehaviorMap WHITE_CHOCOLATE = CauldronBehavior.createMap("culinaire:white_chocolate");
+    public static CauldronInteraction.InteractionMap MILK = CauldronInteraction.newInteractionMap("culinaire:milk");
+    public static CauldronInteraction.InteractionMap DARK_CHOCOLATE = CauldronInteraction.newInteractionMap("culinaire:dark_chocolate");
+    public static CauldronInteraction.InteractionMap MILK_CHOCOLATE = CauldronInteraction.newInteractionMap("culinaire:milk_chocolate");
+    public static CauldronInteraction.InteractionMap WHITE_CHOCOLATE = CauldronInteraction.newInteractionMap("culinaire:white_chocolate");
 
     public static void register() {
         // Milk Cauldron
@@ -21,8 +21,8 @@ public class CulinaireCauldronBehaviors {
 
         // Dark Chocolate Cauldron
         CauldronUtil.addBottleInteractions(DARK_CHOCOLATE, CulinaireBlocks.DARK_CHOCOLATE_CAULDRON, CulinaireItems.DARK_CHOCOLATE_BOTTLE);
-        DARK_CHOCOLATE.map().put(Items.MILK_BUCKET, CauldronInteractionBuilder.create().addLevel(3).cauldron(CulinaireBlocks.MILK_CHOCOLATE_CAULDRON).sound(SoundEvents.ITEM_BUCKET_EMPTY).build());
-        DARK_CHOCOLATE.map().put(CulinaireItems.MILK_BOTTLE, CauldronInteractionBuilder.create().addLevel(1).cauldron(CulinaireBlocks.MILK_CHOCOLATE_CAULDRON).sound(SoundEvents.ITEM_BOTTLE_EMPTY).build());
+        DARK_CHOCOLATE.map().put(Items.MILK_BUCKET, CauldronInteractionBuilder.create().addLevel(3).cauldron(CulinaireBlocks.MILK_CHOCOLATE_CAULDRON).sound(SoundEvents.BUCKET_EMPTY).build());
+        DARK_CHOCOLATE.map().put(CulinaireItems.MILK_BOTTLE, CauldronInteractionBuilder.create().addLevel(1).cauldron(CulinaireBlocks.MILK_CHOCOLATE_CAULDRON).sound(SoundEvents.BOTTLE_EMPTY).build());
 
         // Milk Chocolate Cauldron
         CauldronUtil.addBottleInteractions(MILK_CHOCOLATE, CulinaireBlocks.MILK_CHOCOLATE_CAULDRON, CulinaireItems.MILK_CHOCOLATE_BOTTLE);

@@ -8,168 +8,167 @@ import fr.hugman.culinaire.tag.CulinaireItemTags;
 import fr.hugman.culinaire.tea.TeaTypes;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.minecraft.data.recipe.RecipeExporter;
-import net.minecraft.data.recipe.RecipeGenerator;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.book.RecipeCategory;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
-
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import java.util.concurrent.CompletableFuture;
 
-public class CulinaireRecipeGenerator extends RecipeGenerator {
-    public CulinaireRecipeGenerator(RegistryWrapper.WrapperLookup registries, RecipeExporter exporter) {
+public class CulinaireRecipeGenerator extends RecipeProvider {
+    public CulinaireRecipeGenerator(HolderLookup.Provider registries, RecipeOutput exporter) {
         super(registries, exporter);
     }
 
     @Override
-    public void generate() {
+    public void buildRecipes() {
         // CANDIES
-        this.createShapeless(RecipeCategory.FOOD, CulinaireItems.DARK_CHOCOLATE_BOTTLE)
-                .input(Items.SUGAR)
-                .input(Items.COCOA_BEANS)
-                .input(Items.GLASS_BOTTLE)
-                .criterion(hasItem(Items.GLASS_BOTTLE), this.conditionsFromItem(Items.GLASS_BOTTLE))
-                .criterion(hasItem(Items.SUGAR), this.conditionsFromItem(Items.SUGAR))
-                .criterion(hasItem(Items.COCOA_BEANS), this.conditionsFromItem(Items.COCOA_BEANS))
-                .offerTo(this.exporter);
-        this.createShapeless(RecipeCategory.FOOD, CulinaireItems.MILK_CHOCOLATE_BOTTLE)
-                .input(Items.SUGAR)
-                .input(Items.COCOA_BEANS)
-                .input(CulinaireItems.MILK_BOTTLE)
-                .criterion(hasItem(CulinaireItems.MILK_BOTTLE), this.conditionsFromItem(CulinaireItems.MILK_BOTTLE))
-                .criterion(hasItem(Items.SUGAR), this.conditionsFromItem(Items.SUGAR))
-                .criterion(hasItem(Items.COCOA_BEANS), this.conditionsFromItem(Items.COCOA_BEANS))
-                .offerTo(this.exporter);
-        this.createShapeless(RecipeCategory.FOOD, CulinaireItems.WHITE_CHOCOLATE_BOTTLE)
-                .input(Items.SUGAR)
-                .input(Items.GLASS_BOTTLE)
-                .criterion(hasItem(Items.GLASS_BOTTLE), this.conditionsFromItem(Items.GLASS_BOTTLE))
-                .criterion(hasItem(Items.SUGAR), this.conditionsFromItem(Items.SUGAR))
-                .offerTo(this.exporter);
+        this.shapeless(RecipeCategory.FOOD, CulinaireItems.DARK_CHOCOLATE_BOTTLE)
+                .requires(Items.SUGAR)
+                .requires(Items.COCOA_BEANS)
+                .requires(Items.GLASS_BOTTLE)
+                .unlockedBy(getHasName(Items.GLASS_BOTTLE), this.has(Items.GLASS_BOTTLE))
+                .unlockedBy(getHasName(Items.SUGAR), this.has(Items.SUGAR))
+                .unlockedBy(getHasName(Items.COCOA_BEANS), this.has(Items.COCOA_BEANS))
+                .save(this.output);
+        this.shapeless(RecipeCategory.FOOD, CulinaireItems.MILK_CHOCOLATE_BOTTLE)
+                .requires(Items.SUGAR)
+                .requires(Items.COCOA_BEANS)
+                .requires(CulinaireItems.MILK_BOTTLE)
+                .unlockedBy(getHasName(CulinaireItems.MILK_BOTTLE), this.has(CulinaireItems.MILK_BOTTLE))
+                .unlockedBy(getHasName(Items.SUGAR), this.has(Items.SUGAR))
+                .unlockedBy(getHasName(Items.COCOA_BEANS), this.has(Items.COCOA_BEANS))
+                .save(this.output);
+        this.shapeless(RecipeCategory.FOOD, CulinaireItems.WHITE_CHOCOLATE_BOTTLE)
+                .requires(Items.SUGAR)
+                .requires(Items.GLASS_BOTTLE)
+                .unlockedBy(getHasName(Items.GLASS_BOTTLE), this.has(Items.GLASS_BOTTLE))
+                .unlockedBy(getHasName(Items.SUGAR), this.has(Items.SUGAR))
+                .save(this.output);
 
-        this.createShapeless(RecipeCategory.FOOD, CulinaireItems.DARK_CHOCOLATE_BAR, 2)
-                .input(CulinaireItems.DARK_CHOCOLATE_BOTTLE)
-                .criterion(hasItem(CulinaireItems.DARK_CHOCOLATE_BOTTLE), this.conditionsFromItem(CulinaireItems.DARK_CHOCOLATE_BOTTLE))
-                .offerTo(this.exporter);
-        this.createShapeless(RecipeCategory.FOOD, CulinaireItems.MILK_CHOCOLATE_BAR, 2)
-                .input(CulinaireItems.MILK_CHOCOLATE_BOTTLE)
-                .criterion(hasItem(CulinaireItems.MILK_CHOCOLATE_BOTTLE), this.conditionsFromItem(CulinaireItems.MILK_CHOCOLATE_BOTTLE))
-                .offerTo(this.exporter);
-        this.createShapeless(RecipeCategory.FOOD, CulinaireItems.WHITE_CHOCOLATE_BAR, 2)
-                .input(CulinaireItems.WHITE_CHOCOLATE_BOTTLE)
-                .criterion(hasItem(CulinaireItems.WHITE_CHOCOLATE_BOTTLE), this.conditionsFromItem(CulinaireItems.WHITE_CHOCOLATE_BOTTLE))
-                .offerTo(this.exporter);
+        this.shapeless(RecipeCategory.FOOD, CulinaireItems.DARK_CHOCOLATE_BAR, 2)
+                .requires(CulinaireItems.DARK_CHOCOLATE_BOTTLE)
+                .unlockedBy(getHasName(CulinaireItems.DARK_CHOCOLATE_BOTTLE), this.has(CulinaireItems.DARK_CHOCOLATE_BOTTLE))
+                .save(this.output);
+        this.shapeless(RecipeCategory.FOOD, CulinaireItems.MILK_CHOCOLATE_BAR, 2)
+                .requires(CulinaireItems.MILK_CHOCOLATE_BOTTLE)
+                .unlockedBy(getHasName(CulinaireItems.MILK_CHOCOLATE_BOTTLE), this.has(CulinaireItems.MILK_CHOCOLATE_BOTTLE))
+                .save(this.output);
+        this.shapeless(RecipeCategory.FOOD, CulinaireItems.WHITE_CHOCOLATE_BAR, 2)
+                .requires(CulinaireItems.WHITE_CHOCOLATE_BOTTLE)
+                .unlockedBy(getHasName(CulinaireItems.WHITE_CHOCOLATE_BOTTLE), this.has(CulinaireItems.WHITE_CHOCOLATE_BOTTLE))
+                .save(this.output);
 
-        this.createShapeless(RecipeCategory.FOOD, CulinaireItems.DARK_CHOCOLATE_PIE)
-                .input(CulinaireItems.DARK_CHOCOLATE_BOTTLE)
-                .input(CulinaireItems.DARK_CHOCOLATE_BOTTLE)
-                .input(Items.SUGAR)
-                .input(Items.EGG)
-                .criterion(hasItem(CulinaireItems.DARK_CHOCOLATE_BOTTLE), this.conditionsFromItem(CulinaireItems.DARK_CHOCOLATE_BOTTLE))
-                .offerTo(this.exporter);
-        this.createShapeless(RecipeCategory.FOOD, CulinaireItems.MILK_CHOCOLATE_PIE)
-                .input(CulinaireItems.MILK_CHOCOLATE_BOTTLE)
-                .input(CulinaireItems.MILK_CHOCOLATE_BOTTLE)
-                .input(Items.SUGAR)
-                .input(Items.EGG)
-                .criterion(hasItem(CulinaireItems.MILK_CHOCOLATE_BOTTLE), this.conditionsFromItem(CulinaireItems.MILK_CHOCOLATE_BOTTLE))
-                .offerTo(this.exporter);
-        this.createShapeless(RecipeCategory.FOOD, CulinaireItems.WHITE_CHOCOLATE_PIE)
-                .input(CulinaireItems.WHITE_CHOCOLATE_BOTTLE)
-                .input(CulinaireItems.WHITE_CHOCOLATE_BOTTLE)
-                .input(Items.SUGAR)
-                .input(Items.EGG)
-                .criterion(hasItem(CulinaireItems.WHITE_CHOCOLATE_BOTTLE), this.conditionsFromItem(CulinaireItems.WHITE_CHOCOLATE_BOTTLE))
-                .offerTo(this.exporter);
+        this.shapeless(RecipeCategory.FOOD, CulinaireItems.DARK_CHOCOLATE_PIE)
+                .requires(CulinaireItems.DARK_CHOCOLATE_BOTTLE)
+                .requires(CulinaireItems.DARK_CHOCOLATE_BOTTLE)
+                .requires(Items.SUGAR)
+                .requires(Items.EGG)
+                .unlockedBy(getHasName(CulinaireItems.DARK_CHOCOLATE_BOTTLE), this.has(CulinaireItems.DARK_CHOCOLATE_BOTTLE))
+                .save(this.output);
+        this.shapeless(RecipeCategory.FOOD, CulinaireItems.MILK_CHOCOLATE_PIE)
+                .requires(CulinaireItems.MILK_CHOCOLATE_BOTTLE)
+                .requires(CulinaireItems.MILK_CHOCOLATE_BOTTLE)
+                .requires(Items.SUGAR)
+                .requires(Items.EGG)
+                .unlockedBy(getHasName(CulinaireItems.MILK_CHOCOLATE_BOTTLE), this.has(CulinaireItems.MILK_CHOCOLATE_BOTTLE))
+                .save(this.output);
+        this.shapeless(RecipeCategory.FOOD, CulinaireItems.WHITE_CHOCOLATE_PIE)
+                .requires(CulinaireItems.WHITE_CHOCOLATE_BOTTLE)
+                .requires(CulinaireItems.WHITE_CHOCOLATE_BOTTLE)
+                .requires(Items.SUGAR)
+                .requires(Items.EGG)
+                .unlockedBy(getHasName(CulinaireItems.WHITE_CHOCOLATE_BOTTLE), this.has(CulinaireItems.WHITE_CHOCOLATE_BOTTLE))
+                .save(this.output);
 
-        this.createShapeless(RecipeCategory.FOOD, CulinaireItems.MARSHMALLOW)
-                .input(Items.SUGAR)
-                .criterion(hasItem(Items.SUGAR), this.conditionsFromItem(Items.SUGAR))
-                .offerTo(this.exporter);
+        this.shapeless(RecipeCategory.FOOD, CulinaireItems.MARSHMALLOW)
+                .requires(Items.SUGAR)
+                .unlockedBy(getHasName(Items.SUGAR), this.has(Items.SUGAR))
+                .save(this.output);
 
-        this.createShaped(RecipeCategory.FOOD, CulinaireItems.MARSHMALLOW_ON_A_STICK)
-                .input('X', CulinaireItems.MARSHMALLOW)
-                .input('I', Items.STICK)
+        this.shaped(RecipeCategory.FOOD, CulinaireItems.MARSHMALLOW_ON_A_STICK)
+                .define('X', CulinaireItems.MARSHMALLOW)
+                .define('I', Items.STICK)
                 .pattern(" X")
                 .pattern("I ")
-                .criterion(hasItem(CulinaireItems.MARSHMALLOW), this.conditionsFromItem(CulinaireItems.MARSHMALLOW));
-        this.createShaped(RecipeCategory.FOOD, CulinaireBlocks.CHEESE_WHEEL)
-                .input('#', CulinaireItems.CHEESE)
+                .unlockedBy(getHasName(CulinaireItems.MARSHMALLOW), this.has(CulinaireItems.MARSHMALLOW));
+        this.shaped(RecipeCategory.FOOD, CulinaireBlocks.CHEESE_WHEEL)
+                .define('#', CulinaireItems.CHEESE)
                 .pattern("###")
                 .pattern("###")
-                .criterion(hasItem(CulinaireItems.CHEESE), this.conditionsFromItem(CulinaireItems.CHEESE))
-                .offerTo(this.exporter);
+                .unlockedBy(getHasName(CulinaireItems.CHEESE), this.has(CulinaireItems.CHEESE))
+                .save(this.output);
 
         // TEA
         this.offerTeaBagRecipe();
-        this.createShaped(RecipeCategory.FOOD, CulinaireBlocks.KETTLE)
-                .input('T', Items.IRON_TRAPDOOR)
-                .input('#', Items.IRON_INGOT)
+        this.shaped(RecipeCategory.FOOD, CulinaireBlocks.KETTLE)
+                .define('T', Items.IRON_TRAPDOOR)
+                .define('#', Items.IRON_INGOT)
                 .pattern(" T ")
                 .pattern("# #")
                 .pattern("###")
-                .criterion(hasItem(Items.IRON_INGOT), this.conditionsFromItem(Items.IRON_INGOT))
-                .offerTo(this.exporter);
+                .unlockedBy(getHasName(Items.IRON_INGOT), this.has(Items.IRON_INGOT))
+                .save(this.output);
 
         // PASTRIES
         //TODO: croissant
-        this.createShapeless(RecipeCategory.FOOD, CulinaireItems.CHOUQUETTE, 2)
-                .input(Items.SUGAR)
-                .input(Items.WHEAT)
-                .criterion(hasItem(CulinaireItems.CHOUQUETTE), this.conditionsFromItem(CulinaireItems.CHOUQUETTE))
-                .offerTo(this.exporter);
-        this.createShapeless(RecipeCategory.FOOD, CulinaireItems.APPLE_PIE)
-                .input(Items.APPLE)
-                .input(Items.APPLE)
-                .input(Items.SUGAR)
-                .input(Items.EGG)
-                .criterion(hasItem(Items.APPLE), this.conditionsFromItem(Items.APPLE))
-                .offerTo(this.exporter);
-        this.createShapeless(RecipeCategory.FOOD, CulinaireItems.SWEET_BERRY_PIE)
-                .input(Items.SWEET_BERRIES)
-                .input(Items.SWEET_BERRIES)
-                .input(Items.SWEET_BERRIES)
-                .input(Items.SUGAR)
-                .input(Items.EGG)
-                .criterion(hasItem(Items.SWEET_BERRIES), this.conditionsFromItem(Items.SWEET_BERRIES))
-                .offerTo(this.exporter);
+        this.shapeless(RecipeCategory.FOOD, CulinaireItems.CHOUQUETTE, 2)
+                .requires(Items.SUGAR)
+                .requires(Items.WHEAT)
+                .unlockedBy(getHasName(CulinaireItems.CHOUQUETTE), this.has(CulinaireItems.CHOUQUETTE))
+                .save(this.output);
+        this.shapeless(RecipeCategory.FOOD, CulinaireItems.APPLE_PIE)
+                .requires(Items.APPLE)
+                .requires(Items.APPLE)
+                .requires(Items.SUGAR)
+                .requires(Items.EGG)
+                .unlockedBy(getHasName(Items.APPLE), this.has(Items.APPLE))
+                .save(this.output);
+        this.shapeless(RecipeCategory.FOOD, CulinaireItems.SWEET_BERRY_PIE)
+                .requires(Items.SWEET_BERRIES)
+                .requires(Items.SWEET_BERRIES)
+                .requires(Items.SWEET_BERRIES)
+                .requires(Items.SUGAR)
+                .requires(Items.EGG)
+                .unlockedBy(getHasName(Items.SWEET_BERRIES), this.has(Items.SWEET_BERRIES))
+                .save(this.output);
 
         // SANDWICHES
         this.offerSandwichRecipe();
 
         // MEALS
-        this.createShapeless(RecipeCategory.FOOD, CulinaireItems.SALAD)
-                .input(CulinaireItems.LETTUCE)
-                .input(CulinaireItems.TOMATO)
-                .input(CulinaireItems.CHEESE)
-                .input(Items.BOWL)
-                .criterion(hasItem(CulinaireItems.LETTUCE), this.conditionsFromItem(CulinaireItems.LETTUCE))
-                .offerTo(this.exporter);
-        this.createShapeless(RecipeCategory.FOOD, CulinaireItems.MASHED_POTATOES)
-                .input(Items.BAKED_POTATO)
-                .input(Items.BAKED_POTATO)
-                .input(Items.BOWL)
-                .criterion(hasItem(Items.BAKED_POTATO), this.conditionsFromItem(Items.BAKED_POTATO))
-                .offerTo(this.exporter);
+        this.shapeless(RecipeCategory.FOOD, CulinaireItems.SALAD)
+                .requires(CulinaireItems.LETTUCE)
+                .requires(CulinaireItems.TOMATO)
+                .requires(CulinaireItems.CHEESE)
+                .requires(Items.BOWL)
+                .unlockedBy(getHasName(CulinaireItems.LETTUCE), this.has(CulinaireItems.LETTUCE))
+                .save(this.output);
+        this.shapeless(RecipeCategory.FOOD, CulinaireItems.MASHED_POTATOES)
+                .requires(Items.BAKED_POTATO)
+                .requires(Items.BAKED_POTATO)
+                .requires(Items.BOWL)
+                .unlockedBy(getHasName(Items.BAKED_POTATO), this.has(Items.BAKED_POTATO))
+                .save(this.output);
     }
 
     public void offerTeaBagRecipe() {
-        TeaBagRecipeJsonBuilder.create(registries, RecipeCategory.FOOD, Ingredient.ofItem(Items.PAPER), Ingredient.ofItem(Items.STRING), new ItemStack(CulinaireItems.TEA_BAG))
-                .criterion(hasItem(Items.PAPER), this.conditionsFromItem(Items.PAPER))
+        TeaBagRecipeJsonBuilder.create(registries, RecipeCategory.FOOD, Ingredient.of(Items.PAPER), Ingredient.of(Items.STRING), new ItemStack(CulinaireItems.TEA_BAG))
+                .criterion(getHasName(Items.PAPER), this.has(Items.PAPER))
                 .ingredient(TeaTypes.GREEN, CulinaireItemTags.GREEN_TEA_INGREDIENTS)
                 .ingredient(TeaTypes.WHITE, CulinaireItemTags.WHITE_TEA_INGREDIENTS)
                 //TODO: other tea types
                 .ingredient(TeaTypes.ENDER, Items.POPPED_CHORUS_FRUIT) //TODO: tag
-                .offerTo(this.exporter);
+                .save(this.output);
     }
 
 
     public void offerSandwichRecipe() {
         SandwichRecipeJsonBuilder.create(
-                        registries.getOrThrow(RegistryKeys.ITEM),
+                        registries.lookupOrThrow(Registries.ITEM),
                         RecipeCategory.FOOD,
                         0.5f,
                         1.0f,
@@ -187,15 +186,14 @@ public class CulinaireRecipeGenerator extends RecipeGenerator {
                 .association(Items.RABBIT, Items.BEETROOT)
                 .association(Items.SPIDER_EYE, CulinaireItems.DARK_CHOCOLATE_BAR)
                 .association(CulinaireItems.TOMATO, CulinaireItems.CHEESE, CulinaireItems.LETTUCE)
-                .criterion("has_bread", this.conditionsFromTag(CulinaireItemTags.SANDWICH_BREAD))
-
-                .offerTo(this.exporter);
+                .criterion("has_bread", this.has(CulinaireItemTags.SANDWICH_BREAD))
+                .save(this.output);
     }
 
-    public static FabricRecipeProvider create(FabricDataOutput fabricDataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
+    public static FabricRecipeProvider create(FabricDataOutput fabricDataOutput, CompletableFuture<HolderLookup.Provider> completableFuture) {
         return new FabricRecipeProvider(fabricDataOutput, completableFuture) {
             @Override
-            protected RecipeGenerator getRecipeGenerator(RegistryWrapper.WrapperLookup wrapperLookup, RecipeExporter recipeExporter) {
+            protected RecipeProvider createRecipeProvider(HolderLookup.Provider wrapperLookup, RecipeOutput recipeExporter) {
                 return new CulinaireRecipeGenerator(wrapperLookup, recipeExporter);
             }
 

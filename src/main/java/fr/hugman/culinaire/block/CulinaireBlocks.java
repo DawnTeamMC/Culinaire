@@ -1,83 +1,82 @@
 package fr.hugman.culinaire.block;
 
 import fr.hugman.culinaire.Culinaire;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.piston.PistonBehavior;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.sound.BlockSoundGroup;
-
 import java.util.function.Function;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 
 public class CulinaireBlocks {
     // VEGETABLES
-    public static final Block LETTUCE = registerNoItem("lettuce", LettuceBlock::new, AbstractBlock.Settings.create().mapColor(MapColor.DARK_GREEN).noCollision().ticksRandomly().breakInstantly().sounds(BlockSoundGroup.CROP).pistonBehavior(PistonBehavior.DESTROY));
-    public static final Block TOMATOES = registerNoItem("tomatoes", TomatoesBlock::new, AbstractBlock.Settings.create().mapColor(MapColor.DARK_GREEN).noCollision().ticksRandomly().breakInstantly().sounds(BlockSoundGroup.CROP).pistonBehavior(PistonBehavior.DESTROY));
+    public static final Block LETTUCE = registerNoItem("lettuce", LettuceBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollision().randomTicks().instabreak().sound(SoundType.CROP).pushReaction(PushReaction.DESTROY));
+    public static final Block TOMATOES = registerNoItem("tomatoes", TomatoesBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollision().randomTicks().instabreak().sound(SoundType.CROP).pushReaction(PushReaction.DESTROY));
 
     // DIARIES
-    public static final Block MILK_CAULDRON = registerNoItem("milk_cauldron", s -> new MilkCauldronBlock(s, CulinaireCauldronBehaviors.MILK), AbstractBlock.Settings.copyShallow(Blocks.CAULDRON).ticksRandomly());
+    public static final Block MILK_CAULDRON = registerNoItem("milk_cauldron", s -> new MilkCauldronBlock(s, CulinaireCauldronBehaviors.MILK), BlockBehaviour.Properties.ofLegacyCopy(Blocks.CAULDRON).randomTicks());
 
-    public static final Block CHEESE_WHEEL = register("cheese_wheel", CheeseWheelBlock::new, AbstractBlock.Settings.copy(Blocks.CAKE));
-    public static final Block CHEESE_CAULDRON = registerNoItem("cheese_cauldron", CheeseCauldronBlock::new, AbstractBlock.Settings.copy(Blocks.CAULDRON));
+    public static final Block CHEESE_WHEEL = register("cheese_wheel", CheeseWheelBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.CAKE));
+    public static final Block CHEESE_CAULDRON = registerNoItem("cheese_cauldron", CheeseCauldronBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON));
 
     // CANDIES
-    public static final Block DARK_CHOCOLATE_CAULDRON = registerNoItem("dark_chocolate_cauldron", s -> new ThreeLeveledCauldronBlock(s, CulinaireCauldronBehaviors.DARK_CHOCOLATE), AbstractBlock.Settings.copyShallow(Blocks.CAULDRON));
-    public static final Block MILK_CHOCOLATE_CAULDRON = registerNoItem("milk_chocolate_cauldron", s -> new ThreeLeveledCauldronBlock(s, CulinaireCauldronBehaviors.MILK_CHOCOLATE), AbstractBlock.Settings.copyShallow(Blocks.CAULDRON));
-    public static final Block WHITE_CHOCOLATE_CAULDRON = registerNoItem("white_chocolate_cauldron", s -> new ThreeLeveledCauldronBlock(s, CulinaireCauldronBehaviors.WHITE_CHOCOLATE), AbstractBlock.Settings.copyShallow(Blocks.CAULDRON));
+    public static final Block DARK_CHOCOLATE_CAULDRON = registerNoItem("dark_chocolate_cauldron", s -> new ThreeLeveledCauldronBlock(s, CulinaireCauldronBehaviors.DARK_CHOCOLATE), BlockBehaviour.Properties.ofLegacyCopy(Blocks.CAULDRON));
+    public static final Block MILK_CHOCOLATE_CAULDRON = registerNoItem("milk_chocolate_cauldron", s -> new ThreeLeveledCauldronBlock(s, CulinaireCauldronBehaviors.MILK_CHOCOLATE), BlockBehaviour.Properties.ofLegacyCopy(Blocks.CAULDRON));
+    public static final Block WHITE_CHOCOLATE_CAULDRON = registerNoItem("white_chocolate_cauldron", s -> new ThreeLeveledCauldronBlock(s, CulinaireCauldronBehaviors.WHITE_CHOCOLATE), BlockBehaviour.Properties.ofLegacyCopy(Blocks.CAULDRON));
 
     // TEA
-    public static final Block KETTLE = register("kettle", KettleBlock::new, AbstractBlock.Settings.create().mapColor(MapColor.IRON_GRAY).requiresTool().strength(5.0F, 1200.0F).sounds(BlockSoundGroup.STONE).pistonBehavior(PistonBehavior.BLOCK));
+    public static final Block KETTLE = register("kettle", KettleBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.METAL).requiresCorrectToolForDrops().strength(5.0F, 1200.0F).sound(SoundType.STONE).pushReaction(PushReaction.BLOCK));
 
-    private static RegistryKey<Block> keyOf(String id) {
-        return RegistryKey.of(RegistryKeys.BLOCK, Culinaire.id(id));
+    private static ResourceKey<Block> keyOf(String id) {
+        return ResourceKey.create(Registries.BLOCK, Culinaire.id(id));
     }
 
     private static Block register(
-            RegistryKey<Block> key,
-            Function<AbstractBlock.Settings, Block> factory,
-            AbstractBlock.Settings settings,
-            Item.Settings itemSettings
+            ResourceKey<Block> key,
+            Function<BlockBehaviour.Properties, Block> factory,
+            BlockBehaviour.Properties settings,
+            Item.Properties itemSettings
     ) {
         if (factory == null) {
             throw new IllegalStateException("Cannot register block: factory is not set!");
         }
-        var block = factory.apply(settings.registryKey(key));
-        Registry.register(Registries.BLOCK, key, block);
-        if (itemSettings instanceof Item.Settings) {
-            var itemRegistryKey = RegistryKey.of(RegistryKeys.ITEM, key.getValue());
-            Registry.register(Registries.ITEM, itemRegistryKey, new BlockItem(block, itemSettings.registryKey(itemRegistryKey)));
+        var block = factory.apply(settings.setId(key));
+        Registry.register(BuiltInRegistries.BLOCK, key, block);
+        if (itemSettings instanceof Item.Properties) {
+            var itemRegistryKey = ResourceKey.create(Registries.ITEM, key.identifier());
+            Registry.register(BuiltInRegistries.ITEM, itemRegistryKey, new BlockItem(block, itemSettings.setId(itemRegistryKey)));
         }
         return block;
     }
 
     private static Block register(
             String id,
-            Function<AbstractBlock.Settings, Block> factory,
-            AbstractBlock.Settings settings,
-            Item.Settings itemSettings
+            Function<BlockBehaviour.Properties, Block> factory,
+            BlockBehaviour.Properties settings,
+            Item.Properties itemSettings
     ) {
         return register(keyOf(id), factory, settings, itemSettings);
     }
 
     private static Block register(
             String id,
-            Function<AbstractBlock.Settings, Block> factory,
-            AbstractBlock.Settings settings
+            Function<BlockBehaviour.Properties, Block> factory,
+            BlockBehaviour.Properties settings
     ) {
-        return register(id, factory, settings, new Item.Settings().useBlockPrefixedTranslationKey());
+        return register(id, factory, settings, new Item.Properties().useBlockDescriptionPrefix());
     }
 
     private static Block registerNoItem(
             String id,
-            Function<AbstractBlock.Settings, Block> factory,
-            AbstractBlock.Settings settings
+            Function<BlockBehaviour.Properties, Block> factory,
+            BlockBehaviour.Properties settings
     ) {
         return register(id, factory, settings, null);
     }
