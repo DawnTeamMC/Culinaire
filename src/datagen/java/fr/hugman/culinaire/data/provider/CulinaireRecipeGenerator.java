@@ -1,9 +1,11 @@
 package fr.hugman.culinaire.data.provider;
 
 import fr.hugman.culinaire.block.CulinaireBlocks;
+import fr.hugman.culinaire.component.CulinaireFoodComponents;
 import fr.hugman.culinaire.data.recipe.SandwichRecipeBuilder;
 import fr.hugman.culinaire.data.recipe.TeaBagRecipeBuilder;
 import fr.hugman.culinaire.item.CulinaireItems;
+import fr.hugman.culinaire.recipe.sandwich.NewSandwichRecipeBuilder;
 import fr.hugman.culinaire.tag.CulinaireItemTags;
 import fr.hugman.culinaire.tea.TeaTypes;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
@@ -13,10 +15,11 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
+
 import java.util.concurrent.CompletableFuture;
 
 public class CulinaireRecipeGenerator extends RecipeProvider {
@@ -166,7 +169,6 @@ public class CulinaireRecipeGenerator extends RecipeProvider {
                 .save(this.output);
     }
 
-
     public void offerSandwichRecipe() {
         SandwichRecipeBuilder.create(
                         registries.lookupOrThrow(Registries.ITEM),
@@ -189,6 +191,14 @@ public class CulinaireRecipeGenerator extends RecipeProvider {
                 .association(CulinaireItems.TOMATO, CulinaireItems.CHEESE, CulinaireItems.LETTUCE)
                 .criterion("has_bread", this.has(CulinaireItemTags.SANDWICH_BREAD))
                 .save(this.output);
+    }
+
+    public NewSandwichRecipeBuilder sandwich(RecipeCategory category, ItemStackTemplate result) {
+        return NewSandwichRecipeBuilder.of(this.items, category, result);
+    }
+
+    public NewSandwichRecipeBuilder sandwich(RecipeCategory category, ItemLike result) {
+        return NewSandwichRecipeBuilder.of(this.items, category, result);
     }
 
     public static FabricRecipeProvider create(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> completableFuture) {

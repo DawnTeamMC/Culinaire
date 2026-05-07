@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipProvider;
 
+@Deprecated
 public record SandwichContentsComponent(
         List<Entry> entries
 ) implements TooltipProvider {
@@ -25,7 +26,7 @@ public record SandwichContentsComponent(
                     )
                     .apply(instance, SandwichContentsComponent::new)
     );
-    public static final StreamCodec<RegistryFriendlyByteBuf, SandwichContentsComponent> PACKET_CODEC = StreamCodec.composite(
+    public static final StreamCodec<RegistryFriendlyByteBuf, SandwichContentsComponent> STREAM_CODEC = StreamCodec.composite(
             Entry.PACKET_CODEC.apply(ByteBufCodecs.list()), SandwichContentsComponent::entries,
             SandwichContentsComponent::new
     );

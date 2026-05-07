@@ -22,6 +22,7 @@ import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
+@Deprecated
 public class SandwichRecipe extends CustomRecipe {
     private static final MapCodec<SandwichRecipe> MAP_CODEC = RecordCodecBuilder.mapCodec(
             i -> i.group(

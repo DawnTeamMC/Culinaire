@@ -20,7 +20,7 @@ public record BurnableComponent(
                     )
                     .apply(instance, BurnableComponent::new)
     );
-    public static final StreamCodec<RegistryFriendlyByteBuf, BurnableComponent> PACKET_CODEC = StreamCodec.composite(
+    public static final StreamCodec<RegistryFriendlyByteBuf, BurnableComponent> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.INT, BurnableComponent::burningTime,
             ByteBufCodecs.holderRegistry(Registries.ITEM), BurnableComponent::burnsInto,
             BurnableComponent::new

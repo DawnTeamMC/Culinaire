@@ -3,3 +3,4 @@ accessible	method	net/minecraft/world/effect/MobEffect	<init>	(Lnet/minecraft/wo
 accessible	method	net/minecraft/world/effect/MobEffect	<init>	(Lnet/minecraft/world/effect/MobEffectCategory;ILnet/minecraft/core/particles/ParticleOptions;)V
 accessible method net/minecraft/core/cauldron/CauldronInteraction$Dispatcher put (Lnet/minecraft/world/item/Item;Lnet/minecraft/core/cauldron/CauldronInteraction;)V
 accessible method net/minecraft/core/cauldron/CauldronInteractions newDispatcher (Ljava/lang/String;)Lnet/minecraft/core/cauldron/CauldronInteraction$Dispatcher;
+accessible field net/minecraft/data/recipes/RecipeProvider items Lnet/minecraft/core/HolderGetter;

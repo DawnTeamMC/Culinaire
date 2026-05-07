@@ -66,7 +66,7 @@ public final class TeaTypesComponent implements TooltipProvider, ConsumableListe
     );
 
     public static final Codec<TeaTypesComponent> CODEC = Codec.withAlternative(BASE_CODEC, INLINE_CODEC, map -> new TeaTypesComponent(map, true));
-    public static final StreamCodec<RegistryFriendlyByteBuf, TeaTypesComponent> PACKET_CODEC = StreamCodec.composite(
+    public static final StreamCodec<RegistryFriendlyByteBuf, TeaTypesComponent> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.map(Object2IntOpenHashMap::new, TeaType.ENTRY_PACKET_CODEC, ByteBufCodecs.VAR_INT), component -> component.teaTypes,
             ByteBufCodecs.BOOL, component -> component.showInTooltip,
             TeaTypesComponent::new
