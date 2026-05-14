@@ -1,4 +1,4 @@
-package fr.hugman.culinaire.screen;
+package fr.hugman.culinaire.world.menu;
 
 import fr.hugman.culinaire.item.CulinaireItems;
 import net.fabricmc.api.EnvType;
@@ -13,16 +13,16 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
-public class KettleScreenHandler extends AbstractContainerMenu {
+public class KettleMenu extends AbstractContainerMenu {
     private final Container inventory;
     private final ContainerData propertyDelegate;
 
-    public KettleScreenHandler(int syncId, Inventory playerInventory) {
+    public KettleMenu(int syncId, Inventory playerInventory) {
         this(syncId, playerInventory, new SimpleContainer(1), new SimpleContainerData(6));
     }
 
-    public KettleScreenHandler(int syncId, Inventory playerInventory, Container inventory, ContainerData propertyDelegate) {
-        super(CulinaireScreenHandlerTypes.KETTLE, syncId);
+    public KettleMenu(int syncId, Inventory playerInventory, Container inventory, ContainerData propertyDelegate) {
+        super(CulinaireMenuTypes.KETTLE, syncId);
         checkContainerSize(inventory, 1);
         checkContainerDataCount(propertyDelegate, 6);
         this.inventory = inventory;

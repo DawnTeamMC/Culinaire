@@ -18,7 +18,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewSandwichRecipeBuilder implements RecipeBuilder {
+public class SandwichCraftingRecipeBuilder implements RecipeBuilder {
     private final HolderGetter<Item> items;
     private final RecipeCategory category;
     private Ingredient bread;
@@ -30,7 +30,7 @@ public class NewSandwichRecipeBuilder implements RecipeBuilder {
     @Nullable
     private String group;
 
-    private NewSandwichRecipeBuilder(
+    private SandwichCraftingRecipeBuilder(
             HolderGetter<Item> items,
             RecipeCategory category,
             ItemStackTemplate result
@@ -40,36 +40,36 @@ public class NewSandwichRecipeBuilder implements RecipeBuilder {
         this.result = result;
     }
 
-    public static NewSandwichRecipeBuilder of(HolderGetter<Item> items, RecipeCategory category, ItemStackTemplate result) {
-        return new NewSandwichRecipeBuilder(items, category, result);
+    public static SandwichCraftingRecipeBuilder of(HolderGetter<Item> items, RecipeCategory category, ItemStackTemplate result) {
+        return new SandwichCraftingRecipeBuilder(items, category, result);
     }
 
-    public static NewSandwichRecipeBuilder of(HolderGetter<Item> items, RecipeCategory category, ItemLike result) {
-        return new NewSandwichRecipeBuilder(items, category, new ItemStackTemplate(result.asItem(), 1));
+    public static SandwichCraftingRecipeBuilder of(HolderGetter<Item> items, RecipeCategory category, ItemLike result) {
+        return new SandwichCraftingRecipeBuilder(items, category, new ItemStackTemplate(result.asItem(), 1));
     }
 
-    public NewSandwichRecipeBuilder bread(TagKey<Item> tag) {
+    public SandwichCraftingRecipeBuilder bread(TagKey<Item> tag) {
         return this.bread(Ingredient.of(this.items.getOrThrow(tag)));
     }
 
-    public NewSandwichRecipeBuilder bread(ItemLike item) {
+    public SandwichCraftingRecipeBuilder bread(ItemLike item) {
         return this.bread(Ingredient.of(item));
     }
 
-    public NewSandwichRecipeBuilder bread(Ingredient ingredient) {
+    public SandwichCraftingRecipeBuilder bread(Ingredient ingredient) {
         this.bread = ingredient;
         return this;
     }
 
-    public NewSandwichRecipeBuilder requires(TagKey<Item> tag) {
+    public SandwichCraftingRecipeBuilder requires(TagKey<Item> tag) {
         return this.requires(Ingredient.of(this.items.getOrThrow(tag)));
     }
 
-    public NewSandwichRecipeBuilder requires(ItemLike item) {
+    public SandwichCraftingRecipeBuilder requires(ItemLike item) {
         return this.requires(item, 1);
     }
 
-    public NewSandwichRecipeBuilder requires(ItemLike item, int count) {
+    public SandwichCraftingRecipeBuilder requires(ItemLike item, int count) {
         for (int i = 0; i < count; i++) {
             this.requires(Ingredient.of(item));
         }
@@ -77,11 +77,11 @@ public class NewSandwichRecipeBuilder implements RecipeBuilder {
         return this;
     }
 
-    public NewSandwichRecipeBuilder requires(Ingredient ingredient) {
+    public SandwichCraftingRecipeBuilder requires(Ingredient ingredient) {
         return this.requires(ingredient, 1);
     }
 
-    public NewSandwichRecipeBuilder requires(Ingredient ingredient, int count) {
+    public SandwichCraftingRecipeBuilder requires(Ingredient ingredient, int count) {
         for (int i = 0; i < count; i++) {
             this.baseIngredients.add(ingredient);
         }
@@ -89,17 +89,17 @@ public class NewSandwichRecipeBuilder implements RecipeBuilder {
         return this;
     }
 
-    public NewSandwichRecipeBuilder complement(ItemLike item, FoodProperties foodProperties) {
+    public SandwichCraftingRecipeBuilder complement(ItemLike item, FoodProperties foodProperties) {
         this.complements.add(new SandwichCraftingIngredient(Ingredient.of(item), SandwichIngredient.of(foodProperties)));
         return this;
     }
 
-    public NewSandwichRecipeBuilder complement(SandwichCraftingIngredient ingredient) {
+    public SandwichCraftingRecipeBuilder complement(SandwichCraftingIngredient ingredient) {
         this.complements.add(ingredient);
         return this;
     }
 
-    public NewSandwichRecipeBuilder maxComplements(int maxComplements) {
+    public SandwichCraftingRecipeBuilder maxComplements(int maxComplements) {
         this.maxComplements = maxComplements;
         return this;
     }

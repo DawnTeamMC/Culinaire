@@ -5,7 +5,7 @@ import fr.hugman.culinaire.component.CulinaireFoodComponents;
 import fr.hugman.culinaire.data.recipe.SandwichRecipeBuilder;
 import fr.hugman.culinaire.data.recipe.TeaBagRecipeBuilder;
 import fr.hugman.culinaire.item.CulinaireItems;
-import fr.hugman.culinaire.recipe.sandwich.NewSandwichRecipeBuilder;
+import fr.hugman.culinaire.recipe.sandwich.SandwichCraftingRecipeBuilder;
 import fr.hugman.culinaire.tag.CulinaireItemTags;
 import fr.hugman.culinaire.tea.TeaTypes;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
@@ -142,6 +142,13 @@ public class CulinaireRecipeGenerator extends RecipeProvider {
 
         // SANDWICHES
         this.offerSandwichRecipe();
+        this.sandwich(RecipeCategory.FOOD, CulinaireItems.CROISSANT)
+                .bread(Items.WHEAT)
+                .requires(CulinaireItems.CHOUQUETTE)
+                .complement(CulinaireItems.MILK_CHOCOLATE_BAR, CulinaireFoodComponents.CHOCOLATE_BAR)
+                .complement(CulinaireItems.DARK_CHOCOLATE_BAR, CulinaireFoodComponents.CHOCOLATE_BAR)
+                .unlockedBy(getHasName(CulinaireItems.CHOUQUETTE), this.has(CulinaireItems.CHOUQUETTE))
+                .save(this.output);
 
         // MEALS
         this.shapeless(RecipeCategory.FOOD, CulinaireItems.SALAD)
@@ -193,12 +200,12 @@ public class CulinaireRecipeGenerator extends RecipeProvider {
                 .save(this.output);
     }
 
-    public NewSandwichRecipeBuilder sandwich(RecipeCategory category, ItemStackTemplate result) {
-        return NewSandwichRecipeBuilder.of(this.items, category, result);
+    public SandwichCraftingRecipeBuilder sandwich(RecipeCategory category, ItemStackTemplate result) {
+        return SandwichCraftingRecipeBuilder.of(this.items, category, result);
     }
 
-    public NewSandwichRecipeBuilder sandwich(RecipeCategory category, ItemLike result) {
-        return NewSandwichRecipeBuilder.of(this.items, category, result);
+    public SandwichCraftingRecipeBuilder sandwich(RecipeCategory category, ItemLike result) {
+        return SandwichCraftingRecipeBuilder.of(this.items, category, result);
     }
 
     public static FabricRecipeProvider create(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> completableFuture) {

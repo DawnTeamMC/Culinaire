@@ -4,14 +4,13 @@ import fr.hugman.culinaire.Culinaire;
 import fr.hugman.culinaire.block.KettleBlock;
 import fr.hugman.culinaire.component.CulinaireComponentTypes;
 import fr.hugman.culinaire.component.TeaTypesComponent;
-import fr.hugman.culinaire.screen.KettleScreenHandler;
+import fr.hugman.culinaire.world.menu.KettleMenu;
 import fr.hugman.culinaire.sound.CulinaireSoundEvents;
 import fr.hugman.culinaire.tag.CulinaireBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -177,7 +176,7 @@ public class KettleBlockEntity extends BaseContainerBlockEntity implements World
 
     @Override
     protected AbstractContainerMenu createMenu(int syncId, Inventory playerInventory) {
-        return new KettleScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
+        return new KettleMenu(syncId, playerInventory, this, this.propertyDelegate);
     }
 
     @Override

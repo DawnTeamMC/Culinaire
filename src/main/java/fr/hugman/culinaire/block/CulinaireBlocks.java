@@ -34,6 +34,9 @@ public class CulinaireBlocks {
     // TEA
     public static final Block KETTLE = register("kettle", KettleBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.METAL).requiresCorrectToolForDrops().strength(5.0F, 1200.0F).sound(SoundType.STONE).pushReaction(PushReaction.BLOCK));
 
+    // CRAFTING BENCHES
+    public static final Block SANDWICH_MAKING_TABLE = register("sandwich_making", SandwichMakingTableBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.METAL).requiresCorrectToolForDrops().strength(5.0F, 1200.0F).sound(SoundType.STONE).pushReaction(PushReaction.BLOCK));
+
     private static ResourceKey<Block> keyOf(String id) {
         return ResourceKey.create(Registries.BLOCK, Culinaire.id(id));
     }

@@ -1,7 +1,7 @@
 package fr.hugman.culinaire.client.screen;
 
 import fr.hugman.culinaire.Culinaire;
-import fr.hugman.culinaire.screen.KettleScreenHandler;
+import fr.hugman.culinaire.world.menu.KettleMenu;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -10,14 +10,14 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.player.Inventory;
 
-public class KettleScreen extends AbstractContainerScreen<KettleScreenHandler> {
+public class KettleScreen extends AbstractContainerScreen<KettleMenu> {
     private static final Identifier TEXTURE = Culinaire.id("textures/gui/container/kettle.png");
     private static final Identifier EMPTY_FLUID_TEXTURE = Culinaire.id("container/kettle/empty_fluid");
     private static final Identifier FLUID_TEXTURE = Culinaire.id("textures/gui/sprites/container/kettle/fluid.png");
     private static final Identifier BREW_PROGRESS_TEXTURE = Culinaire.id("container/kettle/brew_progress");
     private static final Identifier FIRE_TEXTURE = Culinaire.id("container/kettle/fire");
 
-    public KettleScreen(KettleScreenHandler handler, Inventory inventory, Component title) {
+    public KettleScreen(KettleMenu handler, Inventory inventory, Component title) {
         super(handler, inventory, title);
     }
 

@@ -11,11 +11,12 @@ import fr.hugman.culinaire.item.CulinaireItems;
 import fr.hugman.culinaire.itemgroup.CulinaireCreativeModeTabAdditions;
 import fr.hugman.culinaire.itemgroup.CulinaireItemGroups;
 import fr.hugman.culinaire.loot.CulinaireLootTables;
+import fr.hugman.culinaire.recipe.CulinaireRecipePropertySets;
 import fr.hugman.culinaire.recipe.CulinaireRecipeSerializers;
 import fr.hugman.culinaire.registry.CulinaireCompostables;
 import fr.hugman.culinaire.registry.CulinaireFlammables;
 import fr.hugman.culinaire.registry.CulinaireRegistries;
-import fr.hugman.culinaire.screen.CulinaireScreenHandlerTypes;
+import fr.hugman.culinaire.world.menu.CulinaireMenuTypes;
 import fr.hugman.culinaire.sound.CulinaireSoundEvents;
 import fr.hugman.culinaire.stat.CulinaireStats;
 import net.fabricmc.api.ModInitializer;
@@ -47,13 +48,14 @@ public class Culinaire implements ModInitializer {
         CulinaireCompostables.register();
         CulinaireCauldronInteractions.register();
 
+        Reflection.initialize(CulinaireRecipePropertySets.class);
         Reflection.initialize(CulinaireRecipeSerializers.class);
 
         CulinaireLootTables.addToVanillaTables();
 
         CulinaireComponentModifiers.registerEvents();
 
-        Reflection.initialize(CulinaireScreenHandlerTypes.class);
+        Reflection.initialize(CulinaireMenuTypes.class);
 
         Reflection.initialize(CulinaireEffects.class);
 

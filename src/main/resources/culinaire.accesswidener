@@ -4,3 +4,5 @@ accessible	method	net/minecraft/world/effect/MobEffect	<init>	(Lnet/minecraft/wo
 accessible method net/minecraft/core/cauldron/CauldronInteraction$Dispatcher put (Lnet/minecraft/world/item/Item;Lnet/minecraft/core/cauldron/CauldronInteraction;)V
 accessible method net/minecraft/core/cauldron/CauldronInteractions newDispatcher (Ljava/lang/String;)Lnet/minecraft/core/cauldron/CauldronInteraction$Dispatcher;
 accessible field net/minecraft/data/recipes/RecipeProvider items Lnet/minecraft/core/HolderGetter;
+accessible method net/minecraft/client/gui/screens/recipebook/GhostSlots setResult (Lnet/minecraft/world/inventory/Slot;Lnet/minecraft/util/context/ContextMap;Lnet/minecraft/world/item/crafting/display/SlotDisplay;)V
+accessible method net/minecraft/client/gui/screens/recipebook/GhostSlots setInput (Lnet/minecraft/world/inventory/Slot;Lnet/minecraft/util/context/ContextMap;Lnet/minecraft/world/item/crafting/display/SlotDisplay;)V
