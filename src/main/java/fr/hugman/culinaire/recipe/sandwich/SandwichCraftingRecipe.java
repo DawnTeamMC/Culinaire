@@ -92,6 +92,10 @@ public class SandwichCraftingRecipe extends NormalCraftingRecipe {
         this(commonInfo, bookInfo, bread, baseIngredients, complements, maxComplements, DEFAULT_SHAPED, result);
     }
 
+    public Ingredient getBread() {
+        return bread;
+    }
+
     @Override
     public boolean matches(CraftingInput input, Level level) {
         var minCount = 2 + this.baseIngredients.size();

@@ -36,8 +36,6 @@ public class SandwichMakingMenu extends RecipeBookMenu {
     private boolean placingRecipe;
 
     private final RecipePropertySet breadTest;
-    private final RecipePropertySet mandatoryTest;
-    private final RecipePropertySet complementsTest;
 
     public SandwichMakingMenu(int containerId, Inventory inventory) {
         this(containerId, inventory, inventory.player.level(), ContainerLevelAccess.NULL);
@@ -56,8 +54,6 @@ public class SandwichMakingMenu extends RecipeBookMenu {
             }
         };
         this.breadTest = level.recipeAccess().propertySet(CulinaireRecipePropertySets.SANDWICH_BREAD);
-        this.mandatoryTest = level.recipeAccess().propertySet(CulinaireRecipePropertySets.SANDWICH_MANDATORY);
-        this.complementsTest = level.recipeAccess().propertySet(CulinaireRecipePropertySets.SANDWICH_COMPLEMENTS);
         this.addSandwichMakingSlots();
         this.addStandardInventorySlots(inventory, 8, 84);
     }
@@ -74,7 +70,12 @@ public class SandwichMakingMenu extends RecipeBookMenu {
         this.addSlot(new SandwichMakingResultSlot(inventory.player, inputsContainer, resultContainer, slotCount++, 116, 44));
 
         // Top bread
-        this.addSlot(new Slot(inputsContainer, slotCount++, 62, 17));
+        this.addSlot(new Slot(inputsContainer, slotCount++, 62, 17) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return SandwichMakingMenu.this.breadTest.test(stack);
+            }
+        });
 
         // Required ingredients
         for(int i = 0; i < REQUIRED_INGREDIENTS_COUNT; ++i) {
@@ -87,7 +88,12 @@ public class SandwichMakingMenu extends RecipeBookMenu {
         }
 
         // Bottom bread
-        this.addSlot(new Slot(inputsContainer, slotCount++, 62, 71));
+        this.addSlot(new Slot(inputsContainer, slotCount++, 62, 71) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return SandwichMakingMenu.this.breadTest.test(stack);
+            }
+        });
     }
 
     protected static void slotChangedCraftingGrid(
