@@ -1,7 +1,9 @@
 package fr.hugman.culinaire.client.screen;
 
+import fr.hugman.culinaire.Culinaire;
 import fr.hugman.culinaire.client.screen.recipebook.SandwichMakingRecipeBookComponent;
 import fr.hugman.culinaire.world.menu.SandwichMakingMenu;
+import fr.hugman.culinaire.client.mixin.AbstractContainerScreenAccessor;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.navigation.ScreenPosition;
 import net.minecraft.client.gui.screens.inventory.AbstractRecipeBookScreen;
@@ -11,10 +13,12 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class SandwichMakingScreen extends AbstractRecipeBookScreen<SandwichMakingMenu> {
-    private static final Identifier CRAFTING_TABLE_LOCATION = Identifier.withDefaultNamespace("textures/gui/container/crafting_table.png");
+    private static final Identifier TEXTURE_LOCATION = Culinaire.id("textures/gui/container/sandwich_making.png");
 
     public SandwichMakingScreen(SandwichMakingMenu menu, Inventory inventory, Component title) {
         super(menu, new SandwichMakingRecipeBookComponent(menu), inventory, title);
+        ((AbstractContainerScreenAccessor) this).setImageHeight(184);
+        this.inventoryLabelY = this.imageHeight - 94;
     }
 
     @Override
@@ -25,7 +29,7 @@ public class SandwichMakingScreen extends AbstractRecipeBookScreen<SandwichMakin
 
     @Override
     protected ScreenPosition getRecipeBookButtonPosition() {
-        return new ScreenPosition(this.leftPos + 5, this.height / 2 - 49);
+        return new ScreenPosition(this.leftPos + 5, this.height / 2 - 49); //TODO ?
     }
 
     @Override
@@ -33,6 +37,8 @@ public class SandwichMakingScreen extends AbstractRecipeBookScreen<SandwichMakin
         super.extractBackground(graphics, mouseX, mouseY, a);
         int xo = this.leftPos;
         int yo = (this.height - this.imageHeight) / 2;
-        graphics.blit(RenderPipelines.GUI_TEXTURED, CRAFTING_TABLE_LOCATION, xo, yo, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE_LOCATION, xo, yo, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
+
+        // render slots
     }
 }

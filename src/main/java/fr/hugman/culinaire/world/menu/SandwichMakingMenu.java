@@ -1,10 +1,12 @@
 package fr.hugman.culinaire.world.menu;
 
+import fr.hugman.culinaire.Culinaire;
 import fr.hugman.culinaire.block.CulinaireBlocks;
 import fr.hugman.culinaire.recipe.CulinaireRecipePropertySets;
 import fr.hugman.culinaire.world.menu.slot.SandwichMakingResultSlot;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.recipebook.ServerPlaceRecipe;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
@@ -23,6 +25,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class SandwichMakingMenu extends RecipeBookMenu {
+    private static final Identifier EMPTY_SLOT_BREAD = Culinaire.id("container/slot/bread");
+
     public static final int REQUIRED_INGREDIENTS_COUNT = 3;
     public static final int OPTIONAL_INGREDIENTS_COUNT = 3;
     public static final int SLOT_COUNT = 3 + REQUIRED_INGREDIENTS_COUNT + OPTIONAL_INGREDIENTS_COUNT;
@@ -54,8 +58,8 @@ public class SandwichMakingMenu extends RecipeBookMenu {
             }
         };
         this.breadTest = level.recipeAccess().propertySet(CulinaireRecipePropertySets.SANDWICH_BREAD);
-        this.addSandwichMakingSlots();
-        this.addStandardInventorySlots(inventory, 8, 84);
+        this.addSandwichMakingSlots(30, 17);
+        this.addStandardInventorySlots(inventory, 8, 102);
     }
 
     @Override
@@ -63,35 +67,45 @@ public class SandwichMakingMenu extends RecipeBookMenu {
         return RecipeBookType.CRAFTING;
     }
 
-    private void addSandwichMakingSlots() {
+    private void addSandwichMakingSlots(int x, int y) {
         var slotCount = 0;
 
         // Result
-        this.addSlot(new SandwichMakingResultSlot(inventory.player, inputsContainer, resultContainer, slotCount++, 116, 44));
+        this.addSlot(new SandwichMakingResultSlot(inventory.player, inputsContainer, resultContainer, slotCount++, x + 94, y + 27));
 
         // Top bread
-        this.addSlot(new Slot(inputsContainer, slotCount++, 62, 17) {
+        this.addSlot(new Slot(inputsContainer, slotCount++, x + 18, y) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return SandwichMakingMenu.this.breadTest.test(stack);
+            }
+
+            @Override
+            public Identifier getNoItemIcon() {
+                return EMPTY_SLOT_BREAD;
             }
         });
 
         // Required ingredients
         for(int i = 0; i < REQUIRED_INGREDIENTS_COUNT; ++i) {
-            this.addSlot(new Slot(inputsContainer, slotCount++, 44 + i * 18, 35));
+            this.addSlot(new Slot(inputsContainer, slotCount++, x + i * 18, y + 18));
         }
 
         // Optional ingredients
         for(int i = 0; i < OPTIONAL_INGREDIENTS_COUNT; ++i) {
-            this.addSlot(new Slot(inputsContainer, slotCount++, 44 + i * 18, 53));
+            this.addSlot(new Slot(inputsContainer, slotCount++, x + i * 18, y + 18 * 2));
         }
 
         // Bottom bread
-        this.addSlot(new Slot(inputsContainer, slotCount++, 62, 71) {
+        this.addSlot(new Slot(inputsContainer, slotCount++, x + 18, y + 18 * 3) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return SandwichMakingMenu.this.breadTest.test(stack);
+            }
+
+            @Override
+            public Identifier getNoItemIcon() {
+                return EMPTY_SLOT_BREAD;
             }
         });
     }
