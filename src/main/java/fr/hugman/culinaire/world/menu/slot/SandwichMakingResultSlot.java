@@ -1,17 +1,17 @@
 package fr.hugman.culinaire.world.menu.slot;
 
+import fr.hugman.culinaire.recipe.CulinaireRecipeTypes;
+import fr.hugman.culinaire.recipe.sandwich.SandwichInput;
+import fr.hugman.culinaire.recipe.sandwich.SandwichRecipe;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.RecipeCraftingHolder;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SandwichMakingResultSlot extends Slot {
@@ -61,7 +61,7 @@ public class SandwichMakingResultSlot extends Slot {
         this.removeCount = 0;
     }
 
-    private static NonNullList<ItemStack> copyAllInputItems(final CraftingInput input) {
+    private static NonNullList<ItemStack> copyAllInputItems(SandwichInput input) {
         NonNullList<ItemStack> result = NonNullList.withSize(input.size(), ItemStack.EMPTY);
 
         for (int slot = 0; slot < result.size(); slot++) {
@@ -71,59 +71,51 @@ public class SandwichMakingResultSlot extends Slot {
         return result;
     }
 
-    private NonNullList<ItemStack> getRemainingItems(final CraftingInput input, final Level level) {
+    private NonNullList<ItemStack> getRemainingItems(SandwichInput input, Level level) {
         return level instanceof ServerLevel serverLevel
                 ? serverLevel.recipeAccess()
-                               .getRecipeFor(RecipeType.CRAFTING, input, serverLevel)
+                               .getRecipeFor(CulinaireRecipeTypes.SANDWICH, input, serverLevel)
                                .map(recipe -> recipe.value().getRemainingItems(input))
                                .orElseGet(() -> copyAllInputItems(input))
-                : CraftingRecipe.defaultCraftingReminder(input);
+                : SandwichRecipe.defaultCraftingReminder(input);
     }
 
-    private CraftingInput createCraftingInput() {
-        List<ItemStack> list = new java.util.ArrayList<>(java.util.Collections.nCopies(9, ItemStack.EMPTY));
-        for (int i = 1; i < 9; i++) {
-            list.set(i, this.inputSlots.getItem(i));
+    private SandwichInput createInput() {
+        int ingredientCount = SandwichInput.MAIN_INGREDIENTS_COUNT + SandwichInput.COMPLEMENTS_COUNT;
+        List<ItemStack> ingredients = new ArrayList<>(ingredientCount);
+        for (int i = 1; i < 1 + ingredientCount; i++) {
+            ingredients.add(this.inputSlots.getItem(i));
         }
-        return CraftingInput.of(3, 3, list);
-    }
 
-    private CraftingInput.Positioned createCraftingInputPositioned() {
-        List<ItemStack> list = new java.util.ArrayList<>(java.util.Collections.nCopies(9, ItemStack.EMPTY));
-        for (int i = 1; i < 9; i++) {
-            list.set(i, this.inputSlots.getItem(i));
-        }
-        return CraftingInput.ofPositioned(3, 3, list);
+        return new SandwichInput(
+                this.inputSlots.getItem(0),
+                this.inputSlots.getItem(1 + SandwichInput.MAIN_INGREDIENTS_COUNT + SandwichInput.COMPLEMENTS_COUNT),
+                ingredients
+        );
     }
 
     @Override
     public void onTake(final Player player, final ItemStack carried) {
         this.checkTakeAchievements(carried);
-        CraftingInput.Positioned positionedRecipe = createCraftingInputPositioned();
-        CraftingInput input = positionedRecipe.input();
-        int recipeLeft = positionedRecipe.left();
-        int recipeTop = positionedRecipe.top();
+        SandwichInput input = createInput();
         NonNullList<ItemStack> remaining = this.getRemainingItems(input, player.level());
 
-        for (int y = 0; y < input.height(); y++) {
-            for (int x = 0; x < input.width(); x++) {
-                int slot = x + recipeLeft + (y + recipeTop) * 3;
-                ItemStack itemStack = this.inputSlots.getItem(slot);
-                ItemStack replacement = remaining.get(x + y * input.width());
-                if (!itemStack.isEmpty()) {
-                    this.inputSlots.removeItem(slot, 1);
-                    itemStack = this.inputSlots.getItem(slot);
-                }
+        for (int slot = 0; slot < (2+SandwichInput.MAIN_INGREDIENTS_COUNT + SandwichInput.COMPLEMENTS_COUNT); slot++) {
+            ItemStack itemStack = this.inputSlots.getItem(slot);
+            ItemStack replacement = remaining.get(slot);
+            if (!itemStack.isEmpty()) {
+                this.inputSlots.removeItem(slot, 1);
+                itemStack = this.inputSlots.getItem(slot);
+            }
 
-                if (!replacement.isEmpty()) {
-                    if (itemStack.isEmpty()) {
-                        this.inputSlots.setItem(slot, replacement);
-                    } else if (ItemStack.isSameItemSameComponents(itemStack, replacement)) {
-                        replacement.grow(itemStack.getCount());
-                        this.inputSlots.setItem(slot, replacement);
-                    } else if (!this.player.getInventory().add(replacement)) {
-                        this.player.drop(replacement, false);
-                    }
+            if (!replacement.isEmpty()) {
+                if (itemStack.isEmpty()) {
+                    this.inputSlots.setItem(slot, replacement);
+                } else if (ItemStack.isSameItemSameComponents(itemStack, replacement)) {
+                    replacement.grow(itemStack.getCount());
+                    this.inputSlots.setItem(slot, replacement);
+                } else if (!this.player.getInventory().add(replacement)) {
+                    this.player.drop(replacement, false);
                 }
             }
         }

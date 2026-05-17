@@ -13,6 +13,7 @@ import fr.hugman.culinaire.itemgroup.CulinaireItemGroups;
 import fr.hugman.culinaire.loot.CulinaireLootTables;
 import fr.hugman.culinaire.recipe.CulinaireRecipePropertySets;
 import fr.hugman.culinaire.recipe.CulinaireRecipeSerializers;
+import fr.hugman.culinaire.recipe.CulinaireRecipeTypes;
 import fr.hugman.culinaire.registry.CulinaireCompostables;
 import fr.hugman.culinaire.registry.CulinaireFlammables;
 import fr.hugman.culinaire.registry.CulinaireRegistries;
@@ -48,8 +49,9 @@ public class Culinaire implements ModInitializer {
         CulinaireCompostables.register();
         CulinaireCauldronInteractions.register();
 
-        Reflection.initialize(CulinaireRecipePropertySets.class);
+        Reflection.initialize(CulinaireRecipeTypes.class);
         Reflection.initialize(CulinaireRecipeSerializers.class);
+        Reflection.initialize(CulinaireRecipePropertySets.class);
 
         CulinaireLootTables.addToVanillaTables();
 

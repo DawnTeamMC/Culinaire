@@ -2,16 +2,14 @@ package fr.hugman.culinaire.data.provider;
 
 import fr.hugman.culinaire.block.CulinaireBlocks;
 import fr.hugman.culinaire.component.CulinaireFoodComponents;
-import fr.hugman.culinaire.data.recipe.SandwichRecipeBuilder;
 import fr.hugman.culinaire.data.recipe.TeaBagRecipeBuilder;
 import fr.hugman.culinaire.item.CulinaireItems;
-import fr.hugman.culinaire.recipe.sandwich.SandwichCraftingRecipeBuilder;
+import fr.hugman.culinaire.recipe.sandwich.SandwichRecipeBuilder;
 import fr.hugman.culinaire.tag.CulinaireItemTags;
 import fr.hugman.culinaire.tea.TeaTypes;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -141,13 +139,12 @@ public class CulinaireRecipeGenerator extends RecipeProvider {
                 .save(this.output);
 
         // SANDWICHES
-        this.offerSandwichRecipe();
         this.sandwich(RecipeCategory.FOOD, CulinaireItems.CROISSANT)
-                .bread(Items.WHEAT)
-                .requires(CulinaireItems.CHOUQUETTE)
+                .bread(Items.BREAD)
+                .requires(CulinaireItems.MARSHMALLOW)
                 .complement(CulinaireItems.MILK_CHOCOLATE_BAR, CulinaireFoodComponents.CHOCOLATE_BAR)
                 .complement(CulinaireItems.DARK_CHOCOLATE_BAR, CulinaireFoodComponents.CHOCOLATE_BAR)
-                .unlockedBy(getHasName(CulinaireItems.CHOUQUETTE), this.has(CulinaireItems.CHOUQUETTE))
+                .unlockedBy(getHasName(Items.BREAD), this.has(Items.BREAD))
                 .save(this.output);
 
         // MEALS
@@ -176,36 +173,12 @@ public class CulinaireRecipeGenerator extends RecipeProvider {
                 .save(this.output);
     }
 
-    public void offerSandwichRecipe() {
-        SandwichRecipeBuilder.create(
-                        registries.lookupOrThrow(Registries.ITEM),
-                        RecipeCategory.FOOD,
-                        0.5f,
-                        1.0f,
-                        0.2f,
-                        0.5f,
-                        new ItemStackTemplate(CulinaireItems.SANDWICH)
-                )
-                .bread(CulinaireItemTags.SANDWICH_BREAD)
-                .blacklist(CulinaireItemTags.SANDWICH_INGREDIENT_BLACKLIST)
-                .association(Items.APPLE, CulinaireItems.MILK_CHOCOLATE_BAR)
-                .association(Items.COOKED_CHICKEN, Items.HONEY_BOTTLE)
-                .association(Items.COOKED_BEEF, CulinaireItems.CHEESE)
-                .association(Items.GOLDEN_APPLE, Items.DRIED_KELP)
-                .association(CulinaireItems.MARSHMALLOW, CulinaireItems.MILK_CHOCOLATE_BAR, Items.HONEY_BOTTLE)
-                .association(Items.RABBIT, Items.BEETROOT)
-                .association(Items.SPIDER_EYE, CulinaireItems.DARK_CHOCOLATE_BAR)
-                .association(CulinaireItems.TOMATO, CulinaireItems.CHEESE, CulinaireItems.LETTUCE)
-                .criterion("has_bread", this.has(CulinaireItemTags.SANDWICH_BREAD))
-                .save(this.output);
+    public SandwichRecipeBuilder sandwich(RecipeCategory category, ItemStackTemplate result) {
+        return SandwichRecipeBuilder.of(this.items, category, result);
     }
 
-    public SandwichCraftingRecipeBuilder sandwich(RecipeCategory category, ItemStackTemplate result) {
-        return SandwichCraftingRecipeBuilder.of(this.items, category, result);
-    }
-
-    public SandwichCraftingRecipeBuilder sandwich(RecipeCategory category, ItemLike result) {
-        return SandwichCraftingRecipeBuilder.of(this.items, category, result);
+    public SandwichRecipeBuilder sandwich(RecipeCategory category, ItemLike result) {
+        return SandwichRecipeBuilder.of(this.items, category, result);
     }
 
     public static FabricRecipeProvider create(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> completableFuture) {

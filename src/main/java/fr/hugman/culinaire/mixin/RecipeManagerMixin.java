@@ -2,6 +2,7 @@ package fr.hugman.culinaire.mixin;
 
 import fr.hugman.culinaire.recipe.CulinaireRecipePropertySets;
 import fr.hugman.culinaire.recipe.sandwich.SandwichCraftingRecipe;
+import fr.hugman.culinaire.recipe.sandwich.SandwichRecipe;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipePropertySet;
@@ -28,6 +29,9 @@ public class RecipeManagerMixin {
     private static void injectCulinairePropertySets(CallbackInfo ci) {
         Map<ResourceKey<RecipePropertySet>, RecipeManager.IngredientExtractor> map = new HashMap<>(RECIPE_PROPERTY_SETS);
         map.put(CulinaireRecipePropertySets.SANDWICH_BREAD, recipe -> {
+            if (recipe instanceof SandwichRecipe sandwichRecipe) {
+                return Optional.of(sandwichRecipe.getBread());
+            }
             if (recipe instanceof SandwichCraftingRecipe sandwichCraftingRecipe) {
                 return Optional.of(sandwichCraftingRecipe.getBread());
             }

@@ -3,6 +3,9 @@ package fr.hugman.culinaire.world.menu;
 import fr.hugman.culinaire.Culinaire;
 import fr.hugman.culinaire.block.CulinaireBlocks;
 import fr.hugman.culinaire.recipe.CulinaireRecipePropertySets;
+import fr.hugman.culinaire.recipe.CulinaireRecipeTypes;
+import fr.hugman.culinaire.recipe.sandwich.SandwichInput;
+import fr.hugman.culinaire.recipe.sandwich.SandwichRecipe;
 import fr.hugman.culinaire.world.menu.slot.SandwichMakingResultSlot;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.recipebook.ServerPlaceRecipe;
@@ -20,16 +23,12 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.jspecify.annotations.Nullable;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public class SandwichMakingMenu extends RecipeBookMenu {
     private static final Identifier EMPTY_SLOT_BREAD = Culinaire.id("container/slot/bread");
 
-    public static final int REQUIRED_INGREDIENTS_COUNT = 3;
-    public static final int OPTIONAL_INGREDIENTS_COUNT = 3;
-    public static final int SLOT_COUNT = 3 + REQUIRED_INGREDIENTS_COUNT + OPTIONAL_INGREDIENTS_COUNT;
+    public static final int SLOT_COUNT = 2 + SandwichInput.MAIN_INGREDIENTS_COUNT + SandwichInput.COMPLEMENTS_COUNT;
 
     private final ContainerLevelAccess access;
     private final Player player;
@@ -71,7 +70,7 @@ public class SandwichMakingMenu extends RecipeBookMenu {
         var slotCount = 0;
 
         // Result
-        this.addSlot(new SandwichMakingResultSlot(inventory.player, inputsContainer, resultContainer, slotCount++, x + 94, y + 27));
+        this.addSlot(new SandwichMakingResultSlot(inventory.player, inputsContainer, resultContainer, 0, x + 94, y + 27));
 
         // Top bread
         this.addSlot(new Slot(inputsContainer, slotCount++, x + 18, y) {
@@ -87,12 +86,12 @@ public class SandwichMakingMenu extends RecipeBookMenu {
         });
 
         // Required ingredients
-        for(int i = 0; i < REQUIRED_INGREDIENTS_COUNT; ++i) {
+        for(int i = 0; i < SandwichInput.MAIN_INGREDIENTS_COUNT; ++i) {
             this.addSlot(new Slot(inputsContainer, slotCount++, x + i * 18, y + 18));
         }
 
         // Optional ingredients
-        for(int i = 0; i < OPTIONAL_INGREDIENTS_COUNT; ++i) {
+        for(int i = 0; i < SandwichInput.COMPLEMENTS_COUNT; ++i) {
             this.addSlot(new Slot(inputsContainer, slotCount++, x + i * 18, y + 18 * 2));
         }
 
@@ -114,18 +113,18 @@ public class SandwichMakingMenu extends RecipeBookMenu {
             final AbstractContainerMenu menu,
             final ServerLevel level,
             final Player player,
-            final CraftingInput input,
+            final SandwichInput input,
             final ResultContainer resultSlots,
-            @Nullable final RecipeHolder<CraftingRecipe> recipeHint
+            @Nullable final RecipeHolder<SandwichRecipe> recipeHint
     ) {
         ServerPlayer serverPlayer = (ServerPlayer)player;
         ItemStack result = ItemStack.EMPTY;
-        Optional<RecipeHolder<CraftingRecipe>> maybeRecipe = level.getServer().getRecipeManager().getRecipeFor(RecipeType.CRAFTING, input, level, recipeHint);
+        Optional<RecipeHolder<SandwichRecipe>> maybeRecipe = level.getServer().getRecipeManager().getRecipeFor(CulinaireRecipeTypes.SANDWICH, input, level, recipeHint);
         if (maybeRecipe.isPresent()) {
-            RecipeHolder<CraftingRecipe> recipeHolder = maybeRecipe.get();
-            CraftingRecipe craftingRecipe = recipeHolder.value();
+            RecipeHolder<SandwichRecipe> recipeHolder = maybeRecipe.get();
+            SandwichRecipe sandwichRecipe = recipeHolder.value();
             if (resultSlots.setRecipeUsed(serverPlayer, recipeHolder)) {
-                ItemStack recipeResult = craftingRecipe.assemble(input);
+                ItemStack recipeResult = sandwichRecipe.assemble(input);
                 if (recipeResult.isItemEnabled(level.enabledFeatures())) {
                     result = recipeResult;
                 }
@@ -137,21 +136,27 @@ public class SandwichMakingMenu extends RecipeBookMenu {
         serverPlayer.connection.send(new ClientboundContainerSetSlotPacket(menu.containerId, menu.incrementStateId(), 0, result));
     }
 
-    private CraftingInput createCraftingInput() {
-        List<ItemStack> list = new java.util.ArrayList<>(java.util.Collections.nCopies(9, ItemStack.EMPTY));
-        for (int i = 1; i < 9; i++) {
-            list.set(i, this.inputsContainer.getItem(i));
+    private SandwichInput createInput() {
+        int ingredientCount = SandwichInput.MAIN_INGREDIENTS_COUNT + SandwichInput.COMPLEMENTS_COUNT;
+        List<ItemStack> ingredients = new ArrayList<>(ingredientCount);
+        for (int i = 1; i < 1 + ingredientCount; i++) {
+            ingredients.add(this.inputsContainer.getItem(i));
         }
-        return CraftingInput.of(3, 3, list);
+
+        return new SandwichInput(
+                this.inputsContainer.getItem(0),
+                this.inputsContainer.getItem(1 + SandwichInput.MAIN_INGREDIENTS_COUNT + SandwichInput.COMPLEMENTS_COUNT),
+                ingredients
+        );
     }
 
     public void beginPlacingRecipe() {
         this.placingRecipe = true;
     }
 
-    public void finishPlacingRecipe(final ServerLevel level, final RecipeHolder<CraftingRecipe> recipe) {
+    public void finishPlacingRecipe(final ServerLevel level, final RecipeHolder<SandwichRecipe> recipe) {
         this.placingRecipe = false;
-        slotChangedCraftingGrid(this, level, this.player, this.createCraftingInput(), this.resultContainer, recipe);
+        slotChangedCraftingGrid(this, level, this.player, this.createInput(), this.resultContainer, recipe);
     }
 
     @Override
@@ -166,7 +171,7 @@ public class SandwichMakingMenu extends RecipeBookMenu {
         if (!this.placingRecipe) {
             this.access.execute((level, pos) -> {
                 if (level instanceof ServerLevel serverLevel) {
-                    slotChangedCraftingGrid(this, serverLevel, this.player, this.createCraftingInput(), this.resultContainer, null);
+                    slotChangedCraftingGrid(this, serverLevel, this.player, this.createInput(), this.resultContainer, null);
                 }
             });
         }
@@ -197,7 +202,7 @@ public class SandwichMakingMenu extends RecipeBookMenu {
             ServerLevel level,
             Inventory inventory
     ) {
-        RecipeHolder<CraftingRecipe> typedRecipe = (RecipeHolder<CraftingRecipe>)recipe;
+        RecipeHolder<SandwichRecipe> typedRecipe = (RecipeHolder<SandwichRecipe>)recipe;
         this.beginPlacingRecipe();
         List<Slot> inputSlots = this.getInputGridSlots();
         var place = ServerPlaceRecipe.placeRecipe(new ServerPlaceRecipe.CraftingMenuAccess<>() {
@@ -217,8 +222,8 @@ public class SandwichMakingMenu extends RecipeBookMenu {
             }
 
             @Override
-            public boolean recipeMatches(RecipeHolder<CraftingRecipe> recipe) {
-                return recipe.value().matches(SandwichMakingMenu.this.createCraftingInput(), level);
+            public boolean recipeMatches(RecipeHolder<SandwichRecipe> recipe) {
+                return recipe.value().matches(SandwichMakingMenu.this.createInput(), level);
             }
         }, 3, 3, inputSlots, inputSlots, inventory, typedRecipe, useMaxItems, allowDroppingItemsToClear);
 
@@ -232,13 +237,11 @@ public class SandwichMakingMenu extends RecipeBookMenu {
         return target.container != this.inputsContainer && super.canTakeItemForPickAll(carried, target);
     }
 
-    public Slot getResultSlot() {
-        return this.slots.get(SLOT_COUNT - 1);
-    }
-
     public List<Slot> getInputGridSlots() {
         return this.slots.subList(1, 10);
     }
 
-
+    public Slot getResultSlot() {
+        return this.slots.getFirst();
+    }
 }
