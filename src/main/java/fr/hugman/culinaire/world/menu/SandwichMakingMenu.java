@@ -179,8 +179,59 @@ public class SandwichMakingMenu extends RecipeBookMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int slotIndex) {
-        //TODO
-        return ItemStack.EMPTY;
+        ItemStack clicked = ItemStack.EMPTY;
+        Slot slot = this.slots.get(slotIndex);
+
+        int minInventory = SLOT_COUNT + 1; // 0 is result
+        int minHotbar = minInventory + 27;
+        int maxInventory = minInventory + 36;
+
+        if (slot != null && slot.hasItem()) {
+            ItemStack stack = slot.getItem();
+            clicked = stack.copy();
+            // from result
+            if (slotIndex == 0) {
+                stack.getItem().onCraftedBy(stack, player);
+                if (!this.moveItemStackTo(stack, minInventory, maxInventory, true)) {
+                    return ItemStack.EMPTY;
+                }
+
+                slot.onQuickCraft(stack, clicked);
+            }
+            // from inventory
+            else if (slotIndex >= minInventory && slotIndex < maxInventory) {
+                if (!this.moveItemStackTo(stack, 1, minInventory, false)) {
+                    if (slotIndex < minHotbar) {
+                        if (!this.moveItemStackTo(stack, minHotbar, maxInventory, false)) {
+                            return ItemStack.EMPTY;
+                        }
+                    } else if (!this.moveItemStackTo(stack, minInventory, minHotbar, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+            }
+            // from anywhere else (recipe slots)
+            else if (!this.moveItemStackTo(stack, minInventory, maxInventory, false)) {
+                return ItemStack.EMPTY;
+            }
+
+            if (stack.isEmpty()) {
+                slot.setByPlayer(ItemStack.EMPTY);
+            } else {
+                slot.setChanged();
+            }
+
+            if (stack.getCount() == clicked.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(player, stack);
+            if (slotIndex == 0) {
+                player.drop(stack, false);
+            }
+        }
+
+        return clicked;
     }
 
     @Override
