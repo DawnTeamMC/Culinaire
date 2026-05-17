@@ -5,7 +5,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import fr.hugman.culinaire.component.CulinaireComponentTypes;
 import fr.hugman.culinaire.item.sandwich.SandwichIngredients;
-import fr.hugman.culinaire.recipe.sandwich.ingredient.SandwichCraftingIngredient;
+import fr.hugman.culinaire.recipe.sandwich.ingredient.SandwichIngredientProvider;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -34,7 +34,7 @@ public class SandwichCraftingRecipe extends NormalCraftingRecipe {
             CraftingRecipe.CraftingBookInfo.MAP_CODEC.forGetter(r -> r.bookInfo),
             Ingredient.CODEC.fieldOf("bread").forGetter(r -> r.bread),
             Ingredient.CODEC.listOf().fieldOf("base_ingredients").forGetter(r -> r.baseIngredients),
-            SandwichCraftingIngredient.CODEC.listOf().fieldOf("complements").forGetter(r -> r.complements),
+            SandwichIngredientProvider.CODEC.listOf().fieldOf("complements").forGetter(r -> r.complements),
             Codec.INT.fieldOf("max_complements").forGetter(r -> r.maxComplements),
             Codec.BOOL.optionalFieldOf("shaped", DEFAULT_SHAPED).forGetter(r -> r.shaped),
             ItemStackTemplate.CODEC.fieldOf("result").forGetter(r -> r.result)
@@ -45,7 +45,7 @@ public class SandwichCraftingRecipe extends NormalCraftingRecipe {
             CraftingRecipe.CraftingBookInfo.STREAM_CODEC, r -> r.bookInfo,
             Ingredient.CONTENTS_STREAM_CODEC, r -> r.bread,
             Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list()), r -> r.baseIngredients,
-            SandwichCraftingIngredient.STREAM_CODEC.apply(ByteBufCodecs.list()), r -> r.complements,
+            SandwichIngredientProvider.STREAM_CODEC.apply(ByteBufCodecs.list()), r -> r.complements,
             ByteBufCodecs.INT, r -> r.maxComplements,
             ByteBufCodecs.BOOL, r -> r.shaped,
             ItemStackTemplate.STREAM_CODEC, r -> r.result,
@@ -56,7 +56,7 @@ public class SandwichCraftingRecipe extends NormalCraftingRecipe {
 
     private final Ingredient bread;
     private final List<Ingredient> baseIngredients;
-    private final List<SandwichCraftingIngredient> complements;
+    private final List<SandwichIngredientProvider> complements;
     private final int maxComplements;
     private final boolean shaped;
     private final ItemStackTemplate result;
@@ -66,7 +66,7 @@ public class SandwichCraftingRecipe extends NormalCraftingRecipe {
             CraftingBookInfo bookInfo,
             Ingredient bread,
             List<Ingredient> baseIngredients,
-            List<SandwichCraftingIngredient> complements,
+            List<SandwichIngredientProvider> complements,
             int maxComplements,
             boolean shaped,
             ItemStackTemplate result
@@ -85,7 +85,7 @@ public class SandwichCraftingRecipe extends NormalCraftingRecipe {
             CraftingBookInfo bookInfo,
             Ingredient bread,
             List<Ingredient> baseIngredients,
-            List<SandwichCraftingIngredient> complements,
+            List<SandwichIngredientProvider> complements,
             int maxComplements,
             ItemStackTemplate result
     ) {

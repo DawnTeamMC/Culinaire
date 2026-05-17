@@ -6,7 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import fr.hugman.culinaire.component.CulinaireComponentTypes;
 import fr.hugman.culinaire.item.sandwich.SandwichIngredients;
 import fr.hugman.culinaire.recipe.CulinaireRecipeTypes;
-import fr.hugman.culinaire.recipe.sandwich.ingredient.SandwichCraftingIngredient;
+import fr.hugman.culinaire.recipe.sandwich.ingredient.SandwichIngredientProvider;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -32,7 +32,7 @@ public class SandwichRecipe implements Recipe<SandwichInput> {
             BookInfo.MAP_CODEC.forGetter(r -> r.bookInfo),
             Ingredient.CODEC.fieldOf("bread").forGetter(r -> r.bread),
             Ingredient.CODEC.listOf().fieldOf("base_ingredients").forGetter(r -> r.mainIngredients),
-            SandwichCraftingIngredient.CODEC.listOf().fieldOf("complements").forGetter(r -> r.complements),
+            SandwichIngredientProvider.CODEC.listOf().fieldOf("complements").forGetter(r -> r.complements),
             Codec.INT.fieldOf("max_complements").forGetter(r -> r.maxComplements),
             ItemStackTemplate.CODEC.fieldOf("result").forGetter(r -> r.result)
     ).apply(i, SandwichRecipe::new));
@@ -42,7 +42,7 @@ public class SandwichRecipe implements Recipe<SandwichInput> {
             BookInfo.STREAM_CODEC, r -> r.bookInfo,
             Ingredient.CONTENTS_STREAM_CODEC, r -> r.bread,
             Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list()), r -> r.mainIngredients,
-            SandwichCraftingIngredient.STREAM_CODEC.apply(ByteBufCodecs.list()), r -> r.complements,
+            SandwichIngredientProvider.STREAM_CODEC.apply(ByteBufCodecs.list()), r -> r.complements,
             ByteBufCodecs.INT, r -> r.maxComplements,
             ItemStackTemplate.STREAM_CODEC, r -> r.result,
             SandwichRecipe::new
@@ -54,7 +54,7 @@ public class SandwichRecipe implements Recipe<SandwichInput> {
     private final BookInfo bookInfo;
     private final Ingredient bread;
     private final List<Ingredient> mainIngredients;
-    private final List<SandwichCraftingIngredient> complements;
+    private final List<SandwichIngredientProvider> complements;
     private final int maxComplements;
     private final ItemStackTemplate result;
 
@@ -65,7 +65,7 @@ public class SandwichRecipe implements Recipe<SandwichInput> {
             BookInfo bookInfo,
             Ingredient bread,
             List<Ingredient> mainIngredients,
-            List<SandwichCraftingIngredient> complements,
+            List<SandwichIngredientProvider> complements,
             int maxComplements,
             ItemStackTemplate result
     ) {

@@ -7,18 +7,18 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.crafting.Ingredient;
 
-public record SandwichCraftingIngredient(
+public record SandwichIngredientProvider(
         Ingredient ingredient,
         SandwichIngredient properties
 ) {
-    public static final Codec<SandwichCraftingIngredient> CODEC = RecordCodecBuilder.create(i -> i.group(
-            Ingredient.CODEC.fieldOf("ingredient").forGetter(SandwichCraftingIngredient::ingredient),
-            SandwichIngredient.MAP_CODEC.forGetter(SandwichCraftingIngredient::properties)
-    ).apply(i, SandwichCraftingIngredient::new));
+    public static final Codec<SandwichIngredientProvider> CODEC = RecordCodecBuilder.create(i -> i.group(
+            Ingredient.CODEC.fieldOf("ingredient").forGetter(SandwichIngredientProvider::ingredient),
+            SandwichIngredient.MAP_CODEC.forGetter(SandwichIngredientProvider::properties)
+    ).apply(i, SandwichIngredientProvider::new));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, SandwichCraftingIngredient> STREAM_CODEC = StreamCodec.composite(
+    public static final StreamCodec<RegistryFriendlyByteBuf, SandwichIngredientProvider> STREAM_CODEC = StreamCodec.composite(
             Ingredient.CONTENTS_STREAM_CODEC, r -> r.ingredient,
             SandwichIngredient.STREAM_CODEC, r -> r.properties,
-            SandwichCraftingIngredient::new
+            SandwichIngredientProvider::new
     );
 }

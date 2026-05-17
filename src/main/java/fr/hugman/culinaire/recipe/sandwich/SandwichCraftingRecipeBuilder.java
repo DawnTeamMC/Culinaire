@@ -1,7 +1,7 @@
 package fr.hugman.culinaire.recipe.sandwich;
 
 import fr.hugman.culinaire.item.sandwich.SandwichIngredient;
-import fr.hugman.culinaire.recipe.sandwich.ingredient.SandwichCraftingIngredient;
+import fr.hugman.culinaire.recipe.sandwich.ingredient.SandwichIngredientProvider;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.data.recipes.*;
@@ -23,7 +23,7 @@ public class SandwichCraftingRecipeBuilder implements RecipeBuilder {
     private final RecipeCategory category;
     private Ingredient bread;
     private final List<Ingredient> baseIngredients = new ArrayList();
-    private final List<SandwichCraftingIngredient> complements = new ArrayList();
+    private final List<SandwichIngredientProvider> complements = new ArrayList();
     private int maxComplements = 2;
     private final ItemStackTemplate result;
     private final RecipeUnlockAdvancementBuilder advancementBuilder = new RecipeUnlockAdvancementBuilder();
@@ -90,11 +90,11 @@ public class SandwichCraftingRecipeBuilder implements RecipeBuilder {
     }
 
     public SandwichCraftingRecipeBuilder complement(ItemLike item, FoodProperties foodProperties) {
-        this.complements.add(new SandwichCraftingIngredient(Ingredient.of(item), SandwichIngredient.of(foodProperties)));
+        this.complements.add(new SandwichIngredientProvider(Ingredient.of(item), SandwichIngredient.of(foodProperties)));
         return this;
     }
 
-    public SandwichCraftingRecipeBuilder complement(SandwichCraftingIngredient ingredient) {
+    public SandwichCraftingRecipeBuilder complement(SandwichIngredientProvider ingredient) {
         this.complements.add(ingredient);
         return this;
     }
