@@ -3,9 +3,11 @@ package fr.hugman.culinaire.recipe.sandwich;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import fr.hugman.culinaire.block.CulinaireBlocks;
 import fr.hugman.culinaire.component.CulinaireComponentTypes;
 import fr.hugman.culinaire.item.sandwich.SandwichIngredients;
 import fr.hugman.culinaire.recipe.CulinaireRecipeTypes;
+import fr.hugman.culinaire.recipe.display.SandwichRecipeDisplay;
 import fr.hugman.culinaire.recipe.sandwich.ingredient.SandwichIngredientProvider;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -14,10 +16,8 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
-import net.minecraft.world.item.crafting.display.ShapedCraftingRecipeDisplay;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 import org.jspecify.annotations.NonNull;
@@ -143,12 +143,12 @@ public class SandwichRecipe implements Recipe<SandwichInput> {
 
     @Override
     public boolean showNotification() {
-        return false;
+        return this.commonInfo.showNotification();
     }
 
     @Override
     public String group() {
-        return "";
+        return this.bookInfo.group();
     }
 
     @Override
@@ -183,37 +183,15 @@ public class SandwichRecipe implements Recipe<SandwichInput> {
 
     @Override
     public List<RecipeDisplay> display() {
-        // 3x3 display
-        // Top row, middle item is bread
-        // Middle row is base ingredients
-        // Bottom row is complements
-
         List<SlotDisplay> slotDisplays = new ArrayList<>();
-        slotDisplays.add(SlotDisplay.Empty.INSTANCE);
-        slotDisplays.add(this.bread.display());
-        slotDisplays.add(SlotDisplay.Empty.INSTANCE);
+        slotDisplays.addAll(this.mainIngredients.stream().map(Ingredient::display).toList());
 
-        // Middle row = 3 max
-        // if 1 then center
-        if(this.mainIngredients.size() == 1) {
-            slotDisplays.add(SlotDisplay.Empty.INSTANCE);
-            slotDisplays.add(this.mainIngredients.get(0).display());
-            slotDisplays.add(SlotDisplay.Empty.INSTANCE);
-        }
-        else {
-            slotDisplays.addAll(this.mainIngredients.stream().map(Ingredient::display).toList());
-            for(int i = this.mainIngredients.size(); i < 3; i++) {
-                slotDisplays.add(SlotDisplay.Empty.INSTANCE);
-            }
-        }
-
-        slotDisplays.add(SlotDisplay.Empty.INSTANCE);
-        slotDisplays.add(this.bread.display());
-        slotDisplays.add(SlotDisplay.Empty.INSTANCE);
-
-        return List.of(
-                new ShapedCraftingRecipeDisplay(3, 3, slotDisplays, new SlotDisplay.ItemStackSlotDisplay(this.result), new SlotDisplay.ItemSlotDisplay(Items.CRAFTING_TABLE))
-        );
+        return List.of(new SandwichRecipeDisplay(
+                this.bread.display(),
+                slotDisplays,
+                new SlotDisplay.ItemStackSlotDisplay(this.result),
+                new SlotDisplay.ItemSlotDisplay(CulinaireBlocks.SANDWICH_MAKING_TABLE.asItem())
+        ));
     }
 
     @Override

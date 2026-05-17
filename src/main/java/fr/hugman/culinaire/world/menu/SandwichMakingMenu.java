@@ -289,7 +289,19 @@ public class SandwichMakingMenu extends RecipeBookMenu {
     }
 
     public List<Slot> getInputGridSlots() {
-        return this.slots.subList(1, 10);
+        return this.slots.subList(1, 8);
+    }
+
+    public Slot getTopBreadSlot() {
+        return this.slots.get(1);
+    }
+
+    public Slot getBottomBreadSlot() {
+        return this.slots.get(8);
+    }
+
+    public List<Slot> getIngredientSlots() {
+        return this.slots.subList(2, 7);
     }
 
     public Slot getResultSlot() {
