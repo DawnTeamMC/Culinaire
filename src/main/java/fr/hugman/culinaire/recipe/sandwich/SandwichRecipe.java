@@ -25,8 +25,6 @@ import org.jspecify.annotations.NonNull;
 import java.util.*;
 
 public class SandwichRecipe implements Recipe<SandwichInput> {
-    public static final int BREAD_COUNT = 2;
-
     public static final MapCodec<SandwichRecipe> MAP_CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
             CommonInfo.MAP_CODEC.forGetter(r -> r.commonInfo),
             BookInfo.MAP_CODEC.forGetter(r -> r.bookInfo),
@@ -171,14 +169,25 @@ public class SandwichRecipe implements Recipe<SandwichInput> {
 
     protected PlacementInfo createPlacementInfo() {
         // TODO: cache this
-        var list = new ArrayList<Ingredient>();
+        var list = new ArrayList<Optional<Ingredient>>();
 
-        for (int i = 0; i < BREAD_COUNT; i++) {
-            list.add(this.bread);
+        list.add(Optional.of(this.bread));
+        int count = 1;
+        for (Ingredient mainIngredient : this.mainIngredients) {
+            list.add(Optional.of(mainIngredient));
+            count++;
+            if (count == 6) {
+                break;
+            }
         }
-        list.addAll(this.mainIngredients.stream().toList());
 
-        return PlacementInfo.create(list);
+        while (count < 7) {
+            list.add(Optional.empty());
+            count++;
+        }
+        list.add(Optional.of(this.bread));
+
+        return PlacementInfo.createFromOptionals(list);
     }
 
     @Override
@@ -186,6 +195,7 @@ public class SandwichRecipe implements Recipe<SandwichInput> {
         List<SlotDisplay> slotDisplays = new ArrayList<>();
         slotDisplays.addAll(this.mainIngredients.stream().map(Ingredient::display).toList());
 
+        //TODO: display complements too
         return List.of(new SandwichRecipeDisplay(
                 this.bread.display(),
                 slotDisplays,
